@@ -38,3 +38,19 @@ DEF hFrameCounter          EQU $ff8c ; Goes up by 1 every frame
 DEF hVBlankHandler         EQU $ff96 ; Address of the current VBlank handler
 DEF hStatHandler           EQU $ff98 ; Address of the current LCD STAT handler
 DEF hGameState             EQU $ff9f ; Game state, index into the state handler tables
+
+; Values of hGameState
+DEF STATE_COPYRIGHT          EQU  0 ; Copyright screen shown at power-on
+DEF STATE_MAIN_MENU          EQU  1 ; Main menu and password entry
+DEF STATE_GAMEPLAY           EQU  2 ; Playing a level
+DEF STATE_GAME_OVER          EQU  3 ; Game over screen
+DEF STATE_PAUSE              EQU  4 ; Pause screen
+DEF STATE_TITLE_SCREEN       EQU  5 ; Title picture
+DEF STATE_DEVELOPER_LOGOS    EQU  6 ; "Developed by" logos
+DEF STATE_07                 EQU  7 ; Entered for one frame between game over and the title; not understood yet
+DEF STATE_08                 EQU  8 ; Not seen yet
+DEF STATE_LEVEL_PASSWORD     EQU  9 ; Password screen shown after every fourth level
+DEF STATE_10                 EQU 10 ; Not seen yet
+DEF STATE_LANGUAGE_SELECT    EQU 11 ; Language selection
+DEF STATE_PUBLISHER_LOGO     EQU 12 ; SCi logo
+DEF STATE_ENDING             EQU 13 ; Ending text after level 160

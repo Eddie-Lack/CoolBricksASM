@@ -4923,59 +4923,59 @@ Jump_001_7687:
     ld [$ffa4], a
     jp Jump_001_75d9
 
-Jump_001_7692:
+StateUpdate_Gameplay:
     ld hl, $0f30
     jp Jump_001_7687
 
-Jump_001_7698:
+StateUpdate_TitleScreen:
     ld hl, $2665
     jp Jump_001_7687
 
-Jump_001_769e:
+StateUpdate_GameOver:
     ld hl, $7bd8
     jp Jump_001_7687
 
-Jump_001_76a4:
+StateUpdate_Pause:
     ld hl, $7c03
     jp Jump_001_7687
 
-Jump_001_76aa:
+StateUpdate_DeveloperLogos:
     ld hl, $7c92
     jp Jump_001_7687
 
-Jump_001_76b0:
+StateUpdate_PublisherLogo:
     ld hl, $3ad8
     jp Jump_001_7687
 
-Jump_001_76b6:
+StateUpdate_State07:
     ld hl, $06da
     jp Jump_001_7687
 
-Jump_001_76bc:
+StateUpdate_MainMenu:
     ld hl, $20fa
     jp Jump_001_7687
 
-Jump_001_76c2:
+StateUpdate_State08:
     ld hl, $7a5e
     jp Jump_001_7687
 
-Jump_001_76c8:
+StateUpdate_LevelPassword:
     ld hl, $5c66
     jp Jump_001_7687
 
-Jump_001_76ce:
+StateUpdate_State10:
     ld hl, $7ca8
     jp Jump_001_7687
 
-Jump_001_76d4:
+StateUpdate_LanguageSelect:
     ld hl, $6a5b
     jp Jump_001_7687
 
-Jump_001_76da:
+StateUpdate_Copyright:
     ld hl, $3eed
     jp Jump_001_7687
 
-Jump_001_76e0:
+StateUpdate_Ending:
     ld hl, $7c74
     jp Jump_001_7687
 
@@ -5620,37 +5620,37 @@ GBC_Check:
 
 ; Init handler for each game state.
 StateInitHandlers:
-    dw Jump_000_3e8d
-    dw Jump_000_1f7b
+    dw StateInit_Copyright
+    dw StateInit_MainMenu
     dw LoadLevel
-    dw Jump_000_2687
-    dw Jump_000_3959
-    dw Jump_000_254f
-    dw Jump_000_39ed
-    dw Jump_000_05d9
-    dw Jump_000_3aee
-    dw Jump_000_3c45
-    dw Jump_000_00a6
-    dw Jump_000_3dee
-    dw Jump_000_3a6c
-    dw Jump_000_3f03
+    dw StateInit_GameOver
+    dw StateInit_Pause
+    dw StateInit_TitleScreen
+    dw StateInit_DeveloperLogos
+    dw StateInit_State07
+    dw StateInit_State08
+    dw StateInit_LevelPassword
+    dw StateInit_State10
+    dw StateInit_LanguageSelect
+    dw StateInit_PublisherLogo
+    dw StateInit_Ending
 
 ; Update handler for each game state.
 StateUpdateHandlers:
-    dw Jump_001_76da
-    dw Jump_001_76bc
-    dw Jump_001_7692
-    dw Jump_001_769e
-    dw Jump_001_76a4
-    dw Jump_001_7698
-    dw Jump_001_76aa
-    dw Jump_001_76b6
-    dw Jump_001_76c2
-    dw Jump_001_76c8
-    dw Jump_001_76ce
-    dw Jump_001_76d4
-    dw Jump_001_76b0
-    dw Jump_001_76e0
+    dw StateUpdate_Copyright
+    dw StateUpdate_MainMenu
+    dw StateUpdate_Gameplay
+    dw StateUpdate_GameOver
+    dw StateUpdate_Pause
+    dw StateUpdate_TitleScreen
+    dw StateUpdate_DeveloperLogos
+    dw StateUpdate_State07
+    dw StateUpdate_State08
+    dw StateUpdate_LevelPassword
+    dw StateUpdate_State10
+    dw StateUpdate_LanguageSelect
+    dw StateUpdate_PublisherLogo
+    dw StateUpdate_Ending
     ld a, [hGameState]
     cp $07
     ret z
