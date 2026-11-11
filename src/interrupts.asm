@@ -6,7 +6,6 @@ RST_00::
 ShowMessageBankE:
     ld a, $0e
 
-Call_000_0003:
     ld [ROM_BANK], a
 
 ; Like ShowMessageBankE, but the message is in the current bank.
@@ -37,7 +36,6 @@ RST_18::
 RST_20::
     inc de
 
-Jump_000_0021:
     ld a, $98
     ld [de], a
     inc de
@@ -49,7 +47,6 @@ RST_28::
     ld a, $04
     ld [de], a
 
-Call_000_002b:
     inc de
     call DataTransfer
     db $3e
@@ -67,12 +64,10 @@ RST_38::
     nop
     nop
 
-Jump_000_003c:
     nop
     nop
     nop
 
-Jump_000_003f:
     nop
 
 VBlankInterrupt::
@@ -142,14 +137,10 @@ jr_000_0079:
     ld a, [de]
     inc de
 
-Jump_000_007f:
     and $e0
 
-Call_000_0081:
-Jump_000_0081:
     ld c, a
 
-Call_000_0082:
     ld a, [de]
     and $03
     or c
@@ -166,7 +157,6 @@ Call_000_0082:
 
     ld a, [$ff9c]
 
-Jump_000_0098:
     cp $02
     jr nz, jr_000_009e
 
@@ -195,11 +185,9 @@ StateInit_ColorOnly:
     ld [$ff9a], a
     ld a, $e4
 
-Call_000_00c0:
     ldh [rBGP], a
     xor a
 
-Jump_000_00c3:
     ldh [rSCX], a
     ld a, $0d
     call ChangeROMBank
@@ -207,7 +195,6 @@ Jump_000_00c3:
     ld de, $9000
     ld bc, $0800
 
-Jump_000_00d3:
     call DataTransfer
     ld hl, Gfx_ColorOnly_00d_4800
     ld de, $8800
@@ -220,7 +207,6 @@ Jump_000_00d3:
     ld c, $12
     call CopyTilemapRect
 
-Call_000_00f0:
     ld a, $01
     call ChangeROMBank
     ret
@@ -228,19 +214,14 @@ Call_000_00f0:
     nop
     nop
 
-Call_000_00f8:
     nop
     nop
 
-Jump_000_00fa:
     nop
 
-Call_000_00fb:
     nop
     nop
     nop
     nop
 
-Call_000_00ff:
-Jump_000_00ff:
     nop
