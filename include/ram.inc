@@ -141,6 +141,11 @@ DEF wOamUsedLastFrame      EQU $c2b4 ; Extra sprites drawn in the previous frame
 DEF wOamUsed               EQU $c2b5 ; Extra sprites drawn so far this frame
 DEF wOamWritePtr           EQU $c2b6 ; Next free entry in wOamBuffer
 
+; Interrupt stubs in RAM
+DEF wStatJump              EQU $c35a ; jp instruction to the current LCD STAT handler
+DEF hOamDmaRoutine         EQU $ff80 ; OAM DMA routine, copied here by LoadOAMCode
+DEF hVBlankJump            EQU $ff92 ; jp instruction to the current VBlank handler
+
 ; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
 DEF wLanguage              EQU $defc
 

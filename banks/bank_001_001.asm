@@ -5921,7 +5921,7 @@ GBC_Check:
     call ClearRAM
 
     ; Clear HRAM
-    ld hl, $ff80
+    ld hl, hOamDmaRoutine
     ld bc, $007f
     call ClearRAM
     call LoadOAMCode            ; Load OAM DMA code

@@ -205,7 +205,7 @@ ChangeROMBank:
 
 LoadOAMCode:
     ; setup variables
-    ld bc, $ff80            ; this is supposed to be C = 80, this is gonna write to HRAM.
+    ld bc, hOamDmaRoutine            ; this is supposed to be C = 80, this is gonna write to HRAM.
     ld b, $0a               ; Data length
     ld hl, .OAMCode    ; Data source
 
@@ -256,17 +256,17 @@ ReadJoypad:
 ; Write the VBlank and LCD STAT jump stubs to RAM from hVBlankHandler and hStatHandler.
 InstallInterruptHandlers:
     ld a, $c3
-    ld [$ff92], a
+    ld [hVBlankJump], a
     ld a, $c3
-    ld [$c35a], a
+    ld [wStatJump], a
     ld a, [hVBlankHandler]
-    ld [$ff93], a
+    ld [hVBlankJump + 1], a
     ld a, [hVBlankHandler + 1]
-    ld [$ff94], a
+    ld [hVBlankJump + 2], a
     ld a, [hStatHandler]
-    ld [$c35b], a
+    ld [wStatJump + 1], a
     ld a, [hStatHandler + 1]
-    ld [$c35c], a
+    ld [wStatJump + 2], a
     ld a, $0f
     ld [ROM_BANK], a
     ld a, [$ff9c]
@@ -317,7 +317,7 @@ VBlank:
     xor a
     ldh [rSVBK], a
     call TitleScreen_VBlank
-    call $ff80
+    call hOamDmaRoutine
     call LevelPassword_VBlank
     ld hl, $c3b6
     ld a, l
@@ -340,7 +340,7 @@ VBlank_InGame:
     push bc
     push de
     push hl
-    call $ff80
+    call hOamDmaRoutine
     xor a
     ldh [rVBK], a
     ld a, [$d745]
@@ -486,7 +486,7 @@ VBlankMenus:
     push hl
     push de
     push bc
-    call $ff80
+    call hOamDmaRoutine
     ld hl, $c3b6
     ld a, l
     ld [$c956], a
@@ -834,7 +834,7 @@ jr_000_05a1:
     ld [$c956], a
     ld a, h
     ld [$c957], a
-    call $ff80
+    call hOamDmaRoutine
     ld a, [$c95a]
     xor $01
     ld [$c95a], a
@@ -7589,7 +7589,7 @@ UpdateUfo:
     jr jr_000_2db7
 
 jr_000_2db2:
-    ld de, $ff80
+    ld de, hOamDmaRoutine
     ld h, $b0
 
 jr_000_2db7:
