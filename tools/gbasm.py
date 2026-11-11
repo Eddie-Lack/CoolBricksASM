@@ -71,6 +71,7 @@ class Asm:
         self.rom = bytearray(0x100000)
         self.scope = ''
         self.lines = []
+        self.defined = set()
         self.listing = []   # (file, line, bank, address, size) for each emitting line
 
     # --- source loading -------------------------------------------------
@@ -229,6 +230,10 @@ class Asm:
                         name = self.scope + name
                     else:
                         self.scope = name
+                    if not final:
+                        if name in self.defined:
+                            raise ValueError('symbol %s is defined twice' % name)
+                        self.defined.add(name)
                     self.syms[name] = pc
                     self.banks[name] = bank
                     line = m.group(3)
@@ -244,6 +249,10 @@ class Asm:
                     continue
                 if up == 'DEF':
                     m = re.match(r'(\w+)\s+EQU\s+(.+)$', rest.strip(), re.I)
+                    if not final:
+                        if m.group(1) in self.defined:
+                            raise ValueError('symbol %s is defined twice' % m.group(1))
+                        self.defined.add(m.group(1))
                     self.syms[m.group(1)] = self.evaluate(m.group(2), final)
                     continue
                 if up == 'DB':
@@ -252,7 +261,10 @@ class Asm:
                         if a.startswith('"'):
                             data += a[1:-1].encode('latin-1')
                         else:
-                            data.append(self.evaluate(a, final) & 0xFF)
+                            v = self.evaluate(a, final)
+                            if final and not -128 <= v <= 255:
+                                raise ValueError('db value %d does not fit in a byte' % v)
+                            data.append(v & 0xFF)
                 elif up == 'DW':
                     data = bytearray()
                     for a in self.split_args(rest):
