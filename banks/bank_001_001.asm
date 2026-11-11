@@ -6142,7 +6142,7 @@ GBC_Check:
 
     ; Clear part of start of WRAM0
     ld bc, $0068
-    ld hl, wUnk_c000
+    ld hl, wSoundState
     call ClearRAM
 
     ; Clear HRAM

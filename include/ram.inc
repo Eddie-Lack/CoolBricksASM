@@ -136,6 +136,83 @@ DEF wUfoHits               EQU $dc34 ; Times the ball has hit the UFO in this le
 ; Music
 DEF wLevelMusicIndex       EQU $db55 ; 0-2: which of the three level songs plays. Steps when the password screen appears
 
+; Sound driver (bank 6). Channels 1 and 2 are the pulse channels, 3 is the wave channel, 4 is the noise channel.
+; Pointers are 2 bytes. The instrument tables are described in docs/RESEARCH.md.
+DEF wSoundState            EQU $c000 ; Start of the sound driver variables. The first $68 bytes are cleared at reset
+DEF wCh1Tick               EQU $c000 ; Frames left in the current row step. Starts again from wSongTempo
+DEF wCh1Rows               EQU $c001 ; Row steps left before the next row is read
+DEF wCh1PatternPtr         EQU $c002 ; Next row in the pattern data
+DEF wCh1Transpose          EQU $c004 ; Semitones added to every note of the pattern
+DEF wCh1OrderPtr           EQU $c005 ; Next entry in the order list
+DEF wCh1Envelope           EQU $c007 ; Volume envelope written to NR12 when a note starts
+DEF wCh1ReleaseEnvelope    EQU $c008 ; Volume envelope written to NR12 when a note is released
+DEF wCh1Trigger            EQU $c009 ; Not 0: restart the note on the next frame
+DEF wCh1Duty               EQU $c00a ; Duty and length, written to NR11 every frame
+DEF wCh1SlideCount         EQU $c00b ; Frames left in the current pitch slide step
+DEF wCh1SlidePtr           EQU $c00c ; Current pitch slide step
+DEF wCh1PitchOffset        EQU $c00e ; Sum of the pitch slide so far, added to the frequency (2 bytes)
+DEF wCh1ArpCount           EQU $c010 ; Frames left in the current arpeggio step
+DEF wCh1ArpPtr             EQU $c011 ; Current arpeggio step
+DEF wCh1ModeCount          EQU $c013 ; Frames left in the current pitch mode step
+DEF wCh1ModePtr            EQU $c014 ; Current pitch mode step
+DEF wCh1Note               EQU $c016 ; Note that plays: transpose + note number
+DEF wCh2Tick               EQU $c017 ; Frames left in the current row step. Starts again from wSongTempo
+DEF wCh2Rows               EQU $c018 ; Same as wCh1Rows, for channel 2
+DEF wCh2PatternPtr         EQU $c019 ; Same as wCh1PatternPtr, for channel 2
+DEF wCh2Transpose          EQU $c01b ; Same as wCh1Transpose, for channel 2
+DEF wCh2OrderPtr           EQU $c01c ; Same as wCh1OrderPtr, for channel 2
+DEF wCh2Envelope           EQU $c01e ; Same as wCh1Envelope, for channel 2
+DEF wCh2ReleaseEnvelope    EQU $c01f ; Same as wCh1ReleaseEnvelope, for channel 2
+DEF wCh2Trigger            EQU $c020 ; Same as wCh1Trigger, for channel 2
+DEF wCh2Duty               EQU $c021 ; Same as wCh1Duty, for channel 2
+DEF wCh2SlideCount         EQU $c022 ; Same as wCh1SlideCount, for channel 2
+DEF wCh2SlidePtr           EQU $c023 ; Same as wCh1SlidePtr, for channel 2
+DEF wCh2PitchOffset        EQU $c025 ; Same as wCh1PitchOffset, for channel 2
+DEF wCh2ArpCount           EQU $c027 ; Same as wCh1ArpCount, for channel 2
+DEF wCh2ArpPtr             EQU $c028 ; Same as wCh1ArpPtr, for channel 2
+DEF wCh2ModeCount          EQU $c02a ; Same as wCh1ModeCount, for channel 2
+DEF wCh2ModePtr            EQU $c02b ; Same as wCh1ModePtr, for channel 2
+DEF wCh2Note               EQU $c02d ; Same as wCh1Note, for channel 2
+DEF wCh3Tick               EQU $c02e ; Frames left in the current row step. Starts again from wSongTempo
+DEF wCh3Rows               EQU $c02f ; Same as wCh1Rows, for channel 3
+DEF wCh3PatternPtr         EQU $c030 ; Same as wCh1PatternPtr, for channel 3
+DEF wCh3Transpose          EQU $c032 ; Same as wCh1Transpose, for channel 3
+DEF wCh3OrderPtr           EQU $c033 ; Same as wCh1OrderPtr, for channel 3
+DEF wCh3VolumeCount        EQU $c035 ; Frames left in the current volume step
+DEF wCh3VolumePtr          EQU $c036 ; Current volume step, written to NR32
+DEF wCh3ReleaseVolumePtr   EQU $c038 ; Volume table used after a release
+DEF wCh3SlideCount         EQU $c03a ; Same as wCh1SlideCount, for channel 3
+DEF wCh3SlidePtr           EQU $c03b ; Same as wCh1SlidePtr, for channel 3
+DEF wCh3PitchOffset        EQU $c03d ; Same as wCh1PitchOffset, for channel 3
+DEF wCh3ArpCount           EQU $c03f ; Same as wCh1ArpCount, for channel 3
+DEF wCh3ArpPtr             EQU $c040 ; Same as wCh1ArpPtr, for channel 3
+DEF wCh3ModeCount          EQU $c042 ; Same as wCh1ModeCount, for channel 3
+DEF wCh3ModePtr            EQU $c043 ; Same as wCh1ModePtr, for channel 3
+DEF wCh3Note               EQU $c045 ; Same as wCh1Note, for channel 3
+DEF wCh4Tick               EQU $c046 ; Frames left in the current row step. Starts again from wSongTempo
+DEF wCh4Rows               EQU $c047 ; Same as wCh1Rows, for channel 4
+DEF wCh4PatternPtr         EQU $c048 ; Same as wCh1PatternPtr, for channel 4
+DEF wCh4Transpose          EQU $c04a ; Same as wCh1Transpose, for channel 4. Has no effect on noise
+DEF wCh4OrderPtr           EQU $c04b ; Same as wCh1OrderPtr, for channel 4
+DEF wCh4Envelope           EQU $c04d ; Volume envelope written to NR42 when a note starts
+DEF wCh4ReleaseEnvelope    EQU $c04e ; Volume envelope written to NR42 when a note is released
+DEF wCh4Trigger            EQU $c04f ; Same as wCh1Trigger, for channel 4
+DEF wCh4ShapeCount         EQU $c050 ; Frames left in the current NR43 step
+DEF wCh4ShapePtr           EQU $c051 ; Current NR43 step
+DEF wCh4ControlCount       EQU $c053 ; Frames left in the current NR44 step
+DEF wCh4ControlPtr         EQU $c054 ; Current NR44 step
+DEF wSfxTick               EQU $c056 ; Frames left in the current row step of the sound effect. One row step is 4 frames
+DEF wSfxRows               EQU $c057 ; Row steps left before the next sound effect row is read
+DEF wSfxPtr                EQU $c058 ; Next row in the sound effect data
+DEF wSfxChannel            EQU $c05f ; Address of the channel the sound effect uses: wCh2Tick or wCh4Tick. Low byte $ff = no sound effect
+DEF wSfxDone               EQU $c061 ; $ff when the sound effect has ended
+DEF wSongTempo             EQU $c062 ; Frames per row step of the song
+DEF wSfxPriority           EQU $c063 ; Priority of the sound effect that plays
+DEF wWaveAnimCount         EQU $c064 ; Frames left in the current wave animation step
+DEF wWaveAnimPtr           EQU $c065 ; Current wave animation step
+DEF wCh3FreqLow            EQU $c067 ; Last value written to NR33
+DEF wCh3FreqHigh           EQU $c068 ; Last value written to NR34
+
 ; Sprites
 DEF wOamUsedLastFrame      EQU $c2b4 ; Extra sprites drawn in the previous frame
 DEF wOamUsed               EQU $c2b5 ; Extra sprites drawn so far this frame
@@ -303,7 +380,6 @@ DEF STATE_PUBLISHER_LOGO     EQU 12 ; SCi logo
 DEF STATE_ENDING             EQU 13 ; Ending text after level 160
 
 ; Variables whose purpose is not known yet
-DEF wUnk_c000 EQU $c000
 DEF wUnk_c1fe EQU $c1fe
 DEF wUnk_c250 EQU $c250
 DEF wUnk_c2b8 EQU $c2b8
