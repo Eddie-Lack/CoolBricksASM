@@ -1882,7 +1882,7 @@ jr_000_0b81:
     ld [wLevelsSincePassword], a
     call InitBat
     call InitBall
-    call Call_000_271b
+    call ResetEnemies
     call ResetShots
     call ClearFallingPowerups
     call ClearBrickBreakEffects
@@ -2055,7 +2055,7 @@ jr_000_0c9a:
     ld [$d745], a
     ld a, $04
     ld [$ff9d], a
-    call Call_001_77c6
+    call SetUpBricks
     xor a
     ldh [rVBK], a
     ld hl, $9800
@@ -3118,7 +3118,7 @@ RestartAfterLifeLost:
     call ProcessBrickHitQueue
     call Call_000_1d7c
     call ResetShots
-    call Call_000_271b
+    call ResetEnemies
     call ClearFallingPowerups
     call ClearBrickBreakEffects
     call ClearPickupEffects
@@ -6472,7 +6472,8 @@ jr_000_2692:
     call ChangeROMBank
     ret
 
-Call_000_271b:
+; Reset the UFO, the blob and Ghost. Runs at level start and after a lost life.
+ResetEnemies:
     call Call_000_294b
     xor a
     ld [wBlobActive], a

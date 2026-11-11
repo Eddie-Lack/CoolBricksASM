@@ -5367,7 +5367,9 @@ PowerupSprite_Ghost:
 PowerupSprite_Grenade:
     db $0c, $09, $0d, $09, $0f, $09, $0e, $09
 
-Call_001_77c6:
+; Draw the 16 rows of 9 bricks from wBrickMap. The high nibble of each cell is its palette and is
+; removed from the map here. Every cell that is not empty and not unbreakable is counted in wBricksLeft.
+SetUpBricks:
     xor a
     ld [wBricksLeft], a
     ld a, $01
