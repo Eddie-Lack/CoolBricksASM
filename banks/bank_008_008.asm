@@ -8,7 +8,7 @@ SECTION "ROM Bank $008", ROMX[$4000], BANK[$8]
 ; Brick layouts. Each is a list of (count, value) pairs that ends with a count of 0.
 ; BrickLayout_Base draws the walls. A level layout is drawn over it with RleOverlay,
 ; so a value of 0 leaves the cell as it is.
-; Low nibble: 1-4 hit points, $e unbreakable, $f wall. The high nibble appears to select the brick colour.
+; Low nibble: 1-4 hit points, $e unbreakable, $f wall. The high nibble is the brick's palette (see SetUpBricks).
 ; A level row is written 16 cells wide and so runs over the walls. The loader draws
 ; BrickLayout_Base again afterwards to restore them.
 
