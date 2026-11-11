@@ -28,7 +28,6 @@ ProgramStart:
     ; Disabling the display outside of the VBlank period may damage the hardware by burning in a black horizontal line.
     ; This appears to be a serious issue. Nintendo is reported to reject any games not following this rule.
 
-Jump_000_0161:
     ld e, $00
     call Call_000_3e56
     xor a
@@ -67,7 +66,6 @@ jr_000_019b:
     call $75c9
     di
     jr jr_000_0158
-
 
 ; ClearRAM routine
 ; This fills parts of RAM to value set in register A
@@ -135,7 +133,6 @@ jr_000_01cc:
 
     ret
 
-
     ; TODO: Document this function
 Call_000_01d4:
     ld [$ff8d], a
@@ -169,7 +166,6 @@ jr_000_01eb:
 
     ret
 
-
 Call_000_01f1:
 jr_000_01f1:
     push bc
@@ -189,7 +185,6 @@ jr_000_01f3:
 
     inc h
 
-Call_000_0200:
 jr_000_0200:
     ld l, a
     pop bc
@@ -205,7 +200,7 @@ ChangeROMBank:
     ld [ROM_BANK], a
     ret
 
-LoadOAMCode:              
+LoadOAMCode:
     ; setup variables
     ld bc, $ff80            ; this is supposed to be C = 80, this is gonna write to HRAM.
     ld b, $0a               ; Data length
@@ -219,12 +214,12 @@ LoadOAMCode:
         jr nz, .loop            ; If there's data left to transfer, jump back to loop.
         ret                     ; return
 
-    .OAMCode:              
+    .OAMCode:
         ; this is OAM DMA code. This is copied to HRAM so it's executed during VBlank.
         db $3e, $c2, $e0, $46, $3e, $28, $3d, $20, $fd, $c9
         ; The code is translated to this:
         ; ld a, $c2                 ; transfer sprite data from $c2xx to OAM
-        ; ldh [rDMA], a         
+        ; ldh [rDMA], a
         ; ld a, $28                 ; Do a small loop because the CPU cannot access ROM while DMA transfer is happening.
         ; .DMALoop:
         ; dec a
@@ -254,7 +249,6 @@ Call_000_0223:
     swap a
     ld [$ff8a], a
     ret
-
 
 Call_000_024b:
     ld a, $c3
@@ -288,7 +282,6 @@ Call_000_024b:
     ld a, h
     ld [$c957], a
     ret
-
 
     push af
     push hl
@@ -360,7 +353,6 @@ VBlank_InGame:
     xor a
     call ClearRAM
 
-Jump_000_0302:
     jr jr_000_0361
 
 jr_000_0304:
@@ -463,10 +455,8 @@ jr_000_0382:
     ld a, [hl+]
     ld d, a
 
-Jump_000_0386:
     ld a, [hl+]
 
-Jump_000_0387:
     ld [de], a
     dec c
     jr nz, jr_000_0382
@@ -545,7 +535,6 @@ jr_000_03ec:
     call ChangeROMBank
     jp Jump_000_04f7
 
-
 jr_000_0410:
     ld hl, $98c4
     ld a, [$dabd]
@@ -602,7 +591,6 @@ jr_000_0448:
     ld [$9969], a
     ld a, [$dadd]
 
-Jump_000_0461:
     ld [$996a], a
     ld a, [$dade]
     ld [$996b], a
@@ -619,7 +607,6 @@ Jump_000_0461:
     ld [$996a], a
     ld a, [$dada]
 
-Call_000_0488:
     sub $36
     ld [$996b], a
     jr jr_000_04f7
@@ -701,7 +688,6 @@ jr_000_04f7:
     pop hl
     pop af
     reti
-
 
 Jump_000_0505:
     ld a, [$c95c]
@@ -797,7 +783,6 @@ jr_000_0576:
 
     jp Jump_000_04f7
 
-
 jr_000_0581:
     xor a
     ld [$ccb4], a
@@ -832,7 +817,6 @@ jr_000_05a1:
 
     jp Jump_000_04f7
 
-
     push af
     push hl
     push de
@@ -861,7 +845,6 @@ jr_000_05a1:
     pop af
     reti
 
-
     ld e, $06
     call Call_000_3e51
     ld a, $04
@@ -889,7 +872,7 @@ jr_000_05a1:
     ; Load high score screen graphics
     xor a                                   ; Select VRAM Bank 0
     ldh [rVBK], a
-    ld hl, HighScoresTextureData            ; Data source                  
+    ld hl, HighScoresTextureData            ; Data source
     ld de, $9000                            ; Destination (VRAM)
     ld bc, $05c0                            ; Data Length
     call DataTransfer                       ; Start data transfer
@@ -966,7 +949,6 @@ jr_000_05a1:
     ld [$c95c], a
     ret
 
-
     call $7899
     call $78fd
     ld a, [$ccb7]
@@ -1017,7 +999,6 @@ jr_000_0710:
 
 jr_000_072b:
     ret
-
 
 jr_000_072c:
     ld a, [$ff8a]
@@ -1198,20 +1179,17 @@ jr_000_07f7:
     ld [$ccc3], a
     ret
 
-
 jr_000_0808:
     cp $01
     jr nz, jr_000_081a
 
     ld a, $81
 
-Call_000_080e:
     ld [$ccc3], a
     ld a, $84
     ld [$ccc2], a
     ld [$ccc4], a
     ret
-
 
 jr_000_081a:
     cp $02
@@ -1224,7 +1202,6 @@ jr_000_081a:
     ld [$ccc4], a
     ret
 
-
 jr_000_082c:
     cp $03
     jr nz, jr_000_083e
@@ -1235,7 +1212,6 @@ jr_000_082c:
     ld a, $81
     ld [$ccc5], a
     ret
-
 
 jr_000_083e:
     cp $04
@@ -1248,7 +1224,6 @@ jr_000_083e:
     ld [$ccc6], a
     ret
 
-
 jr_000_0850:
     cp $05
     jr nz, jr_000_0862
@@ -1260,7 +1235,6 @@ jr_000_0850:
     ld [$ccc7], a
     ret
 
-
 jr_000_0862:
     cp $06
     jp nz, Jump_000_0710
@@ -1271,12 +1245,10 @@ jr_000_0862:
     ld [$ccc8], a
     ret
 
-
 Jump_000_0872:
     xor a
     ld [$cccb], a
     ret
-
 
 LoadHighScores:
     ld a, $02                               ; Load ROM Bank 2
@@ -1296,7 +1268,6 @@ Call_000_0899:              ; this is NOT a function, it's just data that manage
     call ChangeROMBank
     ret
 
-
 Call_000_089d:
     ld hl, $cb59
     call Call_000_0e54
@@ -1313,7 +1284,6 @@ Call_000_089d:
     call Call_000_0e54
     call Call_000_0e54
     ret
-
 
 Call_000_08c8:
     ld hl, $d8ae
@@ -1359,9 +1329,7 @@ jr_000_08f8:
     dec b
     jr nz, jr_000_08e7
 
-Call_000_0900:
     ret
-
 
 jr_000_0901:
     dec b
@@ -1404,7 +1372,6 @@ jr_000_0921:
 
     inc hl
 
-Call_000_0928:
     inc hl
     inc hl
     inc hl
@@ -1456,7 +1423,6 @@ jr_000_095b:
     ld bc, $0004
     call DataTransfer
     ret
-
 
 Call_000_0974:
     ld a, $02
@@ -1551,11 +1517,9 @@ jr_000_0995:
     call ChangeROMBank
     ret
 
-
 Call_000_09fa:
     ld a, [de]
 
-Call_000_09fb:
     ld hl, $4000
     ld c, $00
     ld b, $10
@@ -1570,7 +1534,6 @@ jr_000_0a02:
     jr nz, jr_000_0a02
 
     ret
-
 
 jr_000_0a0b:
     ld a, c
@@ -1593,7 +1556,6 @@ jr_000_0a1a:
 
     ret
 
-
 jr_000_0a23:
     ld a, c
     ld [$ccb9], a
@@ -1613,7 +1575,6 @@ jr_000_0a30:
     jr nz, jr_000_0a30
 
     ret
-
 
 jr_000_0a39:
     ld a, [$ccb8]
@@ -1636,7 +1597,6 @@ jr_000_0a49:
 
     ret
 
-
 jr_000_0a52:
     swap c
     ld a, [$ccb9]
@@ -1647,7 +1607,6 @@ jr_000_0a52:
     rlca
     rlca
 
-Jump_000_0a61:
     xor $55
     ld b, a
     ld a, [$ccb9]
@@ -1688,7 +1647,6 @@ jr_000_0a8b:
 jr_000_0a96:
     cp $d4
 
-Call_000_0a98:
     jr nz, jr_000_0aa1
 
     ld a, $01
@@ -1703,11 +1661,9 @@ jr_000_0aa1:
     or a
     ret
 
-
 jr_000_0aaa:
     xor a
     ret
-
 
 Call_000_0aac:
     ld a, [$cb53]
@@ -1749,7 +1705,6 @@ jr_000_0ad6:
     ld [ROM_BANK], a
     ret
 
-
 Call_000_0aeb:
     ld a, [$db55]
     or a
@@ -1772,7 +1727,6 @@ jr_000_0af9:
 jr_000_0aff:
     call Call_000_3e51
     ret
-
 
     call Call_000_0aeb
     ld a, $00
@@ -1908,7 +1862,6 @@ jr_000_0b81:
     call ChangeROMBank
     ld hl, $ce0a
 
-Call_000_0c03:
     call Call_000_0dbb
     ld a, $01
     call ChangeROMBank
@@ -2074,7 +2027,6 @@ jr_000_0c9a:
     ld a, $00
     ld de, $cf6b
 
-Jump_000_0d73:
     ld b, $12
     ld c, $10
     call Call_000_01d4
@@ -2103,13 +2055,11 @@ Jump_000_0d73:
     call $6ea5
     ret
 
-
 Jump_000_0db5:
     pop hl
     xor a
     ld [$ffa1], a
     ret
-
 
 Call_000_0dbb:
 jr_000_0dbb:
@@ -2247,7 +2197,6 @@ jr_000_0e49:
 jr_000_0e4d:
     ret
 
-
 jr_000_0e4e:
     inc c
     jr jr_000_0e18
@@ -2305,7 +2254,6 @@ jr_000_0e7f:
 
     ret
 
-
 Call_000_0e84:
     ld a, [hl+]
     ld e, a
@@ -2360,7 +2308,6 @@ jr_000_0eb2:
 
     ret
 
-
 Call_000_0eb7:
     ld a, $50
     ld [$c201], a
@@ -2381,7 +2328,6 @@ Call_000_0eb7:
     ld a, $20
     ld [$d764], a
     ret
-
 
 Call_000_0ee5:
     ld a, $01
@@ -2415,9 +2361,7 @@ Call_000_0ee5:
     inc a
     ld [$d8a8], a
 
-Jump_000_0f2f:
     ret
-
 
     ld a, [$db52]
     or a
@@ -2577,7 +2521,6 @@ Jump_000_101d:
     ld a, [hl]
     or a
 
-Call_000_1020:
     jr nz, jr_000_1024
 
     dec hl
@@ -2666,7 +2609,6 @@ jr_000_108a:
     ld [$c201], a
     ld a, b
 
-Call_000_1092:
     ld [$d89f], a
     jr jr_000_10d7
 
@@ -2915,7 +2857,6 @@ jr_000_11f8:
     ld [$d76d], a
     xor a
 
-Jump_000_1200:
     ld [$dc3d], a
     ld a, $0a
     call Call_000_3e64
@@ -2931,12 +2872,10 @@ Jump_000_1200:
     ld [$ffa0], a
     jp Jump_000_12b7
 
-
 jr_000_121f:
     ld a, $01
     ld [$ffa2], a
     jp Jump_000_12b7
-
 
 jr_000_1227:
     pop bc
@@ -3135,7 +3074,6 @@ jr_000_133b:
 
     ret
 
-
 Call_000_1347:
     ld a, [$ffa0]
     or a
@@ -3179,7 +3117,6 @@ Call_000_1347:
     call $6838
     call Call_000_0aeb
     ret
-
 
 Call_000_13ac:
     ld a, [$d8a5]
@@ -3340,7 +3277,6 @@ jr_000_1486:
     ld [$d77a], a
     ret
 
-
 Jump_000_14a5:
 jr_000_14a5:
     ld a, [$d8a1]
@@ -3389,7 +3325,6 @@ jr_000_14e4:
     dec a
     and $1f
 
-Jump_000_14eb:
 jr_000_14eb:
     ld [hl+], a
     ld a, [$d77a]
@@ -3427,7 +3362,6 @@ jr_000_1513:
     xor a
     ld [hl+], a
     ret
-
 
 Jump_000_151b:
 jr_000_151b:
@@ -3542,7 +3476,6 @@ jr_000_15ae:
     add sp, $04
     ret
 
-
 jr_000_15cb:
     pop de
     ld a, [$d775]
@@ -3566,7 +3499,6 @@ jr_000_15cb:
     ld [$d778], a
     call Call_000_15f3
     ret
-
 
 Call_000_15f3:
     ld a, [$d778]
@@ -3657,7 +3589,6 @@ jr_000_1673:
     ld [$d76f], a
     call Call_000_17ed
     ret
-
 
 jr_000_168a:
     ld a, [$d778]
@@ -3873,7 +3804,6 @@ jr_000_17b5:
 jr_000_17b7:
     ret
 
-
 Call_000_17b8:
     ld a, [$d779]
     ld l, a
@@ -3887,7 +3817,6 @@ Call_000_17b8:
     jr nz, jr_000_17e0
 
     ret
-
 
 Call_000_17cd:
     ld a, [$d779]
@@ -3908,7 +3837,6 @@ jr_000_17e0:
     ld [$d778], a
     ret
 
-
 Call_000_17ed:
     ld a, [$d779]
     ld l, a
@@ -3923,7 +3851,6 @@ Call_000_17ed:
 
     ret
 
-
 Call_000_1802:
     ld a, [$d779]
     ld l, a
@@ -3933,7 +3860,6 @@ Call_000_1802:
     ld a, [hl]
     ld [$d779], a
 
-Call_000_1810:
     ld a, [$d8a2]
     or a
     ret z
@@ -3944,7 +3870,6 @@ jr_000_1815:
     ld a, [$d772]
     ld [$d776], a
     ret
-
 
 Call_000_1822:
     ld b, a
@@ -4008,7 +3933,6 @@ jr_000_187d:
     sub $01
     ret
 
-
 Jump_000_1884:
 jr_000_1884:
     ld a, e
@@ -4042,7 +3966,6 @@ jr_000_1884:
     ld [$d77b], a
     pop af
     jp Jump_000_1a3a
-
 
 jr_000_18af:
     ld a, [$d8ab]
@@ -4078,7 +4001,6 @@ jr_000_18d2:
     or a
     ret
 
-
 Call_000_18db:
     add a
     ld c, a
@@ -4103,7 +4025,6 @@ jr_000_18f9:
     add hl, bc
     ld a, [hl+]
     ret
-
 
 Call_000_18fc:
     ld a, [$d76b]
@@ -4162,7 +4083,6 @@ jr_000_1930:
     ld a, h
     ld [$c2b7], a
     ret
-
 
 Call_000_1950:
     ld a, [$d76b]
@@ -4226,7 +4146,6 @@ jr_000_1991:
     add $02
     ld [$d9bd], a
     ret
-
 
 jr_000_19a6:
     ld [$dab2], a
@@ -4300,7 +4219,6 @@ jr_000_19de:
     add $04
     ld [$d9bd], a
     ret
-
 
 Call_000_1a0b:
     and $0f
@@ -4399,12 +4317,10 @@ jr_000_1a8a:
     xor a
     ret
 
-
 jr_000_1a92:
     ld a, $01
     or a
     ret
-
 
 Call_000_1a96:
     ld b, $00
@@ -4470,7 +4386,6 @@ jr_000_1ad7:
     call Call_000_1b14
     ret
 
-
 Call_000_1ae5:
     ld de, $981f
     add hl, de
@@ -4505,7 +4420,6 @@ jr_000_1af8:
     ld a, [$d8ba]
     ld [hl+], a
     ret
-
 
 Call_000_1b14:
     ld a, [$cce7]
@@ -4580,7 +4494,6 @@ jr_000_1b70:
     ld l, a
     jp hl
 
-
 Call_000_1b7f:
 Jump_000_1b7f:
     ld a, [$d9bd]
@@ -4616,7 +4529,6 @@ Jump_000_1b7f:
     ld [hl+], a
     ret
 
-
 Call_000_1bac:
 Jump_000_1bac:
     ld a, [$d9bd]
@@ -4651,7 +4563,6 @@ Jump_000_1bac:
     ld a, $0a
     ld [hl+], a
     ret
-
 
 Call_000_1bd9:
 Jump_000_1bd9:
@@ -4706,7 +4617,6 @@ Jump_000_1c07:
     ld e, a
     ld d, [hl]
 
-Call_000_1c23:
     pop hl
     ld a, e
     ld [hl+], a
@@ -4722,7 +4632,6 @@ Call_000_1c23:
     ld a, $08
     ld [hl+], a
     ret
-
 
 Jump_000_1c34:
     ld a, [$d9bd]
@@ -4740,7 +4649,6 @@ jr_000_1c43:
     ld a, b
     ld [hl+], a
 
-Call_000_1c46:
     ld a, [$ff8d]
     ld d, a
     ld a, [$ff8e]
@@ -4766,7 +4674,6 @@ Call_000_1c46:
     ld a, $08
     ld [hl+], a
     ret
-
 
 Jump_000_1c67:
     ld a, [$d9bd]
@@ -4809,7 +4716,6 @@ jr_000_1c76:
     ld [hl+], a
     ret
 
-
 Jump_000_1c9a:
     ld a, [$d9bd]
     inc a
@@ -4839,7 +4745,6 @@ jr_000_1ca8:
     ld [hl+], a
     ret
 
-
 Jump_000_1cbf:
     ld a, [$d9bd]
     inc a
@@ -4868,7 +4773,6 @@ jr_000_1ccd:
     ld a, $08
     ld [hl+], a
     ret
-
 
 Jump_000_1ce4:
     ld a, [$d9bd]
@@ -4900,94 +4804,74 @@ jr_000_1cf2:
     ld [hl+], a
     ret
 
-
     pop hl
     call Call_000_1b7f
     jp Jump_000_1c34
-
 
     pop hl
     call Call_000_1b7f
     jp Jump_000_1c9a
 
-
     pop hl
     call Call_000_1b7f
     jp Jump_000_1cbf
 
-
     pop hl
 
-Call_000_1d20:
     jp Jump_000_1b7f
 
-
     pop hl
     call Call_000_1bd9
     jp Jump_000_1c34
-
 
     pop hl
     call Call_000_1bd9
     jp Jump_000_1c9a
 
-
     pop hl
     call Call_000_1bd9
     jp Jump_000_1cbf
-
 
     pop hl
     jp Jump_000_1bd9
 
-
     pop hl
     call Call_000_1c07
     jp Jump_000_1c34
-
 
     pop hl
     call Call_000_1c07
     jp Jump_000_1c9a
 
-
     pop hl
     call Call_000_1c07
     jp Jump_000_1cbf
-
 
     pop hl
     jp Jump_000_1c07
 
-
     pop hl
     call Call_000_1bac
     jp Jump_000_1c34
-
 
     pop hl
     call Call_000_1bac
     jp Jump_000_1c9a
 
-
     pop hl
     call Call_000_1bac
     jp Jump_000_1cbf
 
-
     pop hl
     jp Jump_000_1bac
-
 
     pop hl
     call Call_000_1bac
     jp Jump_000_1c67
 
-
     pop hl
     call Call_000_1bac
     jp Jump_000_1ce4
-
 
 Call_000_1d7c:
     ld a, [$d9bd]
@@ -5070,7 +4954,6 @@ jr_000_1dc6:
     ld [$d9bd], a
     ret
 
-
 Call_000_1def:
     ld b, $01
     jr jr_000_1df5
@@ -5108,7 +4991,6 @@ jr_000_1e0c:
     ld a, h
     ld [$dab4], a
     ret
-
 
 Call_000_1e1b:
     ld hl, $d8bc
@@ -5161,7 +5043,6 @@ Jump_000_1e2a:
     ld a, $03
     call Call_000_3e64
     jp Jump_000_1f68
-
 
 jr_000_1e64:
     push hl
@@ -5253,7 +5134,6 @@ jr_000_1eb3:
     ld [$d9bc], a
     inc hl
     jp Jump_000_1f68
-
 
 Jump_000_1ed8:
     dec a
@@ -5382,7 +5262,6 @@ jr_000_1f68:
     ld [$dab0], a
     ret
 
-
     ld e, $05
     call Call_000_3e51
     ld a, $04
@@ -5436,7 +5315,6 @@ jr_000_1f68:
     ld a, $25
     ld de, $9880
 
-Call_000_2000:
     ld hl, $6c5c
     ld b, $14
     ld c, $0e
@@ -5451,7 +5329,6 @@ Call_000_2000:
     ld bc, $0014
     call DataTransfer
 
-Jump_000_2020:
     ld a, [$df43]
     ld [$dad2], a
     call Call_000_20b3
@@ -5527,7 +5404,6 @@ jr_000_2083:
     ld [$ff9e], a
     ret
 
-
 Call_000_20b3:
     ld a, $30
     ld [$dad3], a
@@ -5561,11 +5437,9 @@ jr_000_20d9:
     sub $0a
     jr nc, jr_000_20f3
 
-Call_000_20de:
     ld a, c
     or a
 
-Jump_000_20e0:
     jr z, jr_000_20eb
 
     add $30
@@ -5590,7 +5464,6 @@ jr_000_20f6:
 
 jr_000_20f9:
     ret
-
 
     call $7238
     ld a, [$ff9e]
@@ -5799,7 +5672,6 @@ jr_000_21f2:
     ld [$dadc], a
     ret
 
-
 jr_000_2203:
     cp $01
     jr nz, jr_000_2213
@@ -5809,7 +5681,6 @@ jr_000_2203:
     ld a, $04
     ld [$dadc], a
     ret
-
 
 jr_000_2213:
     cp $02
@@ -5822,7 +5693,6 @@ jr_000_2213:
     ld [$dadd], a
     ret
 
-
 jr_000_2225:
     cp $03
     jr nz, jr_000_2234
@@ -5832,7 +5702,6 @@ jr_000_2225:
     ld a, $04
     ld [$dade], a
     ret
-
 
 jr_000_2234:
     ld a, $02
@@ -5849,7 +5718,6 @@ jr_000_2234:
     ld [hl+], a
     ld a, [$dad8]
 
-Jump_000_2250:
     ld [hl+], a
     ld a, [$dad9]
     ld [hl+], a
@@ -5865,12 +5733,10 @@ jr_000_225e:
     ld [$dac2], a
     ret
 
-
 Jump_000_2268:
     xor a
     ld [$daba], a
     ret
-
 
 Jump_000_226d:
     ld a, [$dab5]
@@ -6105,7 +5971,6 @@ jr_000_23e1:
 jr_000_2400:
     ld c, a
 
-Call_000_2401:
     ld a, [$ccba]
     or a
     ld a, c
@@ -6292,7 +6157,6 @@ jr_000_2503:
 jr_000_251a:
     ret
 
-
 Call_000_251b:
     call $7c2d
     xor a
@@ -6323,7 +6187,6 @@ jr_000_2535:
     ld a, h
     ld [$dd50], a
     ret
-
 
     ld e, $01
     call Call_000_3e51
@@ -6452,7 +6315,6 @@ jr_000_2661:
     call $6e25
     ret
 
-
     ld a, [$ff9f]
     cp $01
     jr z, jr_000_2683
@@ -6472,7 +6334,6 @@ jr_000_2661:
 jr_000_2683:
     call $6cd4
     ret
-
 
     ld a, [$dabc]
     or a
@@ -6539,7 +6400,6 @@ jr_000_2692:
     call ChangeROMBank
     ret
 
-
 Call_000_271b:
     call Call_000_294b
     xor a
@@ -6572,7 +6432,6 @@ Call_000_271b:
     ld [$dc23], a
     ret
 
-
 Call_000_2763:
     ld a, [$dc35]
     bit 0, a
@@ -6590,7 +6449,6 @@ jr_000_276d:
 
 jr_000_277a:
     ret
-
 
 Call_000_277b:
     ld a, [$dc24]
@@ -6652,10 +6510,8 @@ jr_000_27b0:
     ld h, d
     ld a, $40
 
-Jump_000_27db:
     ld de, $4d7d
 
-Jump_000_27de:
     jr jr_000_27eb
 
 jr_000_27e0:
@@ -6747,7 +6603,6 @@ jr_000_2831:
     call Call_000_2892
     ret
 
-
 Call_000_2869:
     xor a
     ld [de], a
@@ -6790,7 +6645,6 @@ Call_000_2869:
     ld a, [hl]
     ld [de], a
     ret
-
 
 Call_000_2892:
     push hl
@@ -6914,7 +6768,6 @@ jr_000_2944:
 
     ret
 
-
 Call_000_294b:
     ld hl, $dbed
     ld de, $0009
@@ -6928,7 +6781,6 @@ jr_000_2954:
     jr nz, jr_000_2954
 
     ret
-
 
 Call_000_295a:
     push hl
@@ -6969,7 +6821,6 @@ jr_000_296b:
     ld a, d
     ld [hl], a
     ret
-
 
 Call_000_2981:
     ld hl, $dbed
@@ -7021,7 +6872,6 @@ jr_000_2989:
     ld a, [$dbe9]
     ld [hl+], a
 
-Jump_000_29d6:
     ld a, [$dbe6]
     ld [hl+], a
     ld a, [$dbe7]
@@ -7046,7 +6896,6 @@ jr_000_29e1:
     xor a
     ld [$dc4b], a
     ret
-
 
 jr_000_29f5:
     cp $33
@@ -7078,7 +6927,6 @@ jr_000_2a00:
     ld a, [$c2b5]
     add b
 
-Jump_000_2a20:
     ld [$c2b5], a
     ld a, [$dbec]
     ld b, a
@@ -7112,7 +6960,6 @@ jr_000_2a2b:
 
 jr_000_2a4a:
     ret
-
 
 Jump_000_2a4b:
     ld a, [$dbe9]
@@ -7196,7 +7043,6 @@ jr_000_2ab3:
     ld [$dbe7], a
     ret
 
-
 Call_000_2abf:
     ld a, [$dbe1]
     dec a
@@ -7261,7 +7107,6 @@ Call_000_2abf:
     call Call_000_2d4d
     ret
 
-
 jr_000_2b48:
     ld a, [$dbe0]
     dec a
@@ -7297,7 +7142,6 @@ jr_000_2b62:
     inc a
     ld [$d77c], a
     ret
-
 
 Jump_000_2b81:
     ld e, a
@@ -7393,7 +7237,6 @@ jr_000_2b9b:
     ld a, $01
     ld [$dc37], a
 
-Call_000_2c20:
 jr_000_2c20:
     ld a, [$dbe3]
     ld c, a
@@ -7412,7 +7255,6 @@ jr_000_2c20:
     ld a, [$dbe8]
     ld l, a
 
-Call_000_2c38:
     ld h, $00
     ld bc, $623f
     add hl, bc
@@ -7466,7 +7308,6 @@ jr_000_2c6a:
     ld [$dbe8], a
     ld a, $01
 
-Call_000_2c8e:
     ld [$dc38], a
 
 jr_000_2c91:
@@ -7539,7 +7380,6 @@ jr_000_2ce1:
     ld [$c2b7], a
     ret
 
-
 Call_000_2d01:
     push de
     and $f8
@@ -7565,14 +7405,12 @@ Call_000_2d01:
     xor a
     ret
 
-
 jr_000_2d1f:
     ld a, $04
     call Call_000_3e64
     ld a, $01
     or a
     ret
-
 
 Call_000_2d28:
     and $f8
@@ -7597,14 +7435,12 @@ Call_000_2d28:
     xor a
     ret
 
-
 jr_000_2d44:
     ld a, $04
     call Call_000_3e64
     ld a, $01
     or a
     ret
-
 
 Call_000_2d4d:
     and $f8
@@ -7624,7 +7460,6 @@ Call_000_2d4d:
     ret z
 
     jp Jump_000_1a3a
-
 
 Call_000_2d66:
     ld a, [$dc2f]
@@ -7695,7 +7530,6 @@ jr_000_2dd0:
     add $08
     ld [$dc33], a
     ret
-
 
 jr_000_2dd6:
     ld a, [$dc25]
@@ -8089,7 +7923,6 @@ jr_000_301d:
     ld a, [$dc27]
     cp b
 
-Jump_000_3030:
     ret nc
 
     add $0f
@@ -8125,7 +7958,6 @@ Jump_000_3030:
 
     ld a, [$dc42]
 
-Call_000_3060:
     or a
     jr nz, jr_000_3066
 
@@ -8136,7 +7968,6 @@ jr_000_3066:
     call Call_000_3e64
     call Call_000_306f
     ret
-
 
 Call_000_306f:
     ld hl, $5009
@@ -8161,7 +7992,6 @@ Call_000_306f:
     ld b, [hl]
     call $7c39
     ret
-
 
 Call_000_3097:
     ld d, $00
@@ -8294,12 +8124,10 @@ jr_000_313d:
     ld [$ffa0], a
     ret
 
-
 jr_000_3166:
     ld a, $01
     ld [$ffa2], a
     ret
-
 
 Call_000_316c:
     ld a, [$dc2d]
@@ -8333,11 +8161,9 @@ Call_000_316c:
     or a
     ret
 
-
 jr_000_3199:
     xor a
     ret
-
 
 Call_000_319b:
     ld a, [$dc23]
@@ -8385,7 +8211,6 @@ jr_000_31d8:
     xor a
     ret
 
-
 Call_000_31da:
     xor a
     ld [$dc3d], a
@@ -8405,7 +8230,6 @@ Call_000_31da:
     ld [$dc4a], a
     ld [$dc4d], a
     ret
-
 
 Call_000_320c:
     ld a, [$dc3e]
@@ -8471,7 +8295,6 @@ Jump_000_3236:
     dec a
     ld [$dc4a], a
     ret
-
 
 jr_000_326b:
     ld a, [$dc49]
@@ -8546,7 +8369,6 @@ jr_000_32b5:
     call Call_000_3e64
     ret
 
-
 Jump_000_32da:
     ld a, [$dc46]
     or a
@@ -8586,7 +8408,6 @@ Jump_000_32da:
     call Call_000_3e64
     ret
 
-
 jr_000_3324:
     ld a, [$dc44]
     or a
@@ -8596,7 +8417,6 @@ jr_000_3324:
     ld [$dc44], a
     ret
 
-
 jr_000_332f:
     ld a, [$ff8a]
     bit 4, a
@@ -8605,7 +8425,6 @@ jr_000_332f:
     xor a
     ld [$dc4d], a
     ret
-
 
 jr_000_333b:
     ld a, [$dc4d]
@@ -8642,7 +8461,6 @@ jr_000_3356:
     ld [$dc3e], a
     ret
 
-
 jr_000_337b:
     ld a, [$dc3f]
     or a
@@ -8673,7 +8491,6 @@ jr_000_3391:
     ld a, $01
     ld [$dc3f], a
     ret
-
 
 jr_000_33b6:
     ld a, [$dc40]
@@ -8706,7 +8523,6 @@ jr_000_33cc:
     ld [$dc40], a
     ret
 
-
 jr_000_33f1:
     ld a, [$dc4c]
     or a
@@ -8732,7 +8548,6 @@ jr_000_33f1:
     ld [$dc41], a
     ret
 
-
 jr_000_3422:
     ld a, [$dc42]
     or a
@@ -8754,7 +8569,6 @@ jr_000_3422:
     ld [$dc42], a
     ret
 
-
 jr_000_344e:
     ld a, [$dc43]
     or a
@@ -8775,7 +8589,6 @@ jr_000_344e:
     ld a, $01
     ld [$dc43], a
     ret
-
 
 Jump_000_3479:
     ld d, $00
@@ -8930,7 +8743,6 @@ jr_000_353e:
     ld [$dc44], a
     jp Jump_000_3213
 
-
 Jump_000_356b:
     ld d, $00
     ld a, [$c2b6]
@@ -9084,7 +8896,6 @@ jr_000_3630:
     ld [$dc44], a
     jp Jump_000_321a
 
-
 Jump_000_365d:
     ld d, $00
     ld a, [$c2b6]
@@ -9213,7 +9024,6 @@ jr_000_36f8:
     ld [$dc44], a
     jp Jump_000_3221
 
-
 Jump_000_3725:
     ld d, $00
     ld a, [$c2b6]
@@ -9332,7 +9142,6 @@ jr_000_37b4:
 
     ld [$dc44], a
     jp Jump_000_3228
-
 
 Jump_000_37e1:
     ld d, $00
@@ -9453,7 +9262,6 @@ jr_000_3870:
     ld [$dc44], a
     jp Jump_000_3228
 
-
 Jump_000_389d:
     ld d, $00
     ld a, [$c2b6]
@@ -9573,7 +9381,6 @@ jr_000_392c:
     ld [$dc44], a
     jp Jump_000_3228
 
-
     ld hl, $02b3
     ld a, l
     ld [$ff96], a
@@ -9639,7 +9446,6 @@ jr_000_392c:
 jr_000_39ec:
     ret
 
-
     ld a, $46
     ld [$ff91], a
     ld hl, $02b3
@@ -9694,7 +9500,6 @@ jr_000_39ec:
     ld [$db54], a
     ret
 
-
     ld a, $46
     ld [$ff91], a
     ld hl, $02b3
@@ -9741,7 +9546,6 @@ jr_000_39ec:
     call ChangeROMBank
     ret
 
-
     ld a, [$ff91]
     or a
     jr z, jr_000_3ae3
@@ -9750,14 +9554,12 @@ jr_000_39ec:
     ld [$ff91], a
     ret
 
-
 jr_000_3ae3:
     ld a, $06
     ld [$ff9f], a
     ld a, $01
     ld [$ffa0], a
     ret
-
 
     ld e, $09
     call Call_000_3e51
@@ -9801,7 +9603,6 @@ jr_000_3ae3:
     ld [$dcf5], a
     ret
 
-
 Call_000_3b50:
     ld hl, $4a84
     ld a, [$defc]
@@ -9836,7 +9637,6 @@ jr_000_3b6e:
     ld a, $60
     ld [$dcfc], a
     ret
-
 
 Call_000_3b8b:
     ld a, [$dcf5]
@@ -9916,7 +9716,6 @@ jr_000_3bf4:
     ld [ROM_BANK], a
     ret
 
-
 jr_000_3bfa:
     add $e4
     jr jr_000_3bcc
@@ -9924,10 +9723,8 @@ jr_000_3bfa:
 jr_000_3bfe:
     ld a, $fe
 
-Jump_000_3c00:
     ld [$dcf4], a
     ret
-
 
 jr_000_3c04:
     ld a, $01
@@ -9960,7 +9757,6 @@ jr_000_3c28:
     ld [$dcf4], a
     jp Jump_000_3bdd
 
-
 Call_000_3c34:
     ld a, [$db55]
     inc a
@@ -9974,7 +9770,6 @@ jr_000_3c3d:
     xor a
     ld [$dcfe], a
     ret
-
 
     ld a, $00
     ld [$c359], a
@@ -10036,7 +9831,6 @@ jr_000_3c3d:
     call DataTransfer
     ld a, [$df33]
 
-Call_000_3cda:
     ld l, a
     ld a, [$df34]
     ld h, a
@@ -10170,7 +9964,6 @@ jr_000_3d1d:
     call DataTransfer
     ret
 
-
     ld hl, $02b3
     ld a, l
     ld [$ff96], a
@@ -10206,7 +9999,6 @@ jr_000_3d1d:
     call DataTransfer
     ld de, $9800
 
-Call_000_3e41:
     ld hl, $4fe8
     ld b, $14
     ld c, $12
@@ -10214,7 +10006,6 @@ Call_000_3e41:
     ld a, $01
     call ChangeROMBank
     ret
-
 
 Call_000_3e51:
     ld a, [$dabb]
@@ -10228,7 +10019,6 @@ Call_000_3e56:
     ld a, $01
     ld [ROM_BANK], a
     ret
-
 
 Call_000_3e64:
     push de
@@ -10248,11 +10038,9 @@ Call_000_3e64:
 jr_000_3e7b:
     pop bc
 
-Jump_000_3e7c:
     pop hl
     pop de
     ret
-
 
 Call_000_3e7f:
     ld a, $06
@@ -10261,7 +10049,6 @@ Call_000_3e7f:
     ld a, $01
     ld [ROM_BANK], a
     ret
-
 
     ld a, $46
     ld [$ff91], a
@@ -10305,7 +10092,6 @@ Call_000_3e7f:
     call ChangeROMBank
     ret
 
-
     ld a, [$ff91]
     or a
     jr z, jr_000_3ef8
@@ -10314,14 +10100,12 @@ Call_000_3e7f:
     ld [$ff91], a
     ret
 
-
 jr_000_3ef8:
     ld a, $0c
     ld [$ff9f], a
     ld a, $01
     ld [$ffa0], a
     ret
-
 
     ld e, $08
     call Call_000_3e51
