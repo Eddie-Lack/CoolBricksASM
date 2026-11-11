@@ -283,6 +283,33 @@ Measured in the emulator on level 4, from the pick-up until the flag cleared.
 
 Slowball, Milk, Magnet and the weapon bats have no timer. They last until another power-up replaces them or a life is lost.
 
+## The brick skip
+
+Two routines end a level, and each adds 1 to `wCurrentLevel`:
+
+- `CountBrickDestroyed` (`00:1B14`), when `wBricksLeft` reaches 0. It only acts while `hStateTimer` is 0, and it sets `hStateTimer` to `$0F`.
+- `Powerup_Smiley` (`01:5256`). It does not check `hStateTimer`.
+
+Gameplay keeps running while `hStateTimer` counts down. If a Smiley is caught in that time, the level number goes up a second time and the next level is skipped.
+
+Within a frame, falling power-ups are handled before the brick queue. A Smiley caught in the same frame as the last brick therefore ends the level first, and `CountBrickDestroyed` then does nothing.
+
+Measured in the emulator, with the last brick breaking on frame 0:
+
+| Smiley caught on frame | Levels advanced |
+|---|---|
+| −4 to 0 | 1 |
+| 1 to 14 | 2 |
+| later | 1 (the Smiley is gone when the next level starts) |
+
+So the Smiley has to be caught 1 to 14 frames after the last brick breaks, a window of about a quarter of a second. The Smiley must already be falling, so its own brick cannot be the last one destroyed.
+
+Special cases, also tested in the emulator:
+
+- **On level 159** the skip goes straight to the ending. Level 160 is never played.
+- **On level 160** the skip cancels the ending. The game continues at level 2.
+- **On a level that is followed by the password screen** the skip also skips that screen.
+
 ## Useful RAM
 
 | Address | Meaning |
