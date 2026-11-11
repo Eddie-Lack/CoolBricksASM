@@ -115,14 +115,14 @@ JoypadTransitionInterrupt::
 
 ; Unpack the colour palettes at DE into the palette buffer.
 LoadPalettes:
-    ld hl, $c9dd
+    ld hl, wUnk_c9dd
     ld b, $10
     ld a, [hPaletteMode]
     cp $02
     jr nz, jr_000_0076
 
     ld b, $90
-    ld hl, $d000
+    ld hl, wUnk_d000
     ld a, $02
     ldh [rSVBK], a
 

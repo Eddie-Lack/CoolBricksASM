@@ -1678,13 +1678,13 @@ LevelPassword_VBlank:
 
     ld a, $03
     ldh [rIE], a
-    ld hl, $dd32
+    ld hl, wUnk_dd32
     call DrawString
     ld a, [wUnk_defa]
     or a
     jr z, jr_001_5cf5
 
-    ld de, $deb8
+    ld de, wUnk_deb8
 
 jr_001_5cd6:
     push af
@@ -1739,7 +1739,7 @@ jr_001_5d05:
     ld [wUnk_dd09], a
     ld a, h
     ld [wUnk_dd0a], a
-    ld hl, $dd03
+    ld hl, wUnk_dd03
     ld a, [hl+]
     ldh [rSCX], a
     ld a, [hl+]
@@ -1823,12 +1823,12 @@ LevelPassword_Sub5d63:
     ld a, h
     ld [wUnk_de7f], a
     ld a, $03
-    ld hl, $dd60
+    ld hl, wUnk_dd60
 
 jr_001_5d8a:
     push af
     push hl
-    ld de, $dd51
+    ld de, wUnk_dd51
     ld c, $0f
 
 jr_001_5d91:
@@ -1840,7 +1840,7 @@ jr_001_5d91:
 
     call LevelPassword_Sub5dab
     pop hl
-    ld de, $dd51
+    ld de, wUnk_dd51
     ld c, $0f
 
 jr_001_5da0:
@@ -1970,7 +1970,7 @@ jr_001_5e2b:
     pop de
     pop hl
     pop af
-    ld hl, $dd51
+    ld hl, wUnk_dd51
     call LevelPassword_Sub5d2e
     ret
 
@@ -2130,8 +2130,8 @@ jr_001_5f06:
 
 LevelPassword_Sub5f18:
     ld a, $0b
-    ld hl, $de81
-    ld de, $deb8
+    ld hl, wUnk_de81
+    ld de, wUnk_deb8
 
 jr_001_5f20:
     push af
@@ -2873,7 +2873,7 @@ Jump_001_6407:
     inc de
     ld c, a
     push de
-    ld de, $d9bf
+    ld de, wUnk_d9bf
     push hl
 
 Jump_001_641e:
@@ -2881,7 +2881,7 @@ Jump_001_641e:
     push hl
     ld bc, $6800
     add hl, bc
-    ld bc, $d32a
+    ld bc, wUnk_d32a
     add hl, bc
     ld a, [hl]
     pop hl
@@ -2943,7 +2943,7 @@ jr_001_6468:
     push hl
     ld bc, $6800
     add hl, bc
-    ld bc, $d32a
+    ld bc, wUnk_d32a
     add hl, bc
     ld c, l
     ld b, h
@@ -3194,8 +3194,8 @@ jr_001_67fc:
     ret
 
 CopyPaletteBuffer:
-    ld de, $c3b6
-    ld hl, $d6c0
+    ld de, wUnk_c3b6
+    ld hl, wUnk_d6c0
     ld b, $90
     ld a, $02
     ldh [rSVBK], a
@@ -3248,8 +3248,8 @@ jr_001_683a:
     push bc
     ld [hTemp], a
     ld bc, $0040
-    ld hl, $c9dd
-    ld de, $ca9d
+    ld hl, wUnk_c9dd
+    ld de, wUnk_ca9d
     ld a, [hPaletteMode]
     cp $02
     jr nz, jr_001_685d
@@ -3257,8 +3257,8 @@ jr_001_683a:
     ld bc, $0240
     ld a, $02
     ldh [rSVBK], a
-    ld hl, $d000
-    ld de, $d6c0
+    ld hl, wUnk_d000
+    ld de, wUnk_d6c0
 
 jr_001_685d:
     push bc
@@ -3323,8 +3323,8 @@ jr_001_6895:
     jr z, jr_001_68bd
 
     call WaitVBlank
-    ld hl, $ca9d
-    ld de, $cadd
+    ld hl, wUnk_ca9d
+    ld de, wUnk_cadd
     call CopyPalettesToHardware
     call AnimatePalettes
     jr jr_001_68c3
@@ -3367,8 +3367,8 @@ jr_001_68dd:
     ld bc, $0240
     ld a, $02
     ldh [rSVBK], a
-    ld hl, $d000
-    ld de, $d6c0
+    ld hl, wUnk_d000
+    ld de, wUnk_d6c0
 
 jr_001_68f0:
     push bc
@@ -3448,7 +3448,7 @@ AnimatePalettes:
     ldh [rOCPS], a
     ld a, $9e
     ldh [rBCPS], a
-    ld hl, $cb1d
+    ld hl, wUnk_cb1d
     ld a, [wUnk_caf7]
     ld [hl+], a
     ld a, [wUnk_caf8]
@@ -3557,10 +3557,10 @@ AnimatePalettes:
     ld [hl+], a
     ld a, [wUnk_cabc]
     ld [hl+], a
-    ld hl, $c3b6
+    ld hl, wUnk_c3b6
     ld b, $09
     ld c, $81
-    ld de, $cb1d
+    ld de, wUnk_cb1d
 
 jr_001_6a35:
     ld a, [de]
@@ -3753,18 +3753,18 @@ Jump_001_6b40:
     ld l, a
     ld a, [wLangTextHighScorePassword + 1]
     ld h, a
-    ld de, $cb69
+    ld de, wUnk_cb69
     ld bc, $0018
     call DataTransfer
     ld a, [wLangTextLatestScore]
     ld l, a
     ld a, [wLangTextLatestScore + 1]
     ld h, a
-    ld de, $cc99
+    ld de, wUnk_cc99
     ld bc, $001b
     call DataTransfer
     ld a, [wUnk_df43]
-    ld hl, $cb96
+    ld hl, wUnk_cb96
     ld de, $001c
     ld b, $0a
 
@@ -4190,7 +4190,7 @@ jr_001_6ead:
     dec a
     ld [wOamUsed], a
     ld [wUnk_db70], a
-    ld de, $c2b9
+    ld de, wUnk_c2b9
     ld a, e
     ld [wOamWritePtr], a
 
@@ -4313,7 +4313,7 @@ jr_001_6f66:
     jr z, jr_001_6f87
 
     ld c, a
-    ld de, $c2b9
+    ld de, wUnk_c2b9
     ld a, e
     ld [wOamWritePtr], a
     ld a, d
@@ -4728,7 +4728,7 @@ LanguageTable_German:
     dw Text_German_LatestScore
 
 InitMenuSparkles:
-    ld hl, $dae3
+    ld hl, wUnk_dae3
     ld de, InitMenuSparklesData_001_7592
     ld b, $0a
 
@@ -4740,7 +4740,7 @@ jr_001_71f7:
     jr nz, jr_001_71f7
 
     ld de, InitMenuSparklesData_001_75ba
-    ld hl, $daed
+    ld hl, wUnk_daed
     ld b, $0a
 
 jr_001_7205:
@@ -4750,7 +4750,7 @@ jr_001_7205:
     dec b
     jr nz, jr_001_7205
 
-    ld hl, $daf7
+    ld hl, wUnk_daf7
     ld de, InitMenuSparklesData_001_74b4
     ld b, $0b
 
@@ -4791,7 +4791,7 @@ UpdateMenuSparkles:
     ld hl, wOamBuffer
     ld de, UpdateMenuSparklesData_001_7542
     ld a, $05
-    ld bc, $dae3
+    ld bc, wUnk_dae3
 
 jr_001_7243:
     push af
@@ -4832,8 +4832,8 @@ jr_001_724e:
     dec a
     jr nz, jr_001_7243
 
-    ld de, $dae3
-    ld hl, $daed
+    ld de, wUnk_dae3
+    ld hl, wUnk_daed
     ld a, $05
 
 jr_001_7270:
@@ -4888,14 +4888,14 @@ jr_001_727d:
 
 jr_001_72ae:
     ld a, $14
-    ld hl, $c250
+    ld hl, wUnk_c250
     call ClearOamEntries
     ld a, [hUnk_ff8f]
     inc a
     ld [hUnk_ff8f], a
     ld a, $0b
-    ld hl, $daf7
-    ld de, $c250
+    ld hl, wUnk_daf7
+    ld de, wUnk_c250
 
 jr_001_72c5:
     push af
@@ -5398,7 +5398,7 @@ SetUpBricks:
     ld a, $01
     ldh [rVBK], a
     ld hl, $9841
-    ld de, $ccfb
+    ld de, wUnk_ccfb
     ld b, $10
 
 Jump_001_77d6:
@@ -5625,7 +5625,7 @@ jr_001_78d0:
     jr nz, jr_001_78d0
 
     ld b, $04
-    ld hl, $cccf
+    ld hl, wUnk_cccf
     xor a
 
 jr_001_78ed:
@@ -5647,8 +5647,8 @@ jr_001_78f0:
 
 HighScores_MoveSprites:
     ld a, $14
-    ld de, $cccf
-    ld hl, $c202
+    ld de, wUnk_cccf
+    ld hl, wUnk_c202
     ld bc, $0004
 
 jr_001_7908:
@@ -5809,7 +5809,7 @@ BrickRedrawHandlers:
     dw Jump_000_1d6a
 
 Credits_Update:
-    ld hl, $dcf4
+    ld hl, wUnk_dcf4
     ld a, [hl]
     inc a
     ret z
@@ -5825,8 +5825,8 @@ jr_001_7a6e:
     ld a, [wUnk_dcf7]
     inc a
     ld [wUnk_dcf7], a
-    ld de, $c3be
-    ld hl, $c3c8
+    ld de, wUnk_c3be
+    ld hl, wUnk_c3c8
     ld b, $8f
 
 jr_001_7a7d:
@@ -5917,7 +5917,7 @@ GBC_Check:
 
     ; Clear part of start of WRAM0
     ld bc, $0068
-    ld hl, $c000
+    ld hl, wUnk_c000
     call ClearRAM
 
     ; Clear HRAM
@@ -6074,7 +6074,7 @@ AddScore:
 ; Add BC to the score.
 AddScoreBC:
     ld a, $0b
-    ld hl, $d8b2
+    ld hl, wUnk_d8b2
 
 jr_001_7c41:
     inc [hl]
@@ -6170,14 +6170,14 @@ ColorOnly_Update:
     ld c, $12
     call CopyTilemapRect
     ld hl, ColorOnlyData_001_4ca8
-    ld de, $dd03
+    ld de, wUnk_dd03
     ld bc, $0006
     call DataTransfer
     ld a, [wLangTextLevelPassword]
     ld l, a
     ld a, [wLangTextLevelPassword + 1]
     ld h, a
-    ld de, $dd0b
+    ld de, wUnk_dd0b
     ld bc, $003e
     call DataTransfer
     ld a, $01
@@ -6188,7 +6188,7 @@ ColorOnly_Update:
     ld a, h
     ld [wUnk_dd0a], a
     call BuildLevelTitle
-    ld hl, $dd17
+    ld hl, wUnk_dd17
     ld a, [wLanguage]
     cp $04
     jr nz, jr_001_7d12
@@ -6215,7 +6215,7 @@ jr_001_7d1d:
     ld l, a
     ld a, [wUnk_df36]
     ld h, a
-    ld de, $cce3
+    ld de, wUnk_cce3
     ld a, [wUnk_cb7c]
     ld [hl+], a
     ld [de], a
@@ -6259,7 +6259,7 @@ jr_001_7d1d:
     ld b, h
     ld c, l
     call AddScoreBC
-    ld hl, $dd0b
+    ld hl, wUnk_dd0b
     call DrawString
     call DrawString
     call DrawString
@@ -6280,29 +6280,29 @@ jr_001_7d1d:
     ld [wUnk_dd7e], a
     ld a, h
     ld [wUnk_dd7f], a
-    ld hl, $dd60
+    ld hl, wUnk_dd60
     call LevelPassword_Sub5d2e
-    ld hl, $dd6f
+    ld hl, wUnk_dd6f
     call LevelPassword_Sub5d2e
-    ld hl, $dd7e
+    ld hl, wUnk_dd7e
     call LevelPassword_Sub5d2e
-    ld hl, $dd8d
+    ld hl, wUnk_dd8d
     ld a, l
     ld [wUnk_dd6d], a
     ld a, h
     ld [wUnk_dd6e], a
-    ld hl, $dddd
+    ld hl, wUnk_dddd
     ld a, l
     ld [wUnk_dd7c], a
     ld a, h
     ld [wUnk_dd7d], a
-    ld hl, $de2d
+    ld hl, wUnk_de2d
     ld a, l
     ld [wUnk_dd8b], a
     ld a, h
     ld [wUnk_dd8c], a
     ld hl, LevelPasswordData_001_6543
-    ld de, $de81
+    ld de, wUnk_de81
     ld bc, $0037
     call DataTransfer
     ret

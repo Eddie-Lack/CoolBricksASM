@@ -10,7 +10,7 @@ INCLUDE "src/header.asm"
 SECTION "FIXED BANK ROM", ROM0[$0150]
 ProgramStart:
     di                      ; disable interrupts
-    ld hl, $c1fe            ; setup stack pointer
+    ld hl, wUnk_c1fe            ; setup stack pointer
     ld sp, hl
     call GBC_Check          ; Do a RAM Check to check if the ROM is being booted on the correct hardware
 
@@ -280,7 +280,7 @@ InstallInterruptHandlers:
     ldh [rLYC], a
     ld a, [hUnk_ff9a]
     ldh [rIE], a
-    ld hl, $c3b6
+    ld hl, wUnk_c3b6
     ld a, l
     ld [wUnk_c956], a
     ld a, h
@@ -319,7 +319,7 @@ VBlank:
     call TitleScreen_VBlank
     call hOamDmaRoutine
     call LevelPassword_VBlank
-    ld hl, $c3b6
+    ld hl, wUnk_c3b6
     ld a, l
     ld [wUnk_c956], a
     ld a, h
@@ -381,7 +381,7 @@ jr_000_0317:
     and $0f
     jr nz, jr_000_0328
 
-    ld hl, $d746
+    ld hl, wUnk_d746
     inc [hl]
 
 jr_000_0328:
@@ -394,7 +394,7 @@ jr_000_0330:
     and $3f
     jr nz, jr_000_0339
 
-    ld hl, $d746
+    ld hl, wUnk_d746
     inc [hl]
 
 jr_000_0339:
@@ -405,7 +405,7 @@ jr_000_0339:
     jr jr_000_0361
 
 jr_000_0346:
-    ld hl, $d8ae
+    ld hl, wUnk_d8ae
     ld de, $9806
     ld a, [hl+]
     ld [de], a
@@ -431,7 +431,7 @@ jr_000_0361:
     jr z, jr_000_0374
 
     ld b, a
-    ld hl, $d9bf
+    ld hl, wUnk_d9bf
 
 jr_000_036b:
     ld a, [hl+]
@@ -451,7 +451,7 @@ jr_000_0374:
     ld c, a
     ld a, $01
     ldh [rVBK], a
-    ld hl, $da37
+    ld hl, wUnk_da37
 
 jr_000_0382:
     ld a, [hl+]
@@ -466,7 +466,7 @@ jr_000_0382:
     jr nz, jr_000_0382
 
 jr_000_038b:
-    ld hl, $c3b6
+    ld hl, wUnk_c3b6
     ld a, l
     ld [wUnk_c956], a
     ld a, h
@@ -487,7 +487,7 @@ VBlankMenus:
     push de
     push bc
     call hOamDmaRoutine
-    ld hl, $c3b6
+    ld hl, wUnk_c3b6
     ld a, l
     ld [wUnk_c956], a
     ld a, h
@@ -631,12 +631,12 @@ jr_000_048f:
     ld a, [wUnk_dad5]
     sub $2f
     ld [hl], a
-    ld de, $df40
+    ld de, wUnk_df40
     ld a, [wMusicOff]
     or a
     jr nz, jr_000_04b8
 
-    ld de, $df3d
+    ld de, wUnk_df3d
 
 jr_000_04b8:
     ld a, [wUnk_df39]
@@ -651,12 +651,12 @@ jr_000_04b8:
     inc de
     ld a, [de]
     ld [hl], a
-    ld de, $df40
+    ld de, wUnk_df40
     ld a, [wSfxOff]
     or a
     jr nz, jr_000_04d4
 
-    ld de, $df3d
+    ld de, wUnk_df3d
 
 jr_000_04d4:
     ld a, [wUnk_df3b]
@@ -671,7 +671,7 @@ jr_000_04d4:
     inc de
     ld a, [de]
     ld [hl], a
-    ld hl, $db56
+    ld hl, wUnk_db56
     ld a, [hl+]
     ld [$9968], a
     ld a, [hl+]
@@ -734,7 +734,7 @@ jr_000_0536:
     or l
     jr z, jr_000_04f7
 
-    ld de, $ccbb
+    ld de, wUnk_ccbb
     ld b, $07
 
 jr_000_0546:
@@ -761,7 +761,7 @@ jr_000_054d:
     or a
     jr nz, jr_000_0581
 
-    ld de, $ccc2
+    ld de, wUnk_ccc2
     ld b, $07
 
 jr_000_0567:
@@ -774,7 +774,7 @@ jr_000_0567:
     pop hl
     xor a
     ldh [rVBK], a
-    ld de, $ccbb
+    ld de, wUnk_ccbb
     ld b, $07
 
 jr_000_0576:
@@ -802,7 +802,7 @@ jr_000_058c:
     pop hl
     xor a
     ldh [rVBK], a
-    ld de, $ccbb
+    ld de, wUnk_ccbb
     ld b, $07
 
 jr_000_0599:
@@ -829,7 +829,7 @@ jr_000_05a1:
     push af
     xor a
     ldh [rSVBK], a
-    ld hl, $c3b6
+    ld hl, wUnk_c3b6
     ld a, l
     ld [wUnk_c956], a
     ld a, h
@@ -1013,49 +1013,49 @@ jr_000_072c:
     or a
     jr nz, jr_000_073b
 
-    ld hl, $ccbb
+    ld hl, wUnk_ccbb
     jr jr_000_076f
 
 jr_000_073b:
     cp $01
     jr nz, jr_000_0744
 
-    ld hl, $ccbc
+    ld hl, wUnk_ccbc
     jr jr_000_076f
 
 jr_000_0744:
     cp $02
     jr nz, jr_000_074d
 
-    ld hl, $ccbd
+    ld hl, wUnk_ccbd
     jr jr_000_076f
 
 jr_000_074d:
     cp $03
     jr nz, jr_000_0756
 
-    ld hl, $ccbe
+    ld hl, wUnk_ccbe
     jr jr_000_076f
 
 jr_000_0756:
     cp $04
     jr nz, jr_000_075f
 
-    ld hl, $ccbf
+    ld hl, wUnk_ccbf
     jr jr_000_076f
 
 jr_000_075f:
     cp $05
     jr nz, jr_000_0768
 
-    ld hl, $ccc0
+    ld hl, wUnk_ccc0
     jr jr_000_076f
 
 jr_000_0768:
     cp $06
     jr nz, jr_000_076f
 
-    ld hl, $ccc1
+    ld hl, wUnk_ccc1
 
 jr_000_076f:
     bit 3, b
@@ -1292,8 +1292,8 @@ DrawHighScoreTable:
 
 ; Turn the score digits into characters for the score display.
 BuildScoreText:
-    ld hl, $d8ae
-    ld de, $ccad
+    ld hl, wUnk_d8ae
+    ld de, wUnk_ccad
     ld b, $05
 
 jr_000_08d0:
@@ -1308,12 +1308,12 @@ jr_000_08d0:
     xor a
     ld [wUnk_ccb4], a
     ld [wUnk_ccb5], a
-    ld hl, $cb85
+    ld hl, wUnk_cb85
     ld b, $0a
 
 jr_000_08e7:
     push hl
-    ld de, $ccad
+    ld de, wUnk_ccad
     ld c, $05
 
 jr_000_08ed:
@@ -1342,8 +1342,8 @@ jr_000_0901:
     jr z, jr_000_091b
 
     push bc
-    ld hl, $cc7c
-    ld de, $cc98
+    ld hl, wUnk_cc7c
+    ld de, wUnk_cc98
 
 jr_000_090b:
     ld c, $1a
@@ -1366,7 +1366,7 @@ jr_000_090d:
 
 jr_000_091b:
     pop hl
-    ld de, $ccad
+    ld de, wUnk_ccad
     ld c, $05
 
 jr_000_0921:
@@ -1424,8 +1424,8 @@ jr_000_095b:
     cp $09
     ret nz
 
-    ld de, $cb7c
-    ld hl, $cce3
+    ld de, wUnk_cb7c
+    ld hl, wUnk_cce3
     ld bc, $0004
     call DataTransfer
     ret
@@ -1480,7 +1480,7 @@ jr_000_0995:
     xor $aa
     rrca
     ld [wPasswordByteY], a
-    ld de, $cb7c
+    ld de, wUnk_cb7c
     ld a, [wPasswordByteX]
     swap a
     and $0f
@@ -1518,7 +1518,7 @@ jr_000_0995:
     add hl, bc
     ld a, [hl]
     ld [de], a
-    ld de, $cb7c
+    ld de, wUnk_cb7c
     call CheckPassword
     ld a, $01
     call ChangeROMBank
@@ -1800,11 +1800,11 @@ jr_000_0b49:
     push bc
     ld a, $01
     call ChangeROMBank
-    ld de, $c95d
+    ld de, wUnk_c95d
     ld bc, $0040
     call DataTransfer
     ld hl, LevelSpritePalettes
-    ld de, $c99d
+    ld de, wUnk_c99d
     ld bc, $0040
     call DataTransfer
     pop hl
@@ -1815,13 +1815,13 @@ jr_000_0b49:
     ld hl, BrickPalette_4830
 
 jr_000_0b81:
-    ld de, $c95d
+    ld de, wUnk_c95d
     ld bc, $0008
     call DataTransfer
-    ld de, $c96d
+    ld de, wUnk_c96d
     ld bc, $0008
     call DataTransfer
-    ld de, $c95d
+    ld de, wUnk_c95d
     call LoadPalettes
     ld a, $05
     call ChangeROMBank
@@ -2038,7 +2038,7 @@ jr_000_0c9a:
     call CopyTilemapRect
     pop hl
     ld a, $00
-    ld de, $cf6b
+    ld de, wUnk_cf6b
 
     ld b, $12
     ld c, $10
@@ -2062,7 +2062,7 @@ jr_000_0c9a:
     xor a
     ldh [rVBK], a
     ld hl, $9800
-    ld de, $d32a
+    ld de, wUnk_d32a
     ld bc, $0400
     call DataTransfer
     call InitBatSprites
@@ -2806,7 +2806,7 @@ Gameplay_UpdateBalls:
     ld [wUnk_d8a4], a
     ld b, a
     ld hl, wBalls
-    ld de, $d895
+    ld de, wUnk_d895
     xor a
     ld [hTemp2], a
 
@@ -2970,7 +2970,7 @@ jr_000_127a:
     or a
     jr z, Gameplay_AfterBalls
 
-    ld de, $d895
+    ld de, wUnk_d895
     ld b, a
     dec hl
 
@@ -3130,7 +3130,7 @@ RestartAfterLifeLost:
     call ClearUnbreakableHitEffects
     xor a
     ld [wOamUsed], a
-    ld de, $c2b9
+    ld de, wUnk_c2b9
     ld a, e
     ld [wOamWritePtr], a
     ld a, d
@@ -4153,11 +4153,11 @@ jr_000_195d:
     add hl, bc
     ld d, h
     ld e, l
-    ld hl, $cf2a
+    ld hl, wUnk_cf2a
     add hl, bc
     ld b, h
     ld c, l
-    ld hl, $d91c
+    ld hl, wUnk_d91c
     ld a, e
     ld [hl+], a
     ld a, d
@@ -4206,11 +4206,11 @@ jr_000_19a6:
     add hl, bc
     ld d, h
     ld e, l
-    ld hl, $cf2a
+    ld hl, wUnk_cf2a
     add hl, bc
     ld b, h
     ld c, l
-    ld hl, $d91c
+    ld hl, wUnk_d91c
     ld a, e
     ld [hl+], a
     ld a, d
@@ -4518,7 +4518,7 @@ jr_000_1b55:
     add hl, de
     ld c, l
     ld b, h
-    ld hl, $d91c
+    ld hl, wUnk_d91c
     ld de, $0004
 
 jr_000_1b69:
@@ -4554,7 +4554,7 @@ BrickRedraw_1b7f:
     ld a, [hTemp + 1]
     ld e, a
     push hl
-    ld hl, $cf49
+    ld hl, wUnk_cf49
     add hl, de
     ld a, [hl+]
     ld e, a
@@ -4588,7 +4588,7 @@ BrickRedraw_1bac:
     ld a, [hTemp + 1]
     ld e, a
     push hl
-    ld hl, $cf49
+    ld hl, wUnk_cf49
     add hl, de
     ld a, [hl+]
     ld e, a
@@ -4623,7 +4623,7 @@ BrickRedraw_1bd9:
     ld a, [hTemp + 1]
     ld e, a
     push hl
-    ld hl, $cf49
+    ld hl, wUnk_cf49
     add hl, de
     ld a, [hl+]
     ld e, a
@@ -4654,7 +4654,7 @@ BrickRedraw_1c07:
     ld a, [hTemp + 1]
     ld e, a
     push hl
-    ld hl, $cf49
+    ld hl, wUnk_cf49
     add hl, de
     ld a, [hl+]
     ld e, a
@@ -4697,7 +4697,7 @@ jr_000_1c43:
     ld a, [hTemp + 1]
     ld e, a
     push hl
-    ld hl, $cf6a
+    ld hl, wUnk_cf6a
     add hl, de
     ld a, [hl+]
     ld e, a
@@ -4738,7 +4738,7 @@ jr_000_1c76:
     ld a, [hTemp + 1]
     ld e, a
     push hl
-    ld hl, $cf6a
+    ld hl, wUnk_cf6a
     add hl, de
     ld a, [hl+]
     ld e, a
@@ -4779,7 +4779,7 @@ jr_000_1ca8:
     ld a, [hTemp + 1]
     ld e, a
     push hl
-    ld hl, $cf6b
+    ld hl, wUnk_cf6b
     add hl, de
     ld a, [hl]
     pop hl
@@ -4808,7 +4808,7 @@ jr_000_1ccd:
     ld a, [hTemp + 1]
     ld e, a
     push hl
-    ld hl, $cf6a
+    ld hl, wUnk_cf6a
     add hl, de
     ld a, [hl]
     pop hl
@@ -4837,7 +4837,7 @@ jr_000_1cf2:
     ld a, [hTemp + 1]
     ld e, a
     push hl
-    ld hl, $cf6a
+    ld hl, wUnk_cf6a
     add hl, de
     ld d, [hl]
     pop hl
@@ -4941,8 +4941,8 @@ FlushBrickRedraw:
     jr z, jr_000_1dae
 
     ld [hTemp], a
-    ld hl, $d91c
-    ld bc, $da37
+    ld hl, wUnk_d91c
+    ld bc, wUnk_da37
     ld a, [wUnk_daaf]
     ld e, a
     ld a, [wUnk_dab0]
@@ -5057,7 +5057,7 @@ jr_000_1e0c:
 ; Redraw hit bricks, remove destroyed ones and release power-ups.
 ProcessBrickHitQueue:
     ld hl, wBrickHitQueue
-    ld de, $d9bf
+    ld de, wUnk_d9bf
     xor a
     ld [wUnk_d9bc], a
     ld a, $0c
@@ -5389,7 +5389,7 @@ StateInit_MainMenu:
     ld l, a
     ld a, [wLangTextStartLevel + 1]
     ld h, a
-    ld de, $dac3
+    ld de, wUnk_dac3
     ld bc, $0014
     call DataTransfer
 
@@ -5401,7 +5401,7 @@ StateInit_MainMenu:
     ld a, [wLangTextStartGame + 1]
     ld h, a
     call DrawString
-    ld hl, $dac3
+    ld hl, wUnk_dac3
     call DrawString
     ld a, [wLangTextEnterPassword]
     ld l, a
@@ -5446,7 +5446,7 @@ jr_000_2074:
     call DrawString
 
 jr_000_2083:
-    ld hl, $db56
+    ld hl, wUnk_db56
     ld a, [$9968]
     ld [hl+], a
     ld a, [$9969]
@@ -5783,7 +5783,7 @@ SubmitPassword:
     pop af
     jr z, jr_000_225e
 
-    ld hl, $cce3
+    ld hl, wUnk_cce3
     ld a, [wPasswordEntry]
     ld [hl+], a
     ld a, [wPasswordEntry + 1]
@@ -6727,7 +6727,7 @@ InitEnemyObject:
 UpdateEnemyPath:
     push hl
     push bc
-    ld de, $dbd1
+    ld de, wUnk_dbd1
     ld c, $0f
 
 jr_000_2899:
@@ -6834,7 +6834,7 @@ jr_000_2901:
     ld a, h
     ld [wUnk_dbd2], a
     pop hl
-    ld de, $dbd1
+    ld de, wUnk_dbd1
     ld c, $0f
 
 jr_000_2944:
@@ -9928,7 +9928,7 @@ StateInit_LevelPassword:
     ld c, $12
     call CopyTilemapRect
     ld hl, LevelPasswordData_00c_4ca8
-    ld de, $dd03
+    ld de, wUnk_dd03
     ld bc, $0006
     call DataTransfer
     ld a, [wLangTextLevelPassword]
@@ -9936,7 +9936,7 @@ StateInit_LevelPassword:
     ld l, a
     ld a, [wLangTextLevelPassword + 1]
     ld h, a
-    ld de, $dd0b
+    ld de, wUnk_dd0b
     ld bc, $003e
     call DataTransfer
     ld a, $01
@@ -9947,7 +9947,7 @@ StateInit_LevelPassword:
     ld a, h
     ld [wUnk_dd0a], a
     call BuildLevelTitle
-    ld hl, $dd17
+    ld hl, wUnk_dd17
     ld a, [wLanguage]
     cp $04
     jr nz, jr_000_3d12
@@ -9974,7 +9974,7 @@ jr_000_3d1d:
     ld l, a
     ld a, [wUnk_df36]
     ld h, a
-    ld de, $cce3
+    ld de, wUnk_cce3
     ld a, [wUnk_cb7c]
     ld [hl+], a
     ld [de], a
@@ -10018,7 +10018,7 @@ jr_000_3d1d:
     ld b, h
     ld c, l
     call AddScoreBC
-    ld hl, $dd0b
+    ld hl, wUnk_dd0b
     call DrawString
     call DrawString
     call DrawString
@@ -10039,29 +10039,29 @@ jr_000_3d1d:
     ld [wUnk_dd7e], a
     ld a, h
     ld [wUnk_dd7f], a
-    ld hl, $dd60
+    ld hl, wUnk_dd60
     call LevelPassword_Sub5d2e
-    ld hl, $dd6f
+    ld hl, wUnk_dd6f
     call LevelPassword_Sub5d2e
-    ld hl, $dd7e
+    ld hl, wUnk_dd7e
     call LevelPassword_Sub5d2e
-    ld hl, $dd8d
+    ld hl, wUnk_dd8d
     ld a, l
     ld [wUnk_dd6d], a
     ld a, h
     ld [wUnk_dd6e], a
-    ld hl, $dddd
+    ld hl, wUnk_dddd
     ld a, l
     ld [wUnk_dd7c], a
     ld a, h
     ld [wUnk_dd7d], a
-    ld hl, $de2d
+    ld hl, wUnk_de2d
     ld a, l
     ld [wUnk_dd8b], a
     ld a, h
     ld [wUnk_dd8c], a
     ld hl, LevelPasswordData_001_6543
-    ld de, $de81
+    ld de, wUnk_de81
     ld bc, $0037
     call DataTransfer
     ret
