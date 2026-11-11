@@ -217,7 +217,8 @@ One of the four corner cases has a mistake in the original code. For an exact di
 `UpdateEnemies` runs `UpdateUfo` on UFO levels and `UpdateBlob` on blob levels. `UpdateProjectiles` runs on every level.
 
 - **UFO:** `UfoPassTable` gives a wait time and a side for each of 8 passes. The UFO then crosses the screen at the height `wUfoHeight`, moving half a pixel per frame. At an X position taken from the frame counter it drops a bomb (`UpdateUfoBomb`). A bomb that hits the bat costs a life.
-- **Blob:** the blob is a 15-byte object that follows path data (`UpdateEnemyPath`). When `wBlobThrowing` is set it plays a throw animation and then starts a projectile with `SpawnProjectile`. While `wBlobThrowCount` is not 0, losing the last ball does not cost a life.
+- **Blob:** the blob is a 15-byte object that follows path data (`UpdateEnemyPath`). `CheckBlobCatch` runs for every ball test point. A ball that touches the blob is removed and the blob starts its throw animation. It then throws the ball back as a projectile (`SpawnProjectile`), and the projectile turns into a ball again when it lands. `wBlobThrowCount` counts balls the blob is holding, so losing the last ball on screen does not cost a life while it is not 0.
+- **Ghost and Ninja:** the blob cannot catch the ball while `wGhostActive` or `wNinjaActive` is set. Ghost lasts until `wGhostTimer` runs out.
 - **Projectiles:** `wProjectiles` has 4 slots of 9 bytes. Grenades use the same slots.
 
 `hJoypad` bits: 0 = right, 1 = left, 4 = A, 5 = B, 7 = Start.
@@ -229,6 +230,22 @@ One of the four corner cases has a mistake in the original code. For an exact di
 - **Grenade:** holding A raises `wGrenadePower` up to a limit. Releasing A throws the grenade, takes one from `wGrenadeCount` and shows the "GRENADE n" message from `GrenadeTexts_*`. Left or right held at that moment sets the throw direction. Using the last grenade clears `wWeaponFlag`.
 - **Rocket and Laser:** `wRocketLaserBat` is 1 and `wLaserBat` picks the type. `wShotReloadDelay` is the wait between shots.
 - **Plasma:** A fires when no shot is in flight. Firing sets `wPlasmaState` to 2 and clears `wWeaponFlag`.
+
+## Score and effects
+
+`AddScore` (bank 1) adds B units to the six score digits in `wScoreDigits`. One unit is 10 points on screen.
+
+| Event | Units | Points |
+|---|---|---|
+| Brick hit | 1 | 10 |
+| Power-up collected | `$0A` | 100 |
+| Smiley, or Extra life at 9 lives | `$32` | 500 |
+
+Three small effect lists are updated every frame in bank 1:
+
+- `wBrickBreakEffects` (14 slots), started by `SpawnBrickBreakEffect` when a brick is destroyed
+- `wPickupEffects` (4 slots), started by `SpawnPickupEffect` where a power-up is collected
+- `wUnbreakableHitEffects` (10 slots), started by `SpawnUnbreakableHitEffect` when the ball hits an unbreakable brick
 
 ## Useful RAM
 
