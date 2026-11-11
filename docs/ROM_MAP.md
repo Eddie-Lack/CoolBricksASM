@@ -1,0 +1,598 @@
+# ROM map
+
+What each part of every ROM bank holds. This file is written by `tools/rom_map.py` from the labels in the sources.
+Runs of labels with the same prefix are shown as one row.
+
+## Bank $00
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$0000` | 1 | code | `RST_00` |
+| `$0001` | 5 | code | `ShowMessageBankE` |
+| `$0006` | 2 | data | `ShowMessage` |
+| `$0008` | 56 | code | `RST_08` to `RST_38` (7 labels) |
+| `$0040` | 8 | code | `VBlankInterrupt` |
+| `$0048` | 8 | code | `LCDCInterrupt` |
+| `$0050` | 8 | code | `TimerOverflowInterrupt` |
+| `$0058` | 8 | code | `SerialTransferCompleteInterrupt` |
+| `$0060` | 1 | code | `JoypadTransitionInterrupt` |
+| `$0061` | 69 | code | `LoadPalettes` |
+| `$00A6` | 90 | code | `StateInit_ColorOnly` |
+| `$0100` | 4 | code | `Boot` |
+| `$0104` | 48 | data | `HeaderLogo` |
+| `$0134` | 11 | data | `HeaderTitle` |
+| `$013F` | 4 | data | `HeaderManufacturerCode` |
+| `$0143` | 1 | data | `HeaderCGBFlag` |
+| `$0144` | 2 | data | `HeaderNewLicenseeCode` |
+| `$0146` | 1 | data | `HeaderSGBFlag` |
+| `$0147` | 1 | data | `HeaderCartridgeType` |
+| `$0148` | 1 | data | `HeaderROMSize` |
+| `$0149` | 1 | data | `HeaderRAMSize` |
+| `$014A` | 1 | data | `HeaderDestinationCode` |
+| `$014B` | 1 | data | `HeaderOldLicenseeCode` |
+| `$014C` | 1 | data | `HeaderMaskROMVersion` |
+| `$014D` | 1 | data | `HeaderComplementCheck` |
+| `$014E` | 2 | data | `HeaderGlobalChecksum` |
+| `$0150` | 84 | code | `ProgramStart` |
+| `$01A4` | 12 | code | `ClearRAM` |
+| `$01B0` | 9 | code | `DataTransfer` |
+| `$01B9` | 27 | code | `ClearTileMap` |
+| `$01D4` | 29 | code | `CopyTilemapRect` |
+| `$01F1` | 21 | code | `FillTilemapRect` |
+| `$0206` | 4 | code | `ChangeROMBank` |
+| `$020A` | 25 | code | `LoadOAMCode` |
+| `$0223` | 40 | code | `ReadJoypad` |
+| `$024B` | 104 | code | `InstallInterruptHandlers` |
+| `$02B3` | 241 | code | `VBlank` to `VBlank_InGame` (2 labels) |
+| `$03A4` | 565 | code | `VBlankMenus` |
+| `$05D9` | 257 | code | `StateInit_HighScores` |
+| `$06DA` | 413 | code | `HighScores_Update` |
+| `$0877` | 38 | code | `LoadHighScores` |
+| `$089D` | 43 | code | `DrawHighScoreTable` |
+| `$08C8` | 172 | code | `BuildScoreText` |
+| `$0974` | 134 | code | `ParseDecimal` |
+| `$09FA` | 178 | code | `CheckPassword` |
+| `$0AAC` | 63 | code | `StartHdmaTransfer` |
+| `$0AEB` | 24 | code | `PlayLevelMusic` |
+| `$0B03` | 696 | code | `LoadLevel` |
+| `$0DBB` | 13 | code | `RleFill` |
+| `$0DC8` | 22 | code | `RleOverlay` |
+| `$0DDE` | 118 | code | `BuildLevelTitle` |
+| `$0E54` | 48 | code | `DrawString` |
+| `$0E84` | 51 | code | `DrawStringSkipZero` |
+| `$0EB7` | 46 | code | `InitBat` |
+| `$0EE5` | 75 | code | `InitBall` |
+| `$0F30` | 1047 | code | `Gameplay_Update` to `Gameplay_CheckPause` (10 labels) |
+| `$1347` | 101 | code | `RestartAfterLifeLost` |
+| `$13AC` | 583 | code | `UpdateBall` to `UpdateBall_Move` (3 labels) |
+| `$15F3` | 453 | code | `CollideBall` to `CollideBall_Corners` (2 labels) |
+| `$17B8` | 21 | code | `ReflectBallLeft` |
+| `$17CD` | 32 | code | `ReflectBallRight` |
+| `$17ED` | 21 | code | `ReflectBallTop` |
+| `$1802` | 32 | code | `ReflectBallBottom` |
+| `$1822` | 98 | code | `CollideBallPoint` |
+| `$1884` | 87 | code | `HitBrickAtBall` |
+| `$18DB` | 33 | code | `BatBounceLookup` |
+| `$18FC` | 84 | code | `UpdateBatExplosion` |
+| `$1950` | 187 | code | `UpdateBatTiles` |
+| `$1A0B` | 47 | code | `HitBrickWithShot` |
+| `$1A3A` | 92 | code | `HitBrickWithBall` |
+| `$1A96` | 79 | code | `GetBrickNeighbourMask` |
+| `$1AE5` | 47 | code | `QueueBrickHit` |
+| `$1B14` | 107 | code | `CountBrickDestroyed` |
+| `$1B7F` | 509 | code | `BrickRedraw_1b7f` to `BrickRedraw_1c07` (4 labels) |
+| `$1D7C` | 115 | code | `FlushBrickRedraw` |
+| `$1DEF` | 4 | code | `MarkBrickHitQueue` |
+| `$1DF3` | 40 | code | `ClearBrickHitQueue` |
+| `$1E1B` | 352 | code | `ProcessBrickHitQueue` |
+| `$1F7B` | 312 | code | `StateInit_MainMenu` |
+| `$20B3` | 71 | code | `FormatLevelNumber` |
+| `$20FA` | 314 | code | `MainMenu_Update` to `MainMenu_PasswordEntry` (2 labels) |
+| `$2234` | 57 | code | `SubmitPassword` |
+| `$226D` | 686 | code | `MainMenu_Navigate` |
+| `$251B` | 52 | code | `StartGame` |
+| `$254F` | 278 | code | `StateInit_TitleScreen` |
+| `$2665` | 34 | code | `TitleScreen_Update` |
+| `$2687` | 148 | code | `StateInit_GameOver` |
+| `$271B` | 72 | code | `ResetEnemies` |
+| `$2763` | 24 | code | `UpdateEnemies` |
+| `$277B` | 238 | code | `UpdateBlob` |
+| `$2869` | 41 | code | `InitEnemyObject` |
+| `$2892` | 185 | code | `UpdateEnemyPath` |
+| `$294B` | 15 | code | `ClearProjectiles` |
+| `$295A` | 39 | code | `SpawnProjectile` |
+| `$2981` | 318 | code | `UpdateProjectiles` |
+| `$2ABF` | 578 | code | `UpdateProjectile` |
+| `$2D01` | 101 | code | `Projectile_CheckBrickKeepDE` to `Projectile_HitBrick` (3 labels) |
+| `$2D66` | 777 | code | `UpdateUfo` |
+| `$306F` | 40 | code | `UfoHit` |
+| `$3097` | 213 | code | `UpdateUfoBomb` |
+| `$316C` | 47 | code | `CheckUfoHit` |
+| `$319B` | 63 | code | `CheckBlobCatch` |
+| `$31DA` | 50 | code | `ResetShots` |
+| `$320C` | 42 | code | `UpdateShots` |
+| `$3236` | 579 | code | `Shots_HandleFire` to `Shots_FireRocketOrLaser` (3 labels) |
+| `$3479` | 242 | code | `UpdateShot0` |
+| `$356B` | 242 | code | `UpdateShot1` |
+| `$365D` | 200 | code | `UpdateShot2` |
+| `$3725` | 188 | code | `UpdateShot3` |
+| `$37E1` | 188 | code | `UpdateShot4` |
+| `$389D` | 188 | code | `UpdateShot5` |
+| `$3959` | 254 | code | `StateInit_Pause` to `StateInit_DeveloperLogos` (2 labels) |
+| `$3A57` | 21 | code | `ClearCheatFlags` |
+| `$3A6C` | 108 | code | `StateInit_PublisherLogo` |
+| `$3AD8` | 22 | code | `PublisherLogo_Update` |
+| `$3AEE` | 98 | code | `StateInit_Credits` |
+| `$3B50` | 59 | code | `SelectCreditsText` |
+| `$3B8B` | 169 | code | `UpdateCreditsScroll` |
+| `$3C34` | 17 | code | `NextLevelMusic` |
+| `$3C45` | 524 | code | `StateInit_LevelPassword` to `StateInit_LanguageSelect` (2 labels) |
+| `$3E51` | 5 | code | `PlayMusic` |
+| `$3E56` | 14 | code | `StartSong` |
+| `$3E64` | 27 | code | `PlaySound` |
+| `$3E7F` | 14 | code | `UpdateSound` |
+| `$3E8D` | 96 | code | `StateInit_Copyright` |
+| `$3EED` | 22 | code | `Copyright_Update` |
+| `$3F03` | 253 | code | `StateInit_Ending` |
+
+## Bank $01
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 1584 | data | `Palettes_Level` to `Palettes_Copyright` (11 labels) |
+| `$4630` | 64 | data | `LevelSpritePalettes` |
+| `$4670` | 448 | data | `LevelPalette_4670` to `LevelPalette_47f0` (7 labels) |
+| `$4830` | 400 | data | `BrickPalette_4830` to `BrickPalette_49b0` (24 labels) |
+| `$49C0` | 168 | data | `UpdateProjectileData_001_49c0` to `UpdateProjectileData_001_4a14` (2 labels) |
+| `$4A68` | 576 | data | `UpdateProjectilesData_001_4a68` to `UpdateProjectilesData_001_4b21` (2 labels) |
+| `$4CA8` | 454 | data | `ColorOnlyData_001_4ca8` |
+| `$4E6E` | 184 | data | `UpdateBlobData_001_4e6e` |
+| `$4F26` | 37 | data | `BlobThrowDirections_Right` |
+| `$4F4B` | 12 | data | `BlobPath` |
+| `$4F57` | 160 | data | `BlobSprites` to `BlobSprites_Throwing` (3 labels) |
+| `$4FF7` | 18 | data | `UfoSprites` |
+| `$5009` | 12 | data | `UfoHitScores` |
+| `$5015` | 16 | data | `UfoPassTable` |
+| `$5025` | 15 | code | `ClearFallingPowerups` |
+| `$5034` | 171 | code | `SpawnPowerup` |
+| `$50DF` | 154 | code | `UpdateFallingPowerups` |
+| `$5179` | 91 | code | `CheckPowerupCaught` |
+| `$51D4` | 634 | code | `Powerup_Slowball` to `Powerup_Grenade` (16 labels) |
+| `$544E` | 26 | code | `PowerupCollected` |
+| `$5468` | 18 | data | `ShotSprite_Rocket` to `ShotSprite_Laser` (3 labels) |
+| `$547A` | 21 | data | `GrenadeText_English_0` |
+| `$548F` | 21 | data | `GrenadeText_French_0` |
+| `$54A4` | 21 | data | `GrenadeText_German_0` |
+| `$54B9` | 21 | data | `GrenadeText_Italian_0` |
+| `$54CE` | 21 | data | `GrenadeText_Spanish_0` |
+| `$54E3` | 21 | data | `GrenadeText_English_1` |
+| `$54F8` | 21 | data | `GrenadeText_French_1` |
+| `$550D` | 21 | data | `GrenadeText_German_1` |
+| `$5522` | 21 | data | `GrenadeText_Italian_1` |
+| `$5537` | 21 | data | `GrenadeText_Spanish_1` |
+| `$554C` | 21 | data | `GrenadeText_English_2` |
+| `$5561` | 21 | data | `GrenadeText_French_2` |
+| `$5576` | 21 | data | `GrenadeText_German_2` |
+| `$558B` | 21 | data | `GrenadeText_Italian_2` |
+| `$55A0` | 21 | data | `GrenadeText_Spanish_2` |
+| `$55B5` | 21 | data | `GrenadeText_English_3` |
+| `$55CA` | 21 | data | `GrenadeText_French_3` |
+| `$55DF` | 21 | data | `GrenadeText_German_3` |
+| `$55F4` | 21 | data | `GrenadeText_Italian_3` |
+| `$5609` | 21 | data | `GrenadeText_Spanish_3` |
+| `$561E` | 21 | data | `GrenadeText_English_4` |
+| `$5633` | 21 | data | `GrenadeText_French_4` |
+| `$5648` | 21 | data | `GrenadeText_German_4` |
+| `$565D` | 21 | data | `GrenadeText_Italian_4` |
+| `$5672` | 21 | data | `GrenadeText_Spanish_4` |
+| `$5687` | 21 | data | `GrenadeText_English_5` |
+| `$569C` | 21 | data | `GrenadeText_French_5` |
+| `$56B1` | 21 | data | `GrenadeText_German_5` |
+| `$56C6` | 21 | data | `GrenadeText_Italian_5` |
+| `$56DB` | 21 | data | `GrenadeText_Spanish_5` |
+| `$56F0` | 21 | data | `GrenadeText_English_6` |
+| `$5705` | 21 | data | `GrenadeText_French_6` |
+| `$571A` | 21 | data | `GrenadeText_German_6` |
+| `$572F` | 21 | data | `GrenadeText_Italian_6` |
+| `$5744` | 21 | data | `GrenadeText_Spanish_6` |
+| `$5759` | 21 | data | `GrenadeText_English_7` |
+| `$576E` | 21 | data | `GrenadeText_French_7` |
+| `$5783` | 21 | data | `GrenadeText_German_7` |
+| `$5798` | 21 | data | `GrenadeText_Italian_7` |
+| `$57AD` | 21 | data | `GrenadeText_Spanish_7` |
+| `$57C2` | 80 | data | `GrenadeTexts_English` to `GrenadeTexts_Italian` (5 labels) |
+| `$5812` | 44 | data | `GrenadeThrowTable` |
+| `$583E` | 971 | data | `Text_German_LatestScoreData_001_583e` to `Text_German_LatestScoreData_001_5b44` (14 labels) |
+| `$5C09` | 878 | code | `LevelPassword_Sub5c09` to `LevelPassword_Sub5f18` (7 labels) |
+| `$5F77` | 22 | data | `BatSpeedTable` |
+| `$5F8D` | 128 | data | `BatBounceTable` |
+| `$600D` | 160 | data | `BatBounceTable_BigBat` |
+| `$60AD` | 170 | data | `BatExplosionFrames` |
+| `$6157` | 40 | data | `BatExplosionSequence` |
+| `$617F` | 128 | data | `BallVelocityTable` |
+| `$61FF` | 32 | data | `BallReflectBottomTable` |
+| `$621F` | 32 | data | `BallReflectTopTable` |
+| `$623F` | 32 | data | `BallReflectRightTable` |
+| `$625F` | 32 | data | `BallReflectLeftTable` |
+| `$627F` | 15 | code | `ClearBrickBreakEffects` |
+| `$628E` | 49 | code | `SpawnBrickBreakEffect` |
+| `$62BF` | 42 | code | `FindFreeBrickBreakEffect` |
+| `$62E9` | 85 | code | `UpdateBrickBreakEffects` |
+| `$633E` | 15 | code | `ClearPickupEffects` |
+| `$634D` | 57 | code | `SpawnPickupEffect` |
+| `$6386` | 116 | code | `UpdatePickupEffects` |
+| `$63FA` | 201 | code | `FrameLoop_Sub63fa` |
+| `$64C3` | 17 | code | `ClearUnbreakableHitEffects` |
+| `$64D4` | 37 | code | `SpawnUnbreakableHitEffect` |
+| `$64F9` | 74 | code | `UpdateUnbreakableHitEffects` |
+| `$6543` | 689 | data | `LevelPasswordData_001_6543` to `LevelPasswordData_001_67cb` (7 labels) |
+| `$67F4` | 19 | code | `CopyPalettesToHardware` |
+| `$6807` | 49 | code | `CopyPaletteBuffer` |
+| `$6838` | 153 | code | `FadePalettes` |
+| `$68D1` | 107 | code | `FadePalettes2` |
+| `$693C` | 287 | code | `AnimatePalettes` |
+| `$6A5B` | 304 | code | `LanguageSelect_Update` |
+| `$6B8B` | 24 | data | `Text_English_HighScorePassword` |
+| `$6BA3` | 24 | data | `Text_French_HighScorePassword` |
+| `$6BBB` | 24 | data | `Text_German_HighScorePassword` |
+| `$6BD3` | 24 | data | `Text_Spanish_HighScorePassword` |
+| `$6BEB` | 24 | data | `Text_Italian_HighScorePassword` |
+| `$6C03` | 27 | data | `Text_English_LatestScore` |
+| `$6C1E` | 27 | data | `Text_French_LatestScore` |
+| `$6C39` | 27 | data | `Text_Spanish_LatestScore` |
+| `$6C54` | 27 | data | `Text_Italian_LatestScore` |
+| `$6C6F` | 27 | data | `Text_German_LatestScore` |
+| `$6C8A` | 528 | code | `TitleScreen_VBlank` to `TitleScreen_Init6e25` (3 labels) |
+| `$6E9A` | 11 | code | `ClearOamEntries` |
+| `$6EA5` | 47 | code | `InitBatSprites` |
+| `$6ED4` | 390 | code | `DrawBatSprites` |
+| `$705A` | 405 | data | `LanguageTable_Italian` to `LanguageTable_German` (5 labels) |
+| `$71EF` | 73 | code | `InitMenuSparkles` |
+| `$7238` | 270 | code | `UpdateMenuSparkles` |
+| `$7346` | 31 | data | `Text_English_Hud` |
+| `$7365` | 31 | data | `Text_French_Hud` |
+| `$7384` | 31 | data | `Text_Spanish_Hud` |
+| `$73A3` | 31 | data | `Text_German_Hud` |
+| `$73C2` | 31 | data | `Text_Italian_Hud` |
+| `$73E1` | 25 | data | `Text_English_LevelTitle` |
+| `$73FA` | 25 | data | `Text_French_LevelTitle` |
+| `$7413` | 25 | data | `Text_Spanish_LevelTitle` |
+| `$742C` | 25 | data | `Text_German_LevelTitle` |
+| `$7445` | 25 | data | `Text_Italian_LevelTitle` |
+| `$745E` | 25 | data | `VBlank_InGameData_001_745e` |
+| `$7477` | 36 | data | `Tilemap_Level_001_7477` to `Tilemap_Level_001_748b` (2 labels) |
+| `$749B` | 145 | data | `InitMenuSparklesData_001_749b` to `InitMenuSparklesData_001_74b4` (2 labels) |
+| `$752C` | 102 | data | `UpdateMenuSparklesData_001_752c` to `UpdateMenuSparklesData_001_7542` (2 labels) |
+| `$7592` | 29 | data | `InitMenuSparklesData_001_7592` |
+| `$75AF` | 11 | data | `UpdateMenuSparklesData_001_75af` |
+| `$75BA` | 10 | data | `InitMenuSparklesData_001_75ba` |
+| `$75C4` | 5 | code | `RunStateInit` |
+| `$75C9` | 15 | code | `RunStateUpdate` |
+| `$75D8` | 1 | code | `CallHL` |
+| `$75D9` | 174 | code | `FrameLoop` |
+| `$7687` | 11 | code | `SetFrameHandler` |
+| `$7692` | 84 | code | `StateUpdate_Gameplay` to `StateUpdate_Ending` (14 labels) |
+| `$76E6` | 32 | data | `PowerupHandlers` |
+| `$7706` | 32 | data | `UpdateFallingPowerupsData_001_7706` |
+| `$7726` | 32 | data | `PowerupSprites` |
+| `$7746` | 128 | data | `PowerupSprite_Slowball` to `PowerupSprite_Grenade` (16 labels) |
+| `$77C6` | 211 | code | `SetUpBricks` |
+| `$7899` | 183 | code | `HighScores_Sub7899` to `HighScores_Sub7929` (4 labels) |
+| `$7950` | 106 | data | `SetUpBricksData_001_7950` to `SetUpBricksData_001_79b8` (3 labels) |
+| `$79BA` | 36 | data | `HighScoresData_001_79ba` |
+| `$79DE` | 128 | data | `BrickRedrawHandlers` |
+| `$7A5E` | 89 | code | `Credits_Update` |
+| `$7AB7` | 85 | code | `GBC_Check` |
+| `$7B0C` | 36 | data | `InitBatSpritesData_001_7b0c` |
+| `$7B30` | 38 | data | `DrawBatSpritesData_001_7b30` to `DrawBatSpritesData_001_7b4e` (5 labels) |
+| `$7B56` | 18 | data | `UnbreakableHitEffectFrames` |
+| `$7B68` | 28 | data | `BrickBreakEffectFrames` |
+| `$7B84` | 6 | data | `PickupEffectFrames` |
+| `$7B8A` | 22 | data | `UpdatePickupEffectsData_001_7b8a` |
+| `$7BA0` | 28 | data | `StateInitHandlers` |
+| `$7BBC` | 28 | data | `StateUpdateHandlers` |
+| `$7BD8` | 43 | code | `GameOver_Update` |
+| `$7C03` | 42 | code | `Pause_Update` |
+| `$7C2D` | 12 | code | `ResetScore` |
+| `$7C39` | 3 | code | `AddScore` |
+| `$7C3C` | 24 | code | `AddScoreBC` |
+| `$7C54` | 32 | code | `WaitVBlank` |
+| `$7C74` | 30 | code | `Ending_Update` |
+| `$7C92` | 22 | code | `DeveloperLogos_Update` |
+| `$7CA8` | 856 | code | `ColorOnly_Update` |
+
+## Bank $02
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16 | data | `PasswordAlphabet` |
+| `$4010` | 40 | data | `HighScoreScreenDataHeader` |
+| `$4038` | 308 | data | `HighScoreScreenData` |
+| `$416C` | 2496 | graphics | `HighScoresTextureData` |
+| `$4B2C` | 5392 | graphics | `Gfx_Level_002_4b2c` to `Gfx_Level_002_5dec` (4 labels) |
+| `$603C` | 3024 | graphics | `Gfx_MainMenu_002_603c` |
+| `$6C0C` | 80 | data | `Tilemap_VBlankMenus_002_6c0c` |
+| `$6C5C` | 280 | data | `Tilemap_MainMenu_002_6c5c` |
+| `$6D74` | 80 | data | `Tilemap_VBlankMenus_002_6d74` |
+| `$6DC4` | 280 | data | `Tilemap_MainMenu_002_6dc4` |
+| `$6EDC` | 3504 | graphics | `Gfx_MainMenu_002_6edc` |
+| `$7C8C` | 884 | data | `Tilemap_DeveloperLogos_002_7c8c` to `Tilemap_DeveloperLogos_002_7df4` (2 labels) |
+
+## Bank $03
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 2592 | data | `Tilemap_Level_003_4000` |
+| `$4A20` | 2192 | graphics | `Gfx_PublisherLogo_003_4a20` to `Gfx_PublisherLogo_003_5220` (2 labels) |
+| `$52B0` | 720 | data | `Tilemap_PublisherLogo_003_52b0` to `Tilemap_PublisherLogo_003_5418` (2 labels) |
+| `$5580` | 1968 | graphics | `Gfx_Copyright_003_5580` |
+| `$5D30` | 8912 | data | `Tilemap_Copyright_003_5d30` to `Tilemap_Copyright_003_5e98` (2 labels) |
+
+## Bank $04
+
+No labels. 16384 bytes of unlabelled data.
+
+## Bank $05
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 1280 | data | `LevelTable` |
+| `$4500` | 960 | data | `LevelHeader_050` to `LevelHeader_123` (160 labels) |
+| `$48C0` | 48 | data | `Background_48c0` to `Background_48ea` (8 labels) |
+| `$48F0` | 25 | data | `Text_English_GameOver` |
+| `$4909` | 25 | data | `Text_French_GameOver` |
+| `$4922` | 24 | data | `Text_Spanish_GameOver` |
+| `$493A` | 25 | data | `Text_German_GameOver` |
+| `$4953` | 25 | data | `Text_Italian_GameOver` |
+| `$496C` | 6352 | graphics | `Gfx_GameOver_005_496c` |
+| `$623C` | 720 | data | `Tilemap_GameOver_005_623c` to `Tilemap_GameOver_005_63a4` (2 labels) |
+| `$650C` | 6900 | graphics | `Gfx_Credits_005_650c` |
+
+## Bank $06
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 1926 | code | `Call_006_4000` to `Call_006_473f` (2 labels) |
+| `$4786` | 147 | code | `InitWaveRAM` |
+| `$4819` | 368 | code | `Call_006_4819` |
+| `$4989` | 7273 | data | `BGM_Module_00` to `BGM_Module_01` (2 labels) |
+| `$65F2` | 6670 | data | `WaveRAMPiss` |
+
+## Bank $07
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 7216 | graphics | `Gfx_TitleScreen_007_4000` |
+| `$5C30` | 760 | data | `Tilemap_TitleScreen_007_5c30` to `Tilemap_TitleScreen_007_5f14` (4 labels) |
+| `$5F28` | 1552 | graphics | `Gfx_TitleScreen_007_5f28` |
+| `$6538` | 320 | data | `TitleScreenData_007_6538` |
+| `$6678` | 640 | graphics | `TitleScreenData_007_6678` to `TitleScreenData_007_67b8` (2 labels) |
+| `$68F8` | 5896 | graphics | `Gfx_TitleScreen_007_68f8` |
+
+## Bank $08
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BrickLayout_Base` to `BrickLayout_Level123` (161 labels) |
+
+## Bank $09
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BrickRedrawData_009_4000` |
+
+## Bank $0A
+
+No labels. 16384 bytes of unlabelled data.
+
+## Bank $0B
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 15552 | data | (no label) |
+| `$7CC0` | 108 | data | `Tilemap_HighScores_00b_7cc0` to `Tilemap_HighScores_00b_7cf6` (2 labels) |
+| `$7D2C` | 724 | graphics | `Gfx_HighScores_00b_7d2c` |
+
+## Bank $0C
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 864 | data | (no label) |
+| `$4360` | 2376 | data | `PowerupMap_Level050` to `PowerupMap_Level123` (160 labels) |
+| `$4CA8` | 6 | data | `LevelPasswordData_00c_4ca8` |
+| `$4CAE` | 62 | data | `Text_English_LevelPassword` |
+| `$4CEC` | 62 | data | `Text_French_LevelPassword` |
+| `$4D2A` | 62 | data | `Text_Spanish_LevelPassword` |
+| `$4D68` | 62 | data | `Text_German_LevelPassword` |
+| `$4DA6` | 62 | data | `Text_Italian_LevelPassword` |
+| `$4DE4` | 2096 | graphics | `Gfx_LevelPassword_00c_4de4` |
+| `$5614` | 10732 | data | `Tilemap_LevelPassword_00c_5614` to `Tilemap_LevelPassword_00c_577c` (2 labels) |
+
+## Bank $0D
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 2128 | graphics | `Gfx_ColorOnly_00d_4000` to `Gfx_ColorOnly_00d_4800` (2 labels) |
+| `$4850` | 360 | data | `Tilemap_ColorOnly_00d_4850` |
+| `$49B8` | 1944 | graphics | `Gfx_LanguageSelect_00d_49b8` |
+| `$5150` | 11952 | data | `Tilemap_LanguageSelect_00d_5150` |
+
+## Bank $0E
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 14 | data | `Text_Version` |
+| `$400E` | 120 | data | `Text_Spanish_StartGame` to `Text_Spanish_SfxOff` (7 labels) |
+| `$4086` | 120 | data | `Text_English_StartGame` to `Text_English_SfxOff` (7 labels) |
+| `$40FE` | 120 | data | `Text_French_StartGame` to `Text_French_SfxOff` (7 labels) |
+| `$4176` | 120 | data | `Text_German_StartGame` to `Text_German_SfxOff` (7 labels) |
+| `$41EE` | 122 | data | `Text_Italian_StartGame` to `Text_Italian_SfxOff` (7 labels) |
+| `$4268` | 21 | data | `PowerupText_English_MultiBall` |
+| `$427D` | 21 | data | `PowerupText_French_MultiBall` |
+| `$4292` | 21 | data | `PowerupText_German_MultiBall` |
+| `$42A7` | 21 | data | `PowerupText_Italian_MultiBall` |
+| `$42BC` | 21 | data | `PowerupText_Spanish_MultiBall` |
+| `$42D1` | 21 | data | `PowerupText_English_SlowBall` |
+| `$42E6` | 21 | data | `PowerupText_French_SlowBall` |
+| `$42FB` | 21 | data | `PowerupText_German_SlowBall` |
+| `$4310` | 21 | data | `PowerupText_Italian_SlowBall` |
+| `$4325` | 21 | data | `PowerupText_Spanish_SlowBall` |
+| `$433A` | 21 | data | `PowerupText_English_AntigravityBall` |
+| `$434F` | 21 | data | `PowerupText_French_AntigravityBall` |
+| `$4364` | 21 | data | `PowerupText_German_AntigravityBall` |
+| `$4379` | 21 | data | `PowerupText_Italian_AntigravityBall` |
+| `$438E` | 21 | data | `PowerupText_Spanish_AntigravityBall` |
+| `$43A3` | 21 | data | `PowerupText_English_SleepyBall` |
+| `$43B8` | 21 | data | `PowerupText_French_SleepyBall` |
+| `$43CD` | 21 | data | `PowerupText_German_SleepyBall` |
+| `$43E2` | 21 | data | `PowerupText_Italian_SleepyBall` |
+| `$43F7` | 21 | data | `PowerupText_Spanish_SleepyBall` |
+| `$440C` | 21 | data | `PowerupText_English_RocketBat` |
+| `$4421` | 21 | data | `PowerupText_French_RocketBat` |
+| `$4436` | 21 | data | `PowerupText_German_RocketBat` |
+| `$444B` | 21 | data | `PowerupText_Italian_RocketBat` |
+| `$4460` | 21 | data | `PowerupText_Spanish_RocketBat` |
+| `$4475` | 21 | data | `PowerupText_English_PlasmaBat` |
+| `$448A` | 21 | data | `PowerupText_French_PlasmaBat` |
+| `$449F` | 21 | data | `PowerupText_German_PlasmaBat` |
+| `$44B4` | 21 | data | `PowerupText_Italian_PlasmaBat` |
+| `$44C9` | 21 | data | `PowerupText_Spanish_PlasmaBat` |
+| `$44DE` | 21 | data | `PowerupText_English_BigBat` |
+| `$44F3` | 21 | data | `PowerupText_French_BigBat` |
+| `$4508` | 21 | data | `PowerupText_German_BigBat` |
+| `$451D` | 21 | data | `PowerupText_Italian_BigBat` |
+| `$4532` | 21 | data | `PowerupText_Spanish_BigBat` |
+| `$4547` | 21 | data | `PowerupText_English_StunBat` |
+| `$455C` | 21 | data | `PowerupText_French_StunBat` |
+| `$4571` | 21 | data | `PowerupText_German_StunBat` |
+| `$4586` | 21 | data | `PowerupText_Italian_StunBat` |
+| `$459B` | 21 | data | `PowerupText_Spanish_StunBat` |
+| `$45B0` | 21 | data | `PowerupText_English_MagneticBat` |
+| `$45C5` | 21 | data | `PowerupText_French_MagneticBat` |
+| `$45DA` | 21 | data | `PowerupText_German_MagneticBat` |
+| `$45EF` | 21 | data | `PowerupText_Italian_MagneticBat` |
+| `$4604` | 21 | data | `PowerupText_Spanish_MagneticBat` |
+| `$4619` | 21 | data | `PowerupText_English_ExtraLife` |
+| `$462E` | 21 | data | `PowerupText_French_ExtraLife` |
+| `$4643` | 21 | data | `PowerupText_German_ExtraLife` |
+| `$4658` | 21 | data | `PowerupText_Italian_ExtraLife` |
+| `$466D` | 21 | data | `PowerupText_Spanish_ExtraLife` |
+| `$4682` | 21 | data | `PowerupText_English_LazerBat` |
+| `$4697` | 21 | data | `PowerupText_French_LazerBat` |
+| `$46AC` | 21 | data | `PowerupText_German_LazerBat` |
+| `$46C1` | 21 | data | `PowerupText_Italian_LazerBat` |
+| `$46D6` | 21 | data | `PowerupText_Spanish_LazerBat` |
+| `$46EB` | 21 | data | `PowerupText_English_ReverseBat` |
+| `$4700` | 21 | data | `PowerupText_French_ReverseBat` |
+| `$4715` | 21 | data | `PowerupText_German_ReverseBat` |
+| `$472A` | 21 | data | `PowerupText_Italian_ReverseBat` |
+| `$473F` | 21 | data | `PowerupText_Spanish_ReverseBat` |
+| `$4754` | 21 | data | `PowerupText_English_GhostUp` |
+| `$4769` | 21 | data | `PowerupText_French_GhostUp` |
+| `$477E` | 21 | data | `PowerupText_German_GhostUp` |
+| `$4793` | 21 | data | `PowerupText_Italian_GhostUp` |
+| `$47A8` | 21 | data | `PowerupText_Spanish_GhostUp` |
+| `$47BD` | 21 | data | `PowerupText_English_GrenadeBat` |
+| `$47D2` | 21 | data | `PowerupText_French_GrenadeBat` |
+| `$47E7` | 21 | data | `PowerupText_German_GrenadeBat` |
+| `$47FC` | 21 | data | `PowerupText_Italian_GrenadeBat` |
+| `$4811` | 21 | data | `PowerupText_Spanish_GrenadeBat` |
+| `$4826` | 21 | data | `PowerupText_English_NinjaUp` |
+| `$483B` | 21 | data | `PowerupText_French_NinjaUp` |
+| `$4850` | 21 | data | `PowerupText_German_NinjaUp` |
+| `$4865` | 21 | data | `PowerupText_Italian_NinjaUp` |
+| `$487A` | 71 | data | `PowerupText_Spanish_NinjaUp` |
+| `$48C1` | 6352 | graphics | `Gfx_Pause_00e_48c1` |
+| `$6191` | 720 | data | `Tilemap_Pause_00e_6191` to `Tilemap_Pause_00e_62f9` (2 labels) |
+| `$6461` | 150 | data | `Text_English_Ending` |
+| `$64F7` | 150 | data | `Text_French_Ending` |
+| `$658D` | 150 | data | `Text_German_Ending` |
+| `$6623` | 150 | data | `Text_Italian_Ending` |
+| `$66B9` | 150 | data | `Text_Spanish_Ending` |
+| `$674F` | 5584 | graphics | `Gfx_Ending_00e_674f` |
+| `$7D1F` | 737 | data | `Tilemap_Ending_00e_7d1f` to `Tilemap_Ending_00e_7e87` (2 labels) |
+
+## Bank $0F
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 256 | code | `SetUpRasterEffect` |
+| `$4100` | 46 | code | `Raster_CopyBytes` to `Raster_Sub4128` (5 labels) |
+| `$412E` | 82 | data | `RasterHandler_412e` |
+| `$4180` | 92 | data | `RasterData_4180` |
+| `$41DC` | 56 | data | `RasterHandler_41dc` |
+| `$4214` | 2160 | data | `RasterData_4214` to `RasterData_4964` (8 labels) |
+| `$4A84` | 13692 | data | `Credits_English` to `Credits_Spanish` (5 labels) |
+
+## Bank $10
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 374 | data | (no label) |
+| `$4176` | 16010 | data | `IsThisTheOne` |
+
+## Bank $11
+
+No labels. 16384 bytes of unlabelled data.
+
+## Bank $12
+
+No labels. 16384 bytes of unlabelled data.
+
+## Bank $13
+
+No labels. 16384 bytes of unlabelled data.
+
+## Bank $14
+
+No labels. 16384 bytes of unlabelled data.
+
+## Bank $15
+
+No labels. 16384 bytes of unlabelled data.
+
+## Bank $16
+
+No labels. 16384 bytes of unlabelled data.
+
+## Bank $17
+
+No labels. 16384 bytes of unlabelled data.
+
+## Bank $18
+
+No labels. 16384 bytes of unlabelled data.
+
+## Bank $19
+
+No labels. 16384 bytes of unlabelled data.
+
+## Bank $1A
+
+No labels. 16384 bytes of unlabelled data.
+
+## Bank $1B
+
+No labels. 16384 bytes of unlabelled data.
+
+## Bank $1C
+
+No labels. 16384 bytes of unlabelled data.
+
+## Bank $1D
+
+No labels. 16384 bytes of unlabelled data.
+
+## Bank $1E
+
+No labels. 16384 bytes of unlabelled data.
+
+## Bank $1F
+
+No labels. 16384 bytes of unlabelled data.
+
+## Bank $20
+
+No labels. 16368 bytes of unlabelled data.
+
+Banks that are not listed have no content in the sources and are filled with zeros.
