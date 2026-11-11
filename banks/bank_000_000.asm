@@ -384,7 +384,7 @@ jr_000_0317:
     inc [hl]
 
 jr_000_0328:
-    ld hl, $745e
+    ld hl, Data_001_745e
     call DrawString
     jr jr_000_0361
 
@@ -513,7 +513,7 @@ VBlankMenus:
     call ChangeROMBank
     xor a
     ld de, $9800
-    ld hl, $6d74
+    ld hl, Data_002_6d74
     ld b, $14
     ld c, $04
     call CopyTilemapRect
@@ -530,7 +530,7 @@ jr_000_03ec:
     call ChangeROMBank
     ld a, $25
     ld de, $9800
-    ld hl, $6c0c
+    ld hl, Data_002_6c0c
     ld b, $14
     ld c, $04
     call CopyTilemapRect
@@ -866,7 +866,7 @@ StateInit_HighScores:
     ld [$ff9a], a
     ld a, $fc
     ldh [rSCX], a
-    ld de, $40b0
+    ld de, Data_001_40b0
     call Call_000_0061
     ld hl, $9800
     call ClearTileMap
@@ -887,7 +887,7 @@ StateInit_HighScores:
     call DrawHighScoreTable
     ld a, $0b
     call ChangeROMBank
-    ld hl, $7d2c
+    ld hl, Data_00b_7d2c
     ld de, $8b40
     ld bc, $0090
     call DataTransfer
@@ -895,7 +895,7 @@ StateInit_HighScores:
     call ChangeROMBank
     ld a, $26
     ld de, $9800
-    ld hl, $7cc0
+    ld hl, Data_00b_7cc0
     ld b, $12
     ld c, $03
     call CopyTilemapRect
@@ -904,7 +904,7 @@ StateInit_HighScores:
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, $7cf6
+    ld hl, Data_00b_7cf6
     ld b, $12
     ld c, $03
     call CopyTilemapRect
@@ -942,7 +942,7 @@ StateInit_HighScores:
     ld [$cb54], a
     ld a, $40
     ld [$cb55], a
-    ld hl, $79ba
+    ld hl, Data_001_79ba
     ld a, l
     ld [$cb56], a
     ld a, h
@@ -953,6 +953,7 @@ StateInit_HighScores:
     ld [$c95c], a
     ret
 
+HighScores_Update:
     call Call_001_7899
     call Call_001_78fd
     ld a, [$ccb7]
@@ -1481,7 +1482,7 @@ jr_000_0995:
     ld a, [wPasswordByteX]
     swap a
     and $0f
-    ld hl, $4000
+    ld hl, PasswordAlphabet
     ld c, a
     ld b, $00
     add hl, bc
@@ -1490,7 +1491,7 @@ jr_000_0995:
     inc de
     ld a, [wPasswordByteY]
     and $0f
-    ld hl, $4000
+    ld hl, PasswordAlphabet
     ld c, a
     ld b, $00
     add hl, bc
@@ -1499,7 +1500,7 @@ jr_000_0995:
     inc de
     ld a, [wPasswordByteX]
     and $0f
-    ld hl, $4000
+    ld hl, PasswordAlphabet
     ld c, a
     ld b, $00
     add hl, bc
@@ -1509,7 +1510,7 @@ jr_000_0995:
     ld a, [wPasswordByteY]
     swap a
     and $0f
-    ld hl, $4000
+    ld hl, PasswordAlphabet
     ld c, a
     ld b, $00
     add hl, bc
@@ -1527,7 +1528,7 @@ jr_000_0995:
 CheckPassword:
     ld a, [de]
 
-    ld hl, $4000
+    ld hl, PasswordAlphabet
     ld c, $00
     ld b, $10
 
@@ -1548,7 +1549,7 @@ jr_000_0a0b:
     ld [wPasswordByteX], a
     inc de
     ld a, [de]
-    ld hl, $4000
+    ld hl, PasswordAlphabet
     ld c, $00
     ld b, $10
 
@@ -1568,7 +1569,7 @@ jr_000_0a23:
     ld [wPasswordByteY], a
     inc de
     ld a, [de]
-    ld hl, $4000
+    ld hl, PasswordAlphabet
     ld c, $00
     ld b, $10
 
@@ -1589,7 +1590,7 @@ jr_000_0a39:
     ld [wPasswordByteX], a
     inc de
     ld a, [de]
-    ld hl, $4000
+    ld hl, PasswordAlphabet
     ld c, $00
     ld b, $10
 
@@ -1759,7 +1760,7 @@ LoadLevel:
     add hl, hl
     add hl, hl
     add hl, hl
-    ld de, $4000
+    ld de, Data_001_4000
     add hl, de
     ld a, $05
     call ChangeROMBank
@@ -1771,7 +1772,7 @@ LoadLevel:
     or a
     jr z, jr_000_0b49
 
-    ld de, $48ea
+    ld de, Background_48ea
 
 jr_000_0b49:
     push de
@@ -1799,7 +1800,7 @@ jr_000_0b49:
     ld de, $c95d
     ld bc, $0040
     call DataTransfer
-    ld hl, $4630
+    ld hl, Data_001_4630
     ld de, $c99d
     ld bc, $0040
     call DataTransfer
@@ -1808,7 +1809,7 @@ jr_000_0b49:
     or a
     jr z, jr_000_0b81
 
-    ld hl, $4830
+    ld hl, BrickPalette_4830
 
 jr_000_0b81:
     ld de, $c95d
@@ -1842,7 +1843,7 @@ jr_000_0b81:
     call ClearTileMap
     ld a, $08
     call ChangeROMBank
-    ld de, $4000
+    ld de, BrickLayout_Base
     ld hl, wBrickMap
     call RleFill
     pop hl
@@ -1857,7 +1858,7 @@ jr_000_0b81:
     call ChangeROMBank
     ld hl, wBrickMap
     call RleOverlay
-    ld de, $4000
+    ld de, BrickLayout_Base
     ld hl, wBrickMap
     call RleOverlay
     pop hl
@@ -1908,7 +1909,7 @@ jr_000_0c41:
     ldh [rVBK], a
     ld a, $03
     call ChangeROMBank
-    ld hl, $4000
+    ld hl, Data_003_4000
     ld a, $00
     ld de, $9841
     ld b, $12
@@ -1943,21 +1944,21 @@ jr_000_0c9a:
     ldh [rVBK], a
     ld a, $02
     call ChangeROMBank
-    ld hl, $4b2c
+    ld hl, Data_002_4b2c
     ld de, $8000
     ld bc, $07f0
     call DataTransfer
-    ld hl, $5dec
+    ld hl, Data_002_5dec
     ld de, $9000
     ld bc, $0250
     call DataTransfer
-    ld hl, $594c
+    ld hl, Data_002_594c
     ld de, $9250
     ld bc, $04a0
     call DataTransfer
     ld a, $0b
     call ChangeROMBank
-    ld hl, $7d2c
+    ld hl, Data_00b_7d2c
     ld de, $96f0
     ld bc, $0110
     call DataTransfer
@@ -1985,7 +1986,7 @@ jr_000_0c9a:
     call DataTransfer
     ld a, $02
     call ChangeROMBank
-    ld hl, $531c
+    ld hl, Data_002_531c
     ld de, $8000
     ld bc, $0630
     call DataTransfer
@@ -1999,19 +2000,19 @@ jr_000_0c9a:
 
     ld a, $25
     ld de, $9840
-    ld hl, $748b
+    ld hl, Data_001_748b
     ld b, $01
     ld c, $10
     call CopyTilemapRect
     ld a, $25
     ld de, $9853
-    ld hl, $748b
+    ld hl, Data_001_748b
     ld b, $01
     ld c, $10
     call CopyTilemapRect
     ld a, $25
     ld de, $9820
-    ld hl, $7477
+    ld hl, Data_001_7477
     ld b, $14
     ld c, $01
     call CopyTilemapRect
@@ -4039,13 +4040,13 @@ BatBounceLookup:
     add a
     ld c, a
     ld b, $00
-    ld hl, $5f8d
+    ld hl, Data_001_5f8d
     ld de, $0040
     ld a, [wBatWidth]
     cp $20
     jr z, jr_000_18f2
 
-    ld hl, $600d
+    ld hl, Data_001_600d
     ld de, $0050
 
 jr_000_18f2:
@@ -4070,10 +4071,10 @@ UpdateBatExplosion:
     ld [wBatExplosionTimer], a
     ld e, a
     ld d, $00
-    ld hl, $6157
+    ld hl, Data_001_6157
     add hl, de
     ld e, [hl]
-    ld hl, $60ad
+    ld hl, Data_001_60ad
     add hl, de
     ld d, h
     ld e, l
@@ -4527,7 +4528,7 @@ jr_000_1b70:
     ld a, [wHitRedrawIndex]
     ld e, a
     ld d, $00
-    ld hl, $79de
+    ld hl, BrickRedrawHandlers
     add hl, de
     ld a, [hl+]
     ld h, [hl]
@@ -4982,7 +4983,7 @@ jr_000_1dbd:
     cp $ff
     jr nz, jr_000_1dc6
 
-    ld hl, $4000
+    ld hl, Data_009_4000
     ld a, [hl+]
 
 jr_000_1dc6:
@@ -5043,7 +5044,7 @@ jr_000_1e0c:
     dec c
     jr nz, jr_000_1dfa
 
-    ld hl, $4000
+    ld hl, Data_001_4000
     ld a, l
     ld [$dab3], a
     ld a, h
@@ -5340,7 +5341,7 @@ StateInit_MainMenu:
     ldh [rSCX], a
     ldh [rSCY], a
     ld [$c959], a
-    ld de, $4000
+    ld de, Data_001_4000
     call Call_000_0061
     ld hl, $9800
     call ClearTileMap
@@ -5350,17 +5351,17 @@ StateInit_MainMenu:
     ldh [rVBK], a
     xor a
     ld de, $9880
-    ld hl, $6dc4
+    ld hl, Data_002_6dc4
     ld b, $14
     ld c, $0e
     call CopyTilemapRect
     xor a
     ldh [rVBK], a
-    ld hl, $6edc
+    ld hl, Data_002_6edc
     ld de, $8000
     ld bc, $04c0
     call DataTransfer
-    ld hl, $603c
+    ld hl, Data_002_603c
     ld de, $9000
     ld bc, $0800
     call DataTransfer
@@ -5375,7 +5376,7 @@ StateInit_MainMenu:
     ld a, $25
     ld de, $9880
 
-    ld hl, $6c5c
+    ld hl, Data_002_6c5c
     ld b, $14
     ld c, $0e
     call CopyTilemapRect
@@ -5438,7 +5439,7 @@ jr_000_2074:
     or a
     jr z, jr_000_2083
 
-    ld hl, $4000
+    ld hl, Data_00e_4000
     call DrawString
 
 jr_000_2083:
@@ -5526,6 +5527,7 @@ jr_000_20f6:
 jr_000_20f9:
     ret
 
+MainMenu_Update:
     call Call_001_7238
     ld a, [$ff9e]
     or a
@@ -6270,13 +6272,13 @@ StateInit_TitleScreen:
     ld [$ff9a], a
     xor a
     ldh [rSCX], a
-    ld de, $4130
+    ld de, Data_001_4130
     call Call_000_0061
     ld a, $07
     call ChangeROMBank
     ld a, $01
     ldh [rVBK], a
-    ld hl, $4000
+    ld hl, Data_007_4000
     ld de, $9000
     ld bc, $0800
     call DataTransfer
@@ -6290,7 +6292,7 @@ StateInit_TitleScreen:
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, $5dac
+    ld hl, Data_007_5dac
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -6298,7 +6300,7 @@ StateInit_TitleScreen:
     or a
     jr z, jr_000_25cf
 
-    ld hl, $5f14
+    ld hl, Data_007_5f14
     ld de, $9a20
     xor a
     ld b, $14
@@ -6318,32 +6320,32 @@ jr_000_25cf:
     ld bc, $0620
     call DataTransfer
     ld a, [wLanguage]
-    ld hl, $6538
+    ld hl, Data_007_6538
     dec a
     jr z, jr_000_2605
 
-    ld hl, $67b8
+    ld hl, Data_007_67b8
     dec a
     jr z, jr_000_2605
 
-    ld hl, $6678
+    ld hl, Data_007_6678
     dec a
     jr z, jr_000_2605
 
-    ld hl, $68f8
+    ld hl, Data_007_68f8
 
 jr_000_2605:
     ld de, $8e20
     ld bc, $0140
     call DataTransfer
-    ld hl, $5f28
+    ld hl, Data_007_5f28
     ld de, $8000
     ld bc, $0540
     call DataTransfer
     xor a
     ld [$dab5], a
     ld de, $9800
-    ld hl, $5c30
+    ld hl, Data_007_5c30
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -6351,7 +6353,7 @@ jr_000_2605:
     or a
     jr z, jr_000_2640
 
-    ld hl, $5d98
+    ld hl, Data_007_5d98
     ld a, $e2
     ld de, $9a20
     ld b, $14
@@ -6378,6 +6380,7 @@ jr_000_2661:
     call Call_001_6e25
     ret
 
+TitleScreen_Update:
     ld a, [hGameState]
     cp $01
     jr z, jr_000_2683
@@ -6419,13 +6422,13 @@ jr_000_2692:
     xor a
     ld [$dae1], a
     ldh [rSCX], a
-    ld de, $41b0
+    ld de, Data_001_41b0
     call Call_000_0061
     ld a, $05
     call ChangeROMBank
     ld a, $01
     ldh [rVBK], a
-    ld hl, $496c
+    ld hl, Data_005_496c
     ld de, $9000
     ld bc, $0800
     call DataTransfer
@@ -6435,7 +6438,7 @@ jr_000_2692:
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, $63a4
+    ld hl, Data_005_63a4
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -6451,7 +6454,7 @@ jr_000_2692:
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, $623c
+    ld hl, Data_005_623c
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -6487,7 +6490,7 @@ Call_000_271b:
     ld a, $3c
     add b
     ld [$dc1f], a
-    ld hl, $4f4b
+    ld hl, Data_001_4f4b
     ld de, wBlob
     call Call_000_2869
     xor a
@@ -6520,7 +6523,7 @@ UpdateBlob:
     or a
     jr z, jr_000_27f3
 
-    ld hl, $4fd7
+    ld hl, Data_001_4fd7
     ld a, [$dc17]
     and $01
     ld e, a
@@ -6580,12 +6583,12 @@ jr_000_27b0:
     jr jr_000_27eb
 
 jr_000_27e0:
-    ld hl, $4f26
+    ld hl, Data_001_4f26
     add hl, de
     ld l, [hl]
     ld h, d
     ld a, $24
-    ld de, $4e6e
+    ld de, Data_001_4e6e
 
 jr_000_27eb:
     call SpawnProjectile
@@ -6593,12 +6596,12 @@ jr_000_27eb:
     call PlaySound
 
 jr_000_27f3:
-    ld hl, $4f57
+    ld hl, Data_001_4f57
     ld a, [wGhostActive]
     or a
     jr z, jr_000_27ff
 
-    ld hl, $4f97
+    ld hl, Data_001_4f97
 
 jr_000_27ff:
     ld a, [$dc17]
@@ -6663,7 +6666,7 @@ jr_000_2831:
     ld a, [$c2b5]
     add $04
     ld [$c2b5], a
-    ld bc, $4f4b
+    ld bc, Data_001_4f4b
     ld hl, wBlob
     call UpdateEnemyPath
     ret
@@ -6977,10 +6980,10 @@ jr_000_29f5:
 jr_000_2a00:
     ld e, a
     ld d, $00
-    ld hl, $4b21
+    ld hl, Data_001_4b21
     add hl, de
     ld e, [hl]
-    ld hl, $4a68
+    ld hl, Data_001_4a68
     add hl, de
     ld d, h
     ld e, l
@@ -7048,7 +7051,7 @@ jr_000_2a5e:
     jr nc, jr_000_2a6c
 
     ld a, $24
-    ld hl, $4e6e
+    ld hl, Data_001_4e6e
     jr jr_000_2ab3
 
 jr_000_2a6c:
@@ -7220,12 +7223,12 @@ Jump_000_2b81:
     ld h, a
     add hl, de
     ld e, [hl]
-    ld hl, $49c0
+    ld hl, Data_001_49c0
     ld a, [$dbe9]
     bit 7, a
     jr z, jr_000_2b9b
 
-    ld hl, $4a14
+    ld hl, Data_001_4a14
 
 jr_000_2b9b:
     add hl, de
@@ -7658,7 +7661,7 @@ jr_000_2e24:
     ld a, [wUfoHeight]
     add $08
     ld b, a
-    ld de, $4ff7
+    ld de, Data_001_4ff7
     ld a, $05
     ld [$ff8d], a
 
@@ -8428,7 +8431,7 @@ jr_000_32b5:
     add a
     ld l, a
     ld h, $00
-    ld de, $5812
+    ld de, Data_001_5812
     add hl, de
     xor a
     ld [wGrenadePower], a
@@ -8677,17 +8680,17 @@ UpdateShot0:
     cp $02
     jr z, jr_000_349c
 
-    ld bc, $5468
+    ld bc, Data_001_5468
     ld a, [$dc51]
     or a
     jr z, jr_000_34a5
 
-    ld bc, $5474
+    ld bc, Data_001_5474
     ld e, $02
     jr jr_000_34a5
 
 jr_000_349c:
-    ld bc, $546e
+    ld bc, Data_001_546e
     ld a, [$dc4e]
     ld [$d8bb], a
 
@@ -8830,17 +8833,17 @@ UpdateShot1:
     cp $02
     jr z, jr_000_358e
 
-    ld bc, $5468
+    ld bc, Data_001_5468
     ld a, [$dc55]
     or a
     jr z, jr_000_3597
 
-    ld bc, $5474
+    ld bc, Data_001_5474
     ld e, $02
     jr jr_000_3597
 
 jr_000_358e:
-    ld bc, $546e
+    ld bc, Data_001_546e
     ld a, [$dc52]
     ld [$d8bb], a
 
@@ -9471,13 +9474,13 @@ StateInit_Pause:
     xor a
     ld [$dae1], a
     ldh [rSCX], a
-    ld de, $4230
+    ld de, Data_001_4230
     call Call_000_0061
     ld a, $0e
     call ChangeROMBank
     ld a, $01
     ldh [rVBK], a
-    ld hl, $48c1
+    ld hl, Data_00e_48c1
     ld de, $9000
     ld bc, $0800
     call DataTransfer
@@ -9487,7 +9490,7 @@ StateInit_Pause:
     call DataTransfer
     xor a
     ld de, $9c00
-    ld hl, $62f9
+    ld hl, Data_00e_62f9
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -9503,7 +9506,7 @@ StateInit_Pause:
     call DataTransfer
     xor a
     ld de, $9c00
-    ld hl, $6191
+    ld hl, Data_00e_6191
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -9538,7 +9541,7 @@ StateInit_DeveloperLogos:
     ld [$ff9a], a
     xor a
     ldh [rSCX], a
-    ld de, $42b0
+    ld de, Data_001_42b0
     call Call_000_0061
     ld a, $02
     call ChangeROMBank
@@ -9546,7 +9549,7 @@ StateInit_DeveloperLogos:
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, $7df4
+    ld hl, Data_002_7df4
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -9563,7 +9566,7 @@ StateInit_DeveloperLogos:
     xor a
     ld [$dae1], a
     ld de, $9800
-    ld hl, $7c8c
+    ld hl, Data_002_7c8c
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -9596,7 +9599,7 @@ StateInit_PublisherLogo:
     ld [$ff9a], a
     xor a
     ldh [rSCX], a
-    ld de, $4330
+    ld de, Data_001_4330
     call Call_000_0061
     ld a, $03
     call ChangeROMBank
@@ -9604,23 +9607,23 @@ StateInit_PublisherLogo:
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, $5418
+    ld hl, Data_003_5418
     ld b, $14
     ld c, $12
     call CopyTilemapRect
     xor a
     ldh [rVBK], a
-    ld hl, $4a20
+    ld hl, Data_003_4a20
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $5220
+    ld hl, Data_003_5220
     ld de, $8800
     ld bc, $0090
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, $52b0
+    ld hl, Data_003_52b0
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -9628,6 +9631,7 @@ StateInit_PublisherLogo:
     call ChangeROMBank
     ret
 
+PublisherLogo_Update:
     ld a, [$ff91]
     or a
     jr z, jr_000_3ae3
@@ -9669,7 +9673,7 @@ StateInit_Credits:
     ldh [rVBK], a
     xor a
     ldh [rVBK], a
-    ld hl, $650c
+    ld hl, Data_005_650c
     ld de, $9000
     ld bc, $0800
     call DataTransfer
@@ -9874,7 +9878,7 @@ StateInit_LevelPassword:
     ld [$ff9c], a
     ld a, $01
     ld [$ff9a], a
-    ld de, $4430
+    ld de, Data_001_4430
     call Call_000_0061
     ld a, $0c
     call ChangeROMBank
@@ -9885,14 +9889,14 @@ StateInit_LevelPassword:
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, $577c
+    ld hl, Data_00c_577c
     ld b, $14
     ld c, $12
     call CopyTilemapRect
     xor a
     ld [$dae1], a
     ldh [rVBK], a
-    ld hl, $4de4
+    ld hl, Data_00c_4de4
     ld de, $9000
     ld bc, $0790
     call DataTransfer
@@ -9906,11 +9910,11 @@ StateInit_LevelPassword:
     call DataTransfer
     ld a, $26
     ld de, $9800
-    ld hl, $5614
+    ld hl, Data_00c_5614
     ld b, $14
     ld c, $12
     call CopyTilemapRect
-    ld hl, $4ca8
+    ld hl, Data_00c_4ca8
     ld de, $dd03
     ld bc, $0006
     call DataTransfer
@@ -9924,7 +9928,7 @@ StateInit_LevelPassword:
     call DataTransfer
     ld a, $01
     call ChangeROMBank
-    ld hl, $6784
+    ld hl, Data_001_6784
     ld a, l
     ld [$dd09], a
     ld a, h
@@ -10007,17 +10011,17 @@ jr_000_3d1d:
     call DrawString
     ld a, $2d
     ld [$dd4b], a
-    ld hl, $67ad
+    ld hl, Data_001_67ad
     ld a, l
     ld [$dd60], a
     ld a, h
     ld [$dd61], a
-    ld hl, $67bc
+    ld hl, Data_001_67bc
     ld a, l
     ld [$dd6f], a
     ld a, h
     ld [$dd70], a
-    ld hl, $67cb
+    ld hl, Data_001_67cb
     ld a, l
     ld [$dd7e], a
     ld a, h
@@ -10043,7 +10047,7 @@ jr_000_3d1d:
     ld [$dd8b], a
     ld a, h
     ld [$dd8c], a
-    ld hl, $6543
+    ld hl, Data_001_6543
     ld de, $de81
     ld bc, $0037
     call DataTransfer
@@ -10062,7 +10066,7 @@ StateInit_LanguageSelect:
     ld [$ff9a], a
     xor a
     ldh [rSCX], a
-    ld de, $43b0
+    ld de, Data_001_43b0
     call Call_000_0061
     ld a, $0d
     call ChangeROMBank
@@ -10070,7 +10074,7 @@ StateInit_LanguageSelect:
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, $5150
+    ld hl, Data_00d_5150
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -10079,7 +10083,7 @@ StateInit_LanguageSelect:
     ld [$defd], a
     ld [$defe], a
     ldh [rVBK], a
-    ld hl, $49b8
+    ld hl, Data_00d_49b8
     ld de, $9000
     ld bc, $0630
     call DataTransfer
@@ -10153,7 +10157,7 @@ StateInit_Copyright:
     ld [$ff9a], a
     xor a
     ldh [rSCX], a
-    ld de, $4530
+    ld de, Data_001_4530
     call Call_000_0061
     ld a, $03
     call ChangeROMBank
@@ -10161,19 +10165,19 @@ StateInit_Copyright:
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, $5e98
+    ld hl, Data_003_5e98
     ld b, $14
     ld c, $12
     call CopyTilemapRect
     xor a
     ldh [rVBK], a
-    ld hl, $5580
+    ld hl, Data_003_5580
     ld de, $9000
     ld bc, $07b0
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, $5d30
+    ld hl, Data_003_5d30
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -10181,6 +10185,7 @@ StateInit_Copyright:
     call ChangeROMBank
     ret
 
+Copyright_Update:
     ld a, [$ff91]
     or a
     jr z, jr_000_3ef8
@@ -10211,14 +10216,14 @@ StateInit_Ending:
     ld [wLevelsSincePassword], a
     ld a, $01
     ld [$ff9a], a
-    ld de, $44b0
+    ld de, Data_001_44b0
     call Call_000_0061
     ld a, $0e
     ld [$dcff], a
     call ChangeROMBank
     ld a, $01
     ldh [rVBK], a
-    ld hl, $674f
+    ld hl, Data_00e_674f
     ld de, $9000
     ld bc, $0800
     call DataTransfer
@@ -10228,7 +10233,7 @@ StateInit_Ending:
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, $7e87
+    ld hl, Data_00e_7e87
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -10244,7 +10249,7 @@ StateInit_Ending:
     call DataTransfer
     ld a, $09
     ld de, $9800
-    ld hl, $7d1f
+    ld hl, Data_00e_7d1f
     ld b, $14
     ld c, $09
     call CopyTilemapRect

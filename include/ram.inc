@@ -37,6 +37,7 @@ DEF hJoypad                EQU $ff8a ; Buttons held. Bit 0 = right, 1 = left, 4 
 DEF hFrameCounter          EQU $ff8c ; Goes up by 1 every frame
 DEF hVBlankHandler         EQU $ff96 ; Address of the current VBlank handler
 DEF hStatHandler           EQU $ff98 ; Address of the current LCD STAT handler
+DEF hFrameHandler          EQU $ffa3 ; Address of the per-frame handler of the current state
 DEF hGameState             EQU $ff9f ; Game state, index into the state handler tables
 DEF wHighScoreTable        EQU $cb59 ; High score table as 13 strings for DrawString
 DEF wMusicOff              EQU $dabb ; Not 0 when music is turned off in the menu
