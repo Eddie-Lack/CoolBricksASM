@@ -2,7 +2,6 @@ SECTION "Interrupts", ROM0[$0]
 RST_00::
     reti
 
-
 Call_000_0001:
 Jump_000_0001:
     ld a, $0e
@@ -61,7 +60,6 @@ RST_30::
     ld [ROM_BANK], a
     ret
 
-
 RST_38::
     nop
     nop
@@ -79,7 +77,6 @@ Jump_000_003f:
 VBlankInterrupt::
     jp $ff92
 
-
     nop
     nop
     nop
@@ -89,7 +86,6 @@ VBlankInterrupt::
 LCDCInterrupt::
     jp $c35a
 
-
     nop
     nop
     nop
@@ -98,7 +94,6 @@ LCDCInterrupt::
 
 TimerOverflowInterrupt::
     reti
-
 
     nop
     nop
@@ -111,7 +106,6 @@ TimerOverflowInterrupt::
 SerialTransferCompleteInterrupt::
     reti
 
-
     nop
     nop
     nop
@@ -122,7 +116,6 @@ SerialTransferCompleteInterrupt::
 
 JoypadTransitionInterrupt::
     reti
-
 
 Call_000_0061:
     ld hl, $c9dd
@@ -187,7 +180,7 @@ jr_000_009e:
     ldh [rSVBK], a
     ret
 
-
+Jump_000_00a6:
     ld hl, $02b3
     ld a, l
     ld [$ff96], a
@@ -229,7 +222,6 @@ Call_000_00f0:
     ld a, $01
     call ChangeROMBank
     ret
-
 
     nop
     nop

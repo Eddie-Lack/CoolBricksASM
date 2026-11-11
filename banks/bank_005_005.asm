@@ -5,318 +5,696 @@
 
 SECTION "ROM Bank $005", ROMX[$4000], BANK[$5]
 
-    db $c0, $48, $4a, $46, $cc, $54, $0f, $47
+; Level table: one entry per level.
+; Background, level header, brick layout (bank 8), power-up map (bank $0C).
+LevelTable:
+    dw Background_48c0, LevelHeader_001, BrickLayout_Level001, PowerupMap_Level001
+    dw Background_48de, LevelHeader_002, BrickLayout_Level002, PowerupMap_Level002
+    dw Background_48e4, LevelHeader_003, BrickLayout_Level003, PowerupMap_Level003
+    dw Background_48c0, LevelHeader_004, BrickLayout_Level004, PowerupMap_Level004
+    dw Background_48de, LevelHeader_005, BrickLayout_Level005, PowerupMap_Level005
+    dw Background_48e4, LevelHeader_006, BrickLayout_Level006, PowerupMap_Level006
+    dw Background_48d8, LevelHeader_007, BrickLayout_Level007, PowerupMap_Level007
+    dw Background_48c0, LevelHeader_008, BrickLayout_Level008, PowerupMap_Level008
+    dw Background_48de, LevelHeader_009, BrickLayout_Level009, PowerupMap_Level009
+    dw Background_48e4, LevelHeader_010, BrickLayout_Level010, PowerupMap_Level010
+    dw Background_48c0, LevelHeader_011, BrickLayout_Level011, PowerupMap_Level011
+    dw Background_48de, LevelHeader_012, BrickLayout_Level012, PowerupMap_Level012
+    dw Background_48e4, LevelHeader_013, BrickLayout_Level013, PowerupMap_Level013
+    dw Background_48c0, LevelHeader_014, BrickLayout_Level014, PowerupMap_Level014
+    dw Background_48de, LevelHeader_015, BrickLayout_Level015, PowerupMap_Level015
+    dw Background_48e4, LevelHeader_016, BrickLayout_Level016, PowerupMap_Level016
+    dw Background_48c0, LevelHeader_017, BrickLayout_Level017, PowerupMap_Level017
+    dw Background_48de, LevelHeader_018, BrickLayout_Level018, PowerupMap_Level018
+    dw Background_48e4, LevelHeader_019, BrickLayout_Level019, PowerupMap_Level019
+    dw Background_48c0, LevelHeader_020, BrickLayout_Level020, PowerupMap_Level020
+    dw Background_48de, LevelHeader_021, BrickLayout_Level021, PowerupMap_Level021
+    dw Background_48e4, LevelHeader_022, BrickLayout_Level022, PowerupMap_Level022
+    dw Background_48c0, LevelHeader_023, BrickLayout_Level023, PowerupMap_Level023
+    dw Background_48de, LevelHeader_024, BrickLayout_Level024, PowerupMap_Level024
+    dw Background_48e4, LevelHeader_025, BrickLayout_Level025, PowerupMap_Level025
+    dw Background_48c0, LevelHeader_026, BrickLayout_Level026, PowerupMap_Level026
+    dw Background_48de, LevelHeader_027, BrickLayout_Level027, PowerupMap_Level027
+    dw Background_48e4, LevelHeader_028, BrickLayout_Level028, PowerupMap_Level028
+    dw Background_48c0, LevelHeader_029, BrickLayout_Level029, PowerupMap_Level029
+    dw Background_48de, LevelHeader_030, BrickLayout_Level030, PowerupMap_Level030
+    dw Background_48e4, LevelHeader_031, BrickLayout_Level031, PowerupMap_Level031
+    dw Background_48c0, LevelHeader_032, BrickLayout_Level032, PowerupMap_Level032
+    dw Background_48de, LevelHeader_033, BrickLayout_Level033, PowerupMap_Level033
+    dw Background_48e4, LevelHeader_034, BrickLayout_Level034, PowerupMap_Level034
+    dw Background_48c0, LevelHeader_035, BrickLayout_Level035, PowerupMap_Level035
+    dw Background_48de, LevelHeader_036, BrickLayout_Level036, PowerupMap_Level036
+    dw Background_48e4, LevelHeader_037, BrickLayout_Level037, PowerupMap_Level037
+    dw Background_48c0, LevelHeader_038, BrickLayout_Level038, PowerupMap_Level038
+    dw Background_48de, LevelHeader_039, BrickLayout_Level039, PowerupMap_Level039
+    dw Background_48e4, LevelHeader_040, BrickLayout_Level040, PowerupMap_Level040
+    dw Background_48c0, LevelHeader_041, BrickLayout_Level041, PowerupMap_Level041
+    dw Background_48de, LevelHeader_042, BrickLayout_Level042, PowerupMap_Level042
+    dw Background_48e4, LevelHeader_043, BrickLayout_Level043, PowerupMap_Level043
+    dw Background_48c0, LevelHeader_044, BrickLayout_Level044, PowerupMap_Level044
+    dw Background_48de, LevelHeader_045, BrickLayout_Level045, PowerupMap_Level045
+    dw Background_48e4, LevelHeader_046, BrickLayout_Level046, PowerupMap_Level046
+    dw Background_48c0, LevelHeader_047, BrickLayout_Level047, PowerupMap_Level047
+    dw Background_48de, LevelHeader_048, BrickLayout_Level048, PowerupMap_Level048
+    dw Background_48e4, LevelHeader_049, BrickLayout_Level049, PowerupMap_Level049
+    dw Background_48c0, LevelHeader_050, BrickLayout_Level050, PowerupMap_Level050
+    dw Background_48de, LevelHeader_051, BrickLayout_Level051, PowerupMap_Level051
+    dw Background_48e4, LevelHeader_052, BrickLayout_Level052, PowerupMap_Level052
+    dw Background_48c0, LevelHeader_053, BrickLayout_Level053, PowerupMap_Level053
+    dw Background_48de, LevelHeader_054, BrickLayout_Level054, PowerupMap_Level054
+    dw Background_48e4, LevelHeader_055, BrickLayout_Level055, PowerupMap_Level055
+    dw Background_48c0, LevelHeader_056, BrickLayout_Level056, PowerupMap_Level056
+    dw Background_48de, LevelHeader_057, BrickLayout_Level057, PowerupMap_Level057
+    dw Background_48e4, LevelHeader_058, BrickLayout_Level058, PowerupMap_Level058
+    dw Background_48c0, LevelHeader_059, BrickLayout_Level059, PowerupMap_Level059
+    dw Background_48de, LevelHeader_060, BrickLayout_Level060, PowerupMap_Level060
+    dw Background_48e4, LevelHeader_061, BrickLayout_Level061, PowerupMap_Level061
+    dw Background_48c0, LevelHeader_062, BrickLayout_Level062, PowerupMap_Level062
+    dw Background_48de, LevelHeader_063, BrickLayout_Level063, PowerupMap_Level063
+    dw Background_48e4, LevelHeader_064, BrickLayout_Level064, PowerupMap_Level064
+    dw Background_48c0, LevelHeader_065, BrickLayout_Level065, PowerupMap_Level065
+    dw Background_48de, LevelHeader_066, BrickLayout_Level066, PowerupMap_Level066
+    dw Background_48e4, LevelHeader_067, BrickLayout_Level067, PowerupMap_Level067
+    dw Background_48c0, LevelHeader_068, BrickLayout_Level068, PowerupMap_Level068
+    dw Background_48de, LevelHeader_069, BrickLayout_Level069, PowerupMap_Level069
+    dw Background_48e4, LevelHeader_070, BrickLayout_Level070, PowerupMap_Level070
+    dw Background_48c0, LevelHeader_071, BrickLayout_Level071, PowerupMap_Level071
+    dw Background_48de, LevelHeader_072, BrickLayout_Level072, PowerupMap_Level072
+    dw Background_48e4, LevelHeader_073, BrickLayout_Level073, PowerupMap_Level073
+    dw Background_48c0, LevelHeader_074, BrickLayout_Level074, PowerupMap_Level074
+    dw Background_48de, LevelHeader_075, BrickLayout_Level075, PowerupMap_Level075
+    dw Background_48e4, LevelHeader_076, BrickLayout_Level076, PowerupMap_Level076
+    dw Background_48c0, LevelHeader_077, BrickLayout_Level077, PowerupMap_Level077
+    dw Background_48de, LevelHeader_078, BrickLayout_Level078, PowerupMap_Level078
+    dw Background_48e4, LevelHeader_079, BrickLayout_Level079, PowerupMap_Level079
+    dw Background_48c0, LevelHeader_080, BrickLayout_Level080, PowerupMap_Level080
+    dw Background_48de, LevelHeader_081, BrickLayout_Level081, PowerupMap_Level081
+    dw Background_48e4, LevelHeader_082, BrickLayout_Level082, PowerupMap_Level082
+    dw Background_48c0, LevelHeader_083, BrickLayout_Level083, PowerupMap_Level083
+    dw Background_48de, LevelHeader_084, BrickLayout_Level084, PowerupMap_Level084
+    dw Background_48e4, LevelHeader_085, BrickLayout_Level085, PowerupMap_Level085
+    dw Background_48c0, LevelHeader_086, BrickLayout_Level086, PowerupMap_Level086
+    dw Background_48de, LevelHeader_087, BrickLayout_Level087, PowerupMap_Level087
+    dw Background_48e4, LevelHeader_088, BrickLayout_Level088, PowerupMap_Level088
+    dw Background_48c0, LevelHeader_089, BrickLayout_Level089, PowerupMap_Level089
+    dw Background_48de, LevelHeader_090, BrickLayout_Level090, PowerupMap_Level090
+    dw Background_48e4, LevelHeader_091, BrickLayout_Level091, PowerupMap_Level091
+    dw Background_48c0, LevelHeader_092, BrickLayout_Level092, PowerupMap_Level092
+    dw Background_48de, LevelHeader_093, BrickLayout_Level093, PowerupMap_Level093
+    dw Background_48e4, LevelHeader_094, BrickLayout_Level094, PowerupMap_Level094
+    dw Background_48c0, LevelHeader_095, BrickLayout_Level095, PowerupMap_Level095
+    dw Background_48de, LevelHeader_096, BrickLayout_Level096, PowerupMap_Level096
+    dw Background_48e4, LevelHeader_097, BrickLayout_Level097, PowerupMap_Level097
+    dw Background_48c0, LevelHeader_098, BrickLayout_Level098, PowerupMap_Level098
+    dw Background_48de, LevelHeader_099, BrickLayout_Level099, PowerupMap_Level099
+    dw Background_48e4, LevelHeader_100, BrickLayout_Level100, PowerupMap_Level100
+    dw Background_48c0, LevelHeader_101, BrickLayout_Level101, PowerupMap_Level101
+    dw Background_48de, LevelHeader_102, BrickLayout_Level102, PowerupMap_Level102
+    dw Background_48e4, LevelHeader_103, BrickLayout_Level103, PowerupMap_Level103
+    dw Background_48c0, LevelHeader_104, BrickLayout_Level104, PowerupMap_Level104
+    dw Background_48de, LevelHeader_105, BrickLayout_Level105, PowerupMap_Level105
+    dw Background_48e4, LevelHeader_106, BrickLayout_Level106, PowerupMap_Level106
+    dw Background_48c0, LevelHeader_107, BrickLayout_Level107, PowerupMap_Level107
+    dw Background_48de, LevelHeader_108, BrickLayout_Level108, PowerupMap_Level108
+    dw Background_48e4, LevelHeader_109, BrickLayout_Level109, PowerupMap_Level109
+    dw Background_48c0, LevelHeader_110, BrickLayout_Level110, PowerupMap_Level110
+    dw Background_48de, LevelHeader_111, BrickLayout_Level111, PowerupMap_Level111
+    dw Background_48e4, LevelHeader_112, BrickLayout_Level112, PowerupMap_Level112
+    dw Background_48c0, LevelHeader_113, BrickLayout_Level113, PowerupMap_Level113
+    dw Background_48de, LevelHeader_114, BrickLayout_Level114, PowerupMap_Level114
+    dw Background_48e4, LevelHeader_115, BrickLayout_Level115, PowerupMap_Level115
+    dw Background_48c0, LevelHeader_116, BrickLayout_Level116, PowerupMap_Level116
+    dw Background_48de, LevelHeader_117, BrickLayout_Level117, PowerupMap_Level117
+    dw Background_48e4, LevelHeader_118, BrickLayout_Level118, PowerupMap_Level118
+    dw Background_48c0, LevelHeader_119, BrickLayout_Level119, PowerupMap_Level119
+    dw Background_48de, LevelHeader_120, BrickLayout_Level120, PowerupMap_Level120
+    dw Background_48e4, LevelHeader_121, BrickLayout_Level121, PowerupMap_Level121
+    dw Background_48c0, LevelHeader_122, BrickLayout_Level122, PowerupMap_Level122
+    dw Background_48de, LevelHeader_123, BrickLayout_Level123, PowerupMap_Level123
+    dw Background_48e4, LevelHeader_124, BrickLayout_Level124, PowerupMap_Level124
+    dw Background_48c0, LevelHeader_125, BrickLayout_Level125, PowerupMap_Level125
+    dw Background_48de, LevelHeader_126, BrickLayout_Level126, PowerupMap_Level126
+    dw Background_48e4, LevelHeader_127, BrickLayout_Level127, PowerupMap_Level127
+    dw Background_48c0, LevelHeader_128, BrickLayout_Level128, PowerupMap_Level128
+    dw Background_48de, LevelHeader_129, BrickLayout_Level129, PowerupMap_Level129
+    dw Background_48e4, LevelHeader_130, BrickLayout_Level130, PowerupMap_Level130
+    dw Background_48c0, LevelHeader_131, BrickLayout_Level131, PowerupMap_Level131
+    dw Background_48de, LevelHeader_132, BrickLayout_Level132, PowerupMap_Level132
+    dw Background_48e4, LevelHeader_133, BrickLayout_Level133, PowerupMap_Level133
+    dw Background_48c0, LevelHeader_134, BrickLayout_Level134, PowerupMap_Level134
+    dw Background_48de, LevelHeader_135, BrickLayout_Level135, PowerupMap_Level135
+    dw Background_48e4, LevelHeader_136, BrickLayout_Level136, PowerupMap_Level136
+    dw Background_48c0, LevelHeader_137, BrickLayout_Level137, PowerupMap_Level137
+    dw Background_48de, LevelHeader_138, BrickLayout_Level138, PowerupMap_Level138
+    dw Background_48e4, LevelHeader_139, BrickLayout_Level139, PowerupMap_Level139
+    dw Background_48c0, LevelHeader_140, BrickLayout_Level140, PowerupMap_Level140
+    dw Background_48de, LevelHeader_141, BrickLayout_Level141, PowerupMap_Level141
+    dw Background_48e4, LevelHeader_142, BrickLayout_Level142, PowerupMap_Level142
+    dw Background_48c0, LevelHeader_143, BrickLayout_Level143, PowerupMap_Level143
+    dw Background_48de, LevelHeader_144, BrickLayout_Level144, PowerupMap_Level144
+    dw Background_48e4, LevelHeader_145, BrickLayout_Level145, PowerupMap_Level145
+    dw Background_48c0, LevelHeader_146, BrickLayout_Level146, PowerupMap_Level146
+    dw Background_48de, LevelHeader_147, BrickLayout_Level147, PowerupMap_Level147
+    dw Background_48e4, LevelHeader_148, BrickLayout_Level148, PowerupMap_Level148
+    dw Background_48c0, LevelHeader_149, BrickLayout_Level149, PowerupMap_Level149
+    dw Background_48de, LevelHeader_150, BrickLayout_Level150, PowerupMap_Level150
+    dw Background_48e4, LevelHeader_151, BrickLayout_Level151, PowerupMap_Level151
+    dw Background_48c0, LevelHeader_152, BrickLayout_Level152, PowerupMap_Level152
+    dw Background_48de, LevelHeader_153, BrickLayout_Level153, PowerupMap_Level153
+    dw Background_48e4, LevelHeader_154, BrickLayout_Level154, PowerupMap_Level154
+    dw Background_48c0, LevelHeader_155, BrickLayout_Level155, PowerupMap_Level155
+    dw Background_48de, LevelHeader_156, BrickLayout_Level156, PowerupMap_Level156
+    dw Background_48e4, LevelHeader_157, BrickLayout_Level157, PowerupMap_Level157
+    dw Background_48c0, LevelHeader_158, BrickLayout_Level158, PowerupMap_Level158
+    dw Background_48de, LevelHeader_159, BrickLayout_Level159, PowerupMap_Level159
+    dw Background_48e4, LevelHeader_160, BrickLayout_Level160, PowerupMap_Level160
 
-    db $de, $48, $ac, $47, $b9, $6c, $e6, $49
-    db $e4
-    db $48, $b8, $47, $45, $6d
-    db $fc
-    db $49, $c0, $48, $3c, $45, $a1, $43, $0c, $44, $de, $48, $24, $45, $d5, $42, $c0
-    db $43
-    db $e4
-    db $48, $54, $45, $e1, $44, $54, $44, $d8, $48, $48, $45, $55, $44, $3a, $44, $c0
-    db $48, $72, $48, $14, $77, $e1, $4b, $de, $48, $4e, $45, $96, $44, $43, $44
-    db $e4
-    db $48, $78, $45
-    db $fd
-    db $46, $c6, $44, $c0, $48, $c4, $47, $9d, $6d, $12, $4a, $de, $48, $5a, $45, $42
-    db $45, $65, $44
-    db $e4
-    db $48, $4e, $48, $de, $75, $83, $4b, $c0, $48, $be, $47, $6a, $6d, $05, $4a, $de
-    db $48, $e2, $47, $72, $6f, $63, $4a
-    db $e4
-    db $48, $cc, $45, $87, $4c, $e6, $45, $c0, $48
-    db $f4
-    db $47, $07, $71, $92, $4a, $de, $48, $90, $45, $ab, $48, $0a, $45
-    db $e4
-    db $48, $ee, $47, $8a, $70, $7d, $4a, $c0, $48, $a2, $45, $b2, $49, $43, $45, $de
-    db $48, $3e, $46, $28, $54, $f9, $46
-    db $e4
-    db $48, $30, $45, $49, $43, $e2, $43, $c0, $48, $6c, $45, $4d, $46, $a0, $44, $de
-    db $48, $dc, $47, $fd, $6e, $52, $4a
-    db $e4
-    db $48, $50, $46, $d7, $54, $16, $47, $c0, $48, $ca, $47, $c8, $6d, $23, $4a, $de
-    db $48, $f8, $46, $95, $5f, $b6, $48
-    db $e4
-    db $48, $16, $47, $68, $61, $f3, $48, $c0, $48, $8a, $48, $2c, $78, $21, $4c, $de
-    db $48, $0c, $45, $ef, $40, $82, $43
-    db $e4
+; Level headers: level palette and brick palette (both in bank 1), then
+; the level type (low nibble: 1 = UFO, 2 = blob) and the UFO flight height.
+LevelHeader_050:
+    dw LevelPalette_4670, BrickPalette_48d0
+    db $02, $00
+LevelHeader_075:
+    dw LevelPalette_4670, BrickPalette_48e0
+    db $01, $38
+LevelHeader_030:
+    dw LevelPalette_4670, BrickPalette_48d0
+    db $00, $00
+LevelHeader_108:
+    dw LevelPalette_4670, BrickPalette_48d0
+    db $00, $00
+LevelHeader_034:
+    dw LevelPalette_4670, BrickPalette_4900
+    db $02, $00
+LevelHeader_096:
+    dw LevelPalette_4670, BrickPalette_4910
+    db $00, $00
+LevelHeader_005:
+    dw LevelPalette_4670, BrickPalette_48d0
+    db $00, $00
+LevelHeader_066:
+    dw LevelPalette_4670, BrickPalette_4900
+    db $00, $00
+LevelHeader_022:
+    dw LevelPalette_4670, BrickPalette_4900
+    db $02, $00
+LevelHeader_033:
+    dw LevelPalette_4670, BrickPalette_48f0
+    db $01, $20
+LevelHeader_004:
+    dw LevelPalette_4670, BrickPalette_48c0
+    db $00, $00
+LevelHeader_147:
+    dw LevelPalette_4670, BrickPalette_4860
+    db $01, $20
+LevelHeader_007:
+    dw LevelPalette_4670, BrickPalette_49b0
+    db $00, $00
+LevelHeader_009:
+    dw LevelPalette_4670, BrickPalette_4910
+    db $00, $00
+LevelHeader_006:
+    dw LevelPalette_4670, BrickPalette_4950
+    db $02, $00
+LevelHeader_012:
+    dw LevelPalette_4670, BrickPalette_4910
+    db $00, $00
+LevelHeader_114:
+    dw LevelPalette_4670, BrickPalette_48c0
+    db $72, $00
+LevelHeader_059:
+    dw LevelPalette_4670, BrickPalette_48a0
+    db $00, $00
+LevelHeader_023:
+    dw LevelPalette_4670, BrickPalette_4910
+    db $00, $00
+LevelHeader_103:
+    dw LevelPalette_4670, BrickPalette_4910
+    db $00, $00
+LevelHeader_010:
+    dw LevelPalette_4670, BrickPalette_4890
+    db $00, $00
+LevelHeader_072:
+    dw LevelPalette_4670, BrickPalette_48e0
+    db $01, $20
+LevelHeader_043:
+    dw LevelPalette_4670, BrickPalette_4840
+    db $01, $50
+LevelHeader_146:
+    dw LevelPalette_4670, BrickPalette_48e0
+    db $00, $00
+LevelHeader_018:
+    dw LevelPalette_4670, BrickPalette_48f0
+    db $00, $00
+LevelHeader_063:
+    dw LevelPalette_4670, BrickPalette_48d0
+    db $00, $00
+LevelHeader_045:
+    dw LevelPalette_4670, BrickPalette_4890
+    db $72, $00
+LevelHeader_020:
+    dw LevelPalette_4670, BrickPalette_4890
+    db $00, $00
+LevelHeader_035:
+    dw LevelPalette_4670, BrickPalette_48f0
+    db $01, $20
+LevelHeader_042:
+    dw LevelPalette_4670, BrickPalette_49a0
+    db $00, $00
+LevelHeader_060:
+    dw LevelPalette_4670, BrickPalette_4910
+    db $00, $00
+LevelHeader_098:
+    dw LevelPalette_4670, BrickPalette_4890
+    db $01, $38
+LevelHeader_159:
+    dw LevelPalette_4670, BrickPalette_4960
+    db $00, $00
+LevelHeader_160:
+    dw LevelPalette_4670, BrickPalette_4910
+    db $00, $00
+LevelHeader_016:
+    dw LevelPalette_4670, BrickPalette_4920
+    db $00, $00
+LevelHeader_142:
+    dw LevelPalette_4670, BrickPalette_4910
+    db $01, $20
+LevelHeader_105:
+    dw LevelPalette_4670, BrickPalette_4960
+    db $00, $00
+LevelHeader_107:
+    dw LevelPalette_4670, BrickPalette_4850
+    db $00, $00
+LevelHeader_038:
+    dw LevelPalette_4670, BrickPalette_4880
+    db $00, $00
+LevelHeader_053:
+    dw LevelPalette_4670, BrickPalette_4840
+    db $00, $00
+LevelHeader_061:
+    dw LevelPalette_46b0, BrickPalette_4860
+    db $00, $00
+LevelHeader_087:
+    dw LevelPalette_46b0, BrickPalette_4910
+    db $00, $00
+LevelHeader_149:
+    dw LevelPalette_46b0, BrickPalette_48f0
+    db $00, $00
+LevelHeader_136:
+    dw LevelPalette_46b0, BrickPalette_48c0
+    db $00, $00
+LevelHeader_083:
+    dw LevelPalette_46b0, BrickPalette_49a0
+    db $00, $00
+LevelHeader_093:
+    dw LevelPalette_46b0, BrickPalette_48d0
+    db $00, $00
+LevelHeader_073:
+    dw LevelPalette_4670, BrickPalette_48c0
+    db $72, $00
+LevelHeader_120:
+    dw LevelPalette_4670, BrickPalette_48c0
+    db $01, $30
+LevelHeader_151:
+    dw LevelPalette_4670, BrickPalette_48d0
+    db $00, $00
+LevelHeader_132:
+    dw LevelPalette_4670, BrickPalette_48f0
+    db $01, $20
+LevelHeader_156:
+    dw LevelPalette_4670, BrickPalette_4910
+    db $01, $30
+LevelHeader_121:
+    dw LevelPalette_4670, BrickPalette_4940
+    db $01, $20
+LevelHeader_084:
+    dw LevelPalette_4670, BrickPalette_48c0
+    db $00, $00
+LevelHeader_021:
+    dw LevelPalette_4670, BrickPalette_4950
+    db $00, $00
+LevelHeader_086:
+    dw LevelPalette_4670, BrickPalette_48e0
+    db $01, $38
+LevelHeader_001:
+    dw LevelPalette_4670, BrickPalette_48d0
+    db $00, $00
+LevelHeader_025:
+    dw LevelPalette_4670, BrickPalette_4960
+    db $00, $00
+LevelHeader_112:
+    dw LevelPalette_4670, BrickPalette_48c0
+    db $01, $20
+LevelHeader_126:
+    dw LevelPalette_4670, BrickPalette_4890
+    db $00, $00
+LevelHeader_078:
+    dw LevelPalette_4670, BrickPalette_4910
+    db $00, $00
+LevelHeader_068:
+    dw LevelPalette_4670, BrickPalette_48f0
+    db $00, $00
+LevelHeader_104:
+    dw LevelPalette_4670, BrickPalette_48a0
+    db $00, $00
+LevelHeader_140:
+    dw LevelPalette_4670, BrickPalette_48e0
+    db $00, $00
+LevelHeader_031:
+    dw LevelPalette_4670, BrickPalette_49a0
+    db $00, $00
+LevelHeader_097:
+    dw LevelPalette_4670, BrickPalette_4940
+    db $72, $00
+LevelHeader_117:
+    dw LevelPalette_4670, BrickPalette_4910
+    db $00, $00
+LevelHeader_134:
+    dw LevelPalette_4670, BrickPalette_48f0
+    db $72, $00
+LevelHeader_124:
+    dw LevelPalette_4670, BrickPalette_48c0
+    db $00, $00
+LevelHeader_113:
+    dw LevelPalette_4670, BrickPalette_4880
+    db $72, $00
+LevelHeader_094:
+    dw LevelPalette_4670, BrickPalette_48f0
+    db $72, $00
+LevelHeader_081:
+    dw LevelPalette_4670, BrickPalette_4960
+    db $00, $00
+LevelHeader_101:
+    dw LevelPalette_4670, BrickPalette_48f0
+    db $00, $00
+LevelHeader_079:
+    dw LevelPalette_4670, BrickPalette_4900
+    db $72, $00
+LevelHeader_055:
+    dw LevelPalette_4670, BrickPalette_4920
+    db $00, $00
+LevelHeader_058:
+    dw LevelPalette_4670, BrickPalette_4920
+    db $00, $00
+LevelHeader_135:
+    dw LevelPalette_4670, BrickPalette_4910
+    db $00, $00
+LevelHeader_130:
+    dw LevelPalette_4670, BrickPalette_4910
+    db $72, $00
+LevelHeader_089:
+    dw LevelPalette_4670, BrickPalette_48f0
+    db $12, $00
+LevelHeader_090:
+    dw LevelPalette_4670, BrickPalette_4990
+    db $00, $00
+LevelHeader_076:
+    dw LevelPalette_4670, BrickPalette_48c0
+    db $72, $00
+LevelHeader_051:
+    dw LevelPalette_4670, BrickPalette_48c0
+    db $01, $20
+LevelHeader_069:
+    dw LevelPalette_4670, BrickPalette_48d0
+    db $01, $20
+LevelHeader_062:
+    dw LevelPalette_46f0, BrickPalette_4950
+    db $72, $00
+LevelHeader_046:
+    dw LevelPalette_46f0, BrickPalette_4970
+    db $72, $00
+LevelHeader_027:
+    dw LevelPalette_46f0, BrickPalette_48c0
+    db $00, $00
+LevelHeader_036:
+    dw LevelPalette_46f0, BrickPalette_4950
+    db $00, $00
+LevelHeader_048:
+    dw LevelPalette_46f0, BrickPalette_4970
+    db $00, $00
+LevelHeader_037:
+    dw LevelPalette_46f0, BrickPalette_48f0
+    db $00, $00
+LevelHeader_054:
+    dw LevelPalette_4730, BrickPalette_4960
+    db $00, $00
+LevelHeader_028:
+    dw LevelPalette_4730, BrickPalette_48d0
+    db $00, $00
+LevelHeader_115:
+    dw LevelPalette_4730, BrickPalette_4970
+    db $00, $00
+LevelHeader_056:
+    dw LevelPalette_4730, BrickPalette_48e0
+    db $00, $00
+LevelHeader_057:
+    dw LevelPalette_4730, BrickPalette_4890
+    db $72, $00
+LevelHeader_153:
+    dw LevelPalette_4730, BrickPalette_4920
+    db $00, $00
+LevelHeader_085:
+    dw LevelPalette_4770, BrickPalette_4950
+    db $00, $00
+LevelHeader_077:
+    dw LevelPalette_4770, BrickPalette_4950
+    db $00, $00
+LevelHeader_157:
+    dw LevelPalette_4670, BrickPalette_4920
+    db $00, $00
+LevelHeader_155:
+    dw LevelPalette_4670, BrickPalette_48e0
+    db $00, $00
+LevelHeader_158:
+    dw LevelPalette_4670, BrickPalette_4860
+    db $00, $00
+LevelHeader_150:
+    dw LevelPalette_4670, BrickPalette_4920
+    db $00, $00
+LevelHeader_133:
+    dw LevelPalette_4670, BrickPalette_48d0
+    db $72, $00
+LevelHeader_152:
+    dw LevelPalette_4670, BrickPalette_48c0
+    db $00, $00
+LevelHeader_154:
+    dw LevelPalette_4670, BrickPalette_48d0
+    db $00, $00
+LevelHeader_145:
+    dw LevelPalette_4670, BrickPalette_48f0
+    db $00, $00
+LevelHeader_047:
+    dw LevelPalette_4670, BrickPalette_4860
+    db $01, $20
+LevelHeader_071:
+    dw LevelPalette_4670, BrickPalette_48f0
+    db $00, $00
+LevelHeader_122:
+    dw LevelPalette_4670, BrickPalette_48d0
+    db $00, $00
+LevelHeader_127:
+    dw LevelPalette_4670, BrickPalette_4890
+    db $00, $00
+LevelHeader_144:
+    dw LevelPalette_47b0, BrickPalette_4950
+    db $00, $00
+LevelHeader_148:
+    dw LevelPalette_47b0, BrickPalette_4860
+    db $00, $00
+LevelHeader_138:
+    dw LevelPalette_47b0, BrickPalette_48b0
+    db $72, $00
+LevelHeader_109:
+    dw LevelPalette_47b0, BrickPalette_48f0
+    db $00, $00
+LevelHeader_118:
+    dw LevelPalette_47f0, BrickPalette_48f0
+    db $00, $00
+LevelHeader_111:
+    dw LevelPalette_47f0, BrickPalette_4900
+    db $72, $00
+LevelHeader_002:
+    dw LevelPalette_4670, BrickPalette_48c0
+    db $00, $00
+LevelHeader_082:
+    dw LevelPalette_4670, BrickPalette_48b0
+    db $00, $00
+LevelHeader_003:
+    dw LevelPalette_4670, BrickPalette_4910
+    db $00, $00
+LevelHeader_014:
+    dw LevelPalette_4670, BrickPalette_4850
+    db $00, $00
+LevelHeader_011:
+    dw LevelPalette_4670, BrickPalette_49a0
+    db $00, $00
+LevelHeader_026:
+    dw LevelPalette_4670, BrickPalette_48b0
+    db $00, $00
+LevelHeader_044:
+    dw LevelPalette_4670, BrickPalette_4930
+    db $00, $00
+LevelHeader_032:
+    dw LevelPalette_4670, BrickPalette_4960
+    db $00, $00
+LevelHeader_024:
+    dw LevelPalette_4670, BrickPalette_4920
+    db $00, $00
+LevelHeader_015:
+    dw LevelPalette_4670, BrickPalette_48c0
+    db $00, $00
+LevelHeader_040:
+    dw LevelPalette_4670, BrickPalette_4910
+    db $00, $00
+LevelHeader_019:
+    dw LevelPalette_4670, BrickPalette_4920
+    db $00, $00
+LevelHeader_017:
+    dw LevelPalette_4670, BrickPalette_49a0
+    db $00, $00
+LevelHeader_128:
+    dw LevelPalette_4670, BrickPalette_48f0
+    db $00, $00
+LevelHeader_070:
+    dw LevelPalette_4670, BrickPalette_48b0
+    db $00, $00
+LevelHeader_092:
+    dw LevelPalette_4670, BrickPalette_48f0
+    db $00, $00
+LevelHeader_064:
+    dw LevelPalette_4670, BrickPalette_4960
+    db $00, $00
+LevelHeader_052:
+    dw LevelPalette_4670, BrickPalette_48b0
+    db $00, $00
+LevelHeader_067:
+    dw LevelPalette_4670, BrickPalette_4910
+    db $00, $00
+LevelHeader_116:
+    dw LevelPalette_4670, BrickPalette_4950
+    db $00, $00
+LevelHeader_139:
+    dw LevelPalette_4670, BrickPalette_48d0
+    db $00, $00
+LevelHeader_141:
+    dw LevelPalette_4670, BrickPalette_4920
+    db $00, $00
+LevelHeader_125:
+    dw LevelPalette_4670, BrickPalette_4980
+    db $00, $00
+LevelHeader_119:
+    dw LevelPalette_4670, BrickPalette_49a0
+    db $00, $00
+LevelHeader_091:
+    dw LevelPalette_4670, BrickPalette_49a0
+    db $01, $20
+LevelHeader_099:
+    dw LevelPalette_4670, BrickPalette_48c0
+    db $01, $30
+LevelHeader_080:
+    dw LevelPalette_4670, BrickPalette_4960
+    db $01, $30
+LevelHeader_013:
+    dw LevelPalette_4670, BrickPalette_4990
+    db $00, $00
+LevelHeader_041:
+    dw LevelPalette_4670, BrickPalette_48f0
+    db $01, $20
+LevelHeader_039:
+    dw LevelPalette_4670, BrickPalette_4950
+    db $72, $00
+LevelHeader_065:
+    dw LevelPalette_4670, BrickPalette_4850
+    db $72, $00
+LevelHeader_095:
+    dw LevelPalette_4670, BrickPalette_4860
+    db $00, $00
+LevelHeader_110:
+    dw LevelPalette_4670, BrickPalette_4920
+    db $00, $00
+LevelHeader_008:
+    dw LevelPalette_4670, BrickPalette_48a0
+    db $01, $20
+LevelHeader_102:
+    dw LevelPalette_4670, BrickPalette_48d0
+    db $72, $00
+LevelHeader_049:
+    dw LevelPalette_4670, BrickPalette_4960
+    db $01, $20
+LevelHeader_106:
+    dw LevelPalette_4670, BrickPalette_48f0
+    db $00, $00
+LevelHeader_029:
+    dw LevelPalette_4670, BrickPalette_4990
+    db $00, $00
+LevelHeader_088:
+    dw LevelPalette_4670, BrickPalette_48c0
+    db $00, $00
+LevelHeader_074:
+    dw LevelPalette_4670, BrickPalette_48f0
+    db $72, $00
+LevelHeader_143:
+    dw LevelPalette_4670, BrickPalette_4920
+    db $00, $00
+LevelHeader_137:
+    dw LevelPalette_4670, BrickPalette_4920
+    db $01, $20
+LevelHeader_100:
+    dw LevelPalette_47f0, BrickPalette_48d0
+    db $00, $00
+LevelHeader_129:
+    dw LevelPalette_47f0, BrickPalette_4900
+    db $00, $00
+LevelHeader_131:
+    dw LevelPalette_4670, BrickPalette_48e0
+    db $00, $00
+LevelHeader_123:
+    dw LevelPalette_4670, BrickPalette_48f0
+    db $00, $00
 
-    db $48, $7a, $46, $44, $57, $8d, $47, $c0, $48
-    db $d6, $47, $9e, $6e, $41, $4a, $de, $48, $36, $45, $84, $43, $f7, $43
-    db $e4
-    db $48, $18, $45, $ff, $41, $9e, $43, $c0, $48, $a8, $45, $03, $4a, $50, $45, $de
-    db $48, $fe, $46, $ee, $5f, $bf, $48
-    db $e4
-    db $48, $0a, $47, $86, $60, $d1, $48, $c0, $48
-    db $e4
-    db $45, $39, $4e, $20, $46, $de, $48, $5a, $48, $34
-    db $76
-    db $99, $4b
-    db $e4
-    db $48, $e8, $47, $f7, $6f, $70, $4a, $c0, $48, $54, $48, $fb, $75, $92, $4b, $de
-    db $48, $ae, $45, $42, $4a, $61, $45
-    db $e4
-
-    db $48, $84, $45, $a3
-    db $47, $e8, $44, $c0, $48, $d0, $47, $21, $6e, $2c, $4a, $de, $48, $9c, $45, $59
-    db $49, $2a, $45
-    db $e4
-    db $48, $f2, $46, $24, $5f, $a9, $48, $c0, $48, $70, $47, $1f, $69
-    db $8e, $49, $de, $48, $04, $47, $35, $60, $c8, $48
-    db $e4
-    db $48, $7e, $48, $88, $77, $03, $4c, $c0, $48, $00, $45, $47, $40, $60, $43, $de
-    db $48, $e0, $46, $a7, $5d, $7e, $48
-    db $e4
-    db $48, $12, $48, $2e, $73
-    db $eb
-    db $4a, $c0, $48, $ea, $45, $ce, $4e, $31, $46, $de, $48
-    db $10
-    db $47, $07, $61, $da, $48, $e4, $48, $b6, $46
-    db $fc
-    db $5a, $2b, $48, $c0, $48, $22, $47, $46, $62, $03, $49, $de, $48, $28, $47
-    db $e3
-    db $62
-    db $10
-    db $49
-    db $e4
-    db $48, $bc, $46, $71, $5b, $38, $48, $c0, $48, $66, $45, $da, $45, $8b, $44, $de
-    db $48, $b4, $45, $a3, $4a, $8e, $45
-    db $e4
-    db $48, $f0, $45, $4b, $4f, $42, $46, $c0, $48
-    db $ec
-    db $46, $c5, $5e, $98, $48, $de, $48, $96, $45, $f6, $48, $17, $45
-    db $e4
-    db $48, $0c, $48
-    db $dd
-    db $72, $da, $4a, $c0, $48, $60, $48, $53
-    db $76
-    db $a2, $4b, $de, $48, $2a
-    db $45
-    db $ec
-    db $42, $d5, $43
-    db $e4
-    db $48, $18, $48, $83, $73
-    db $fc
-    db $4a
-    db $c0, $48, $68, $46, $09, $56, $4e, $47, $de, $48, $e6, $46, $24, $5e, $8f, $48
-    db $e4
-    db $48, $00, $48, $99, $71, $b8, $4a, $c0, $48
-    db $76
-    db $47, $5e, $69, $9b, $49, $de, $48, $7e, $45, $4a, $47
-    db $db
-    db $44
-    db $e4
-    db $48, $14, $46
-    db $d3
-    db $51, $aa, $46, $c0, $48, $96, $48, $da, $78, $43, $4c, $de, $48, $06, $45, $84
-    db $40, $73, $43
-    db $e4
-    db $48, $da, $46, $4e, $5d, $6d, $48, $c0, $48, $3a, $47, $94, $64, $33, $49, $de
-    db $48, $62, $46, $cc, $55, $41, $47
-    db $e4
-    db $48, $b0, $46, $7b, $5a, $1a, $48, $c0, $48, $48, $48, $b5, $75, $70, $4b, $de
-    db $48, $a4, $46
-    db $dd
-    db $59, $f8, $47
-    db $e4
-    db $48, $b2, $47, $cc, $6c, $ef, $49, $c0, $48, $08, $46, $d5, $50, $8a, $46, $de
-    db $48, $38, $46, $e7, $53, $f0, $46
-    db $e4
-    db $48, $34, $47, $f3, $63, $1e, $49, $c0, $48, $44, $46, $7f, $54, $02, $47, $de
-    db $48, $f6, $45, $b0, $4f, $53, $46
-    db $e4
-    db $48, $90, $48, $87, $78, $32, $4c, $c0, $48, $ce, $46, $9e, $5c, $59, $48, $de
-    db $48, $d4, $46, $df, $5c, $60, $48
-    db $e4
-    db $48, $3c, $48, $55, $75, $56, $4b, $c0, $48, $06, $48, $50, $72, $cd, $4a, $de
-    db $48
-    db $0e, $46, $2c, $51, $91, $46
-    db $e4
-    db $48, $9e, $46, $a8, $59, $e7, $47, $c0, $48, $66, $48, $92
-    db $76
-    db $b7, $4b, $de, $48, $1e, $45, $70, $42, $b3, $43
-    db $e4
-    db $48, $80, $46, $75, $57, $96, $47, $c0, $48, $ba, $45, $18, $4b, $b1, $45, $de
-    db $48, $42, $48, $8a, $75, $67, $4b
-    db $e4
-    db $48, $a8, $48
-    db $dd
-    db $79, $72, $4c, $c0, $48, $aa, $46, $26, $5a, $0d, $48, $de, $48, $78, $48, $4b
-    db $77, $ea, $4b, $e4, $48, $72, $45, $b4, $46, $b1, $44, $c0, $48, $6e, $46
-    db $76
-    db $56, $63, $47, $de, $48, $d8, $45, $33, $4d, $fa, $45, $e4, $48, $84, $48, $e1
-    db $77
-    db $10
-    db $4c, $c0, $48, $de, $45, $bc, $4d, $0f, $46, $de, $48, $12, $45, $4a, $41, $97
-    db $43
-    db $e4
-    db $48, $9a, $47, $96, $6b, $cf, $49, $c0, $48, $6c, $48, $b3
-    db $76
-    db $cc, $4b, $de, $48, $a6, $47, $60, $6c, $df, $49
-    db $e4
-    db $48, $56, $46, $26, $55, $2b, $47, $c0, $48, $98, $46, $35, $59, $da, $47, $de
-    db $48, $60, $45, $6b, $45
-    db $76
-    db $44
-    db $e4
-    db $48, $1c, $47, $c1, $61, $fa, $48, $c0, $48, $1e, $48, $d2, $73, $0d, $4b, $de
-    db $48, $86, $46, $e2, $57, $ab, $47
-    db $e4
-    db $48, $a0, $47, $f5, $6b, $d6, $49, $c0, $48, $36, $48, $14, $75, $45, $4b, $de
-    db $48, $1a, $46, $36, $52, $b3, $46
-    db $e4
-    db $48, $32, $46, $92, $53, $df, $46, $c0, $48, $7c, $47, $9b, $69, $a4, $49, $de
-    db $48, $ba, $48, $24, $7b, $97, $4c
-    db $e4
-    db $48, $92, $46, $c8, $58, $cd, $47, $c0, $48, $30, $48, $e9, $74, $30, $4b, $de
-    db $48, $5c, $46, $63, $55, $34, $47
-    db $e4
-    db $48, $82, $47, $0a, $6a, $ab, $49, $c0, $48, $fa, $47, $6a, $71, $a3, $4a, $de
-    db $48, $ae, $48, $4a, $7a, $7f, $4c
-    db $e4
-    db $48, $c8, $46, $3d, $5c, $4e, $48, $c0, $48, $b4, $48, $b3, $7a, $86, $4c, $de
-    db $48, $26, $46, $ee, $52, $c5, $46
-    db $e4
-    db $48, $58, $47, $05, $67, $58, $49, $c0, $48, $8c, $46
-    db $3f, $58, $bc, $47, $de, $48, $c2, $46, $d8, $5b, $45, $48
-    db $e4
-    db $48, $02, $46, $50, $50, $81, $46, $c0, $48, $a2, $48, $80, $79, $65, $4c, $de
-    db $48, $94, $47, $39, $6b, $c8, $49
-    db $e4
-    db $48, $24, $48, $21, $74, $16, $4b, $c0, $48, $74, $46, $d7, $56, $74, $47, $de
-    db $48, $2a, $48, $8a, $74, $1f, $4b
-    db $e4
-    db $48, $d2, $45, $de, $4c, $f3, $45, $c0, $48, $9c, $48, $27, $79, $58, $4c, $de
-    db $48, $88, $47, $75, $6a, $b4, $49
-    db $e4
-    db $48, $6a, $47, $96, $68, $79, $49, $c0, $48, $8a, $45, $18, $48, $f9, $44, $de
-    db $48, $42, $45, $14, $44, $29, $44
-    db $e4
-    db $48, $8e, $47, $f0, $6a, $c1, $49, $c0, $48
-    db $fc
-    db $45, $f9, $4f, $6c, $46, $de, $48, $52, $47, $9a, $66, $51, $49
-    db $e4
-    db $48, $20, $46, $87, $52, $bc, $46, $c0, $48, $5e, $47, $44, $67, $5f, $49, $de
-    db $48, $2e, $47, $56, $63, $17, $49
-    db $e4
-    db $48, $64, $47, $d5, $67, $6c, $49, $c0, $48, $46, $47, $94, $65
-    db $43, $49, $de, $48, $2c, $46, $3d, $53, $d2, $46, $e4, $48, $40, $47, $31, $65
-    db $3a, $49, $c0, $48, $4c, $47, $ff, $65, $4a, $49, $de, $48, $c0, $45, $95, $4b
-    db $c6, $45
-    db $e4
-    db $48
-    db $c6, $45, $24, $4c, $df, $45, $70, $46, $d0, $48, $02, $00, $70, $46, $e0, $48
-    db $01, $38, $70, $46, $d0, $48, $00, $00, $70, $46, $d0, $48, $00, $00, $70, $46
-    db $00, $49, $02, $00, $70, $46
-    db $10
-    db $49, $00, $00, $70, $46, $d0, $48, $00, $00, $70, $46, $00, $49, $00, $00, $70
-    db $46, $00, $49, $02, $00, $70, $46, $f0, $48, $01, $20, $70, $46, $c0, $48, $00
-    db $00, $70, $46, $60, $48, $01, $20, $70, $46, $b0, $49, $00, $00, $70, $46
-    db $10
-    db $49, $00, $00, $70, $46, $50, $49, $02, $00, $70, $46
-    db $10
-    db $49, $00, $00, $70, $46, $c0, $48, $72, $00, $70, $46, $a0, $48, $00, $00, $70
-    db $46
-    db $10
-    db $49, $00, $00, $70, $46
-    db $10
-    db $49, $00, $00, $70, $46, $90, $48, $00, $00, $70, $46, $e0, $48, $01, $20, $70
-    db $46, $40, $48, $01, $50, $70, $46, $e0, $48, $00, $00, $70, $46, $f0, $48, $00
-    db $00, $70, $46, $d0, $48, $00, $00, $70, $46, $90, $48, $72, $00, $70, $46, $90
-    db $48, $00, $00, $70, $46, $f0, $48, $01, $20, $70, $46, $a0, $49, $00, $00, $70
-    db $46
-    db $10
-    db $49, $00, $00, $70, $46, $90, $48, $01, $38, $70, $46, $60, $49, $00, $00, $70
-    db $46
-    db $10
-    db $49, $00, $00, $70, $46, $20, $49, $00, $00, $70, $46
-    db $10
-    db $49, $01, $20, $70, $46, $60, $49, $00, $00, $70, $46, $50, $48, $00, $00, $70
-    db $46, $80, $48, $00, $00, $70, $46, $40, $48, $00, $00, $b0, $46, $60, $48, $00
-    db $00, $b0, $46
-    db $10
-    db $49, $00, $00, $b0, $46, $f0, $48, $00, $00, $b0, $46, $c0, $48, $00, $00, $b0
-    db $46, $a0, $49, $00, $00, $b0, $46, $d0, $48, $00, $00, $70, $46, $c0, $48, $72
-    db $00, $70, $46, $c0, $48, $01, $30, $70, $46, $d0, $48, $00, $00, $70, $46, $f0
-    db $48, $01, $20, $70, $46
-    db $10
-    db $49, $01, $30, $70, $46, $40, $49, $01, $20, $70, $46, $c0, $48, $00, $00, $70
-    db $46, $50, $49, $00, $00, $70, $46, $e0, $48
-    db $01
-    db $38
-
-    db $70, $46, $d0, $48, $00, $00
-
-    db $70, $46, $60, $49, $00, $00, $70, $46, $c0, $48, $01, $20, $70, $46, $90, $48
-    db $00, $00, $70, $46
-    db $10
-    db $49, $00, $00, $70, $46, $f0, $48, $00, $00, $70, $46, $a0, $48, $00, $00, $70
-    db $46, $e0, $48, $00, $00, $70, $46, $a0, $49, $00, $00, $70, $46, $40, $49, $72
-    db $00, $70, $46
-    db $10
-    db $49, $00, $00, $70, $46, $f0, $48, $72, $00, $70, $46, $c0, $48, $00, $00, $70
-    db $46, $80, $48, $72, $00, $70, $46, $f0, $48, $72, $00, $70, $46, $60, $49, $00
-    db $00, $70, $46, $f0, $48, $00, $00, $70, $46, $00, $49, $72, $00, $70, $46, $20
-    db $49, $00
-    db $00, $70, $46, $20, $49, $00, $00, $70, $46
-    db $10
-    db $49, $00, $00, $70, $46
-    db $10
-    db $49, $72, $00, $70, $46, $f0, $48, $12, $00, $70, $46, $90, $49, $00, $00, $70
-    db $46, $c0, $48, $72, $00, $70, $46, $c0, $48, $01, $20, $70, $46, $d0, $48, $01
-    db $20, $f0, $46, $50, $49, $72, $00, $f0, $46, $70, $49, $72, $00, $f0, $46, $c0
-    db $48, $00, $00, $f0, $46, $50, $49, $00
-    db $00, $f0, $46, $70, $49, $00
-    db $00, $f0, $46, $f0, $48, $00, $00, $30, $47, $60, $49, $00, $00, $30, $47, $d0
-    db $48, $00, $00, $30, $47, $70, $49, $00, $00, $30, $47, $e0, $48, $00, $00, $30
-    db $47, $90, $48, $72, $00, $30, $47, $20, $49, $00, $00, $70, $47, $50, $49, $00
-    db $00, $70, $47, $50, $49, $00, $00, $70, $46, $20, $49, $00, $00, $70, $46, $e0
-    db $48, $00, $00, $70, $46, $60, $48, $00, $00, $70, $46, $20, $49, $00, $00, $70
-    db $46, $d0, $48, $72, $00, $70
-    db $46, $c0, $48, $00, $00, $70
-    db $46, $d0, $48, $00, $00, $70
-    db $46, $f0, $48, $00, $00, $70
-    db $46, $60, $48, $01, $20, $70
-    db $46, $f0, $48, $00
-    db $00, $70, $46, $d0, $48, $00, $00, $70, $46, $90, $48, $00, $00, $b0, $47, $50
-    db $49, $00
-    db $00, $b0, $47, $60, $48, $00, $00, $b0, $47, $b0, $48, $72, $00, $b0, $47, $f0
-    db $48, $00
-    db $00, $f0, $47, $f0, $48, $00, $00, $f0, $47, $00, $49, $72, $00, $70, $46, $c0
-    db $48, $00, $00, $70, $46, $b0, $48, $00, $00, $70, $46
-    db $10
-    db $49, $00, $00, $70, $46, $50, $48, $00, $00, $70, $46, $a0, $49, $00, $00, $70
-    db $46, $b0, $48, $00, $00, $70, $46, $30, $49, $00, $00, $70, $46, $60, $49, $00
-    db $00, $70, $46, $20, $49, $00, $00, $70, $46, $c0, $48, $00, $00, $70, $46
-    db $10
-    db $49, $00, $00, $70, $46, $20, $49, $00, $00, $70, $46, $a0, $49, $00, $00, $70
-    db $46, $f0, $48, $00, $00, $70, $46, $b0, $48, $00, $00, $70, $46, $f0, $48, $00
-    db $00, $70, $46, $60, $49, $00, $00, $70, $46, $b0, $48, $00, $00, $70, $46
-    db $10
-    db $49, $00
-    db $00, $70, $46, $50, $49, $00, $00, $70, $46, $d0, $48, $00
-    db $00, $70, $46, $20, $49, $00, $00, $70, $46, $80, $49, $00, $00, $70, $46, $a0
-    db $49, $00
-    db $00, $70, $46, $a0, $49, $01, $20, $70, $46, $c0, $48, $01, $30, $70, $46, $60
-    db $49, $01, $30, $70, $46, $90, $49, $00, $00, $70, $46, $f0, $48, $01, $20, $70
-    db $46, $50, $49, $72, $00, $70, $46, $50, $48, $72, $00, $70, $46, $60, $48, $00
-    db $00, $70, $46, $20, $49, $00, $00, $70, $46, $a0, $48, $01, $20, $70, $46, $d0
-    db $48, $72, $00, $70, $46, $60, $49, $01, $20, $70, $46, $f0, $48, $00, $00, $70
-    db $46, $90, $49, $00, $00, $70, $46, $c0, $48, $00, $00, $70, $46, $f0, $48, $72
-    db $00, $70, $46, $20, $49, $00, $00, $70, $46, $20, $49, $01, $20, $f0, $47, $d0
-    db $48, $00, $00, $f0, $47, $00, $49, $00, $00, $70, $46, $e0, $48, $00
-    db $00, $70, $46, $f0, $48, $00, $00
-    db $00, $40, $04, $20, $41, $03
-
-    db $70, $4f, $04, $40, $42, $03
-    db $10
-    db $5a, $04, $60, $43, $03, $e0, $69, $04, $80, $44, $03
-    db $40, $79, $04, $a0, $45, $03, $00, $40, $0a, $c0, $46, $03, $d0, $4f, $0a, $e0
-    db $47, $03
-
-    db $b0, $5f, $0a, $00, $49
-    db $03, $00, $99, $00, $02, $20, $20, $20, $20, $20, $47, $41, $4d, $45, $20, $20
+; Backgrounds. Each entry appears to be: tile data pointer, its bank, tile map pointer, its bank.
+; Background_48ea is the photo shown by the TNRZ cheat.
+Background_48c0:
+    dw $4000
+    db $04
+    dw $4120
+    db $03
+Background_48c6:
+    dw $4f70
+    db $04
+    dw $4240
+    db $03
+Background_48cc:
+    dw $5a10
+    db $04
+    dw $4360
+    db $03
+Background_48d2:
+    dw $69e0
+    db $04
+    dw $4480
+    db $03
+Background_48d8:
+    dw $7940
+    db $04
+    dw $45a0
+    db $03
+Background_48de:
+    dw $4000
+    db $0a
+    dw $46c0
+    db $03
+Background_48e4:
+    dw $4fd0
+    db $0a
+    dw $47e0
+    db $03
+Background_48ea:
+    dw $5fb0
+    db $0a
+    dw $4900
+    db $03
+    db $00, $99, $00, $02, $20, $20, $20, $20, $20, $47, $41, $4d, $45, $20, $20
     db $4f, $56, $45, $52, $20, $20, $20, $20, $20, $ff
     db $00, $99, $00, $02, $20, $20, $50, $41, $52, $54, $49, $45, $20, $20, $54, $45
     db $52, $4d, $49, $4e, $45, $45, $20, $20, $ff
