@@ -19,16 +19,16 @@ RST_08::
     ld h, [hl]
     ld l, a
     ld a, [hl+]
-    ld [hUnk_ff9d], a
+    ld [hLevelScrollX], a
 
 RST_10::
     xor a
-    ld [wUnk_d746], a
+    ld [wLevelTitleBlink], a
     ld [wUnk_d75e], a
     dec a
 
 RST_18::
-    ld [wUnk_d745], a
+    ld [wLevelTitleTimer], a
     ld de, wLevelTitleText
     xor a
     ld [de], a
@@ -180,9 +180,9 @@ StateInit_ColorOnly:
     ld [hUnk_ff97], a
     ld a, $01
     ld [hPaletteMode], a
-    ld [hUnk_ff9b], a
+    ld [hLycStart], a
     ld a, $01
-    ld [hUnk_ff9a], a
+    ld [hInterruptEnable], a
     ld a, $e4
 
     ldh [rBGP], a
