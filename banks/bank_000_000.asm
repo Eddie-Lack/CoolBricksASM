@@ -1884,10 +1884,10 @@ jr_000_0b81:
     call Call_000_271b
     call ResetShots
     call ClearFallingPowerups
-    call Call_001_627f
-    call Call_001_633e
+    call ClearBrickBreakEffects
+    call ClearPickupEffects
     call ClearBrickHitQueue
-    call Call_001_64c3
+    call ClearUnbreakableHitEffects
     xor a
     ld [$d9bd], a
     ld [$d9be], a
@@ -3037,9 +3037,9 @@ jr_000_12d4:
     call UpdateFallingPowerups
     call UpdateEnemies
     call UpdateShots
-    call Call_001_6386
-    call Call_001_62e9
-    call Call_001_64f9
+    call UpdatePickupEffects
+    call UpdateBrickBreakEffects
+    call UpdateUnbreakableHitEffects
     call Call_001_6ed4
     xor a
     ld [$d9be], a
@@ -3119,9 +3119,9 @@ RestartAfterLifeLost:
     call ResetShots
     call Call_000_271b
     call ClearFallingPowerups
-    call Call_001_627f
-    call Call_001_633e
-    call Call_001_64c3
+    call ClearBrickBreakEffects
+    call ClearPickupEffects
+    call ClearUnbreakableHitEffects
     xor a
     ld [$c2b5], a
     ld de, $c2b9
@@ -3909,7 +3909,7 @@ CollideBallPoint:
     call Call_000_316c
     ret nz
 
-    call Call_000_319b
+    call CheckBlobCatch
     ld e, b
     ld d, c
     ld a, [wBallWorkDirection]
@@ -4003,7 +4003,7 @@ HitBrickAtBall:
 jr_000_18af:
     ld a, [$d8ab]
     or a
-    call z, Call_001_64d4
+    call z, SpawnUnbreakableHitEffect
 
 jr_000_18b6:
     ld a, [wBallWorkFlags]
@@ -4345,7 +4345,7 @@ jr_000_1a79:
     add hl, hl
     call QueueBrickHit
     ld b, $01
-    call Call_001_7c39
+    call AddScore
 
 jr_000_1a8a:
     ld a, [wNinjaActive]
@@ -5098,7 +5098,7 @@ Jump_000_1e2a:
     ld b, a
     ld a, [hl+]
     or a
-    call nz, Call_001_628e
+    call nz, SpawnBrickBreakEffect
     ld a, $03
     call PlaySound
     jp Jump_000_1f68
@@ -6467,9 +6467,9 @@ jr_000_2692:
 Call_000_271b:
     call Call_000_294b
     xor a
-    ld [$dc23], a
+    ld [wBlobActive], a
     ld [wUfoFlying], a
-    ld [$dc20], a
+    ld [wGhostActive], a
     ld [wBlobThrowCount], a
     ld [$dbea], a
     ld [$dc34], a
@@ -6493,7 +6493,7 @@ Call_000_271b:
     xor a
     ld [wBlobThrowing], a
     inc a
-    ld [$dc23], a
+    ld [wBlobActive], a
     ret
 
 ; Update the UFO on UFO levels and the blob on blob levels.
@@ -6594,7 +6594,7 @@ jr_000_27eb:
 
 jr_000_27f3:
     ld hl, $4f57
-    ld a, [$dc20]
+    ld a, [wGhostActive]
     or a
     jr z, jr_000_27ff
 
@@ -8055,10 +8055,10 @@ Call_000_306f:
     ld a, [hl+]
     push hl
     ld e, $01
-    call Call_001_634d
+    call SpawnPickupEffect
     pop hl
     ld b, [hl]
-    call Call_001_7c39
+    call AddScore
     ret
 
 ; Move the bomb dropped by the UFO. A hit on the bat costs a life.
@@ -8234,8 +8234,10 @@ jr_000_3199:
     xor a
     ret
 
-Call_000_319b:
-    ld a, [$dc23]
+; The blob catches a ball that touches it: the ball is removed and the blob starts its throw.
+; B = y, C = x of the ball point. Nothing happens while Ninja or Ghost is active.
+CheckBlobCatch:
+    ld a, [wBlobActive]
     or a
     ret z
 
@@ -8243,7 +8245,7 @@ Call_000_319b:
     or a
     ret nz
 
-    ld a, [$dc20]
+    ld a, [wGhostActive]
     or a
     ret nz
 
@@ -8305,32 +8307,32 @@ ResetShots:
 UpdateShots:
     ld a, [wShotActive]
     or a
-    jp nz, Jump_000_3479
+    jp nz, UpdateShot0
 
 Jump_000_3213:
     ld a, [wShotActive + 1]
     or a
-    jp nz, Jump_000_356b
+    jp nz, UpdateShot1
 
 Jump_000_321a:
     ld a, [wShotActive + 2]
     or a
-    jp nz, Jump_000_365d
+    jp nz, UpdateShot2
 
 Jump_000_3221:
     ld a, [wShotActive + 3]
     or a
-    jp nz, Jump_000_3725
+    jp nz, UpdateShot3
 
 Jump_000_3228:
     ld a, [wShotActive + 4]
     or a
-    jp nz, Jump_000_37e1
+    jp nz, UpdateShot4
 
 Jump_000_322f:
     ld a, [wShotActive + 5]
     or a
-    jp nz, Jump_000_389d
+    jp nz, UpdateShot5
 
 ; Fire the current weapon. A grenade is charged while A is held and thrown when A is released;
 ; left or right at that moment sets its direction.
@@ -8663,7 +8665,8 @@ jr_000_344e:
     ld [wShotActive + 5], a
     ret
 
-Jump_000_3479:
+; Shot slots 0 and 1 hit bricks with HitBrickWithShot.
+UpdateShot0:
     ld d, $00
     ld a, [$c2b6]
     ld l, a
@@ -8816,7 +8819,7 @@ jr_000_353e:
     ld [$dc44], a
     jp Jump_000_3213
 
-Jump_000_356b:
+UpdateShot1:
     ld d, $00
     ld a, [$c2b6]
     ld l, a
@@ -8969,7 +8972,8 @@ jr_000_3630:
     ld [$dc44], a
     jp Jump_000_321a
 
-Jump_000_365d:
+; Shot slots 2 to 5 hit bricks with HitBrickWithBall.
+UpdateShot2:
     ld d, $00
     ld a, [$c2b6]
     ld l, a
@@ -9097,7 +9101,7 @@ jr_000_36f8:
     ld [$dc44], a
     jp Jump_000_3221
 
-Jump_000_3725:
+UpdateShot3:
     ld d, $00
     ld a, [$c2b6]
     ld l, a
@@ -9216,7 +9220,7 @@ jr_000_37b4:
     ld [$dc44], a
     jp Jump_000_3228
 
-Jump_000_37e1:
+UpdateShot4:
     ld d, $00
     ld a, [$c2b6]
     ld l, a
@@ -9335,7 +9339,7 @@ jr_000_3870:
     ld [$dc44], a
     jp Jump_000_3228
 
-Jump_000_389d:
+UpdateShot5:
     ld d, $00
     ld a, [$c2b6]
     ld l, a
@@ -9995,7 +9999,7 @@ jr_000_3d1d:
     ld [$dd50], a
     ld b, h
     ld c, l
-    call Call_001_7c3c
+    call AddScoreBC
     ld hl, $dd0b
     call DrawString
     call DrawString
