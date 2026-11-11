@@ -42,7 +42,7 @@ make check
 
 ## What is left
 
-- Most routines still have automatic names (`Call_000_xxxx`). The per-frame gameplay update, the ball movement and the ball collision are labelled by section. The inside of the six shot handlers and the projectile update, and the title, high score, credits and ending screens are not traced yet.
+- About 110 routines and jump targets in banks 0 and 1 still have automatic names (`Call_000_xxxx`, `Jump_000_xxxx`), and the `jr_` labels inside routines are automatic too. The title, high score, level password, credits and ending screens are the least understood.
 - Most data is still unstructured `db` with automatic `Data_bbb_xxxx` labels: palettes, tile maps, background pictures and music.
 - Most pointers loaded in code (`ld hl, ...`) are labels now. 39 are still numbers: 15 were never reached in the emulator run that identified the bank, and 24 point into the middle of an image or a string. Pointers inside unstructured data are still numbers. The ROM cannot be rearranged safely until those are labels too.
 - Banks `$0B` and `$10`–`$13` hold the graphics of the five languages. The bank number comes from the language table (`wLangGraphicsBank`). Their contents are still unlabelled.
