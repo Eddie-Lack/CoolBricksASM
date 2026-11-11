@@ -494,7 +494,11 @@ BlobSprites_Throwing:
 UfoSprites:
     db $00, $00, $4e, $02, $00, $08, $4f, $01, $00
     db $10
-    db $50, $05, $f8, $04, $52, $02, $f8, $0c, $53, $05, $01, $0a, $02, $0f, $03, $14
+    db $50, $05, $f8, $04, $52, $02, $f8, $0c
+
+; Effect number and score units for each UFO hit.
+UfoHitScores:
+    db $53, $05, $01, $0a, $02, $0f, $03, $14
     db $04, $19, $05, $32
 
 ; UFO passes: wait time and side for each of 8 passes.
@@ -5363,7 +5367,9 @@ PowerupSprite_Ghost:
 PowerupSprite_Grenade:
     db $0c, $09, $0d, $09, $0f, $09, $0e, $09
 
-Call_001_77c6:
+; Draw the 16 rows of 9 bricks from wBrickMap. The high nibble of each cell is its palette and is
+; removed from the map here. Every cell that is not empty and not unbreakable is counted in wBricksLeft.
+SetUpBricks:
     xor a
     ld [wBricksLeft], a
     ld a, $01

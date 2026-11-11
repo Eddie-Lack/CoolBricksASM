@@ -216,7 +216,7 @@ One of the four corner cases has a mistake in the original code. For an exact di
 
 `UpdateEnemies` runs `UpdateUfo` on UFO levels and `UpdateBlob` on blob levels. `UpdateProjectiles` runs on every level.
 
-- **UFO:** `UfoPassTable` gives a wait time and a side for each of 8 passes. The UFO then crosses the screen at the height `wUfoHeight`, moving half a pixel per frame. At an X position taken from the frame counter it drops a bomb (`UpdateUfoBomb`). A bomb that hits the bat costs a life.
+- **UFO:** `UfoPassTable` gives a wait time and a side for each of 8 passes. The UFO then crosses the screen at the height `wUfoHeight`, moving half a pixel per frame. At an X position taken from the frame counter it drops a bomb (`UpdateUfoBomb`). A bomb that hits the bat costs a life. A ball that touches the UFO (`CheckUfoHit`) ends that pass and scores 100, 150, 200, 250 and 500 points for the first to fifth hit (`UfoHitScores`). After the fifth hit the UFO does not come back. The hit count is reset at level start and after a lost life (`ResetEnemies`).
 - **Blob:** the blob is a 15-byte object that follows path data (`UpdateEnemyPath`). `CheckBlobCatch` runs for every ball test point. A ball that touches the blob is removed and the blob starts its throw animation. It then throws the ball back as a projectile (`SpawnProjectile`), and the projectile turns into a ball again when it lands. `wBlobThrowCount` counts balls the blob is holding, so losing the last ball on screen does not cost a life while it is not 0.
 - **Ghost and Ninja:** the blob cannot catch the ball while `wGhostActive` or `wNinjaActive` is set. Ghost lasts until `wGhostTimer` runs out.
 - **Projectiles:** `wProjectiles` has 4 slots of 9 bytes. Grenades use the same slots.

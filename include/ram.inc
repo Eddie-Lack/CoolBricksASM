@@ -129,6 +129,9 @@ DEF wShotCooldown          EQU $dc44 ; Frames until the next rocket or laser can
 DEF wFireLatch             EQU $dc4d ; Not 0 until A is released; each shot needs a new press
 DEF wShots                 EQU $dc4e ; 6 shots, 4 bytes each: x, y, y when fired, 1 for a laser
 
+; Gameplay: UFO hits
+DEF wUfoHits               EQU $dc34 ; Times the ball has hit the UFO in this level. The UFO is gone at 5
+
 ; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
 DEF wLanguage              EQU $defc
 
