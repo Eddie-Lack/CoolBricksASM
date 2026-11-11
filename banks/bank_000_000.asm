@@ -406,7 +406,7 @@ jr_000_0339:
     jr jr_000_0361
 
 jr_000_0346:
-    ld hl, wUnk_d8ae
+    ld hl, wScoreDigits + 1
     ld de, $9806
     ld a, [hl+]
     ld [de], a
@@ -623,13 +623,13 @@ jr_000_048f:
     ld l, a
     ld a, [wUnk_df49]
     ld h, a
-    ld a, [wUnk_dad3]
+    ld a, [wStartLevelText]
     sub $2f
     ld [hl+], a
-    ld a, [wUnk_dad4]
+    ld a, [wStartLevelText + 1]
     sub $2f
     ld [hl+], a
-    ld a, [wUnk_dad5]
+    ld a, [wStartLevelText + 2]
     sub $2f
     ld [hl], a
     ld de, wUnk_df40
@@ -1297,7 +1297,7 @@ DrawHighScoreTable:
 
 ; Turn the score digits into characters for the score display.
 BuildScoreText:
-    ld hl, wUnk_d8ae
+    ld hl, wScoreDigits + 1
     ld de, wUnk_ccad
     ld b, $05
 
@@ -2811,7 +2811,7 @@ Gameplay_UpdateBalls:
     ld [wUnk_d8a4], a
     ld b, a
     ld hl, wBalls
-    ld de, wUnk_d895
+    ld de, wRemovedBallPtrs
     xor a
     ld [hTemp2], a
 
@@ -2874,7 +2874,7 @@ jr_000_11d2:
     ld [wBatExplosionTimer], a
     ld a, [wBatY]
     sub $08
-    ld [wUnk_d76c], a
+    ld [wBatExplosionY], a
     ld b, $f8
     ld a, [wBatWidth]
     cp $20
@@ -2885,7 +2885,7 @@ jr_000_11d2:
 jr_000_11f8:
     ld a, [wBatX]
     add b
-    ld [wUnk_d76d], a
+    ld [wBatExplosionX], a
     xor a
 
     ld [wWeaponFlag], a
@@ -2975,7 +2975,7 @@ jr_000_127a:
     or a
     jr z, Gameplay_AfterBalls
 
-    ld de, wUnk_d895
+    ld de, wRemovedBallPtrs
     ld b, a
     dec hl
 
@@ -3166,7 +3166,7 @@ UpdateBall:
 jr_000_13c0:
     jr c, jr_000_1415
 
-    ld a, [wUnk_d8a7]
+    ld a, [wBallEffectTick]
     and $1f
     ld d, $00
     cp $10
@@ -4099,9 +4099,9 @@ UpdateBatExplosion:
     ld a, [wOamUsed]
     add b
     ld [wOamUsed], a
-    ld a, [wUnk_d76c]
+    ld a, [wBatExplosionY]
     ld b, a
-    ld a, [wUnk_d76d]
+    ld a, [wBatExplosionX]
     ld c, a
 
 jr_000_1930:
@@ -4162,7 +4162,7 @@ jr_000_195d:
     add hl, bc
     ld b, h
     ld c, l
-    ld hl, wUnk_d91c
+    ld hl, wBrickRedrawQueue
     ld a, e
     ld [hl+], a
     ld a, d
@@ -4215,7 +4215,7 @@ jr_000_19a6:
     add hl, bc
     ld b, h
     ld c, l
-    ld hl, wUnk_d91c
+    ld hl, wBrickRedrawQueue
     ld a, e
     ld [hl+], a
     ld a, d
@@ -4523,7 +4523,7 @@ jr_000_1b55:
     add hl, de
     ld c, l
     ld b, h
-    ld hl, wUnk_d91c
+    ld hl, wBrickRedrawQueue
     ld de, $0004
 
 jr_000_1b69:
@@ -4946,7 +4946,7 @@ FlushBrickRedraw:
     jr z, jr_000_1dae
 
     ld [hTemp], a
-    ld hl, wUnk_d91c
+    ld hl, wBrickRedrawQueue
     ld bc, wUnk_da37
     ld a, [wUnk_daaf]
     ld e, a
@@ -5476,9 +5476,9 @@ jr_000_2083:
 ; Write wStartLevel + 1 as 3 decimal digits.
 FormatLevelNumber:
     ld a, $30
-    ld [wUnk_dad3], a
-    ld [wUnk_dad4], a
-    ld [wUnk_dad5], a
+    ld [wStartLevelText], a
+    ld [wStartLevelText + 1], a
+    ld [wStartLevelText + 2], a
     ld a, [wStartLevel]
     inc a
     ld c, $00
@@ -5493,7 +5493,7 @@ jr_000_20c4:
     jr z, jr_000_20d6
 
     add $30
-    ld [wUnk_dad3], a
+    ld [wStartLevelText], a
     ld a, b
     or a
     jr z, jr_000_20f9
@@ -5513,7 +5513,7 @@ jr_000_20d9:
     jr z, jr_000_20eb
 
     add $30
-    ld [wUnk_dad4], a
+    ld [wStartLevelText + 1], a
     ld a, b
     or a
     jr z, jr_000_20f9
@@ -5521,7 +5521,7 @@ jr_000_20d9:
 jr_000_20eb:
     ld a, b
     add $30
-    ld [wUnk_dad5], a
+    ld [wStartLevelText + 2], a
     jr jr_000_20f9
 
 jr_000_20f3:
@@ -8182,7 +8182,7 @@ jr_000_30e7:
     ld [wBatExplosionTimer], a
     ld a, [wBatY]
     sub $08
-    ld [wUnk_d76c], a
+    ld [wBatExplosionY], a
     ld b, $f8
     ld a, [wBatWidth]
     cp $20
@@ -8193,7 +8193,7 @@ jr_000_30e7:
 jr_000_313d:
     ld a, [wBatX]
     add b
-    ld [wUnk_d76d], a
+    ld [wBatExplosionX], a
     xor a
     ld [wWeaponFlag], a
     xor a
