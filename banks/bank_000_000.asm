@@ -6250,14 +6250,14 @@ jr_000_2535:
     ld [wCurrentLevel], a
     ld hl, $05dc
     ld a, l
-    ld [wUnk_dd4d], a
+    ld [wLevelBonus], a
     ld a, h
-    ld [wUnk_dd4e], a
+    ld [wLevelBonus + 1], a
     ld hl, $0096
     ld a, l
-    ld [wUnk_dd4f], a
+    ld [wLevelBonusUnits], a
     ld a, h
-    ld [wUnk_dd50], a
+    ld [wLevelBonusUnits + 1], a
     ret
 
 StateInit_TitleScreen:
@@ -9990,31 +9990,31 @@ jr_000_3d1d:
     ld a, [wUnk_cb7f]
     ld [hl+], a
     ld [de], a
-    ld a, [wUnk_dd4d]
+    ld a, [wLevelBonus]
     ld l, a
-    ld a, [wUnk_dd4e]
+    ld a, [wLevelBonus + 1]
     ld h, a
     ld de, $01f4
     add hl, de
     ld a, l
-    ld [wUnk_dd4d], a
+    ld [wLevelBonus], a
     ld a, h
-    ld [wUnk_dd4e], a
+    ld [wLevelBonus + 1], a
     ld a, l
-    ld [wUnk_dd49], a
+    ld [wBonusCountdown], a
     ld a, h
-    ld [wUnk_dd4a], a
-    call LevelPassword_Sub5c09
-    ld a, [wUnk_dd4f]
+    ld [wBonusCountdown + 1], a
+    call LevelPassword_DrawBonus
+    ld a, [wLevelBonusUnits]
     ld l, a
-    ld a, [wUnk_dd50]
+    ld a, [wLevelBonusUnits + 1]
     ld h, a
     ld de, $0032
     add hl, de
     ld a, l
-    ld [wUnk_dd4f], a
+    ld [wLevelBonusUnits], a
     ld a, h
-    ld [wUnk_dd50], a
+    ld [wLevelBonusUnits + 1], a
     ld b, h
     ld c, l
     call AddScoreBC
@@ -10023,7 +10023,7 @@ jr_000_3d1d:
     call DrawString
     call DrawString
     ld a, $2d
-    ld [wUnk_dd4b], a
+    ld [wBonusDelay], a
     ld hl, LevelPasswordData_001_67ad
     ld a, l
     ld [wUnk_dd60], a

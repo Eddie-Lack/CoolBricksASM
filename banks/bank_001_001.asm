@@ -1536,7 +1536,7 @@ Text_German_LatestScoreData_001_5b44:
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $0a, $08, $08, $0a, $08, $08, $0a
     db $0a, $0a, $04, $04, $04, $04, $04, $04, $04, $04, $04
 
-LevelPassword_Sub5c09:
+LevelPassword_DrawBonus:
     ld a, [wUnk_df37]
     ld c, a
     ld a, [wUnk_df38]
@@ -1619,18 +1619,18 @@ LevelPassword_Update:
     ld [wLevelsSincePassword], a
     call LevelPassword_Sub5d63
     call LevelPassword_Sub5f18
-    ld a, [wUnk_dd4b]
+    ld a, [wBonusDelay]
     or a
     jr z, jr_001_5c7c
 
     dec a
-    ld [wUnk_dd4b], a
+    ld [wBonusDelay], a
     jr jr_001_5c9f
 
 jr_001_5c7c:
-    ld a, [wUnk_dd49]
+    ld a, [wBonusCountdown]
     ld l, a
-    ld a, [wUnk_dd4a]
+    ld a, [wBonusCountdown + 1]
     ld h, a
     or l
     jr z, jr_001_5c9f
@@ -1644,12 +1644,12 @@ jr_001_5c7c:
 
 jr_001_5c92:
     push hl
-    call LevelPassword_Sub5c09
+    call LevelPassword_DrawBonus
     pop hl
     ld a, l
-    ld [wUnk_dd49], a
+    ld [wBonusCountdown], a
     ld a, h
-    ld [wUnk_dd4a], a
+    ld [wBonusCountdown + 1], a
 
 jr_001_5c9f:
     ld a, [hGameState]
@@ -6231,31 +6231,31 @@ jr_001_7d1d:
     ld a, [wUnk_cb7f]
     ld [hl+], a
     ld [de], a
-    ld a, [wUnk_dd4d]
+    ld a, [wLevelBonus]
     ld l, a
-    ld a, [wUnk_dd4e]
+    ld a, [wLevelBonus + 1]
     ld h, a
     ld de, $01f4
     add hl, de
     ld a, l
-    ld [wUnk_dd4d], a
+    ld [wLevelBonus], a
     ld a, h
-    ld [wUnk_dd4e], a
+    ld [wLevelBonus + 1], a
     ld a, l
-    ld [wUnk_dd49], a
+    ld [wBonusCountdown], a
     ld a, h
-    ld [wUnk_dd4a], a
-    call LevelPassword_Sub5c09
-    ld a, [wUnk_dd4f]
+    ld [wBonusCountdown + 1], a
+    call LevelPassword_DrawBonus
+    ld a, [wLevelBonusUnits]
     ld l, a
-    ld a, [wUnk_dd50]
+    ld a, [wLevelBonusUnits + 1]
     ld h, a
     ld de, $0032
     add hl, de
     ld a, l
-    ld [wUnk_dd4f], a
+    ld [wLevelBonusUnits], a
     ld a, h
-    ld [wUnk_dd50], a
+    ld [wLevelBonusUnits + 1], a
     ld b, h
     ld c, l
     call AddScoreBC
@@ -6264,7 +6264,7 @@ jr_001_7d1d:
     call DrawString
     call DrawString
     ld a, $2d
-    ld [wUnk_dd4b], a
+    ld [wBonusDelay], a
     ld hl, LevelPasswordData_001_67ad
     ld a, l
     ld [wUnk_dd60], a

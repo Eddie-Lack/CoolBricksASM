@@ -163,6 +163,12 @@ DEF hVBlankDone            EQU $ff95 ; Set to 1 by the VBlank handler; WaitVBlan
 DEF hPaletteMode           EQU $ff9c ; Selects how the palettes are loaded and faded
 DEF hResumeFromPause       EQU $ffa1 ; 1 when the level screen is entered from pause, so the level is not loaded again
 
+; Level password screen
+DEF wBonusCountdown        EQU $dd49 ; Bonus still to count down on screen
+DEF wBonusDelay            EQU $dd4b ; Frames before the countdown starts
+DEF wLevelBonus            EQU $dd4d ; Bonus in points: 2000 at the first password screen, 500 more each time
+DEF wLevelBonusUnits       EQU $dd4f ; The same bonus in score units (points / 10)
+
 ; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
 DEF wLanguage              EQU $defc
 
@@ -425,14 +431,7 @@ DEF wUnk_dd0a EQU $dd0a
 DEF wUnk_dd0b EQU $dd0b
 DEF wUnk_dd17 EQU $dd17
 DEF wUnk_dd32 EQU $dd32
-DEF wUnk_dd49 EQU $dd49
-DEF wUnk_dd4a EQU $dd4a
-DEF wUnk_dd4b EQU $dd4b
 DEF wUnk_dd4c EQU $dd4c
-DEF wUnk_dd4d EQU $dd4d
-DEF wUnk_dd4e EQU $dd4e
-DEF wUnk_dd4f EQU $dd4f
-DEF wUnk_dd50 EQU $dd50
 DEF wUnk_dd51 EQU $dd51
 DEF wUnk_dd53 EQU $dd53
 DEF wUnk_dd54 EQU $dd54
