@@ -38,6 +38,10 @@ DEF hFrameCounter          EQU $ff8c ; Goes up by 1 every frame
 DEF hVBlankHandler         EQU $ff96 ; Address of the current VBlank handler
 DEF hStatHandler           EQU $ff98 ; Address of the current LCD STAT handler
 DEF hGameState             EQU $ff9f ; Game state, index into the state handler tables
+DEF wHighScoreTable        EQU $cb59 ; High score table as 13 strings for DrawString
+DEF wMusicOff              EQU $dabb ; Not 0 when music is turned off in the menu
+DEF wSfxOff                EQU $dabc ; Not 0 when sound effects are turned off
+DEF wLevelsSincePassword   EQU $dcfe ; Counts levels; the password screen appears when it reaches 4
 
 ; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
 DEF wLanguage              EQU $defc

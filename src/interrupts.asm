@@ -216,7 +216,7 @@ Jump_000_00d3:
     ld hl, $4850
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
 
 Call_000_00f0:
     ld a, $01
