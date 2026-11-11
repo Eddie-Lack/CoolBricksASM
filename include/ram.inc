@@ -90,12 +90,12 @@ DEF wBallOldYSub           EQU $d771 ; Ball position before the move
 DEF wBallOldY              EQU $d772
 DEF wBallOldXSub           EQU $d773
 DEF wBallOldX              EQU $d774
-DEF wBlobThrowCount        EQU $dbe0 ; Goes up when the blob starts a throw. While it is not 0, losing the last ball does not cost a life
+DEF wBlobThrowCount        EQU $dbe0 ; Balls the blob has caught and not yet thrown back. While it is not 0, losing the last ball does not cost a life
 DEF wProjectiles           EQU $dbed ; 4 projectiles, 9 bytes each (grenades and blob throws)
 DEF wBlob                  EQU $dc11 ; The blob, a 15-byte enemy object
 DEF wBlobY                 EQU $dc12
 DEF wBlobX                 EQU $dc14
-DEF wBlobThrowing          EQU $dc24 ; Not 0 while the blob plays its throw animation
+DEF wBlobThrowing          EQU $dc24 ; Not 0 from the moment the blob catches a ball until it throws it
 DEF wUfoXSub               EQU $dc25 ; UFO X position, fraction
 DEF wUfoX                  EQU $dc26 ; UFO X position
 DEF wUfoSpeed              EQU $dc28 ; UFO speed, +$80 or -$80 fractions per frame
@@ -105,6 +105,15 @@ DEF wUfoBombActive         EQU $dc2f ; Not 0 while a UFO bomb falls
 DEF wUfoBombX              EQU $dc30
 DEF wUfoBombY              EQU $dc31
 DEF wUfoDropX              EQU $dc33 ; X position where the UFO drops its bomb, taken from the frame counter
+
+; Gameplay: score, Ghost and effects
+DEF wScoreDigits           EQU $d8ad ; Score, 6 digits
+DEF wGhostActive           EQU $dc20 ; Not 0 while Ghost is active: the blob cannot catch the ball
+DEF wGhostTimer            EQU $dc21 ; Time left for Ghost
+DEF wBlobActive            EQU $dc23 ; Not 0 while the blob is on screen
+DEF wBrickBreakEffects     EQU $dc63 ; 14 effect slots, 6 bytes each
+DEF wPickupEffects         EQU $dcb7 ; 4 effect slots, 4 bytes each
+DEF wUnbreakableHitEffects EQU $dcd5 ; 10 effect slots
 
 ; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
 DEF wLanguage              EQU $defc
