@@ -719,7 +719,7 @@ jr_001_513c:
     ld [wNinjaActive], a
 
 jr_001_5159:
-    ld a, [$dc20]
+    ld a, [wGhostActive]
     or a
     ret z
 
@@ -729,12 +729,12 @@ jr_001_5159:
     and $07
     ret nz
 
-    ld a, [$dc21]
+    ld a, [wGhostTimer]
     dec a
-    ld [$dc21], a
+    ld [wGhostTimer], a
     ret nz
 
-    ld [$dc20], a
+    ld [wGhostActive], a
     ld a, $18
     call PlaySound
     ret
@@ -1124,9 +1124,9 @@ jr_001_5402:
 
 Powerup_Ghost:
     ld a, $01
-    ld [$dc20], a
+    ld [wGhostActive], a
     ld a, $ff
-    ld [$dc21], a
+    ld [wGhostTimer], a
     ld hl, wLangTextGhostUp
     call ShowMessageBankE
     jr PowerupCollected
@@ -1148,13 +1148,13 @@ PowerupCollected:
     ld b, $0a
 
 Jump_001_5450:
-    call Call_001_7c39
+    call AddScore
     pop de
     pop bc
     push de
     ld a, $01
     ld e, $00
-    call Call_001_634d
+    call SpawnPickupEffect
     pop de
     ld a, $08
     call PlaySound
@@ -2400,11 +2400,11 @@ BallReflectLeftTable:
 
     db $01
 
-Call_001_627f:
+ClearBrickBreakEffects:
     ld c, $0e
     xor a
     ld de, $0006
-    ld hl, $dc63
+    ld hl, wBrickBreakEffects
 
 jr_001_6288:
     ld [hl], a
@@ -2414,11 +2414,11 @@ jr_001_6288:
 
     ret
 
-Call_001_628e:
+SpawnBrickBreakEffect:
     push hl
     push de
     push af
-    ld hl, $dc63
+    ld hl, wBrickBreakEffects
     ld de, $0006
 
 jr_001_6297:
@@ -2458,7 +2458,7 @@ jr_001_629e:
 Call_001_62bf:
     push hl
     push af
-    ld hl, $dc63
+    ld hl, wBrickBreakEffects
     ld de, $0006
 
 jr_001_62c7:
@@ -2497,8 +2497,8 @@ jr_001_62df:
     pop hl
     ret
 
-Call_001_62e9:
-    ld hl, $dc63
+UpdateBrickBreakEffects:
+    ld hl, wBrickBreakEffects
     ld c, $0e
 
 jr_001_62ee:
@@ -2568,11 +2568,11 @@ jr_001_633a:
 
     ret
 
-Call_001_633e:
+ClearPickupEffects:
     ld c, $04
     xor a
     ld de, $0004
-    ld hl, $dcb7
+    ld hl, wPickupEffects
 
 jr_001_6347:
     ld [hl], a
@@ -2582,12 +2582,13 @@ jr_001_6347:
 
     ret
 
-Call_001_634d:
+; Start the effect shown where a power-up was collected.
+SpawnPickupEffect:
     push bc
     ld c, d
     push af
     push de
-    ld hl, $dcb7
+    ld hl, wPickupEffects
     ld de, $0007
 
 jr_001_6357:
@@ -2636,8 +2637,8 @@ jr_001_6371:
     pop bc
     ret
 
-Call_001_6386:
-    ld hl, $dcb7
+UpdatePickupEffects:
+    ld hl, wPickupEffects
     ld c, $04
 
 jr_001_638b:
@@ -2894,17 +2895,18 @@ jr_001_64bd:
 
     ret
 
-Call_001_64c3:
+ClearUnbreakableHitEffects:
     ld a, $ff
     ld [$dcf3], a
-    ld hl, $dcd5
+    ld hl, wUnbreakableHitEffects
     ld a, l
     ld [$dcd3], a
     ld a, h
     ld [$dcd4], a
     ret
 
-Call_001_64d4:
+; Start the effect shown when the ball hits an unbreakable brick.
+SpawnUnbreakableHitEffect:
     ld a, [$dcd3]
     ld l, a
     ld a, [$dcd4]
@@ -2919,7 +2921,7 @@ Call_001_64d4:
     cp $ff
     jr nz, jr_001_64eb
 
-    ld hl, $dcd5
+    ld hl, wUnbreakableHitEffects
 
 jr_001_64eb:
     ld a, l
@@ -2930,8 +2932,8 @@ jr_001_64eb:
     ld [$d8ab], a
     ret
 
-Call_001_64f9:
-    ld hl, $dcd5
+UpdateUnbreakableHitEffects:
+    ld hl, wUnbreakableHitEffects
     ld a, $0a
 
 jr_001_64fe:
@@ -5840,7 +5842,7 @@ jr_001_7c2c:
     ret
 
 Call_001_7c2d:
-    ld hl, $d8ad
+    ld hl, wScoreDigits
     ld a, $01
     ld [hl+], a
     ld [hl+], a
@@ -5850,12 +5852,13 @@ Call_001_7c2d:
     ld [hl+], a
     ret
 
-Call_001_7c39:
+; Add B to the score. One unit is 10 points on screen.
+AddScore:
     ld c, b
     ld b, $00
 
-Call_001_7c3c:
-jr_001_7c3c:
+; Add BC to the score.
+AddScoreBC:
     ld a, $0b
     ld hl, $d8b2
 
@@ -5870,11 +5873,11 @@ jr_001_7c41:
 
 jr_001_7c4a:
     xor a
-    ld [$d8ad], a
+    ld [wScoreDigits], a
     dec bc
     ld a, b
     or c
-    jr nz, jr_001_7c3c
+    jr nz, AddScoreBC
 
     ret
 
@@ -6039,7 +6042,7 @@ jr_001_7d1d:
     ld [$dd50], a
     ld b, h
     ld c, l
-    call Call_001_7c3c
+    call AddScoreBC
     ld hl, $dd0b
     call DrawString
     call DrawString
