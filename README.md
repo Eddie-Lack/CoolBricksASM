@@ -44,7 +44,7 @@ make check
 
 ## What is left
 
-- **Names inside routines.** Every subroutine in banks 0 and 1 has a name, but about 95 jump targets (`Jump_000_xxxx`) and about 700 `jr_` labels inside routines are still automatic. About 25 subroutines are named only after the screen that uses them and their address, for example `LevelPassword_Sub5c09`.
+- **Names inside routines.** Every subroutine in banks 0 and 1 has a name, but about 60 jump targets (`Jump_000_xxxx`) and about 700 `jr_` labels inside routines are still automatic. About 25 subroutines are named only after the screen that uses them and their address, for example `LevelPassword_Sub5c09`.
 - **RAM.** `include/ram.inc` has about 175 real names. Another 226 variables have placeholder names (`wUnk_xxxx`, `hUnk_xxxx`). Addresses loaded into a register pair (`ld hl, $dxxx`) are still numbers in about 175 places.
 - **Pointers.** 39 pointers loaded in code are still numbers: 15 were never reached in the emulator run that identified the bank, and 24 point into the middle of an image. Pointers inside unstructured data are still numbers. The ROM cannot be rearranged safely until those are labels too.
 - **Graphics.** Tile data is in `gfx/*.2bpp`. Six newer files have no PNG yet. Some images are loaded in two parts but stored as one file.
