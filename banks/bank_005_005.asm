@@ -652,48 +652,48 @@ LevelHeader_123:
     dw LevelPalette_4670, BrickPalette_48f0
     db $00, $00
 
-; Backgrounds. Each entry appears to be: tile data pointer, its bank, tile map pointer, its bank.
+; Backgrounds. Each entry is: tile data pointer, its bank, tile map pointer, its bank.
 ; Background_48ea is the photo shown by the TNRZ cheat.
 Background_48c0:
-    dw $4000
-    db $04
-    dw $4120
-    db $03
+    dw BackgroundTiles_004_4000
+    db BANK(BackgroundTiles_004_4000)
+    dw BackgroundMap_003_4120
+    db BANK(BackgroundMap_003_4120)
 Background_48c6:
-    dw $4f70
-    db $04
-    dw $4240
-    db $03
+    dw BackgroundTiles_004_4000 + $f70
+    db BANK(BackgroundTiles_004_4000)
+    dw BackgroundMap_003_4240
+    db BANK(BackgroundMap_003_4240)
 Background_48cc:
-    dw $5a10
-    db $04
-    dw $4360
-    db $03
+    dw BackgroundTiles_004_5a10
+    db BANK(BackgroundTiles_004_5a10)
+    dw BackgroundMap_003_4360
+    db BANK(BackgroundMap_003_4360)
 Background_48d2:
-    dw $69e0
-    db $04
-    dw $4480
-    db $03
+    dw BackgroundTiles_004_69e0
+    db BANK(BackgroundTiles_004_69e0)
+    dw BackgroundMap_003_4480
+    db BANK(BackgroundMap_003_4480)
 Background_48d8:
-    dw $7940
-    db $04
-    dw $45a0
-    db $03
+    dw BackgroundTiles_004_7940
+    db BANK(BackgroundTiles_004_7940)
+    dw BackgroundMap_003_45a0
+    db BANK(BackgroundMap_003_45a0)
 Background_48de:
-    dw $4000
-    db $0a
-    dw $46c0
-    db $03
+    dw BackgroundTiles_00a_4000
+    db BANK(BackgroundTiles_00a_4000)
+    dw BackgroundMap_003_46c0
+    db BANK(BackgroundMap_003_46c0)
 Background_48e4:
-    dw $4fd0
-    db $0a
-    dw $47e0
-    db $03
+    dw BackgroundTiles_00a_4000 + $fd0
+    db BANK(BackgroundTiles_00a_4000)
+    dw BackgroundMap_003_47e0
+    db BANK(BackgroundMap_003_47e0)
 Background_48ea:
-    dw $5fb0
-    db $0a
-    dw $4900
-    db $03
+    dw BackgroundTiles_00a_5f00 + $b0
+    db BANK(BackgroundTiles_00a_5f00)
+    dw BackgroundMap_003_4900
+    db BANK(BackgroundMap_003_4900)
 
 Text_English_GameOver:
     dw $9900

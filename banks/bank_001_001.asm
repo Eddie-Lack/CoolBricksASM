@@ -5,7 +5,7 @@
 
 SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
 
-Palettes_Level:
+Palettes_MainMenu:
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $4a, $29, $73, $4e, $bd, $77
     db $00, $00, $00, $41, $6f, $6e, $f9, $7f, $00, $00, $40, $01, $08, $16, $6f, $37
     db $00, $00, $d1, $00, $1b, $02, $9e, $17, $00, $00, $0f, $54, $b9, $71, $3d, $77
@@ -361,6 +361,7 @@ UpdateProjectilesData_001_4b21:
     db $38, $38, $38, $27, $27, $27, $27, $16, $16, $16, $16, $05, $05, $05, $05, $00
     db $00, $00, $00
 
+ThrowPath_4b55:
     db $00
     db $00, $00, $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d
     db $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22
@@ -370,13 +371,17 @@ UpdateProjectilesData_001_4b21:
     db $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d
     db $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00, $00, $00, $00, $00
 
+ThrowPath_4bc5:
     db $00, $00, $00, $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d
     db $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22
     db $22, $22, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22
     db $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d
-    db $0d, $0d, $00, $00, $00, $00, $00, $00, $00
+    db $0d, $0d, $00, $00, $00, $00, $00, $00
+
+ThrowPath_4c2d:
+    db $00
     db $00, $00, $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d
     db $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
@@ -384,6 +389,7 @@ UpdateProjectilesData_001_4b21:
     db $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d
     db $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00, $00, $00, $00, $00
 
+ThrowPath_4c8d:
     db $00
     db $00, $00, $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d
     db $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $22
@@ -395,11 +401,14 @@ ColorOnlyData_001_4ca8:
     db $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d
     db $0d, $00, $00, $00, $00, $00, $00
 
+ThrowPath_4ce5:
     db $00, $00, $00, $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $22
     db $22, $22, $22, $22, $22, $22, $22, $22, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $22, $22, $22, $22, $22, $22, $22, $22
     db $22, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00, $00, $00, $00, $00
+
+ThrowPath_4d35:
     db $00
     db $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22
     db $22, $22, $22, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
@@ -407,26 +416,32 @@ ColorOnlyData_001_4ca8:
     db $3b, $3b, $3b, $22, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d
     db $0d, $0d, $0d, $00, $00, $00, $00
 
+BlobThrowData_Left:
     db $00
     db $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $22
     db $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00, $00
 
+ThrowPath_4dbd:
     db $00
     db $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $22, $22, $22, $22, $22, $22, $22, $0d, $0d
     db $0d, $0d, $0d, $0d, $00, $00, $00
 
+ThrowPath_4df5:
     db $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
     db $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00, $00
+
+ThrowPath_4e25:
     db $00
     db $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $22, $22, $22, $22, $22, $22, $22, $0d, $0d
     db $0d, $0d, $0d, $0d, $00, $00, $00
 
+ThrowPath_4e4d:
     db $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22
     db $3b, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00
     db $00
@@ -437,15 +452,35 @@ UpdateBlobData_001_4e6e:
     db $3b, $3b, $3b, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d
     db $00, $00, $00
 
+ProjectileData_4e92:
     db $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22
     db $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00, $00
+
+ProjectileData_4eb2:
     db $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $22
-    db $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $00, $00, $00, $00, $00, $00, $0d
+    db $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $00, $00, $00
+
+ProjectileData_4ece:
+    db $00, $00, $00, $0d
     db $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d
-    db $0d, $00, $00, $00, $00, $00, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22
-    db $22, $22, $0d, $0d, $0d, $0d, $00, $00, $00, $00, $0d, $0d, $0d, $22, $22, $22
-    db $22, $22, $22, $0d, $0d, $0d, $00, $00, $00, $0d, $0d, $22, $22, $22, $22, $22
-    db $22, $0d, $0d, $00, $00, $0d, $22, $22, $22, $22, $0d, $00
+    db $0d, $00, $00, $00
+
+ProjectileData_4ee6:
+    db $00, $00, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22
+    db $22, $22, $0d, $0d, $0d, $0d, $00, $00
+
+ProjectileData_4efa:
+    db $00, $00, $0d, $0d, $0d, $22, $22, $22
+    db $22, $22, $22, $0d, $0d, $0d, $00, $00
+
+ProjectileData_4f0a:
+    db $00, $0d, $0d, $22, $22, $22, $22, $22
+    db $22, $0d, $0d, $00
+
+ProjectileData_4f16:
+    db $00, $0d, $22, $22, $22, $22, $0d, $00
+
+BlobThrowDirections_Left:
     db $04
 
     db $1c
@@ -466,13 +501,23 @@ BlobThrowDirections_Right:
     db $0c, $0b
 
     db $0b
-    db $78, $08, $00, $8c, $08, $46, $0d, $46, $13, $8c, $18, $46, $1d, $46, $03, $00
+
+BlobPathData_4f2e:
+    db $78, $08, $00
+
+BlobPathData_4f31:
+    db $8c, $08, $46, $0d, $46, $13, $8c, $18, $46, $1d, $46, $03, $00
+
+BlobPathData_4f3e:
     db $8c, $08, $46, $13, $46, $0d, $8c, $18, $46, $03, $46, $1d, $00
 
 BlobPath:
-    db $01, $01, $2e, $4f, $02, $02, $31, $4f
-
-    db $01, $01, $3e, $4f
+    db $01, $01
+    dw BlobPathData_4f2e
+    db $02, $02
+    dw BlobPathData_4f31
+    db $01, $01
+    dw BlobPathData_4f3e
 
 BlobSprites:
     db $00, $00, $5f, $00, $00, $08, $60, $00, $08, $00, $67, $00, $08, $08, $68, $00
@@ -1401,67 +1446,45 @@ GrenadeTexts_Italian:
     dw GrenadeText_Italian_7
 
 GrenadeThrowTable:
-    db $21, $00, $4d, $4e
-    db $28
+    dw $0021, ThrowPath_4e4d
+    dw $0028, ThrowPath_4e25
+    dw $0030, ThrowPath_4df5
+    dw $0038, ThrowPath_4dbd
+    dw $0040, BlobThrowData_Left
+    dw $0048, ThrowPath_4d35
+    dw $0050, ThrowPath_4ce5
+    dw $0058, ThrowPath_4c8d
+    dw $0060, ThrowPath_4c2d
+    dw $0068, ThrowPath_4bc5
+    dw $0070, ThrowPath_4b55
 
-    db $00
-    db $25, $4e
-
-    db $30, $00
-    db $f5, $4d
-    db $38
-
-    db $00
-    db $bd, $4d, $40
-
-    db $00
-    db $7d, $4d, $48
-
-    db $00
-    db $35, $4d
-
-    db $50, $00, $e5, $4c
-    db $58
-
-    db $00
-    db $8d, $4c, $60
-
-    db $00
-    db $2d, $4c
-
-    db $68, $00, $c5, $4b
-    db $70
-
-    db $00
-    db $55, $4b
-
-Text_German_LatestScoreData_001_583e:
+TitleScreenData_001_583e:
     db $f8, $f8, $f8
 
-Text_German_LatestScoreData_001_5841:
+TitleScreenData_001_5841:
     db $f8, $f8, $f8
 
-Text_German_LatestScoreData_001_5844:
+TitleScreenData_001_5844:
     db $f8, $f8, $f8
 
-Text_German_LatestScoreData_001_5847:
+TitleScreenData_001_5847:
     db $f8, $f8, $f8
 
-Text_German_LatestScoreData_001_584a:
+TitleScreenData_001_584a:
     db $f8, $f8, $f8
 
-Text_German_LatestScoreData_001_584d:
+TitleScreenData_001_584d:
     db $f8
     db $f8, $f8, $fd, $fe, $fe, $ff, $00
 
-Text_German_LatestScoreData_001_5855:
+TitleScreenData_001_5855:
     db $12, $00, $00, $00, $01, $00, $08, $00, $01
     db $00, $10, $00, $01, $08, $00, $00, $01, $08, $08, $00, $01, $08, $10, $00, $01
     db $10, $00, $00, $01, $10, $08, $00, $01, $10, $10, $00, $01, $18, $00, $20, $01
     db $18, $08, $21, $01, $18, $10, $22, $01, $20, $00, $32, $01, $20, $08, $33, $01
     db $20, $10, $34, $01, $28, $00, $42, $01, $28, $08, $43, $01, $28, $10, $44, $01
 
-Text_German_LatestScoreData_001_589e:
+TitleScreenData_001_589e:
     db $24, $00, $00, $01, $00, $00, $08, $02, $00, $00, $10, $03, $00, $08, $00, $0b
     db $00, $08, $08, $0c, $00, $08, $10, $0d, $00, $10, $00, $14, $00, $10, $08, $15
     db $00, $10, $10, $16, $00, $18, $00, $23, $01, $18, $08, $24, $01, $18, $10, $25
@@ -1473,7 +1496,7 @@ Text_German_LatestScoreData_001_589e:
     db $00, $20, $10, $00, $00, $28, $00, $00, $00, $28, $08, $00, $00, $28, $10, $00
     db $00
 
-Text_German_LatestScoreData_001_592f:
+TitleScreenData_001_592f:
     db $24, $00, $00, $04, $00, $00, $08, $05, $00, $00, $10, $06, $00, $08, $00
     db $0e, $00, $08, $08, $0f, $00, $08, $10, $10, $00, $10, $00, $17, $00, $10, $08
     db $18, $00, $10, $10, $19, $00, $18, $00, $26, $01, $18, $08, $27, $01, $18, $10
@@ -1485,7 +1508,7 @@ Text_German_LatestScoreData_001_592f:
     db $00, $00, $20, $10, $00, $00, $28, $00, $00, $00, $28, $08, $00, $00, $28, $10
     db $00, $00
 
-Text_German_LatestScoreData_001_59c0:
+TitleScreenData_001_59c0:
     db $24, $00, $00, $07, $00, $00, $08, $08, $00, $00, $10, $09, $00, $08
     db $00, $11, $00, $08, $08, $0f, $00, $08, $10, $12, $00, $10, $00, $1a, $00, $10
     db $08, $1b, $00, $10, $10, $1c, $00, $18, $00, $29, $01, $18, $08, $2a, $01, $18
@@ -1497,7 +1520,7 @@ Text_German_LatestScoreData_001_59c0:
     db $08, $00, $00, $20, $10, $00, $00, $28, $00, $00, $00, $28, $08, $00, $00, $28
     db $10, $00, $00
 
-Text_German_LatestScoreData_001_5a51:
+TitleScreenData_001_5a51:
     db $24, $00, $00, $0a, $00, $00, $08, $00, $00, $00, $10, $00, $00
     db $08, $00, $13, $00, $08, $08, $00, $00, $08, $10, $00, $00, $10, $00, $1d, $00
     db $10, $08, $1e, $00, $10, $10, $1f, $00, $18, $00, $2c, $01, $18, $08, $2d, $01
@@ -1509,32 +1532,89 @@ Text_German_LatestScoreData_001_5a51:
     db $20, $08, $00, $00, $20, $10, $00, $00, $28, $00, $00, $00, $28, $08, $00, $00
     db $28, $10, $00, $00
 
-Text_German_LatestScoreData_001_5ae2:
+TitleScreenData_001_5ae2:
     db $12, $00, $00, $00, $01, $00, $08, $00, $01, $00, $10, $00
     db $01, $08, $00, $00, $01, $08, $08, $00, $01, $08, $10, $00, $01, $10, $00, $00
     db $01, $10, $08, $00, $01, $10, $10, $00, $01, $18, $00, $2f, $01, $18, $08, $30
     db $01, $18, $10, $31, $01, $20, $00, $3f, $01, $20, $08, $40, $01, $20, $10, $41
     db $01, $28, $00, $51, $01, $28, $08, $52
 
-Text_German_LatestScoreData_001_5b26:
-    db $01, $28, $10, $53, $01, $01, $98, $03
-    db $c1, $5b, $04, $98, $03, $af, $5b, $07, $98, $03, $9d, $5b, $0a, $98, $03, $8b
-    db $5b, $0d, $98, $03, $79, $5b
+TitleLetterTable_5b26:
+    db $01, $28, $10, $53, $01
+    dw $9801
+    db $03
+    dw TitleLetterTiles_5bc1
+    dw $9804
+    db $03
+    dw TitleLetterTiles_5baf
+    dw $9807
+    db $03
+    dw TitleLetterTiles_5b9d
+    dw $980a
+    db $03
+    dw TitleLetterTiles_5b8b
+    dw $980d
+    db $03
+    dw TitleLetterTiles_5b79
 
-Text_German_LatestScoreData_001_5b44:
-    db $10, $98, $03, $67, $5b, $01, $98, $03, $d3, $5b
-    db $04, $98, $03, $e5, $5b, $07, $98, $03, $e5, $5b, $0a, $98, $03, $e5, $5b, $0d
-    db $98, $03, $f7, $5b, $10, $98, $03, $d3, $5b, $0f, $10, $11, $20, $21, $11, $31
-    db $32, $33, $0f, $10, $11, $20, $21, $22, $32, $33, $34, $0c, $0d, $0e, $1d, $1e
-    db $1f, $2e, $2f, $30, $0c, $0d, $0e, $1d, $1e, $1f, $2f, $30, $31, $09, $0a, $0b
-    db $1b, $19, $1c, $2b, $2c, $2d, $09, $0a, $0b, $1a, $1b, $1c, $2c, $2d, $2e, $06
-    db $07, $08, $18, $19, $1a, $28, $29, $2a, $06, $07, $08, $18, $19, $18, $29, $2a
-    db $2b, $03, $04, $05, $15, $16, $17, $25, $26, $27, $03, $04, $05, $15, $16, $17
-    db $26, $27, $28, $00, $01, $02, $12, $13, $14, $22, $23, $24, $00, $01, $02, $12
-    db $13, $14, $23, $24, $25, $08, $08, $08, $08, $08, $08, $08, $08, $08, $04, $04
-    db $04, $04, $04, $04, $04, $04, $04, $0a, $0a, $0a, $0a, $0a, $0a, $0a, $0a, $0a
-    db $04, $04, $04, $04, $04, $04, $04, $04, $04, $0a, $08, $08, $0a, $08, $08, $0a
-    db $0a, $0a, $04, $04, $04, $04, $04, $04, $04, $04, $04
+TitleLetterTable_5b44:
+    dw $9810
+    db $03
+    dw TitleLetterTiles_5b67
+    dw $9801
+    db $03
+    dw TitleLetterTiles_5bd3
+    dw $9804
+    db $03
+    dw TitleLetterTiles_5be5
+    dw $9807
+    db $03
+    dw TitleLetterTiles_5be5
+    dw $980a
+    db $03
+    dw TitleLetterTiles_5be5
+    dw $980d
+    db $03
+    dw TitleLetterTiles_5bf7
+    dw $9810
+    db $03
+    dw TitleLetterTiles_5bd3
+TitleLetterTiles_5b67:
+    db $0f, $10, $11, $20, $21, $11, $31, $32, $33
+TitleLetterTiles_5b70:
+    db $0f, $10, $11, $20, $21, $22, $32, $33, $34
+TitleLetterTiles_5b79:
+    db $0c, $0d, $0e, $1d, $1e, $1f, $2e, $2f, $30
+TitleLetterTiles_5b82:
+    db $0c, $0d, $0e, $1d, $1e, $1f, $2f, $30, $31
+TitleLetterTiles_5b8b:
+    db $09, $0a, $0b, $1b, $19, $1c, $2b, $2c, $2d
+TitleLetterTiles_5b94:
+    db $09, $0a, $0b, $1a, $1b, $1c, $2c, $2d, $2e
+TitleLetterTiles_5b9d:
+    db $06, $07, $08, $18, $19, $1a, $28, $29, $2a
+TitleLetterTiles_5ba6:
+    db $06, $07, $08, $18, $19, $18, $29, $2a, $2b
+TitleLetterTiles_5baf:
+    db $03, $04, $05, $15, $16, $17, $25, $26, $27
+TitleLetterTiles_5bb8:
+    db $03, $04, $05, $15, $16, $17, $26, $27, $28
+TitleLetterTiles_5bc1:
+    db $00, $01, $02, $12, $13, $14, $22, $23, $24
+TitleLetterTiles_5bca:
+    db $00, $01, $02, $12, $13, $14, $23, $24, $25
+TitleLetterTiles_5bd3:
+    db $08, $08, $08, $08, $08, $08, $08, $08, $08
+TitleLetterTiles_5bdc:
+    db $04, $04, $04, $04, $04, $04, $04, $04, $04
+TitleLetterTiles_5be5:
+    db $0a, $0a, $0a, $0a, $0a, $0a, $0a, $0a, $0a
+TitleLetterTiles_5bee:
+    db $04, $04, $04, $04, $04, $04, $04, $04, $04
+TitleLetterTiles_5bf7:
+    db $0a, $08, $08, $0a, $08, $08, $0a, $0a, $0a
+TitleLetterTiles_5c00:
+    db $04, $04, $04, $04, $04, $04, $04, $04, $04
 
 LevelPassword_DrawBonus:
     ld a, [wUnk_df37]
@@ -1988,7 +2068,7 @@ Jump_001_5e35:
     or a
     jr nz, jr_001_5e99
 
-    ld hl, LevelPasswordData_001_660a
+    ld hl, LevelPasswordCurves
     ld a, [wUnk_dd5e]
     ld e, a
     ld a, [wUnk_dd5f]
@@ -2152,7 +2232,7 @@ jr_001_5f20:
     push hl
     ld l, a
     ld h, $00
-    ld bc, LevelPasswordData_001_65a8
+    ld bc, LevelPasswordFrames
     add hl, bc
     ld a, [hl+]
     ld b, [hl]
@@ -3108,46 +3188,110 @@ LevelPasswordData_001_6543:
     db $01, $00, $2e, $99, $64, $0a, $00, $26, $99, $69, $14, $00, $d2, $98, $64, $1e
     db $00, $92, $99, $69, $28, $00, $90, $98, $64, $32, $00, $ad, $99, $69, $3c, $00
     db $87, $99, $64, $46, $00, $82, $99, $69, $50, $00, $20, $99, $64, $64, $00, $c1
-    db $98, $69, $5a, $00, $84, $98, $64, $55, $56, $57, $58, $59, $5a, $5b, $5c, $5d
-    db $5e, $5f, $60, $61, $62, $63, $64, $65, $66, $67, $68, $69, $6a, $6b, $6c, $6d
-    db $6e, $6f, $70, $71, $72, $73, $74, $75, $76, $77, $78, $59, $5a, $5b, $5c, $55
-    db $56, $57, $58, $00, $00
+    db $98, $69, $5a, $00, $84, $98, $64
 
-LevelPasswordData_001_65a8:
-    db $00, $00, $7a, $65, $7a, $65, $7a, $65, $7a, $65, $7e
-    db $65, $7e, $65, $7e, $65, $7e, $65, $82, $65, $82, $65, $82, $65, $82, $65, $86
-    db $65, $86, $65, $86, $65, $86, $65, $8a, $65, $8a, $65, $8a, $65, $8a, $65, $8e
-    db $65, $8e, $65, $8e, $65, $8e, $65, $92, $65, $92, $65, $92, $65, $92, $65, $96
-    db $65, $96, $65, $96, $65, $96, $65, $9a, $65, $9a, $65, $9a, $65, $9a, $65, $9e
-    db $65, $9e, $65, $9e, $65, $9e, $65, $a2, $65, $a2, $65, $a2, $65, $a2, $65, $a6
-    db $65, $a6, $65, $a6, $65
+LevelPasswordFrame_657a:
+    db $55, $56, $57, $58
 
-    db $a6, $65
+LevelPasswordFrame_657e:
+    db $59, $5a, $5b, $5c
 
-LevelPasswordData_001_660a:
-    db $5c, $fe, $32, $66, $a4, $01, $70, $66, $2e, $ff, $13, $67, $d2, $00, $13, $67
-    db $d4, $fe, $ae, $66, $2c, $01, $ae, $66, $1a, $ff, $e6, $66, $e6, $00, $e6, $66
-    db $52, $fe, $4d, $67, $ae, $01, $4d, $67, $fc, $fc, $fd, $fd, $fd, $fd, $fd, $fe
+LevelPasswordFrame_6582:
+    db $5d
+    db $5e, $5f, $60
+
+LevelPasswordFrame_6586:
+    db $61, $62, $63, $64
+
+LevelPasswordFrame_658a:
+    db $65, $66, $67, $68
+
+LevelPasswordFrame_658e:
+    db $69, $6a, $6b, $6c
+
+LevelPasswordFrame_6592:
+    db $6d
+    db $6e, $6f, $70
+
+LevelPasswordFrame_6596:
+    db $71, $72, $73, $74
+
+LevelPasswordFrame_659a:
+    db $75, $76, $77, $78
+
+LevelPasswordFrame_659e:
+    db $59, $5a, $5b, $5c
+
+LevelPasswordFrame_65a2:
+    db $55
+    db $56, $57, $58
+
+LevelPasswordFrame_65a6:
+    db $00, $00
+
+LevelPasswordFrames:
+    db $00, $00
+    dw LevelPasswordFrame_657a, LevelPasswordFrame_657a, LevelPasswordFrame_657a, LevelPasswordFrame_657a
+    dw LevelPasswordFrame_657e, LevelPasswordFrame_657e, LevelPasswordFrame_657e, LevelPasswordFrame_657e
+    dw LevelPasswordFrame_6582, LevelPasswordFrame_6582, LevelPasswordFrame_6582, LevelPasswordFrame_6582
+    dw LevelPasswordFrame_6586, LevelPasswordFrame_6586, LevelPasswordFrame_6586, LevelPasswordFrame_6586
+    dw LevelPasswordFrame_658a, LevelPasswordFrame_658a, LevelPasswordFrame_658a, LevelPasswordFrame_658a
+    dw LevelPasswordFrame_658e, LevelPasswordFrame_658e, LevelPasswordFrame_658e, LevelPasswordFrame_658e
+    dw LevelPasswordFrame_6592, LevelPasswordFrame_6592, LevelPasswordFrame_6592, LevelPasswordFrame_6592
+    dw LevelPasswordFrame_6596, LevelPasswordFrame_6596, LevelPasswordFrame_6596, LevelPasswordFrame_6596
+    dw LevelPasswordFrame_659a, LevelPasswordFrame_659a, LevelPasswordFrame_659a, LevelPasswordFrame_659a
+    dw LevelPasswordFrame_659e, LevelPasswordFrame_659e, LevelPasswordFrame_659e, LevelPasswordFrame_659e
+    dw LevelPasswordFrame_65a2, LevelPasswordFrame_65a2, LevelPasswordFrame_65a2, LevelPasswordFrame_65a2
+    dw LevelPasswordFrame_65a6, LevelPasswordFrame_65a6, LevelPasswordFrame_65a6, LevelPasswordFrame_65a6
+
+LevelPasswordCurves:
+    dw $fe5c, LevelPasswordCurve_6632
+    dw $01a4, LevelPasswordCurve_6670
+    dw $ff2e, LevelPasswordCurve_6713
+    dw $00d2, LevelPasswordCurve_6713
+    dw $fed4, LevelPasswordCurve_66ae
+    dw $012c, LevelPasswordCurve_66ae
+    dw $ff1a, LevelPasswordCurve_66e6
+    dw $00e6, LevelPasswordCurve_66e6
+    dw $fe52, LevelPasswordCurve_674d
+    dw $01ae, LevelPasswordCurve_674d
+
+LevelPasswordCurve_6632:
+    db $fc, $fc, $fd, $fd, $fd, $fd, $fd, $fe
     db $fe, $fe, $fe, $ff, $ff, $00, $00, $00, $00, $01, $01, $02, $02, $02, $03, $03
     db $03, $03, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
-    db $04, $04, $04, $04, $04, $80, $fc, $fc, $fd, $fd, $fd, $fd, $fd, $fe, $fe, $fe
+    db $04, $04, $04, $04, $04, $80
+
+LevelPasswordCurve_6670:
+    db $fc, $fc, $fd, $fd, $fd, $fd, $fd, $fe, $fe, $fe
     db $fe, $ff, $ff, $00, $00, $00, $00, $01, $01, $02, $02, $02, $03, $03, $03, $03
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04
 
     db $7f
+
+LevelPasswordCurve_66ae:
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $01, $01, $02, $02, $02
     db $03, $03, $03, $03, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
-    db $04, $04, $04, $04, $04, $04, $04, $7f, $01, $01, $02, $02, $02, $03, $03, $03
+    db $04, $04, $04, $04, $04, $04, $04, $7f
+
+LevelPasswordCurve_66e6:
+    db $01, $01, $02, $02, $02, $03, $03, $03
     db $03, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
-    db $04, $04, $04, $04, $7f, $fc, $fc, $fd, $fd, $fd, $fe, $fe, $ff, $ff, $00, $00
+    db $04, $04, $04, $04, $7f
+
+LevelPasswordCurve_6713:
+    db $fc, $fc, $fd, $fd, $fd, $fe, $fe, $ff, $ff, $00, $00
     db $00, $00, $01, $01, $02, $02, $02, $03, $03, $03, $03, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
-    db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $7f, $01
+    db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $7f
+
+LevelPasswordCurve_674d:
+    db $01
     db $01, $01, $02, $02, $02, $02, $02, $02, $02, $03, $03, $03, $03, $03, $03, $03
     db $03, $03, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
@@ -3162,17 +3306,21 @@ LevelPasswordData_001_67ad:
     db $50
     db $a0, $f4, $ff, $01, $04, $40, $a0, $eb, $ff, $1f, $05
 
-    db $ff, $ad, $67
+    db $ff
+    dw LevelPasswordData_001_67ad
 
 LevelPasswordData_001_67bc:
     db $6e, $d8, $e9, $ff, $1e, $06, $1e, $d8, $f8, $ff, $02, $04
 
-    db $ff, $bc, $67
+    db $ff
+    dw LevelPasswordData_001_67bc
 
 LevelPasswordData_001_67cb:
     db $6e, $c0, $f4, $ff, $01, $04, $82, $c0, $ed, $ff, $1f, $05
 
-    db $ff, $cb, $67, $3e, $80, $e0, $68, $0e, $40
+    db $ff
+    dw LevelPasswordData_001_67cb
+    db $3e, $80, $e0, $68, $0e, $40
     db $2a, $e0, $69, $0d, $20, $fa, $c9, $3e, $80, $e0, $6a, $0e, $40
     db $2a, $e0, $6b, $0d, $20, $fa, $c9
 
@@ -3248,7 +3396,7 @@ jr_001_683a:
     push bc
     ld [hTemp], a
     ld bc, $0040
-    ld hl, wUnk_c9dd
+    ld hl, wPaletteBuffer
     ld de, wUnk_ca9d
     ld a, [hPaletteMode]
     cp $02
@@ -3835,7 +3983,7 @@ TitleScreen_VBlank:
     add a
     ld l, a
     ld h, b
-    ld de, Text_German_LatestScoreData_001_5b44
+    ld de, TitleLetterTable_5b44
     add hl, de
     add hl, bc
     ld a, [hl+]
@@ -3859,7 +4007,7 @@ TitleScreen_VBlank:
     add a
     ld l, a
     ld h, b
-    ld de, Text_German_LatestScoreData_001_5b26
+    ld de, TitleLetterTable_5b26
     add hl, de
     add hl, bc
     ld a, [hl+]
@@ -3916,7 +4064,7 @@ jr_001_6cfe:
     add b
     ld [wUnk_db5b], a
     ld c, a
-    ld hl, Text_German_LatestScoreData_001_5855
+    ld hl, TitleScreenData_001_5855
     jp Jump_001_6e0b
 
 jr_001_6d15:
@@ -3947,7 +4095,7 @@ jr_001_6d30:
     add b
     ld [wUnk_db5c], a
     ld c, a
-    ld hl, Text_German_LatestScoreData_001_589e
+    ld hl, TitleScreenData_001_589e
     jp Jump_001_6e0b
 
 jr_001_6d47:
@@ -3978,7 +4126,7 @@ jr_001_6d62:
     add b
     ld [wUnk_db5d], a
     ld c, a
-    ld hl, Text_German_LatestScoreData_001_592f
+    ld hl, TitleScreenData_001_592f
     jp Jump_001_6e0b
 
 jr_001_6d79:
@@ -4009,7 +4157,7 @@ jr_001_6d94:
     add b
     ld [wUnk_db5e], a
     ld c, a
-    ld hl, Text_German_LatestScoreData_001_59c0
+    ld hl, TitleScreenData_001_59c0
     jr jr_001_6e0b
 
 jr_001_6daa:
@@ -4040,7 +4188,7 @@ jr_001_6dc5:
     add b
     ld [wUnk_db5f], a
     ld c, a
-    ld hl, Text_German_LatestScoreData_001_5a51
+    ld hl, TitleScreenData_001_5a51
     jr jr_001_6e0b
 
 jr_001_6ddb:
@@ -4071,7 +4219,7 @@ jr_001_6df5:
     add b
     ld [wUnk_db60], a
     ld c, a
-    ld hl, Text_German_LatestScoreData_001_5ae2
+    ld hl, TitleScreenData_001_5ae2
     jr jr_001_6e0b
 
 Jump_001_6e0b:
@@ -4110,32 +4258,32 @@ TitleScreen_Init6e25:
     ld [wUnk_db5e], a
     ld [wUnk_db5f], a
     ld [wUnk_db60], a
-    ld hl, Text_German_LatestScoreData_001_583e
+    ld hl, TitleScreenData_001_583e
     ld a, l
     ld [wUnk_db61], a
     ld a, h
     ld [wUnk_db62], a
-    ld hl, Text_German_LatestScoreData_001_5841
+    ld hl, TitleScreenData_001_5841
     ld a, l
     ld [wUnk_db63], a
     ld a, h
     ld [wUnk_db64], a
-    ld hl, Text_German_LatestScoreData_001_5844
+    ld hl, TitleScreenData_001_5844
     ld a, l
     ld [wUnk_db65], a
     ld a, h
     ld [wUnk_db66], a
-    ld hl, Text_German_LatestScoreData_001_5847
+    ld hl, TitleScreenData_001_5847
     ld a, l
     ld [wUnk_db67], a
     ld a, h
     ld [wUnk_db68], a
-    ld hl, Text_German_LatestScoreData_001_584a
+    ld hl, TitleScreenData_001_584a
     ld a, l
     ld [wUnk_db69], a
     ld a, h
     ld [wUnk_db6a], a
-    ld hl, Text_German_LatestScoreData_001_584d
+    ld hl, TitleScreenData_001_584d
     ld a, l
     ld [wUnk_db6b], a
     ld a, h
@@ -4555,7 +4703,7 @@ LanguageTable_Italian:
     dw Text_Italian_StartLevel
     dw $98ec
     dw Text_Italian_HighScorePassword
-    dw $48b7
+    dw Text_Italian_Pause
     dw Text_Italian_GameOver
     dw Text_Italian_LatestScore
 
@@ -4597,7 +4745,7 @@ LanguageTable_English:
     dw Text_English_StartLevel
     dw $98eb
     dw Text_English_HighScorePassword
-    dw $488f
+    dw Text_English_Pause
     dw Text_English_GameOver
     dw Text_English_LatestScore
 
@@ -4639,7 +4787,7 @@ LanguageTable_Spanish:
     dw Text_Spanish_StartLevel
     dw $98ed
     dw Text_Spanish_HighScorePassword
-    dw $48a3
+    dw Text_Spanish_Pause
     dw Text_Spanish_GameOver
     dw Text_Spanish_LatestScore
 
@@ -4681,7 +4829,7 @@ LanguageTable_French:
     dw Text_French_StartLevel
     dw $98ec
     dw Text_French_HighScorePassword
-    dw $4899
+    dw Text_French_Pause
     dw Text_French_GameOver
     dw Text_French_LatestScore
 
@@ -4723,7 +4871,7 @@ LanguageTable_German:
     dw Text_German_StartLevel
     dw $98ed
     dw Text_German_HighScorePassword
-    dw $48ad
+    dw Text_German_Pause
     dw Text_German_GameOver
     dw Text_German_LatestScore
 
@@ -4739,7 +4887,7 @@ jr_001_71f7:
     dec b
     jr nz, jr_001_71f7
 
-    ld de, InitMenuSparklesData_001_75ba
+    ld de, MenuSparkleCurveStarts
     ld hl, wUnk_daed
     ld b, $0a
 
@@ -4964,7 +5112,7 @@ jr_001_7305:
     add a
     ld l, a
     ld h, $00
-    ld de, UpdateMenuSparklesData_001_752c
+    ld de, MenuSparkleFrames
     add hl, de
     pop de
     ld a, [hl+]
@@ -5082,14 +5230,49 @@ InitMenuSparklesData_001_74b4:
     db $cb, $00, $1e, $00, $18, $50, $cc, $00, $64, $00, $0a, $3a, $cd, $00, $6e, $00
     db $8e, $35, $ce, $00, $78, $00, $51, $40, $cf, $00, $b4, $00, $40, $57, $d0, $00
     db $be, $00, $94, $6a, $d1, $00, $c8, $00, $18, $73, $d2, $00, $d3, $00, $2c, $8a
-    db $d3, $00, $00, $00, $28, $00, $08, $2a, $00, $00, $2c, $00, $08, $2e, $00, $00
-    db $30, $00, $08, $32, $00, $00, $34, $00, $08, $36, $00, $00, $38, $00, $08, $3a
-    db $00, $00, $3c, $00, $08, $3e, $00, $00, $40, $00, $08, $42, $00, $00, $44, $00
-    db $08, $46, $00, $00, $48, $00, $08, $4a
+    db $d3, $00
 
-UpdateMenuSparklesData_001_752c:
-    db $f6, $74, $fc, $74, $02, $75, $08, $75
-    db $0e, $75, $14, $75, $1a, $75, $20, $75, $26, $75, $fc, $74, $f6, $74
+MenuSparkleFrame_74f6:
+    db $00, $00, $28, $00, $08, $2a
+
+MenuSparkleFrame_74fc:
+    db $00, $00, $2c, $00, $08, $2e
+
+MenuSparkleFrame_7502:
+    db $00, $00
+    db $30, $00, $08, $32
+
+MenuSparkleFrame_7508:
+    db $00, $00, $34, $00, $08, $36
+
+MenuSparkleFrame_750e:
+    db $00, $00, $38, $00, $08, $3a
+
+MenuSparkleFrame_7514:
+    db $00, $00, $3c, $00, $08, $3e
+
+MenuSparkleFrame_751a:
+    db $00, $00, $40, $00, $08, $42
+
+MenuSparkleFrame_7520:
+    db $00, $00, $44, $00
+    db $08, $46
+
+MenuSparkleFrame_7526:
+    db $00, $00, $48, $00, $08, $4a
+
+MenuSparkleFrames:
+    dw MenuSparkleFrame_74f6
+    dw MenuSparkleFrame_74fc
+    dw MenuSparkleFrame_7502
+    dw MenuSparkleFrame_7508
+    dw MenuSparkleFrame_750e
+    dw MenuSparkleFrame_7514
+    dw MenuSparkleFrame_751a
+    dw MenuSparkleFrame_7520
+    dw MenuSparkleFrame_7526
+    dw MenuSparkleFrame_74fc
+    dw MenuSparkleFrame_74f6
 
 UpdateMenuSparklesData_001_7542:
     db $00, $00
@@ -5101,15 +5284,23 @@ UpdateMenuSparklesData_001_7542:
 
 InitMenuSparklesData_001_7592:
     db $90, $a4
-    db $90, $a4, $90, $a4, $90, $a4, $90, $a4, $04, $04, $04, $04, $04, $04, $04, $04
+    db $90, $a4, $90, $a4, $90, $a4, $90, $a4
+
+; Movement steps of the menu sparkles. MenuSparkleCurveStarts points into this list.
+MenuSparkleCurve:
+    db $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
 
 UpdateMenuSparklesData_001_75af:
     db $fe, $fe, $fe, $ff, $ff
     db $01, $01, $02, $02, $02, $00
 
-InitMenuSparklesData_001_75ba:
-    db $a4, $75, $a2, $75, $a0, $75, $9e, $75, $9c, $75
+MenuSparkleCurveStarts:
+    dw MenuSparkleCurve + $8
+    dw MenuSparkleCurve + $6
+    dw MenuSparkleCurve + $4
+    dw MenuSparkleCurve + $2
+    dw MenuSparkleCurve
 
 ; Jump to the init handler of game state hGameState.
 RunStateInit:
@@ -5165,7 +5356,7 @@ jr_001_75fc:
     ld d, $04
     call HighScores_Sub7929
     ld a, $02
-    ld [wUnk_cb53], a
+    ld [wHdmaMode], a
 
 jr_001_7615:
     call FrameLoop_Sub63fa
@@ -5204,7 +5395,7 @@ jr_001_7640:
     cp $03
     jr nz, jr_001_7665
 
-    ld [wUnk_cb53], a
+    ld [wHdmaMode], a
     ld d, $fc
     call HighScores_Sub7929
     call WaitVBlank
@@ -5575,25 +5766,25 @@ HighScores_Sub7899:
 
     xor a
     ld [wUnk_cb58], a
-    ld a, [wUnk_cb56]
+    ld a, [wHighScoreAnimPtr]
     ld l, a
-    ld a, [wUnk_cb57]
+    ld a, [wHighScoreAnimPtr + 1]
     ld h, a
     ld a, [hl]
     cp $01
     jr nz, jr_001_78b7
 
-    ld hl, SetUpBricksData_001_79b8
+    ld hl, HighScoreAnimFrames
 
 jr_001_78b7:
     ld a, [hl+]
-    ld [wUnk_cb54], a
+    ld [wHdmaSource], a
     ld a, [hl+]
-    ld [wUnk_cb55], a
+    ld [wHdmaSource + 1], a
     ld a, l
-    ld [wUnk_cb56], a
+    ld [wHighScoreAnimPtr], a
     ld a, h
-    ld [wUnk_cb57], a
+    ld [wHighScoreAnimPtr + 1], a
     ret
 
 HighScores_InitSprites:
@@ -5731,13 +5922,29 @@ SetUpBricksData_001_7990:
     db $4f, $e2, $4f, $f6, $67, $a6, $67, $ba, $67, $ce, $67, $e2, $67, $f6, $7f, $a6
     db $7f, $ba, $7f, $ce, $7f, $e2, $7f, $f6
 
-SetUpBricksData_001_79b8:
-    db $00, $40
+; Frames of the animated "HIGH SCORE" title, in the language graphics bank. A value of 1 restarts the list.
+HighScoreAnimFrames:
+    dw HighScoreAnim_00b_4000
 
-HighScoresData_001_79ba:
-    db $60, $43, $c0, $46, $20, $4a
-    db $80, $4d, $e0, $50, $40, $54, $a0, $57, $00, $5b, $60, $5e, $c0, $61, $20, $65
-    db $80, $68, $e0, $6b, $40, $6f, $a0, $72, $00, $76, $60, $79, $01
+HighScoreAnimFrames_Second:
+    dw HighScoreAnim_00b_4360
+    dw HighScoreAnim_00b_46c0
+    dw HighScoreAnim_00b_4a20
+    dw HighScoreAnim_00b_4d80
+    dw HighScoreAnim_00b_50e0
+    dw HighScoreAnim_00b_5440
+    dw HighScoreAnim_00b_57a0
+    dw HighScoreAnim_00b_5b00
+    dw HighScoreAnim_00b_5e60
+    dw HighScoreAnim_00b_61c0
+    dw HighScoreAnim_00b_6520
+    dw HighScoreAnim_00b_6880
+    dw HighScoreAnim_00b_6be0
+    dw HighScoreAnim_00b_6f40
+    dw HighScoreAnim_00b_72a0
+    dw HighScoreAnim_00b_7600
+    dw HighScoreAnim_00b_7960
+    db $01
 
     db $00
 
@@ -6139,12 +6346,12 @@ jr_001_7c91:
     ret
 
 DeveloperLogos_Update:
-    ld a, [hUnk_ff91]
+    ld a, [hLogoTimer]
     or a
     jr z, jr_001_7c9d
 
     dec a
-    ld [hUnk_ff91], a
+    ld [hLogoTimer], a
     ret
 
 jr_001_7c9d:
@@ -6159,13 +6366,13 @@ ColorOnly_Update:
 
     ld bc, $0090
     call DataTransfer
-    ld hl, $5574
+    ld hl, GrenadeText_French_2 + $13
     ld de, $8000
     ld bc, $0010
     call DataTransfer
     ld a, $26
     ld de, $9800
-    ld hl, $5614
+    ld hl, GrenadeText_Spanish_3 + $b
     ld b, $14
     ld c, $12
     call CopyTilemapRect

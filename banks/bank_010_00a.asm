@@ -5,8 +5,10 @@
 
 SECTION "ROM Bank $00a", ROMX[$4000], BANK[$a]
 
+BackgroundTiles_00a_4000:
     INCBIN "gfx/image_00a_4000.2bpp"
 
+BackgroundTiles_00a_5f00:
     INCBIN "gfx/image_00a_5f00.2bpp"
 
     db $c6, $b8, $d5, $f8, $80, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
