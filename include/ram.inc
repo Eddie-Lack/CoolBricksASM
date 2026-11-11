@@ -1,7 +1,8 @@
 ; Names for the game's RAM. See docs/RESEARCH.md.
 
-DEF wBatY                  EQU $c200 ; Bat sprite Y
-DEF wBatX                  EQU $c201 ; Bat sprite X
+DEF wOamBuffer             EQU $c200 ; Sprite buffer, 40 entries of y, x, tile, attribute. The first entry is the bat
+DEF wBatY                  EQU $c200 ; Bat Y: the y of the first sprite in wOamBuffer
+DEF wBatX                  EQU $c201 ; Bat X: the x of the first sprite in wOamBuffer
 DEF wPasswordByteX         EQU $ccb8 ; Password decoding work bytes
 DEF wPasswordByteY         EQU $ccb9 ; 
 DEF wStartLevel            EQU $ccba ; Level the "START nnn" menu entry begins on (0-based)
@@ -131,6 +132,14 @@ DEF wShots                 EQU $dc4e ; 6 shots, 4 bytes each: x, y, y when fired
 
 ; Gameplay: UFO hits
 DEF wUfoHits               EQU $dc34 ; Times the ball has hit the UFO in this level. The UFO is gone at 5
+
+; Music
+DEF wLevelMusicIndex       EQU $db55 ; 0-2: which of the three level songs plays. Steps when the password screen appears
+
+; Sprites
+DEF wOamUsedLastFrame      EQU $c2b4 ; Extra sprites drawn in the previous frame
+DEF wOamUsed               EQU $c2b5 ; Extra sprites drawn so far this frame
+DEF wOamWritePtr           EQU $c2b6 ; Next free entry in wOamBuffer
 
 ; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
 DEF wLanguage              EQU $defc
