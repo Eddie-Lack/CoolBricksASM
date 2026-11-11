@@ -41,7 +41,7 @@ jr_00f_400f:
     ld a, $02
     ld [$ff9c], a
     ld de, $c3b6
-    call Call_000_0061
+    call LoadPalettes
     ld a, $04
     ld [$ff9c], a
     xor a
@@ -72,7 +72,7 @@ jr_00f_405e:
     ld e, $90
     call Call_00f_4128
     ld de, $c3b6
-    call Call_000_0061
+    call LoadPalettes
     ld a, $ff
 
 jr_00f_40a4:

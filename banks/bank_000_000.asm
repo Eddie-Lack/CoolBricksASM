@@ -866,8 +866,8 @@ StateInit_HighScores:
     ld [$ff9a], a
     ld a, $fc
     ldh [rSCX], a
-    ld de, Data_001_40b0
-    call Call_000_0061
+    ld de, Palettes_HighScores
+    call LoadPalettes
     ld hl, $9800
     call ClearTileMap
     ld a, $02
@@ -1760,7 +1760,7 @@ LoadLevel:
     add hl, hl
     add hl, hl
     add hl, hl
-    ld de, Data_001_4000
+    ld de, Palettes_Level
     add hl, de
     ld a, $05
     call ChangeROMBank
@@ -1800,7 +1800,7 @@ jr_000_0b49:
     ld de, $c95d
     ld bc, $0040
     call DataTransfer
-    ld hl, Data_001_4630
+    ld hl, LevelSpritePalettes
     ld de, $c99d
     ld bc, $0040
     call DataTransfer
@@ -1819,7 +1819,7 @@ jr_000_0b81:
     ld bc, $0008
     call DataTransfer
     ld de, $c95d
-    call Call_000_0061
+    call LoadPalettes
     ld a, $05
     call ChangeROMBank
     pop hl
@@ -2366,7 +2366,7 @@ InitBall:
     ld [wSleepyBallActive], a
     ld [wLaunchDirection], a
     ld [wAntigravityActive], a
-    ld [wSlowBallPending], a
+    ld [wSlowBallActive], a
     ld [$d8a4], a
     ld [wNinjaActive], a
     ld [wRemoveBall], a
@@ -4040,17 +4040,17 @@ BatBounceLookup:
     add a
     ld c, a
     ld b, $00
-    ld hl, Data_001_5f8d
+    ld hl, BatBounceTable
     ld de, $0040
     ld a, [wBatWidth]
     cp $20
     jr z, jr_000_18f2
 
-    ld hl, Data_001_600d
+    ld hl, BatBounceTable_BigBat
     ld de, $0050
 
 jr_000_18f2:
-    ld a, [wSlowBallPending]
+    ld a, [wSlowBallActive]
     or a
     jr z, jr_000_18f9
 
@@ -4071,10 +4071,10 @@ UpdateBatExplosion:
     ld [wBatExplosionTimer], a
     ld e, a
     ld d, $00
-    ld hl, Data_001_6157
+    ld hl, BatExplosionSequence
     add hl, de
     ld e, [hl]
-    ld hl, Data_001_60ad
+    ld hl, BatExplosionFrames
     add hl, de
     ld d, h
     ld e, l
@@ -5044,7 +5044,7 @@ jr_000_1e0c:
     dec c
     jr nz, jr_000_1dfa
 
-    ld hl, Data_001_4000
+    ld hl, Palettes_Level
     ld a, l
     ld [$dab3], a
     ld a, h
@@ -5341,8 +5341,8 @@ StateInit_MainMenu:
     ldh [rSCX], a
     ldh [rSCY], a
     ld [$c959], a
-    ld de, Data_001_4000
-    call Call_000_0061
+    ld de, Palettes_Level
+    call LoadPalettes
     ld hl, $9800
     call ClearTileMap
     ld a, $02
@@ -6277,8 +6277,8 @@ StateInit_TitleScreen:
     ld [$ff9a], a
     xor a
     ldh [rSCX], a
-    ld de, Data_001_4130
-    call Call_000_0061
+    ld de, Palettes_TitleScreen
+    call LoadPalettes
     ld a, $07
     call ChangeROMBank
     ld a, $01
@@ -6427,8 +6427,8 @@ jr_000_2692:
     xor a
     ld [$dae1], a
     ldh [rSCX], a
-    ld de, Data_001_41b0
-    call Call_000_0061
+    ld de, Palettes_GameOver
+    call LoadPalettes
     ld a, $05
     call ChangeROMBank
     ld a, $01
@@ -6495,7 +6495,7 @@ Call_000_271b:
     ld a, $3c
     add b
     ld [$dc1f], a
-    ld hl, Data_001_4f4b
+    ld hl, BlobPath
     ld de, wBlob
     call Call_000_2869
     xor a
@@ -6528,7 +6528,7 @@ UpdateBlob:
     or a
     jr z, jr_000_27f3
 
-    ld hl, Data_001_4fd7
+    ld hl, BlobSprites_Throwing
     ld a, [$dc17]
     and $01
     ld e, a
@@ -6588,7 +6588,7 @@ jr_000_27b0:
     jr jr_000_27eb
 
 jr_000_27e0:
-    ld hl, Data_001_4f26
+    ld hl, BlobThrowDirections_Right
     add hl, de
     ld l, [hl]
     ld h, d
@@ -6601,12 +6601,12 @@ jr_000_27eb:
     call PlaySound
 
 jr_000_27f3:
-    ld hl, Data_001_4f57
+    ld hl, BlobSprites
     ld a, [wGhostActive]
     or a
     jr z, jr_000_27ff
 
-    ld hl, Data_001_4f97
+    ld hl, BlobSprites_Ghost
 
 jr_000_27ff:
     ld a, [$dc17]
@@ -6671,7 +6671,7 @@ jr_000_2831:
     ld a, [$c2b5]
     add $04
     ld [$c2b5], a
-    ld bc, Data_001_4f4b
+    ld bc, BlobPath
     ld hl, wBlob
     call UpdateEnemyPath
     ret
@@ -7666,7 +7666,7 @@ jr_000_2e24:
     ld a, [wUfoHeight]
     add $08
     ld b, a
-    ld de, Data_001_4ff7
+    ld de, UfoSprites
     ld a, $05
     ld [$ff8d], a
 
@@ -8436,7 +8436,7 @@ jr_000_32b5:
     add a
     ld l, a
     ld h, $00
-    ld de, Data_001_5812
+    ld de, GrenadeThrowTable
     add hl, de
     xor a
     ld [wGrenadePower], a
@@ -9479,8 +9479,8 @@ StateInit_Pause:
     xor a
     ld [$dae1], a
     ldh [rSCX], a
-    ld de, Data_001_4230
-    call Call_000_0061
+    ld de, Palettes_Pause
+    call LoadPalettes
     ld a, $0e
     call ChangeROMBank
     ld a, $01
@@ -9546,8 +9546,8 @@ StateInit_DeveloperLogos:
     ld [$ff9a], a
     xor a
     ldh [rSCX], a
-    ld de, Data_001_42b0
-    call Call_000_0061
+    ld de, Palettes_DeveloperLogos
+    call LoadPalettes
     ld a, $02
     call ChangeROMBank
     ld a, $01
@@ -9604,8 +9604,8 @@ StateInit_PublisherLogo:
     ld [$ff9a], a
     xor a
     ldh [rSCX], a
-    ld de, Data_001_4330
-    call Call_000_0061
+    ld de, Palettes_PublisherLogo
+    call LoadPalettes
     ld a, $03
     call ChangeROMBank
     ld a, $01
@@ -9883,8 +9883,8 @@ StateInit_LevelPassword:
     ld [$ff9c], a
     ld a, $01
     ld [$ff9a], a
-    ld de, Data_001_4430
-    call Call_000_0061
+    ld de, Palettes_LevelPassword
+    call LoadPalettes
     ld a, $0c
     call ChangeROMBank
     xor a
@@ -10071,8 +10071,8 @@ StateInit_LanguageSelect:
     ld [$ff9a], a
     xor a
     ldh [rSCX], a
-    ld de, Data_001_43b0
-    call Call_000_0061
+    ld de, Palettes_LanguageSelect
+    call LoadPalettes
     ld a, $0d
     call ChangeROMBank
     ld a, $01
@@ -10162,8 +10162,8 @@ StateInit_Copyright:
     ld [$ff9a], a
     xor a
     ldh [rSCX], a
-    ld de, Data_001_4530
-    call Call_000_0061
+    ld de, Palettes_Copyright
+    call LoadPalettes
     ld a, $03
     call ChangeROMBank
     ld a, $01
@@ -10221,8 +10221,8 @@ StateInit_Ending:
     ld [wLevelsSincePassword], a
     ld a, $01
     ld [$ff9a], a
-    ld de, Data_001_44b0
-    call Call_000_0061
+    ld de, Palettes_Ending
+    call LoadPalettes
     ld a, $0e
     ld [$dcff], a
     call ChangeROMBank

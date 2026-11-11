@@ -67,7 +67,7 @@ DEF wBatDeltaX             EQU $d89f ; Bat movement this frame
 DEF wLaunchDirection       EQU $d8a0 ; Direction for a ball launched this frame, or 0
 DEF wMultiBallPending      EQU $d8a1 ; Set by Multi ball until the ball splits
 DEF wAntigravityActive     EQU $d8a2 ; Not 0 while Antigravity (Pepper) is active
-DEF wSlowBallPending       EQU $d8a3 ; Set by Slow ball
+DEF wSlowBallActive       EQU $d8a3 ; Set by Slow ball. Selects the slower half of the bat bounce tables
 DEF wSleepyBallActive      EQU $d8a5 ; Not 0 while the ball sleeps (Clock)
 DEF wBallEffectTimer       EQU $d8a6 ; Time left for Sleepy ball, Antigravity or Ninja
 DEF wBallOnBat             EQU $d8a8 ; Not 0 while a ball is held on the bat

@@ -230,7 +230,7 @@ One of the four corner cases has a mistake in the original code. For an exact di
   - Rocket: cooldown 30 frames, at most 3 on screen (slots 0 to 2), 1 pixel per frame.
   - Laser: cooldown 8 frames, at most 6 on screen (slots 0 to 5), 2 pixels per frame.
   - A shot starts at the bat and flies straight up. It ends at the top of the playfield, on an unbreakable brick, or on the first brick it hits.
-- **Shot slots differ.** Slots 0 and 1 hit bricks with `HitBrickWithShot`. Slots 2 to 5 use `HitBrickWithBall`, the ball's routine. So while Ninja is active, a shot from slots 2 to 5 sets a brick to 1 hit point as the ball would, and a shot from slots 0 and 1 removes 1 hit point as usual.
+- **Shot slots differ.** Slots 0 and 1 hit bricks with `HitBrickWithShot`. Slots 2 to 5 use `HitBrickWithBall`, the ball's routine. So while Ninja is active, a shot from slots 2 to 5 sets a brick to 1 hit point as the ball would, and a shot from slots 0 and 1 removes 1 hit point as usual. This was confirmed in the emulator for slots 0 to 3: with Ninja active, a shot from slot 2 or 3 took a 4-hit-point brick straight to 1 and released its power-up, and a shot from slot 0 or 1 took it to 3.
 - **Plasma:** A fires when no shot is in flight. Firing sets `wPlasmaState` to 2 and clears `wWeaponFlag`. The plasma shot uses slot 0 and passes through the bricks it hits.
 
 ## Score and effects
@@ -257,6 +257,16 @@ Three small effect lists are updated every frame in bank 1:
 - **Password entry** (`MainMenu_PasswordEntry`): up and down change the letter at `wPasswordCursor`. The letters run from B to Z without the vowels, so 21 letters can be typed, but only the 16 in `PasswordAlphabet` are valid. A, Start or right moves to the next letter and B, Select or left moves back. Moving past the fourth letter calls `SubmitPassword`.
 
 `hJoypad` bits: 0 = right, 1 = left, 2 = up, 3 = down, 4 = A, 5 = B, 6 = Select, 7 = Start.
+
+## Ball power-ups replace each other
+
+Slowball, Clock, Pepper, Ninja and Triple ball are "ball" power-ups. The pick-up handler of each one clears the flags of the other four (`wSlowBallActive`, `wSleepyBallActive`, `wAntigravityActive` and `wNinjaActive`), so only one of these effects is active at a time.
+
+- Picking up any of the five ends Ninja, unless it is Ninja itself.
+- Picking up Clock, Pepper, Ninja or Triple ball ends Slowball.
+- Slowball clears the low nibble of every ball's speed at once, which removes the second movement step. While `wSlowBallActive` is set, bat hits use the slower half of `BatBounceTable`.
+
+Bat power-ups (Rocket, Plasma, Laser, Grenade, Poison, Milk, Magnet, Reverse) do not touch these flags.
 
 ## Useful RAM
 
