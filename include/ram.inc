@@ -76,6 +76,13 @@ DEF hLastDirection         EQU $ff8b ; Left/right bits of the last frame
 DEF hStateTimer            EQU $ffa0 ; Counts down before a game state change; gameplay input is ignored while it is not 0
 DEF hLifeLostTimer         EQU $ffa2 ; Counts up to $28 after a lost life, then the bat and ball restart
 
+; Gameplay: weapons
+DEF wShotActive            EQU $dc3e ; 6 shot slots, not 0 while the shot is in flight
+DEF wRocketLaserBat        EQU $dc46 ; 1 with a Rocket or Laser bat
+DEF wGrenadePower          EQU $dc49 ; Throw power, grows while A is held
+DEF wGrenadeDelay          EQU $dc4b ; Delay after a throw
+DEF wLaserBat              EQU $dc4c ; 1 = Laser bat, 0 = Rocket bat
+
 ; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
 DEF wLanguage              EQU $defc
 
@@ -103,6 +110,7 @@ DEF wLangTextReverseBat        EQU wLangTable + $24
 DEF wLangTextGhostUp           EQU wLangTable + $26
 DEF wLangTextGrenadeBat        EQU wLangTable + $28
 DEF wLangTextNinjaUp           EQU wLangTable + $2a
+DEF wLangGrenadeTexts      EQU wLangTable + $2c
 DEF wLangTextHud               EQU wLangTable + $2e
 DEF wLangTextLevelTitle        EQU wLangTable + $30
 DEF wLangTextLevelPassword     EQU wLangTable + $32

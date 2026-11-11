@@ -6952,7 +6952,7 @@ jr_000_29e1:
     jr nz, jr_000_29f5
 
     xor a
-    ld [$dc4b], a
+    ld [wGrenadeDelay], a
     ret
 
 jr_000_29f5:
@@ -7679,7 +7679,7 @@ jr_000_2e3a:
     ld a, [$c2b5]
     add $05
     ld [$c2b5], a
-    ld a, [$dc3e]
+    ld a, [wShotActive]
     or a
     jr z, jr_000_2ebe
 
@@ -7711,24 +7711,24 @@ jr_000_2e3a:
     jr nz, jr_000_2eb6
 
     xor a
-    ld [$dc3e], a
-    ld a, [$dc3f]
+    ld [wShotActive], a
+    ld a, [wShotActive + 1]
     or a
     jr nz, jr_000_2eb6
 
-    ld a, [$dc40]
+    ld a, [wShotActive + 2]
     or a
     jr nz, jr_000_2eb6
 
-    ld a, [$dc41]
+    ld a, [wShotActive + 3]
     or a
     jr nz, jr_000_2eb6
 
-    ld a, [$dc42]
+    ld a, [wShotActive + 4]
     or a
     jr nz, jr_000_2eb6
 
-    ld a, [$dc43]
+    ld a, [wShotActive + 5]
     or a
     jr nz, jr_000_2eb6
 
@@ -7740,7 +7740,7 @@ jr_000_2eb6:
     call Call_000_306f
 
 jr_000_2ebe:
-    ld a, [$dc3f]
+    ld a, [wShotActive + 1]
     or a
     jr z, jr_000_2f1b
 
@@ -7772,24 +7772,24 @@ jr_000_2ebe:
     jr nz, jr_000_2f13
 
     xor a
-    ld [$dc3f], a
-    ld a, [$dc3e]
+    ld [wShotActive + 1], a
+    ld a, [wShotActive]
     or a
     jr nz, jr_000_2f13
 
-    ld a, [$dc40]
+    ld a, [wShotActive + 2]
     or a
     jr nz, jr_000_2f13
 
-    ld a, [$dc41]
+    ld a, [wShotActive + 3]
     or a
     jr nz, jr_000_2f13
 
-    ld a, [$dc42]
+    ld a, [wShotActive + 4]
     or a
     jr nz, jr_000_2f13
 
-    ld a, [$dc43]
+    ld a, [wShotActive + 5]
     or a
     jr nz, jr_000_2f13
 
@@ -7801,7 +7801,7 @@ jr_000_2f13:
     call Call_000_306f
 
 jr_000_2f1b:
-    ld a, [$dc40]
+    ld a, [wShotActive + 2]
     or a
     jr z, jr_000_2f71
 
@@ -7828,24 +7828,24 @@ jr_000_2f1b:
 
     xor a
     ld [$dc2d], a
-    ld [$dc40], a
-    ld a, [$dc3e]
+    ld [wShotActive + 2], a
+    ld a, [wShotActive]
     or a
     jr nz, jr_000_2f69
 
-    ld a, [$dc3f]
+    ld a, [wShotActive + 1]
     or a
     jr nz, jr_000_2f69
 
-    ld a, [$dc41]
+    ld a, [wShotActive + 3]
     or a
     jr nz, jr_000_2f69
 
-    ld a, [$dc42]
+    ld a, [wShotActive + 4]
     or a
     jr nz, jr_000_2f69
 
-    ld a, [$dc43]
+    ld a, [wShotActive + 5]
     or a
     jr nz, jr_000_2f69
 
@@ -7857,7 +7857,7 @@ jr_000_2f69:
     call Call_000_306f
 
 jr_000_2f71:
-    ld a, [$dc41]
+    ld a, [wShotActive + 3]
     or a
     jr z, jr_000_2fc7
 
@@ -7884,24 +7884,24 @@ jr_000_2f71:
 
     xor a
     ld [$dc2d], a
-    ld [$dc41], a
-    ld a, [$dc3e]
+    ld [wShotActive + 3], a
+    ld a, [wShotActive]
     or a
     jr nz, jr_000_2fbf
 
-    ld a, [$dc3f]
+    ld a, [wShotActive + 1]
     or a
     jr nz, jr_000_2fbf
 
-    ld a, [$dc40]
+    ld a, [wShotActive + 2]
     or a
     jr nz, jr_000_2fbf
 
-    ld a, [$dc42]
+    ld a, [wShotActive + 4]
     or a
     jr nz, jr_000_2fbf
 
-    ld a, [$dc43]
+    ld a, [wShotActive + 5]
     or a
     jr nz, jr_000_2fbf
 
@@ -7913,7 +7913,7 @@ jr_000_2fbf:
     call Call_000_306f
 
 jr_000_2fc7:
-    ld a, [$dc42]
+    ld a, [wShotActive + 4]
     or a
     jr z, jr_000_301d
 
@@ -7940,24 +7940,24 @@ jr_000_2fc7:
 
     xor a
     ld [$dc2d], a
-    ld [$dc42], a
-    ld a, [$dc3e]
+    ld [wShotActive + 4], a
+    ld a, [wShotActive]
     or a
     jr nz, jr_000_3015
 
-    ld a, [$dc3f]
+    ld a, [wShotActive + 1]
     or a
     jr nz, jr_000_3015
 
-    ld a, [$dc40]
+    ld a, [wShotActive + 2]
     or a
     jr nz, jr_000_3015
 
-    ld a, [$dc41]
+    ld a, [wShotActive + 3]
     or a
     jr nz, jr_000_3015
 
-    ld a, [$dc43]
+    ld a, [wShotActive + 5]
     or a
     jr nz, jr_000_3015
 
@@ -7969,7 +7969,7 @@ jr_000_3015:
     call Call_000_306f
 
 jr_000_301d:
-    ld a, [$dc43]
+    ld a, [wShotActive + 5]
     or a
     ret z
 
@@ -7997,24 +7997,24 @@ jr_000_301d:
 
     xor a
     ld [$dc2d], a
-    ld [$dc43], a
-    ld a, [$dc3e]
+    ld [wShotActive + 5], a
+    ld a, [wShotActive]
     or a
     jr nz, jr_000_3066
 
-    ld a, [$dc3f]
+    ld a, [wShotActive + 1]
     or a
     jr nz, jr_000_3066
 
-    ld a, [$dc40]
+    ld a, [wShotActive + 2]
     or a
     jr nz, jr_000_3066
 
-    ld a, [$dc41]
+    ld a, [wShotActive + 3]
     or a
     jr nz, jr_000_3066
 
-    ld a, [$dc42]
+    ld a, [wShotActive + 4]
 
     or a
     jr nz, jr_000_3066
@@ -8273,55 +8273,57 @@ jr_000_31d8:
 ResetShots:
     xor a
     ld [wWeaponFlag], a
-    ld [$dc3e], a
-    ld [$dc3f], a
-    ld [$dc40], a
-    ld [$dc41], a
-    ld [$dc42], a
-    ld [$dc43], a
+    ld [wShotActive], a
+    ld [wShotActive + 1], a
+    ld [wShotActive + 2], a
+    ld [wShotActive + 3], a
+    ld [wShotActive + 4], a
+    ld [wShotActive + 5], a
     ld [$dc44], a
-    ld [$dc46], a
+    ld [wRocketLaserBat], a
     ld [wPlasmaState], a
-    ld [$dc4c], a
+    ld [wLaserBat], a
     ld [wGrenadeCount], a
-    ld [$dc4b], a
-    ld [$dc49], a
-    ld [$dc4a], a
+    ld [wGrenadeDelay], a
+    ld [wGrenadePower], a
+    ld [wGrenadePower + 1], a
     ld [$dc4d], a
     ret
 
 ; Update the rocket, laser, grenade and plasma shots.
 UpdateShots:
-    ld a, [$dc3e]
+    ld a, [wShotActive]
     or a
     jp nz, Jump_000_3479
 
 Jump_000_3213:
-    ld a, [$dc3f]
+    ld a, [wShotActive + 1]
     or a
     jp nz, Jump_000_356b
 
 Jump_000_321a:
-    ld a, [$dc40]
+    ld a, [wShotActive + 2]
     or a
     jp nz, Jump_000_365d
 
 Jump_000_3221:
-    ld a, [$dc41]
+    ld a, [wShotActive + 3]
     or a
     jp nz, Jump_000_3725
 
 Jump_000_3228:
-    ld a, [$dc42]
+    ld a, [wShotActive + 4]
     or a
     jp nz, Jump_000_37e1
 
 Jump_000_322f:
-    ld a, [$dc43]
+    ld a, [wShotActive + 5]
     or a
     jp nz, Jump_000_389d
 
-Jump_000_3236:
+; Fire the current weapon. A grenade is charged while A is held and thrown when A is released;
+; left or right at that moment sets its direction.
+Shots_HandleFire:
     ld a, [wWeaponFlag]
     or a
     ret z
@@ -8329,9 +8331,9 @@ Jump_000_3236:
     ld a, [wGrenadeCount]
     ld b, a
     or a
-    jp z, Jump_000_32da
+    jp z, Shots_FireRocketLaserPlasma
 
-    ld a, [$dc4b]
+    ld a, [wGrenadeDelay]
     or a
     ret nz
 
@@ -8340,26 +8342,26 @@ Jump_000_3236:
     jr z, jr_000_326b
 
     ld de, $0020
-    ld a, [$dc49]
+    ld a, [wGrenadePower]
     ld l, a
-    ld a, [$dc4a]
+    ld a, [wGrenadePower + 1]
     ld h, a
     add hl, de
     ld a, l
-    ld [$dc49], a
+    ld [wGrenadePower], a
     ld a, h
-    ld [$dc4a], a
+    ld [wGrenadePower + 1], a
     cp $0b
     ret nz
 
     dec a
-    ld [$dc4a], a
+    ld [wGrenadePower + 1], a
     ret
 
 jr_000_326b:
-    ld a, [$dc49]
+    ld a, [wGrenadePower]
     ld c, a
-    ld a, [$dc4a]
+    ld a, [wGrenadePower + 1]
     add c
     or a
     ret z
@@ -8373,9 +8375,9 @@ jr_000_326b:
 
 jr_000_327f:
     push af
-    ld a, [$df2d]
+    ld a, [wLangGrenadeTexts]
     ld l, a
-    ld a, [$df2e]
+    ld a, [wLangGrenadeTexts + 1]
     ld h, a
     pop af
     and $07
@@ -8384,8 +8386,8 @@ jr_000_327f:
     ld d, $00
     add hl, de
     ld a, $04
-    ld [$dc4b], a
-    call Call_000_0006
+    ld [wGrenadeDelay], a
+    call ShowMessage
     ld a, [wBatX]
     add $04
     ld b, a
@@ -8408,7 +8410,7 @@ jr_000_32af:
 jr_000_32b5:
     ld h, $80
     push hl
-    ld a, [$dc4a]
+    ld a, [wGrenadePower + 1]
     add a
     add a
     ld l, a
@@ -8416,8 +8418,8 @@ jr_000_32b5:
     ld de, $5812
     add hl, de
     xor a
-    ld [$dc49], a
-    ld [$dc4a], a
+    ld [wGrenadePower], a
+    ld [wGrenadePower + 1], a
     ld a, [hl+]
     inc hl
     ld e, [hl]
@@ -8429,20 +8431,20 @@ jr_000_32b5:
     call PlaySound
     ret
 
-Jump_000_32da:
-    ld a, [$dc46]
+Shots_FireRocketLaserPlasma:
+    ld a, [wRocketLaserBat]
     or a
-    jr nz, jr_000_3324
+    jr nz, Shots_FireRocketOrLaser
 
     ld a, [hJoypad]
     bit 4, a
     ret z
 
-    ld a, [$dc3e]
+    ld a, [wShotActive]
     or a
     ret nz
 
-    ld a, [$dc3f]
+    ld a, [wShotActive + 1]
     or a
     ret nz
 
@@ -8462,13 +8464,13 @@ Jump_000_32da:
     ld [$dc53], a
     ld [$dc54], a
     ld a, $01
-    ld [$dc3e], a
-    ld [$dc3f], a
+    ld [wShotActive], a
+    ld [wShotActive + 1], a
     ld a, $11
     call PlaySound
     ret
 
-jr_000_3324:
+Shots_FireRocketOrLaser:
     ld a, [$dc44]
     or a
     jr z, jr_000_332f
@@ -8491,13 +8493,13 @@ jr_000_333b:
     or a
     ret nz
 
-    ld a, [$dc3e]
+    ld a, [wShotActive]
     or a
     jr nz, jr_000_337b
 
     ld [$dc51], a
     ld b, $12
-    ld a, [$dc4c]
+    ld a, [wLaserBat]
     or a
     jr z, jr_000_3356
 
@@ -8518,17 +8520,17 @@ jr_000_3356:
     ld [$dc4f], a
     ld [$dc50], a
     ld a, $01
-    ld [$dc3e], a
+    ld [wShotActive], a
     ret
 
 jr_000_337b:
-    ld a, [$dc3f]
+    ld a, [wShotActive + 1]
     or a
     jr nz, jr_000_33b6
 
     ld [$dc55], a
     ld b, $12
-    ld a, [$dc4c]
+    ld a, [wLaserBat]
     or a
     jr z, jr_000_3391
 
@@ -8549,17 +8551,17 @@ jr_000_3391:
     ld [$dc53], a
     ld [$dc54], a
     ld a, $01
-    ld [$dc3f], a
+    ld [wShotActive + 1], a
     ret
 
 jr_000_33b6:
-    ld a, [$dc40]
+    ld a, [wShotActive + 2]
     or a
     jr nz, jr_000_33f1
 
     ld [$dc59], a
     ld b, $12
-    ld a, [$dc4c]
+    ld a, [wLaserBat]
     or a
     jr z, jr_000_33cc
 
@@ -8580,15 +8582,15 @@ jr_000_33cc:
     ld [$dc57], a
     ld [$dc58], a
     ld a, $01
-    ld [$dc40], a
+    ld [wShotActive + 2], a
     ret
 
 jr_000_33f1:
-    ld a, [$dc4c]
+    ld a, [wLaserBat]
     or a
     ret z
 
-    ld a, [$dc41]
+    ld a, [wShotActive + 3]
     or a
     jr nz, jr_000_3422
 
@@ -8605,11 +8607,11 @@ jr_000_33f1:
     ld [$dc5b], a
     ld [$dc5c], a
     ld a, $01
-    ld [$dc41], a
+    ld [wShotActive + 3], a
     ret
 
 jr_000_3422:
-    ld a, [$dc42]
+    ld a, [wShotActive + 4]
     or a
     jr nz, jr_000_344e
 
@@ -8626,11 +8628,11 @@ jr_000_3422:
     ld [$dc5e], a
     ld [$dc5f], a
     ld a, $01
-    ld [$dc42], a
+    ld [wShotActive + 4], a
     ret
 
 jr_000_344e:
-    ld a, [$dc43]
+    ld a, [wShotActive + 5]
     or a
     ret nz
 
@@ -8647,7 +8649,7 @@ jr_000_344e:
     ld [$dc61], a
     ld [$dc62], a
     ld a, $01
-    ld [$dc43], a
+    ld [wShotActive + 5], a
     ret
 
 Jump_000_3479:
@@ -8676,9 +8678,9 @@ jr_000_349c:
     ld [$d8bb], a
 
 jr_000_34a5:
-    ld a, [$dc3e]
+    ld a, [wShotActive]
     inc a
-    ld [$dc3e], a
+    ld [wShotActive], a
     cp $05
     jr nc, jr_000_34c1
 
@@ -8770,7 +8772,7 @@ jr_000_352e:
     or a
     jr z, jr_000_353e
 
-    ld a, [$dc3f]
+    ld a, [wShotActive + 1]
     or a
     jr nz, jr_000_353e
 
@@ -8779,24 +8781,24 @@ jr_000_352e:
 
 jr_000_353e:
     xor a
-    ld [$dc3e], a
-    ld a, [$dc3f]
+    ld [wShotActive], a
+    ld a, [wShotActive + 1]
     or a
     jp nz, Jump_000_3213
 
-    ld a, [$dc40]
+    ld a, [wShotActive + 2]
     or a
     jp nz, Jump_000_3213
 
-    ld a, [$dc41]
+    ld a, [wShotActive + 3]
     or a
     jp nz, Jump_000_3213
 
-    ld a, [$dc42]
+    ld a, [wShotActive + 4]
     or a
     jp nz, Jump_000_3213
 
-    ld a, [$dc43]
+    ld a, [wShotActive + 5]
     or a
     jp nz, Jump_000_3213
 
@@ -8829,9 +8831,9 @@ jr_000_358e:
     ld [$d8bb], a
 
 jr_000_3597:
-    ld a, [$dc3f]
+    ld a, [wShotActive + 1]
     inc a
-    ld [$dc3f], a
+    ld [wShotActive + 1], a
     cp $05
     jr nc, jr_000_35b3
 
@@ -8923,7 +8925,7 @@ jr_000_3620:
     or a
     jr z, jr_000_3630
 
-    ld a, [$dc3e]
+    ld a, [wShotActive]
     or a
     jr nz, jr_000_3630
 
@@ -8932,24 +8934,24 @@ jr_000_3620:
 
 jr_000_3630:
     xor a
-    ld [$dc3f], a
-    ld a, [$dc3e]
+    ld [wShotActive + 1], a
+    ld a, [wShotActive]
     or a
     jp nz, Jump_000_321a
 
-    ld a, [$dc40]
+    ld a, [wShotActive + 2]
     or a
     jp nz, Jump_000_321a
 
-    ld a, [$dc41]
+    ld a, [wShotActive + 3]
     or a
     jp nz, Jump_000_321a
 
-    ld a, [$dc42]
+    ld a, [wShotActive + 4]
     or a
     jp nz, Jump_000_321a
 
-    ld a, [$dc43]
+    ld a, [wShotActive + 5]
     or a
     jp nz, Jump_000_321a
 
@@ -8972,9 +8974,9 @@ Jump_000_365d:
     ld e, $02
 
 jr_000_3677:
-    ld a, [$dc40]
+    ld a, [wShotActive + 2]
     inc a
-    ld [$dc40], a
+    ld [wShotActive + 2], a
     cp $05
     jr nc, jr_000_3693
 
@@ -9060,24 +9062,24 @@ jr_000_36bc:
 
 jr_000_36f8:
     xor a
-    ld [$dc40], a
-    ld a, [$dc3e]
+    ld [wShotActive + 2], a
+    ld a, [wShotActive]
     or a
     jp nz, Jump_000_3221
 
-    ld a, [$dc3f]
+    ld a, [wShotActive + 1]
     or a
     jp nz, Jump_000_3221
 
-    ld a, [$dc41]
+    ld a, [wShotActive + 3]
     or a
     jp nz, Jump_000_3221
 
-    ld a, [$dc42]
+    ld a, [wShotActive + 4]
     or a
     jp nz, Jump_000_3221
 
-    ld a, [$dc43]
+    ld a, [wShotActive + 5]
     or a
     jp nz, Jump_000_3221
 
@@ -9091,9 +9093,9 @@ Jump_000_3725:
     ld a, [$c2b7]
     ld h, a
     ld bc, $5474
-    ld a, [$dc41]
+    ld a, [wShotActive + 3]
     inc a
-    ld [$dc41], a
+    ld [wShotActive + 3], a
     cp $05
     jr nc, jr_000_374e
 
@@ -9179,24 +9181,24 @@ jr_000_3778:
 
 jr_000_37b4:
     xor a
-    ld [$dc41], a
-    ld a, [$dc3e]
+    ld [wShotActive + 3], a
+    ld a, [wShotActive]
     or a
     jp nz, Jump_000_3228
 
-    ld a, [$dc3f]
+    ld a, [wShotActive + 1]
     or a
     jp nz, Jump_000_3228
 
-    ld a, [$dc40]
+    ld a, [wShotActive + 2]
     or a
     jp nz, Jump_000_3228
 
-    ld a, [$dc42]
+    ld a, [wShotActive + 4]
     or a
     jp nz, Jump_000_3228
 
-    ld a, [$dc43]
+    ld a, [wShotActive + 5]
     or a
     jp nz, Jump_000_3228
 
@@ -9210,9 +9212,9 @@ Jump_000_37e1:
     ld a, [$c2b7]
     ld h, a
     ld bc, $5474
-    ld a, [$dc42]
+    ld a, [wShotActive + 4]
     inc a
-    ld [$dc42], a
+    ld [wShotActive + 4], a
     cp $05
     jr nc, jr_000_380a
 
@@ -9298,24 +9300,24 @@ jr_000_3834:
 
 jr_000_3870:
     xor a
-    ld [$dc42], a
-    ld a, [$dc3e]
+    ld [wShotActive + 4], a
+    ld a, [wShotActive]
     or a
     jp nz, Jump_000_322f
 
-    ld a, [$dc3f]
+    ld a, [wShotActive + 1]
     or a
     jp nz, Jump_000_322f
 
-    ld a, [$dc40]
+    ld a, [wShotActive + 2]
     or a
     jp nz, Jump_000_322f
 
-    ld a, [$dc41]
+    ld a, [wShotActive + 3]
     or a
     jp nz, Jump_000_322f
 
-    ld a, [$dc43]
+    ld a, [wShotActive + 5]
     or a
     jp nz, Jump_000_322f
 
@@ -9329,9 +9331,9 @@ Jump_000_389d:
     ld a, [$c2b7]
     ld h, a
     ld bc, $5474
-    ld a, [$dc43]
+    ld a, [wShotActive + 5]
     inc a
-    ld [$dc43], a
+    ld [wShotActive + 5], a
     cp $05
     jr nc, jr_000_38c6
 
@@ -9405,10 +9407,10 @@ jr_000_38f0:
     add hl, de
     ld a, [hl]
     or a
-    jp z, Jump_000_3236
+    jp z, Shots_HandleFire
 
     cp $0f
-    jp z, Jump_000_3236
+    jp z, Shots_HandleFire
 
     cp $0e
     jr z, jr_000_392c
@@ -9417,26 +9419,26 @@ jr_000_38f0:
 
 jr_000_392c:
     xor a
-    ld [$dc43], a
-    ld a, [$dc3e]
+    ld [wShotActive + 5], a
+    ld a, [wShotActive]
     or a
-    jp nz, Jump_000_3236
+    jp nz, Shots_HandleFire
 
-    ld a, [$dc3f]
+    ld a, [wShotActive + 1]
     or a
-    jp nz, Jump_000_3236
+    jp nz, Shots_HandleFire
 
-    ld a, [$dc40]
+    ld a, [wShotActive + 2]
     or a
-    jp nz, Jump_000_3236
+    jp nz, Shots_HandleFire
 
-    ld a, [$dc41]
+    ld a, [wShotActive + 3]
     or a
-    jp nz, Jump_000_3236
+    jp nz, Shots_HandleFire
 
-    ld a, [$dc42]
+    ld a, [wShotActive + 4]
     or a
-    jp nz, Jump_000_3236
+    jp nz, Shots_HandleFire
 
     ld [$dc44], a
     jp Jump_000_3228

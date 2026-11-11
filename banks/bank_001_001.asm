@@ -840,20 +840,20 @@ jr_001_51f2:
     ld [wAntigravityActive], a
     ld [wNinjaActive], a
     ld hl, wLangTextSlowBall
-    call Call_000_0001
+    call ShowMessageBankE
     jp PowerupCollected
 
 Powerup_Rocket:
     ld a, $1e
     ld [wShotReloadDelay], a
     xor a
-    ld [$dc4c], a
+    ld [wLaserBat], a
     ld hl, wLangTextRocketBat
-    call Call_000_0001
+    call ShowMessageBankE
 
 Jump_001_5219:
     ld a, $01
-    ld [$dc46], a
+    ld [wRocketLaserBat], a
     xor a
     ld [wGrenadeCount], a
 
@@ -918,11 +918,11 @@ jr_001_5281:
 
 Powerup_Plasma:
     xor a
-    ld [$dc46], a
-    ld [$dc4c], a
+    ld [wRocketLaserBat], a
+    ld [wLaserBat], a
     ld [wGrenadeCount], a
     ld hl, wLangTextPlasmaBat
-    call Call_000_0001
+    call ShowMessageBankE
     ld a, $01
     ld [wPlasmaState], a
     jr jr_001_522d
@@ -938,7 +938,7 @@ Powerup_Poison:
     ld [wWeaponFlag], a
     ld [wReverseActive], a
     ld hl, wLangTextStunBat
-    call Call_000_0001
+    call ShowMessageBankE
     ld a, [wBatWidth]
     cp $28
     jp nz, PowerupCollected
@@ -976,7 +976,7 @@ jr_001_52e8:
     ld [wStunWobble], a
     ld [wReverseActive], a
     ld hl, wLangTextBigBat
-    call Call_000_0001
+    call ShowMessageBankE
     jp PowerupCollected
 
 Powerup_Clock:
@@ -995,7 +995,7 @@ jr_001_5312:
     ld [wSlowBallPending], a
     ld [wNinjaActive], a
     ld hl, wLangTextSleepyBall
-    call Call_000_0001
+    call ShowMessageBankE
     jp PowerupCollected
 
 Powerup_Pepper:
@@ -1007,7 +1007,7 @@ Powerup_Pepper:
     ld [wSlowBallPending], a
     ld [wNinjaActive], a
     ld hl, wLangTextAntigravityBall
-    call Call_000_0001
+    call ShowMessageBankE
     jp PowerupCollected
 
 Powerup_Magnet:
@@ -1019,7 +1019,7 @@ Powerup_Magnet:
     ld [wWeaponFlag], a
     ld [wReverseActive], a
     ld hl, wLangTextMagneticBat
-    call Call_000_0001
+    call ShowMessageBankE
     ld a, [wBatWidth]
     cp $28
     jp nz, PowerupCollected
@@ -1047,7 +1047,7 @@ jr_001_5381:
     ld [wSlowBallPending], a
     ld [wNinjaActive], a
     ld hl, wLangTextMultiBall
-    call Call_000_0001
+    call ShowMessageBankE
     jp PowerupCollected
 
 Powerup_ExtraLife:
@@ -1062,16 +1062,16 @@ Powerup_ExtraLife:
 
 jr_001_53ac:
     ld [wLives], a
-    call Call_000_0001
+    call ShowMessageBankE
     jp PowerupCollected
 
 Powerup_Laser:
     ld a, $08
     ld [wShotReloadDelay], a
     ld a, $01
-    ld [$dc4c], a
+    ld [wLaserBat], a
     ld hl, wLangTextLazerBat
-    call Call_000_0001
+    call ShowMessageBankE
     jp Jump_001_5219
 
 Powerup_Reverse:
@@ -1084,7 +1084,7 @@ Powerup_Reverse:
     ld [wWeaponFlag], a
     ld [wBallSticks], a
     ld hl, wLangTextReverseBat
-    call Call_000_0001
+    call ShowMessageBankE
     ld a, [wBatWidth]
     cp $28
     jr nz, PowerupCollected
@@ -1115,7 +1115,7 @@ jr_001_5402:
     ld [wSlowBallPending], a
     ld [wSleepyBallActive], a
     ld hl, wLangTextNinjaUp
-    call Call_000_0001
+    call ShowMessageBankE
     jr PowerupCollected
 
 Powerup_Ghost:
@@ -1124,15 +1124,15 @@ Powerup_Ghost:
     ld a, $ff
     ld [$dc21], a
     ld hl, wLangTextGhostUp
-    call Call_000_0001
+    call ShowMessageBankE
     jr PowerupCollected
 
 Powerup_Grenade:
     xor a
-    ld [$dc4c], a
-    ld [$dc46], a
+    ld [wLaserBat], a
+    ld [wRocketLaserBat], a
     ld hl, wLangTextGrenadeBat
-    call Call_000_0001
+    call ShowMessageBankE
     ld b, $04
     ld a, [wGrenadeCount]
     add b
@@ -1162,245 +1162,176 @@ Jump_001_5450:
     db $55, $04, $51, $41, $54, $44, $5e, $05, $5d, $05, $5c, $05, $12, $0c, $10, $0c
     db $11, $0c
 
-    db $04, $20, $20, $20, $20, $20, $20, $47, $52, $45, $4e, $41, $44, $45, $20, $30
-    db $20, $20, $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20, $47, $52, $45, $4e, $41, $44, $45
-    db $20, $30
-    db $20, $20
-    db $20, $20, $20, $00
-    db $20, $20, $20, $20, $20, $47, $52
-    db $41, $4e
-    db $41, $54, $45, $4e
-    db $20, $30
-    db $20, $20
-    db $20, $20, $20, $04
-    db $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $41
-    db $4e, $41, $54, $45
-    db $20, $30
-    db $20, $20, $20, $20, $20, $04
-    db $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $41
-    db $4e, $41, $44, $41
-    db $20, $30
-    db $20, $20
-    db $20, $20
-    db $20
+GrenadeText_English_0:
+    db $04, "      GRENADE 0     "
 
-    db $04, $20, $20, $20, $20, $20, $20, $47, $52, $45, $4e, $41, $44, $45, $20, $31
-    db $20, $20, $20, $20, $20
+GrenadeText_French_0:
+    db $04, "      GRENADE 0     "
 
-    db $04
-    db $20, $20, $20, $20, $20, $20, $47
-    db $52, $45
-    db $4e, $41, $44, $45, $20, $31, $20, $20, $20, $20, $20, $00
-    db $20, $20, $20, $20, $20, $47, $52, $41, $4e, $41, $54, $45, $4e
-    db $20, $31
-    db $20, $20
-    db $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $41
-    db $4e, $41, $54, $45
-    db $20, $31
-    db $20, $20, $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $41
-    db $4e, $41, $44, $41
-    db $20, $31
-    db $20, $20
-    db $20, $20
-    db $20
+GrenadeText_German_0:
+    db $00, "     GRANATEN 0     "
 
-    db $04, $20, $20, $20, $20, $20, $20, $47, $52, $45, $4e, $41, $44, $45, $20, $32
-    db $20, $20, $20, $20, $20
+GrenadeText_Italian_0:
+    db $04, "      GRANATE 0     "
 
-    db $04, $20, $20, $20, $20, $20, $20, $47
-    db $52, $45
-    db $4e, $41, $44, $45, $20, $32, $20, $20, $20, $20, $20, $00
-    db $20, $20, $20, $20, $20, $47, $52, $41, $4e, $41, $54, $45, $4e
-    db $20, $32
-    db $20, $20
-    db $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $41
-    db $4e, $41, $54, $45
-    db $20, $32
-    db $20, $20, $20, $20, $20, $04, $20, $20
-    db $20, $20
-    db $20, $20, $47
-    db $52, $41
-    db $4e, $41, $44, $41
-    db $20, $32
-    db $20, $20
-    db $20, $20
-    db $20
+GrenadeText_Spanish_0:
+    db $04, "      GRANADA 0     "
 
-    db $04, $20, $20, $20, $20, $20, $20, $47, $52, $45, $4e, $41, $44, $45, $20, $33
-    db $20, $20, $20, $20, $20
+GrenadeText_English_1:
+    db $04, "      GRENADE 1     "
 
-    db $04, $20, $20
-    db $20, $20, $20, $20, $47
-    db $52, $45
-    db $4e, $41, $44, $45, $20, $33, $20, $20, $20, $20, $20, $00
-    db $20, $20
-    db $20, $20, $20, $47, $52, $41, $4e, $41, $54, $45, $4e
-    db $20, $33
-    db $20, $20
-    db $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $41
-    db $4e, $41, $54, $45
-    db $20, $33
-    db $20, $20, $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $41
-    db $4e, $41, $44, $41
-    db $20, $33
-    db $20, $20
-    db $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $45
-    db $4e, $41, $44, $45
-    db $20, $34
-    db $20, $20
-    db $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $45
-    db $4e, $41, $44, $45
-    db $20, $34
-    db $20, $20
-    db $20, $20, $20, $00
-    db $20, $20, $20, $20, $20, $47, $52
-    db $41, $4e
-    db $41, $54, $45, $4e
-    db $20, $34
-    db $20, $20
-    db $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $41
-    db $4e, $41, $54, $45
-    db $20, $34
-    db $20, $20, $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $41
-    db $4e, $41, $44, $41
-    db $20, $34
-    db $20, $20
-    db $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $45
-    db $4e, $41, $44, $45
-    db $20, $35
-    db $20, $20
-    db $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $45
-    db $4e, $41, $44, $45
-    db $20, $35
-    db $20, $20
-    db $20, $20, $20, $00
-    db $20, $20, $20, $20
-    db $20, $47, $52
-    db $41, $4e
-    db $41, $54, $45, $4e
-    db $20, $35
-    db $20, $20
-    db $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $41
-    db $4e, $41, $54, $45
-    db $20, $35
-    db $20, $20, $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $41
-    db $4e, $41, $44, $41
-    db $20, $35
-    db $20, $20
-    db $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $45
-    db $4e, $41, $44, $45
-    db $20, $36
-    db $20, $20
-    db $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $45
-    db $4e, $41, $44, $45
-    db $20, $36
-    db $20, $20
-    db $20, $20, $20, $00
-    db $20, $20, $20, $20, $20, $47, $52
-    db $41, $4e
-    db $41, $54, $45, $4e
-    db $20, $36
-    db $20, $20
-    db $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20
-    db $47
-    db $52, $41
-    db $4e, $41, $54, $45
-    db $20, $36
-    db $20, $20, $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20
-    db $47
-    db $52, $41
-    db $4e, $41, $44, $41
-    db $20, $36
-    db $20, $20
-    db $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20
-    db $47
-    db $52, $45
-    db $4e, $41, $44, $45
-    db $20, $37
-    db $20, $20
-    db $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20
-    db $47
-    db $52, $45
-    db $4e, $41, $44, $45
-    db $20, $37
-    db $20, $20
-    db $20, $20, $20, $00
-    db $20, $20, $20, $20, $20, $47
-    db $52
-    db $41, $4e
-    db $41, $54, $45, $4e
-    db $20, $37
-    db $20, $20
-    db $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $41
-    db $4e, $41, $54, $45
-    db $20, $37
-    db $20, $20, $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $20, $47
-    db $52, $41
-    db $4e, $41, $44, $41
-    db $20, $37
-    db $20, $20
-    db $20, $20
-    db $20
+GrenadeText_French_1:
+    db $04, "      GRENADE 1     "
 
-    db $7a, $54, $e3, $54, $4c, $55, $b5, $55
+GrenadeText_German_1:
+    db $00, "     GRANATEN 1     "
 
-    db $1e, $56
-    db $87, $56, $f0, $56
-    db $59
-    db $57
-    db $8f, $54
-    db $f8, $54, $61, $55, $ca, $55, $33, $56, $9c, $56, $05
-    db $57, $6e
-    db $57, $a4, $54, $0d, $55
-    db $76
-    db $55, $df, $55, $48, $56, $b1, $56, $1a, $57, $83, $57, $ce, $54
-    db $37, $55, $a0, $55, $09, $56, $72, $56
-    db $db
-    db $56, $44, $57, $ad, $57, $b9, $54, $22, $55, $8b, $55
-    db $f4
-    db $55, $5d, $56, $c6, $56, $2f, $57, $98, $57, $21, $00, $4d, $4e
+GrenadeText_Italian_1:
+    db $04, "      GRANATE 1     "
+
+GrenadeText_Spanish_1:
+    db $04, "      GRANADA 1     "
+
+GrenadeText_English_2:
+    db $04, "      GRENADE 2     "
+
+GrenadeText_French_2:
+    db $04, "      GRENADE 2     "
+
+GrenadeText_German_2:
+    db $00, "     GRANATEN 2     "
+
+GrenadeText_Italian_2:
+    db $04, "      GRANATE 2     "
+
+GrenadeText_Spanish_2:
+    db $04, "      GRANADA 2     "
+
+GrenadeText_English_3:
+    db $04, "      GRENADE 3     "
+
+GrenadeText_French_3:
+    db $04, "      GRENADE 3     "
+
+GrenadeText_German_3:
+    db $00, "     GRANATEN 3     "
+
+GrenadeText_Italian_3:
+    db $04, "      GRANATE 3     "
+
+GrenadeText_Spanish_3:
+    db $04, "      GRANADA 3     "
+
+GrenadeText_English_4:
+    db $04, "      GRENADE 4     "
+
+GrenadeText_French_4:
+    db $04, "      GRENADE 4     "
+
+GrenadeText_German_4:
+    db $00, "     GRANATEN 4     "
+
+GrenadeText_Italian_4:
+    db $04, "      GRANATE 4     "
+
+GrenadeText_Spanish_4:
+    db $04, "      GRANADA 4     "
+
+GrenadeText_English_5:
+    db $04, "      GRENADE 5     "
+
+GrenadeText_French_5:
+    db $04, "      GRENADE 5     "
+
+GrenadeText_German_5:
+    db $00, "     GRANATEN 5     "
+
+GrenadeText_Italian_5:
+    db $04, "      GRANATE 5     "
+
+GrenadeText_Spanish_5:
+    db $04, "      GRANADA 5     "
+
+GrenadeText_English_6:
+    db $04, "      GRENADE 6     "
+
+GrenadeText_French_6:
+    db $04, "      GRENADE 6     "
+
+GrenadeText_German_6:
+    db $00, "     GRANATEN 6     "
+
+GrenadeText_Italian_6:
+    db $04, "      GRANATE 6     "
+
+GrenadeText_Spanish_6:
+    db $04, "      GRANADA 6     "
+
+GrenadeText_English_7:
+    db $04, "      GRENADE 7     "
+
+GrenadeText_French_7:
+    db $04, "      GRENADE 7     "
+
+GrenadeText_German_7:
+    db $00, "     GRANATEN 7     "
+
+GrenadeText_Italian_7:
+    db $04, "      GRANATE 7     "
+
+GrenadeText_Spanish_7:
+    db $04, "      GRANADA 7     "
+
+GrenadeTexts_English:
+    dw GrenadeText_English_0
+    dw GrenadeText_English_1
+    dw GrenadeText_English_2
+    dw GrenadeText_English_3
+    dw GrenadeText_English_4
+    dw GrenadeText_English_5
+    dw GrenadeText_English_6
+    dw GrenadeText_English_7
+
+GrenadeTexts_French:
+    dw GrenadeText_French_0
+    dw GrenadeText_French_1
+    dw GrenadeText_French_2
+    dw GrenadeText_French_3
+    dw GrenadeText_French_4
+    dw GrenadeText_French_5
+    dw GrenadeText_French_6
+    dw GrenadeText_French_7
+
+GrenadeTexts_German:
+    dw GrenadeText_German_0
+    dw GrenadeText_German_1
+    dw GrenadeText_German_2
+    dw GrenadeText_German_3
+    dw GrenadeText_German_4
+    dw GrenadeText_German_5
+    dw GrenadeText_German_6
+    dw GrenadeText_German_7
+
+GrenadeTexts_Spanish:
+    dw GrenadeText_Spanish_0
+    dw GrenadeText_Spanish_1
+    dw GrenadeText_Spanish_2
+    dw GrenadeText_Spanish_3
+    dw GrenadeText_Spanish_4
+    dw GrenadeText_Spanish_5
+    dw GrenadeText_Spanish_6
+    dw GrenadeText_Spanish_7
+
+GrenadeTexts_Italian:
+    dw GrenadeText_Italian_0
+    dw GrenadeText_Italian_1
+    dw GrenadeText_Italian_2
+    dw GrenadeText_Italian_3
+    dw GrenadeText_Italian_4
+    dw GrenadeText_Italian_5
+    dw GrenadeText_Italian_6
+    dw GrenadeText_Italian_7
+    db $21, $00, $4d, $4e
     db $28
 
     db $00
@@ -4465,7 +4396,7 @@ LanguageTable_Italian:
     dw PowerupText_Italian_GhostUp
     dw PowerupText_Italian_GrenadeBat
     dw PowerupText_Italian_NinjaUp
-    dw $5802
+    dw GrenadeTexts_Italian
     dw Text_Italian_Hud
     dw Text_Italian_LevelTitle
     dw Text_Italian_LevelPassword
@@ -4507,7 +4438,7 @@ LanguageTable_English:
     dw PowerupText_English_GhostUp
     dw PowerupText_English_GrenadeBat
     dw PowerupText_English_NinjaUp
-    dw $57c2
+    dw GrenadeTexts_English
     dw Text_English_Hud
     dw Text_English_LevelTitle
     dw Text_English_LevelPassword
@@ -4549,7 +4480,7 @@ LanguageTable_Spanish:
     dw PowerupText_Spanish_GhostUp
     dw PowerupText_Spanish_GrenadeBat
     dw PowerupText_Spanish_NinjaUp
-    dw $57f2
+    dw GrenadeTexts_Spanish
     dw Text_Spanish_Hud
     dw Text_Spanish_LevelTitle
     dw Text_Spanish_LevelPassword
@@ -4591,7 +4522,7 @@ LanguageTable_French:
     dw PowerupText_French_GhostUp
     dw PowerupText_French_GrenadeBat
     dw PowerupText_French_NinjaUp
-    dw $57d2
+    dw GrenadeTexts_French
     dw Text_French_Hud
     dw Text_French_LevelTitle
     dw Text_French_LevelPassword
@@ -4633,7 +4564,7 @@ LanguageTable_German:
     dw PowerupText_German_GhostUp
     dw PowerupText_German_GrenadeBat
     dw PowerupText_German_NinjaUp
-    dw $57e2
+    dw GrenadeTexts_German
     dw Text_German_Hud
     dw Text_German_LevelTitle
     dw Text_German_LevelPassword
