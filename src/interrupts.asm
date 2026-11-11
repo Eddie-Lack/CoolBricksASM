@@ -173,7 +173,7 @@ jr_000_009e:
     ret
 
 StateInit_ColorOnly:
-    ld hl, $02b3
+    ld hl, VBlank
     ld a, l
     ld [hUnk_ff96], a
     ld a, h

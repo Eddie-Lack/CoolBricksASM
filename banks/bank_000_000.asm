@@ -287,6 +287,7 @@ InstallInterruptHandlers:
     ld [wUnk_c957], a
     ret
 
+Stat_Default:
     push af
     push hl
     ld a, [wUnk_dd01]
@@ -821,6 +822,7 @@ jr_000_05a1:
 
     jp Jump_000_04f7
 
+VBlank_Credits:
     push af
     push hl
     push de
@@ -854,7 +856,7 @@ StateInit_HighScores:
     call PlayMusic
     ld a, $04
     ld [wLcdcFlags], a
-    ld hl, $03a4
+    ld hl, VBlankMenus
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -1744,7 +1746,7 @@ LoadLevel:
     call PlayLevelMusic
     ld a, $00
     ld [wLcdcFlags], a
-    ld hl, $02e0
+    ld hl, VBlank_InGame
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -5330,7 +5332,7 @@ StateInit_MainMenu:
     call PlayMusic
     ld a, $04
     ld [wLcdcFlags], a
-    ld hl, $03a4
+    ld hl, VBlankMenus
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -6265,7 +6267,7 @@ StateInit_TitleScreen:
     call PlayMusic
     ld a, $00
     ld [wLcdcFlags], a
-    ld hl, $02b3
+    ld hl, VBlank
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -6418,7 +6420,7 @@ StateInit_GameOver:
     call StartSong
 
 jr_000_2692:
-    ld hl, $02b3
+    ld hl, VBlank
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -9474,7 +9476,7 @@ jr_000_392c:
     jp Jump_000_3228
 
 StateInit_Pause:
-    ld hl, $02b3
+    ld hl, VBlank
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -9542,7 +9544,7 @@ jr_000_39ec:
 StateInit_DeveloperLogos:
     ld a, $46
     ld [hLogoTimer], a
-    ld hl, $02b3
+    ld hl, VBlank
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -9599,7 +9601,7 @@ ClearCheatFlags:
 StateInit_PublisherLogo:
     ld a, $46
     ld [hLogoTimer], a
-    ld hl, $02b3
+    ld hl, VBlank
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -9662,7 +9664,7 @@ jr_000_3ae3:
 StateInit_Credits:
     ld e, $09
     call PlayMusic
-    ld hl, $05a9
+    ld hl, VBlank_Credits
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -9875,12 +9877,12 @@ jr_000_3c3d:
 StateInit_LevelPassword:
     ld a, $00
     ld [wLcdcFlags], a
-    ld hl, $02b3
+    ld hl, VBlank
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
     ld [hVBlankHandler + 1], a
-    ld hl, $0298
+    ld hl, Stat_Default
     ld a, l
     ld [hStatHandler], a
     ld a, h
@@ -10067,7 +10069,7 @@ jr_000_3d1d:
     ret
 
 StateInit_LanguageSelect:
-    ld hl, $02b3
+    ld hl, VBlank
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -10160,7 +10162,7 @@ UpdateSound:
 StateInit_Copyright:
     ld a, $46
     ld [hLogoTimer], a
-    ld hl, $02b3
+    ld hl, VBlank
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -10221,7 +10223,7 @@ StateInit_Ending:
     call PlayMusic
     xor a
     ldh [rSCX], a
-    ld hl, $02b3
+    ld hl, VBlank
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
