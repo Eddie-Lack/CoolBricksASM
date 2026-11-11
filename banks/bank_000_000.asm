@@ -41,8 +41,8 @@ ProgramStart:
     jr nz, jr_000_0184
 
     ld a, $28
-    ld hl, wBatY
-    call Call_001_6e9a
+    ld hl, wOamBuffer
+    call ClearOamEntries
 
 jr_000_0184:
     call RunStateInit
@@ -2063,7 +2063,7 @@ jr_000_0c9a:
     ld de, $d32a
     ld bc, $0400
     call DataTransfer
-    call Call_001_6ea5
+    call InitBatSprites
     ret
 
 Jump_000_0db5:
@@ -3044,7 +3044,7 @@ jr_000_12d4:
     call UpdatePickupEffects
     call UpdateBrickBreakEffects
     call UpdateUnbreakableHitEffects
-    call Call_001_6ed4
+    call DrawBatSprites
     xor a
     ld [$d9be], a
     ld [$d9bd], a
@@ -3105,10 +3105,10 @@ RestartAfterLifeLost:
 
     ld b, $01
     xor a
-    ld [$c2b5], a
+    ld [wOamUsed], a
     ld [hJoypad], a
     call Call_001_6838
-    call Call_001_6ea5
+    call InitBatSprites
     call InitBat
     call InitBall
     xor a
@@ -3127,15 +3127,15 @@ RestartAfterLifeLost:
     call ClearPickupEffects
     call ClearUnbreakableHitEffects
     xor a
-    ld [$c2b5], a
+    ld [wOamUsed], a
     ld de, $c2b9
     ld a, e
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, d
-    ld [$c2b7], a
+    ld [wOamWritePtr + 1], a
     ld a, $27
-    ld [$c2b4], a
-    call Call_001_6ed4
+    ld [wOamUsedLastFrame], a
+    call DrawBatSprites
     ld b, $ff
     ld a, $20
     call Call_001_6838
@@ -3168,9 +3168,9 @@ jr_000_13c0:
     ld d, $02
 
 jr_000_13cf:
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld l, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld h, a
     ld a, [wBallWorkY]
     sub $08
@@ -3208,12 +3208,12 @@ jr_000_13ef:
     ld a, $01
     ld [hl+], a
     ld a, l
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, h
-    ld [$c2b7], a
-    ld a, [$c2b5]
+    ld [wOamWritePtr + 1], a
+    ld a, [wOamUsed]
     add $02
-    ld [$c2b5], a
+    ld [wOamUsed], a
 
 jr_000_1415:
     ld a, [wBatExplosionTimer]
@@ -4081,17 +4081,17 @@ UpdateBatExplosion:
     add hl, de
     ld d, h
     ld e, l
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld l, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld h, a
     ld a, [de]
     inc de
     ld [$ff8d], a
     ld b, a
-    ld a, [$c2b5]
+    ld a, [wOamUsed]
     add b
-    ld [$c2b5], a
+    ld [wOamUsed], a
     ld a, [$d76c]
     ld b, a
     ld a, [$d76d]
@@ -4118,9 +4118,9 @@ jr_000_1930:
     jr nz, jr_000_1930
 
     ld a, l
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, h
-    ld [$c2b7], a
+    ld [wOamWritePtr + 1], a
     ret
 
 Call_000_1950:
@@ -5464,7 +5464,7 @@ jr_000_2083:
     ld [$dae1], a
     ld [wPasswordEntryActive], a
     ld [wLevelMusicIndex], a
-    call Call_001_71ef
+    call InitMenuSparkles
     ld a, $90
     ld [$ff9e], a
     ret
@@ -5532,7 +5532,7 @@ jr_000_20f9:
     ret
 
 MainMenu_Update:
-    call Call_001_7238
+    call UpdateMenuSparkles
     ld a, [$ff9e]
     or a
     ret nz
@@ -6633,9 +6633,9 @@ jr_000_2815:
     add hl, de
     ld d, h
     ld e, l
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld l, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld h, a
     ld a, [wBlobY]
     ld b, a
@@ -6670,12 +6670,12 @@ jr_000_2831:
     jr nz, jr_000_2831
 
     ld a, l
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, h
-    ld [$c2b7], a
-    ld a, [$c2b5]
+    ld [wOamWritePtr + 1], a
+    ld a, [wOamUsed]
     add $04
-    ld [$c2b5], a
+    ld [wOamUsed], a
     ld bc, BlobPath
     ld hl, wBlob
     call UpdateEnemyPath
@@ -6997,18 +6997,18 @@ jr_000_2a00:
     add hl, de
     ld d, h
     ld e, l
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld l, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld h, a
     ld a, [de]
     inc de
     ld [$ff8d], a
     ld b, a
-    ld a, [$c2b5]
+    ld a, [wOamUsed]
     add b
 
-    ld [$c2b5], a
+    ld [wOamUsed], a
     ld a, [$dbec]
     ld b, a
     ld a, [$dbeb]
@@ -7035,9 +7035,9 @@ jr_000_2a2b:
     jr nz, jr_000_2a2b
 
     ld a, l
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, h
-    ld [$c2b7], a
+    ld [wOamWritePtr + 1], a
 
 jr_000_2a4a:
     ret
@@ -7419,17 +7419,17 @@ jr_000_2cb2:
     ld [$dbe5], a
 
 jr_000_2cc4:
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld l, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld h, a
     ld a, [de]
     inc de
     ld [$ff8d], a
     ld b, a
-    ld a, [$c2b5]
+    ld a, [wOamUsed]
     add b
-    ld [$c2b5], a
+    ld [wOamUsed], a
     ld a, [$dbe5]
     ld b, a
     ld a, [$dbe3]
@@ -7456,9 +7456,9 @@ jr_000_2ce1:
     jr nz, jr_000_2ce1
 
     ld a, l
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, h
-    ld [$c2b7], a
+    ld [wOamWritePtr + 1], a
     ret
 
 Projectile_CheckBrickKeepDE:
@@ -7665,9 +7665,9 @@ jr_000_2e21:
     ld [wUfoFlying], a
 
 jr_000_2e24:
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld l, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld h, a
     ld a, [wUfoHeight]
     add $08
@@ -7697,12 +7697,12 @@ jr_000_2e3a:
     jr nz, jr_000_2e3a
 
     ld a, l
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, h
-    ld [$c2b7], a
-    ld a, [$c2b5]
+    ld [wOamWritePtr + 1], a
+    ld a, [wOamUsed]
     add $05
-    ld [$c2b5], a
+    ld [wOamUsed], a
     ld a, [wShotActive]
     or a
     jr z, jr_000_2ebe
@@ -8079,9 +8079,9 @@ UfoHit:
 ; Move the bomb dropped by the UFO. A hit on the bat costs a life.
 UpdateUfoBomb:
     ld d, $00
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld l, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld h, a
     ld a, [wUfoBombActive]
     inc a
@@ -8134,12 +8134,12 @@ jr_000_30cc:
 
 jr_000_30e7:
     ld a, l
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, h
-    ld [$c2b7], a
-    ld a, [$c2b5]
+    ld [wOamWritePtr + 1], a
+    ld a, [wOamUsed]
     add d
-    ld [$c2b5], a
+    ld [wOamUsed], a
     ld a, [wBatExplosionTimer]
     or a
     ret nz
@@ -8684,9 +8684,9 @@ jr_000_344e:
 ; Shot slots 0 and 1 hit bricks with HitBrickWithShot.
 UpdateShot0:
     ld d, $00
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld l, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld h, a
     ld e, $01
     ld a, [wPlasmaState]
@@ -8760,12 +8760,12 @@ jr_000_34c1:
 
 jr_000_34ea:
     ld a, l
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, h
-    ld [$c2b7], a
-    ld a, [$c2b5]
+    ld [wOamWritePtr + 1], a
+    ld a, [wOamUsed]
     add d
-    ld [$c2b5], a
+    ld [wOamUsed], a
     ld a, [wShots]
     add $04
     ld c, a
@@ -8837,9 +8837,9 @@ jr_000_353e:
 
 UpdateShot1:
     ld d, $00
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld l, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld h, a
     ld e, $01
     ld a, [wPlasmaState]
@@ -8913,12 +8913,12 @@ jr_000_35b3:
 
 jr_000_35dc:
     ld a, l
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, h
-    ld [$c2b7], a
-    ld a, [$c2b5]
+    ld [wOamWritePtr + 1], a
+    ld a, [wOamUsed]
     add d
-    ld [$c2b5], a
+    ld [wOamUsed], a
     ld a, [wShots + 4]
     add $04
     ld c, a
@@ -8991,9 +8991,9 @@ jr_000_3630:
 ; Shot slots 2 to 5 hit bricks with HitBrickWithBall.
 UpdateShot2:
     ld d, $00
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld l, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld h, a
     ld bc, $5468
     ld e, $01
@@ -9057,12 +9057,12 @@ jr_000_3693:
 
 jr_000_36bc:
     ld a, l
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, h
-    ld [$c2b7], a
-    ld a, [$c2b5]
+    ld [wOamWritePtr + 1], a
+    ld a, [wOamUsed]
     add d
-    ld [$c2b5], a
+    ld [wOamUsed], a
     ld a, [wShots + 8]
     add $04
     ld c, a
@@ -9119,9 +9119,9 @@ jr_000_36f8:
 
 UpdateShot3:
     ld d, $00
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld l, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld h, a
     ld bc, $5474
     ld a, [wShotActive + 3]
@@ -9176,12 +9176,12 @@ jr_000_374e:
 
 jr_000_3778:
     ld a, l
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, h
-    ld [$c2b7], a
-    ld a, [$c2b5]
+    ld [wOamWritePtr + 1], a
+    ld a, [wOamUsed]
     add d
-    ld [$c2b5], a
+    ld [wOamUsed], a
     ld a, [wShots + 12]
     add $04
     ld c, a
@@ -9238,9 +9238,9 @@ jr_000_37b4:
 
 UpdateShot4:
     ld d, $00
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld l, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld h, a
     ld bc, $5474
     ld a, [wShotActive + 4]
@@ -9295,12 +9295,12 @@ jr_000_380a:
 
 jr_000_3834:
     ld a, l
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, h
-    ld [$c2b7], a
-    ld a, [$c2b5]
+    ld [wOamWritePtr + 1], a
+    ld a, [wOamUsed]
     add d
-    ld [$c2b5], a
+    ld [wOamUsed], a
     ld a, [wShots + 15]
     add $04
     ld c, a
@@ -9357,9 +9357,9 @@ jr_000_3870:
 
 UpdateShot5:
     ld d, $00
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld l, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld h, a
     ld bc, $5474
     ld a, [wShotActive + 5]
@@ -9414,12 +9414,12 @@ jr_000_38c6:
 
 jr_000_38f0:
     ld a, l
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, h
-    ld [$c2b7], a
-    ld a, [$c2b5]
+    ld [wOamWritePtr + 1], a
+    ld a, [wOamUsed]
     add d
-    ld [$c2b5], a
+    ld [wOamUsed], a
     ld a, [wShots + 18]
     add $04
     ld c, a
