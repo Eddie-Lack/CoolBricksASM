@@ -44,7 +44,7 @@ python tools/gbasm.py game.asm game.gbc 5a7673f1e61cd707bdc880ff76396a3d
 
 ## What is left
 
-- Most routines still have automatic names (`Call_000_xxxx`). Ball physics, the UFO and blob enemies, scoring and the menus are not traced yet.
+- Most routines still have automatic names (`Call_000_xxxx`). The per-frame gameplay update is labelled by section, but the inside of `UpdateBall`, `UpdateUfo`, `UpdateBlob` and `UpdateShots`, the scoring and the menus are not traced yet.
 - Most data is still unlabelled `db`: palettes, tile maps, background pictures, music, and the text that the language tables do not point to (credits, high-score names).
 - Pointers inside code (`ld hl, $4630`) and inside unstructured data are still numbers. The ROM cannot be rearranged safely until they are labels.
 - Banks `$0B` and `$10`–`$13` hold the graphics of the five languages. The bank number comes from the language table (`wLangGraphicsBank`). Their contents are still unlabelled.

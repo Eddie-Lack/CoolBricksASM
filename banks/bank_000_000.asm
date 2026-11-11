@@ -997,7 +997,7 @@ jr_000_0710:
     ld a, $01
     ld [$cccd], a
     ld a, $1e
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ld a, $1a
     call PlaySound
 
@@ -1882,7 +1882,7 @@ jr_000_0b81:
     call InitBat
     call InitBall
     call Call_000_271b
-    call Call_000_31da
+    call ResetShots
     call ClearFallingPowerups
     call Call_001_627f
     call Call_001_633e
@@ -1892,7 +1892,7 @@ jr_000_0b81:
     ld [$d9bd], a
     ld [$d9be], a
     ld [$dab2], a
-    ld [$ffa2], a
+    ld [hLifeLostTimer], a
     jr jr_000_0c41
 
 Jump_000_0c40:
@@ -2322,18 +2322,18 @@ jr_000_0eb2:
 InitBat:
     ld a, $50
     ld [wBatX], a
-    ld hl, $5f77
+    ld hl, BatSpeedTable
     ld a, l
-    ld [$d761], a
+    ld [wBatSpeedPtr], a
     ld a, h
-    ld [$d762], a
+    ld [wBatSpeedPtr + 1], a
     xor a
-    ld [$d75f], a
-    ld [$d760], a
-    ld [$d766], a
-    ld [$d765], a
-    ld [$d76a], a
-    ld [$d76b], a
+    ld [wBatMovingRight], a
+    ld [wBatMovingLeft], a
+    ld [wStunWobble], a
+    ld [wStunActive], a
+    ld [wReverseActive], a
+    ld [wBatExplosionTimer], a
     ld a, $01
     ld [wBallSticks], a
     ld a, $20
@@ -2353,24 +2353,24 @@ InitBall:
     add b
     ld [$d780], a
     ld a, $10
-    ld [$d781], a
+    ld [wBalls + 4], a
     ld a, $83
-    ld [$d782], a
+    ld [wBalls + 5], a
     xor a
-    ld [$d77d], a
+    ld [wBalls], a
     ld [$d77f], a
     ld [$d783], a
     xor a
-    ld [$d8a1], a
-    ld [$d8a5], a
-    ld [$d8a0], a
-    ld [$d8a2], a
-    ld [$d8a3], a
+    ld [wMultiBallPending], a
+    ld [wSleepyBallActive], a
+    ld [wLaunchDirection], a
+    ld [wAntigravityActive], a
+    ld [wSlowBallPending], a
     ld [$d8a4], a
     ld [wNinjaActive], a
-    ld [$d8aa], a
+    ld [wRemoveBall], a
     inc a
-    ld [$d8a8], a
+    ld [wBallOnBat], a
 
     ret
 
@@ -2378,19 +2378,19 @@ InitBall:
 Gameplay_Update:
     ld a, [wCheatLevelSkip]
     or a
-    jr z, jr_000_0f77
+    jr z, Gameplay_UpdateStun
 
     ld a, [hJoypad]
     bit 5, a
-    jr z, jr_000_0f77
+    jr z, Gameplay_UpdateStun
 
-    ld a, [$ffa0]
+    ld a, [hStateTimer]
     or a
-    jr nz, jr_000_0f77
+    jr nz, Gameplay_UpdateStun
 
-    ld a, [$ffa2]
+    ld a, [hLifeLostTimer]
     or a
-    jr nz, jr_000_0f77
+    jr nz, Gameplay_UpdateStun
 
     ld b, $02
     ld a, [wLevelsSincePassword]
@@ -2408,7 +2408,7 @@ jr_000_0f5d:
     ld a, b
     ld [hGameState], a
     ld a, $0f
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ld a, [wCurrentLevel]
     inc a
     cp $a0
@@ -2421,12 +2421,13 @@ jr_000_0f5d:
 jr_000_0f74:
     ld [wCurrentLevel], a
 
-jr_000_0f77:
-    ld a, [$d765]
+; Stun (Poison): shake the bat until wBatEffectTimer runs out.
+Gameplay_UpdateStun:
+    ld a, [wStunActive]
     or a
-    jr z, jr_000_0fbe
+    jr z, Gameplay_MoveBat
 
-    ld a, [$d768]
+    ld a, [wBatEffectTimer]
     and $07
     jr nz, jr_000_0f89
 
@@ -2435,14 +2436,14 @@ jr_000_0f77:
 
 jr_000_0f89:
     xor a
-    ld [$d767], a
-    ld a, [$d769]
+    ld [wStunWobbleNow], a
+    ld a, [wBatEffectTick]
     inc a
-    ld [$d769], a
+    ld [wBatEffectTick], a
     and $03
-    jr nz, jr_000_0fbe
+    jr nz, Gameplay_MoveBat
 
-    ld a, [$d766]
+    ld a, [wStunWobble]
     cp $fd
     jr nz, jr_000_0fa3
 
@@ -2456,26 +2457,28 @@ jr_000_0fa3:
     ld a, $fd
 
 jr_000_0fa9:
-    ld [$d766], a
-    ld [$d767], a
-    ld a, [$d768]
+    ld [wStunWobble], a
+    ld [wStunWobbleNow], a
+    ld a, [wBatEffectTimer]
     dec a
-    ld [$d768], a
-    jr nz, jr_000_0fbe
+    ld [wBatEffectTimer], a
+    jr nz, Gameplay_MoveBat
 
-    ld [$d765], a
-    ld [$d766], a
+    ld [wStunActive], a
+    ld [wStunWobble], a
 
-jr_000_0fbe:
+; Move the bat. Left and right are swapped while Reverse is active.
+; The speed comes from BatSpeedTable, so the bat accelerates while a direction is held.
+Gameplay_MoveBat:
     xor a
-    ld [$d89f], a
-    ld a, [$d761]
+    ld [wBatDeltaX], a
+    ld a, [wBatSpeedPtr]
     ld l, a
-    ld a, [$d762]
+    ld a, [wBatSpeedPtr + 1]
     ld h, a
     ld a, [hJoypad]
     ld c, a
-    ld a, [$d76a]
+    ld a, [wReverseActive]
     or a
     jr z, jr_000_1001
 
@@ -2493,22 +2496,22 @@ jr_000_0fbe:
     or d
     ld c, a
     ld [hJoypad], a
-    ld a, [$d769]
+    ld a, [wBatEffectTick]
     inc a
-    ld [$d769], a
+    ld [wBatEffectTick], a
     and $03
     jr nz, jr_000_1001
 
-    ld a, [$d768]
+    ld a, [wBatEffectTimer]
     dec a
-    ld [$d768], a
+    ld [wBatEffectTimer], a
     or a
     jr nz, jr_000_1001
 
-    ld [$d76a], a
+    ld [wReverseActive], a
 
 jr_000_1001:
-    ld a, [$ff8b]
+    ld a, [hLastDirection]
     ld b, a
     ld a, c
     and $03
@@ -2519,13 +2522,13 @@ jr_000_1001:
     jr jr_000_1012
 
 jr_000_100f:
-    ld [$ff8b], a
+    ld [hLastDirection], a
 
 jr_000_1012:
     bit 0, a
     jr z, jr_000_1058
 
-    ld a, [$d760]
+    ld a, [wBatMovingLeft]
     or a
     jp nz, Jump_000_10b5
 
@@ -2542,14 +2545,14 @@ Jump_000_101d:
 jr_000_1024:
     ld b, a
     ld a, $ff
-    ld [$d75f], a
+    ld [wBatMovingRight], a
 
 jr_000_102a:
     ld a, l
-    ld [$d761], a
+    ld [wBatSpeedPtr], a
     ld a, h
-    ld [$d762], a
-    ld a, [$d766]
+    ld [wBatSpeedPtr + 1], a
+    ld a, [wStunWobble]
     add b
     ld b, a
     ld a, [wBatWidth]
@@ -2572,14 +2575,14 @@ jr_000_1049:
     ld a, b
     cpl
     inc a
-    ld [$d89f], a
-    jr jr_000_10d7
+    ld [wBatDeltaX], a
+    jr Gameplay_AntigravitySteering
 
 jr_000_1058:
     bit 1, a
     jr z, jr_000_1097
 
-    ld a, [$d75f]
+    ld a, [wBatMovingRight]
     or a
     jr nz, jr_000_109d
 
@@ -2595,14 +2598,14 @@ jr_000_1062:
 jr_000_1069:
     ld b, a
     ld a, $01
-    ld [$d760], a
+    ld [wBatMovingLeft], a
 
 jr_000_106f:
     ld a, l
-    ld [$d761], a
+    ld [wBatSpeedPtr], a
     ld a, h
-    ld [$d762], a
-    ld a, [$d766]
+    ld [wBatSpeedPtr + 1], a
+    ld a, [wStunWobble]
     add b
     ld b, a
     ld a, [wBatX]
@@ -2622,11 +2625,11 @@ jr_000_108a:
     ld [wBatX], a
     ld a, b
 
-    ld [$d89f], a
-    jr jr_000_10d7
+    ld [wBatDeltaX], a
+    jr Gameplay_AntigravitySteering
 
 jr_000_1097:
-    ld a, [$d75f]
+    ld a, [wBatMovingRight]
     or a
     jr z, jr_000_10af
 
@@ -2637,7 +2640,7 @@ jr_000_109d:
     or a
     jr nz, jr_000_102a
 
-    ld [$d75f], a
+    ld [wBatMovingRight], a
     ld a, [hJoypad]
     bit 1, a
     jr nz, jr_000_1062
@@ -2645,7 +2648,7 @@ jr_000_109d:
     jr jr_000_10c6
 
 jr_000_10af:
-    ld a, [$d760]
+    ld a, [wBatMovingLeft]
     or a
     jr z, jr_000_10c6
 
@@ -2656,39 +2659,40 @@ Jump_000_10b5:
     or a
     jr nz, jr_000_106f
 
-    ld [$d760], a
+    ld [wBatMovingLeft], a
     ld a, [hJoypad]
     bit 0, a
     jp nz, Jump_000_101d
 
 jr_000_10c6:
-    ld a, [$d765]
+    ld a, [wStunActive]
     or a
-    jr z, jr_000_10d7
+    jr z, Gameplay_AntigravitySteering
 
-    ld a, [$d767]
+    ld a, [wStunWobbleNow]
     ld b, a
     ld a, [wBatX]
     add b
     ld [wBatX], a
 
-jr_000_10d7:
-    ld a, [$d8a9]
+; Antigravity (Pepper): left and right steer every ball until wBallEffectTimer runs out.
+Gameplay_AntigravitySteering:
+    ld a, [wAntigravityCancel]
     or a
     jr nz, jr_000_1111
 
-    ld a, [$d8a2]
+    ld a, [wAntigravityActive]
     or a
-    jr z, jr_000_1134
+    jr z, Gameplay_LaunchBall
 
-    ld a, [$d8a6]
+    ld a, [wBallEffectTimer]
     dec a
-    ld [$d8a6], a
+    ld [wBallEffectTimer], a
     jr z, jr_000_1111
 
     ld a, [wBallCount]
     or a
-    jr z, jr_000_1134
+    jr z, Gameplay_LaunchBall
 
     ld c, a
     ld b, $00
@@ -2705,7 +2709,7 @@ jr_000_10fe:
     ld b, $1c
 
 jr_000_1104:
-    ld hl, $d781
+    ld hl, wBalls + 4
     ld de, $0007
 
 jr_000_110a:
@@ -2714,20 +2718,20 @@ jr_000_110a:
     dec c
     jr nz, jr_000_110a
 
-    jr jr_000_1134
+    jr Gameplay_LaunchBall
 
 jr_000_1111:
     xor a
-    ld [$d8a9], a
-    ld [$d8a2], a
+    ld [wAntigravityCancel], a
+    ld [wAntigravityActive], a
     ld a, [wBallCount]
     or a
-    jr z, jr_000_1134
+    jr z, Gameplay_LaunchBall
 
     ld b, a
     ld de, $0006
     ld a, $02
-    ld hl, $d781
+    ld hl, wBalls + 4
 
 jr_000_1127:
     ld [hl+], a
@@ -2740,25 +2744,26 @@ jr_000_1127:
     ld a, $17
     call PlaySound
 
-jr_000_1134:
-    ld a, [$d8a1]
+; Launch the ball from the bat with A, or split it when Multi ball was picked up.
+Gameplay_LaunchBall:
+    ld a, [wMultiBallPending]
     or a
     jr nz, jr_000_114d
 
     ld a, [wBallSticks]
     or a
-    jr z, jr_000_116f
+    jr z, Gameplay_UpdateBalls
 
-    ld a, [$d8a5]
+    ld a, [wSleepyBallActive]
     or a
-    jr nz, jr_000_116f
+    jr nz, Gameplay_UpdateBalls
 
     ld a, [hJoypad]
     bit 4, a
-    jr z, jr_000_116f
+    jr z, Gameplay_UpdateBalls
 
 jr_000_114d:
-    ld a, [$d8a8]
+    ld a, [wBallOnBat]
     or a
     jr z, jr_000_116a
 
@@ -2782,50 +2787,52 @@ jr_000_116a:
     ld a, $04
 
 jr_000_116c:
-    ld [$d8a0], a
+    ld [wLaunchDirection], a
 
-jr_000_116f:
-    call Call_000_18fc
+; Update every ball in wBalls. A ball below the screen is removed.
+; Losing the last ball costs a life.
+Gameplay_UpdateBalls:
+    call UpdateBatExplosion
     ld a, [wBallCount]
     or a
-    jp z, Jump_000_12b7
+    jp z, Gameplay_AfterBalls
 
     ld [$d8a4], a
     ld b, a
-    ld hl, $d77d
+    ld hl, wBalls
     ld de, $d895
     xor a
     ld [$ff90], a
 
-Jump_000_1187:
+Gameplay_BallLoop:
     push bc
     push hl
     push de
     ld a, [hl+]
-    ld [$d775], a
+    ld [wBallWorkYSub], a
     ld a, [hl+]
-    ld [$d776], a
+    ld [wBallWorkY], a
     ld a, [hl+]
-    ld [$d777], a
+    ld [wBallWorkXSub], a
     ld a, [hl+]
-    ld [$d778], a
+    ld [wBallWorkX], a
     ld a, [hl+]
-    ld [$d779], a
+    ld [wBallWorkDirection], a
     ld a, [hl+]
-    ld [$d77a], a
+    ld [wBallWorkSpeed], a
     ld a, [hl+]
-    ld [$d77b], a
-    call Call_000_13ac
+    ld [wBallWorkFlags], a
+    call UpdateBall
     pop de
     pop hl
-    ld a, [$d8aa]
+    ld a, [wRemoveBall]
     or a
     jr nz, jr_000_1227
 
-    ld a, [$d776]
+    ld a, [wBallWorkY]
     ld b, a
     cp $a0
-    jp c, Jump_000_1251
+    jp c, Gameplay_StoreBall
 
     pop bc
     ld a, [wBallCount]
@@ -2841,19 +2848,19 @@ Jump_000_1187:
 
     ld a, c
     or a
-    jp z, Jump_000_12b7
+    jp z, Gameplay_AfterBalls
 
 jr_000_11d2:
-    ld a, [$d76b]
+    ld a, [wBatExplosionTimer]
     or a
-    jp nz, Jump_000_12b7
+    jp nz, Gameplay_AfterBalls
 
-    ld a, [$ffa0]
+    ld a, [hStateTimer]
     or a
-    jp nz, Jump_000_12b7
+    jp nz, Gameplay_AfterBalls
 
     ld a, $28
-    ld [$d76b], a
+    ld [wBatExplosionTimer], a
     ld a, [wBatY]
     sub $08
     ld [$d76c], a
@@ -2882,18 +2889,18 @@ jr_000_11f8:
     ld a, $03
     ld [hGameState], a
     ld a, $28
-    ld [$ffa0], a
-    jp Jump_000_12b7
+    ld [hStateTimer], a
+    jp Gameplay_AfterBalls
 
 jr_000_121f:
     ld a, $01
-    ld [$ffa2], a
-    jp Jump_000_12b7
+    ld [hLifeLostTimer], a
+    jp Gameplay_AfterBalls
 
 jr_000_1227:
     pop bc
     xor a
-    ld [$d8aa], a
+    ld [wRemoveBall], a
     ld a, [wBallCount]
 
 jr_000_122f:
@@ -2924,26 +2931,26 @@ jr_000_1245:
     ld [$ff90], a
     jr jr_000_126c
 
-Jump_000_1251:
-    ld a, [$d775]
+Gameplay_StoreBall:
+    ld a, [wBallWorkYSub]
     ld [hl+], a
     ld a, b
     ld [hl+], a
-    ld a, [$d777]
+    ld a, [wBallWorkXSub]
     ld [hl+], a
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     ld [hl+], a
-    ld a, [$d779]
+    ld a, [wBallWorkDirection]
     ld [hl+], a
-    ld a, [$d77a]
+    ld a, [wBallWorkSpeed]
     ld [hl+], a
-    ld a, [$d77b]
+    ld a, [wBallWorkFlags]
     ld [hl+], a
     pop bc
 
 jr_000_126c:
     dec b
-    jp nz, Jump_000_1187
+    jp nz, Gameplay_BallLoop
 
     ld a, [$d8a4]
     or a
@@ -2955,7 +2962,7 @@ jr_000_126c:
 jr_000_127a:
     ld a, [$ff90]
     or a
-    jr z, jr_000_12b7
+    jr z, Gameplay_AfterBalls
 
     ld de, $d895
     ld b, a
@@ -3008,11 +3015,11 @@ jr_000_1291:
     dec b
     jr nz, jr_000_1285
 
-Jump_000_12b7:
-jr_000_12b7:
+; Update power-ups, enemies, shots and the brick queue, restart after a lost life, and check for pause.
+Gameplay_AfterBalls:
     xor a
-    ld [$d8a0], a
-    ld a, [$d8a8]
+    ld [wLaunchDirection], a
+    ld a, [wBallOnBat]
     or a
     jr z, jr_000_12d4
 
@@ -3022,14 +3029,14 @@ jr_000_12b7:
 
     xor a
     ld [wBallSticks], a
-    ld [$d8a8], a
+    ld [wBallOnBat], a
     ld a, $07
     call PlaySound
 
 jr_000_12d4:
     call UpdateFallingPowerups
-    call Call_000_2763
-    call Call_000_320c
+    call UpdateEnemies
+    call UpdateShots
     call Call_001_6386
     call Call_001_62e9
     call Call_001_64f9
@@ -3040,38 +3047,38 @@ jr_000_12d4:
     call Call_000_1950
     call ProcessBrickHitQueue
     call Call_000_1d7c
-    ld a, [$ffa2]
+    ld a, [hLifeLostTimer]
     or a
-    jr z, jr_000_131c
+    jr z, Gameplay_CheckPause
 
     inc a
-    ld [$ffa2], a
+    ld [hLifeLostTimer], a
     cp $28
     ret nz
 
     xor a
-    ld [$ffa2], a
+    ld [hLifeLostTimer], a
     ld e, $00
     call Call_000_3e56
     xor a
     call PlaySound
     call Call_000_3e7f
     call Call_000_3e7f
-    call Call_000_1347
+    call RestartAfterLifeLost
 
-jr_000_131c:
+Gameplay_CheckPause:
     ld a, [hJoypad]
     bit 7, a
     ret z
 
-    ld a, [$ffa0]
+    ld a, [hStateTimer]
     or a
     ret nz
 
     ld a, $04
     ld [hGameState], a
     ld a, $01
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ld [$ffa1], a
     ld a, $1a
     call PlaySound
@@ -3087,8 +3094,8 @@ jr_000_133b:
 
     ret
 
-Call_000_1347:
-    ld a, [$ffa0]
+RestartAfterLifeLost:
+    ld a, [hStateTimer]
     or a
     ret nz
 
@@ -3109,7 +3116,7 @@ Call_000_1347:
     call Call_000_1950
     call ProcessBrickHitQueue
     call Call_000_1d7c
-    call Call_000_31da
+    call ResetShots
     call Call_000_271b
     call ClearFallingPowerups
     call Call_001_627f
@@ -3131,12 +3138,13 @@ Call_000_1347:
     call Call_000_0aeb
     ret
 
-Call_000_13ac:
-    ld a, [$d8a5]
+; Update the ball in wBallWork: sleeping, sticking to the bat, launching, splitting and moving.
+UpdateBall:
+    ld a, [wSleepyBallActive]
     or a
     jr z, jr_000_1415
 
-    ld a, [$d8a6]
+    ld a, [wBallEffectTimer]
     cp $18
     jr nz, jr_000_13c0
 
@@ -3160,7 +3168,7 @@ jr_000_13cf:
     ld l, a
     ld a, [$c2b7]
     ld h, a
-    ld a, [$d776]
+    ld a, [wBallWorkY]
     sub $08
     cp $1e
     jr nc, jr_000_13e2
@@ -3170,7 +3178,7 @@ jr_000_13cf:
 jr_000_13e2:
     ld b, a
     ld [hl+], a
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     add $04
     cp $90
     jr c, jr_000_13ef
@@ -3204,7 +3212,7 @@ jr_000_13ef:
     ld [$c2b5], a
 
 jr_000_1415:
-    ld a, [$d76b]
+    ld a, [wBatExplosionTimer]
     or a
     jp nz, Jump_000_151b
 
@@ -3212,14 +3220,14 @@ jr_000_1415:
     or a
     jp z, Jump_000_14a5
 
-    ld a, [$d77a]
+    ld a, [wBallWorkSpeed]
     bit 7, a
     jr nz, jr_000_1453
 
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     add $04
     ld c, a
-    ld a, [$d776]
+    ld a, [wBallWorkY]
     add $08
     ld b, a
     ld a, [wBatY]
@@ -3243,7 +3251,7 @@ jr_000_1415:
     call PlaySound
 
 jr_000_1453:
-    ld a, [$d8a0]
+    ld a, [wLaunchDirection]
     or a
     jr z, jr_000_1486
 
@@ -3253,54 +3261,54 @@ jr_000_1453:
     ld a, [wBatX]
     sub $08
     ld b, a
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     add $04
     sub b
-    call Call_000_18db
+    call BatBounceLookup
     ld a, [hl]
     ld b, a
-    ld a, [$d77a]
+    ld a, [wBallWorkSpeed]
     and $70
     or b
-    ld [$d77a], a
+    ld [wBallWorkSpeed], a
     jr jr_000_14a5
 
 jr_000_1479:
-    ld [$d779], a
-    ld a, [$d77a]
+    ld [wBallWorkDirection], a
+    ld a, [wBallWorkSpeed]
     res 7, a
-    ld [$d77a], a
+    ld [wBallWorkSpeed], a
     jr jr_000_14a5
 
 jr_000_1486:
-    ld a, [$d779]
+    ld a, [wBallWorkDirection]
     cp $17
     jr nc, jr_000_14a5
 
     cp $09
     jr c, jr_000_14a5
 
-    ld a, [$d89f]
+    ld a, [wBatDeltaX]
     ld b, a
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     sub b
-    ld [$d778], a
-    ld a, [$d77a]
+    ld [wBallWorkX], a
+    ld a, [wBallWorkSpeed]
     set 7, a
-    ld [$d77a], a
+    ld [wBallWorkSpeed], a
     ret
 
 Jump_000_14a5:
 jr_000_14a5:
-    ld a, [$d8a1]
+    ld a, [wMultiBallPending]
     or a
     jr z, jr_000_151b
 
     xor a
-    ld [$d8a1], a
+    ld [wMultiBallPending], a
     ld a, [$d8a4]
     ld b, a
-    ld hl, $d77d
+    ld hl, wBalls
     ld de, $0007
 
 jr_000_14b9:
@@ -3312,15 +3320,15 @@ jr_000_14b9:
     ld a, b
     add $02
     ld [wBallCount], a
-    ld a, [$d779]
+    ld a, [wBallWorkDirection]
     ld c, a
-    ld a, [$d775]
+    ld a, [wBallWorkYSub]
     ld [hl+], a
-    ld a, [$d776]
+    ld a, [wBallWorkY]
     ld [hl+], a
-    ld a, [$d777]
+    ld a, [wBallWorkXSub]
     ld [hl+], a
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     ld [hl+], a
     ld a, c
     dec a
@@ -3340,17 +3348,17 @@ jr_000_14e4:
 
 jr_000_14eb:
     ld [hl+], a
-    ld a, [$d77a]
+    ld a, [wBallWorkSpeed]
     ld [hl+], a
     xor a
     ld [hl+], a
-    ld a, [$d775]
+    ld a, [wBallWorkYSub]
     ld [hl+], a
-    ld a, [$d776]
+    ld a, [wBallWorkY]
     ld [hl+], a
-    ld a, [$d777]
+    ld a, [wBallWorkXSub]
     ld [hl+], a
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     ld [hl+], a
     ld a, c
     inc a
@@ -3370,7 +3378,7 @@ jr_000_150c:
 
 jr_000_1513:
     ld [hl+], a
-    ld a, [$d77a]
+    ld a, [wBallWorkSpeed]
     ld [hl+], a
     xor a
     ld [hl+], a
@@ -3378,35 +3386,35 @@ jr_000_1513:
 
 Jump_000_151b:
 jr_000_151b:
-    ld a, [$d8a5]
+    ld a, [wSleepyBallActive]
     or a
     ret nz
 
-    ld a, [$d77b]
+    ld a, [wBallWorkFlags]
     bit 7, a
     jr z, jr_000_1549
 
     res 7, a
     or a
     set 7, a
-    ld [$d77b], a
+    ld [wBallWorkFlags], a
     jr nz, jr_000_1549
 
     xor a
-    ld [$d77b], a
-    ld a, [$d779]
+    ld [wBallWorkFlags], a
+    ld a, [wBallWorkDirection]
     inc a
     and $1f
-    ld [$d779], a
+    ld [wBallWorkDirection], a
     and $07
     jr nz, jr_000_1549
 
-    ld a, [$d779]
+    ld a, [wBallWorkDirection]
     inc a
-    ld [$d779], a
+    ld [wBallWorkDirection], a
 
 jr_000_1549:
-    ld a, [$d779]
+    ld a, [wBallWorkDirection]
     ld l, a
     ld h, $00
     add hl, hl
@@ -3423,14 +3431,14 @@ jr_000_1549:
     xor a
     ld [$d770], a
     ld [$d76f], a
-    ld a, [$d777]
+    ld a, [wBallWorkXSub]
     ld [$d773], a
     ld l, a
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     ld [$d774], a
     ld h, a
     add hl, bc
-    ld a, [$d77a]
+    ld a, [wBallWorkSpeed]
     and $0f
     or a
     jr z, jr_000_1582
@@ -3445,17 +3453,17 @@ jr_000_157a:
 
 jr_000_1582:
     ld a, l
-    ld [$d777], a
+    ld [wBallWorkXSub], a
     ld a, h
-    ld [$d778], a
-    ld a, [$d775]
+    ld [wBallWorkX], a
+    ld a, [wBallWorkYSub]
     ld [$d771], a
     ld l, a
-    ld a, [$d776]
+    ld a, [wBallWorkY]
     ld [$d772], a
     ld h, a
     add hl, de
-    ld a, [$d77a]
+    ld a, [wBallWorkSpeed]
     and $0f
     or a
     jr z, jr_000_15ae
@@ -3472,9 +3480,9 @@ jr_000_15a1:
 
 jr_000_15ae:
     ld a, l
-    ld [$d775], a
+    ld [wBallWorkYSub], a
     ld a, h
-    ld [$d776], a
+    ld [wBallWorkY], a
     xor a
     ld [$d8ab], a
     call Call_000_15f3
@@ -3491,127 +3499,127 @@ jr_000_15ae:
 
 jr_000_15cb:
     pop de
-    ld a, [$d775]
+    ld a, [wBallWorkYSub]
     ld l, a
-    ld a, [$d776]
+    ld a, [wBallWorkY]
     ld h, a
     add hl, de
     ld a, l
-    ld [$d775], a
+    ld [wBallWorkYSub], a
     ld a, h
-    ld [$d776], a
+    ld [wBallWorkY], a
     pop bc
-    ld a, [$d777]
+    ld a, [wBallWorkXSub]
     ld l, a
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     ld h, a
     add hl, bc
     ld a, l
-    ld [$d777], a
+    ld [wBallWorkXSub], a
     ld a, h
-    ld [$d778], a
+    ld [wBallWorkX], a
     call Call_000_15f3
     ret
 
 Call_000_15f3:
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     ld c, a
-    ld a, [$d776]
+    ld a, [wBallWorkY]
     add $04
-    call Call_000_1822
+    call CollideBallPoint
     jr z, jr_000_160b
 
     jr c, jr_000_160b
 
     ld a, $01
     ld [$d76f], a
-    call Call_000_17b8
+    call ReflectBallX1
 
 jr_000_160b:
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     add $07
     ld c, a
-    ld a, [$d776]
+    ld a, [wBallWorkY]
     add $04
-    call Call_000_1822
+    call CollideBallPoint
     jr z, jr_000_1625
 
     jr c, jr_000_1625
 
     ld a, $01
     ld [$d76f], a
-    call Call_000_17cd
+    call ReflectBallX2
 
 jr_000_1625:
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     add $04
     ld c, a
-    ld a, [$d776]
+    ld a, [wBallWorkY]
     add $07
-    call Call_000_1822
+    call CollideBallPoint
     jr z, jr_000_163f
 
     jr c, jr_000_163f
 
     ld a, $01
     ld [$d76f], a
-    call Call_000_1802
+    call ReflectBallY2
 
 jr_000_163f:
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     add $04
     ld c, a
-    ld a, [$d776]
-    call Call_000_1822
+    ld a, [wBallWorkY]
+    call CollideBallPoint
     jr z, jr_000_1657
 
     jr c, jr_000_1657
 
     ld a, $01
     ld [$d76f], a
-    call Call_000_17ed
+    call ReflectBallY1
 
 jr_000_1657:
-    ld a, [$d8a2]
+    ld a, [wAntigravityActive]
     or a
     jr z, jr_000_168a
 
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     ld c, a
-    ld a, [$d776]
-    call Call_000_1822
+    ld a, [wBallWorkY]
+    call CollideBallPoint
     jr z, jr_000_1673
 
     jr c, jr_000_1673
 
     ld a, $01
     ld [$d76f], a
-    call Call_000_17ed
+    call ReflectBallY1
 
 jr_000_1673:
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     add $07
     ld c, a
-    ld a, [$d776]
-    call Call_000_1822
+    ld a, [wBallWorkY]
+    call CollideBallPoint
     ret z
 
     ret c
 
     ld a, $01
     ld [$d76f], a
-    call Call_000_17ed
+    call ReflectBallY1
     ret
 
 jr_000_168a:
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     inc a
     ld c, a
     push bc
-    ld a, [$d776]
+    ld a, [wBallWorkY]
     add $06
     push af
-    call Call_000_1822
+    call CollideBallPoint
     jr z, jr_000_16d4
 
     jr c, jr_000_16d4
@@ -3632,39 +3640,39 @@ jr_000_168a:
 
     jr nc, jr_000_16b8
 
-    call Call_000_17b8
+    call ReflectBallX1
     jr jr_000_16d6
 
 jr_000_16b8:
-    call Call_000_1802
+    call ReflectBallY2
     jr jr_000_16d6
 
 jr_000_16bd:
-    ld a, [$d779]
+    ld a, [wBallWorkDirection]
     ld l, a
     ld h, $00
-    ld de, $625f
+    ld de, BallReflectX1Table
     add hl, de
     ld l, [hl]
     ld h, $00
-    ld de, $61ff
+    ld de, BallReflectY2Table
     add hl, de
     ld a, [hl]
-    ld [$d779], a
+    ld [wBallWorkDirection], a
     jr jr_000_16d6
 
 jr_000_16d4:
     add sp, $04
 
 jr_000_16d6:
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     add $06
     ld c, a
     push bc
-    ld a, [$d776]
+    ld a, [wBallWorkY]
     add $06
     push af
-    call Call_000_1822
+    call CollideBallPoint
     jr z, jr_000_1725
 
     jr c, jr_000_1725
@@ -3688,39 +3696,39 @@ jr_000_16d6:
 
     jr nc, jr_000_1709
 
-    call Call_000_17cd
+    call ReflectBallX2
     jr jr_000_1727
 
 jr_000_1709:
-    call Call_000_1802
+    call ReflectBallY2
     jr jr_000_1727
 
 jr_000_170e:
-    ld a, [$d779]
+    ld a, [wBallWorkDirection]
     ld l, a
     ld h, $00
-    ld de, $623f
+    ld de, BallReflectX2Table
     add hl, de
     ld l, [hl]
     ld h, $00
-    ld de, $61ff
+    ld de, BallReflectY2Table
     add hl, de
     ld a, [hl]
-    ld [$d779], a
+    ld [wBallWorkDirection], a
     jr jr_000_1727
 
 jr_000_1725:
     add sp, $04
 
 jr_000_1727:
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     inc a
     ld c, a
     push bc
-    ld a, [$d776]
+    ld a, [wBallWorkY]
     inc a
     push af
-    call Call_000_1822
+    call CollideBallPoint
     jr z, jr_000_1769
 
     jr c, jr_000_1769
@@ -3738,22 +3746,22 @@ jr_000_1727:
 
     jr nc, jr_000_1750
 
-    call Call_000_17b8
+    call ReflectBallX1
     jr jr_000_176b
 
 jr_000_1750:
-    call Call_000_17ed
+    call ReflectBallY1
     jr jr_000_176b
 
 jr_000_1755:
-    ld a, [$d779]
+    ld a, [wBallWorkDirection]
     ld l, a
     ld h, $00
-    ld de, $625f
+    ld de, BallReflectX1Table
     add hl, de
     ld l, [hl]
     ld h, $00
-    ld de, $621f
+    ld de, BallReflectY1Table
     add hl, de
     ld a, [hl]
     jr jr_000_176b
@@ -3762,14 +3770,14 @@ jr_000_1769:
     add sp, $04
 
 jr_000_176b:
-    ld a, [$d778]
+    ld a, [wBallWorkX]
     add $06
     ld c, a
     push bc
-    ld a, [$d776]
+    ld a, [wBallWorkY]
     inc a
     push af
-    call Call_000_1822
+    call CollideBallPoint
     jr z, jr_000_17b5
 
     jr c, jr_000_17b5
@@ -3790,25 +3798,25 @@ jr_000_176b:
 
     jr nc, jr_000_1799
 
-    call Call_000_17cd
+    call ReflectBallX2
     jr jr_000_17b7
 
 jr_000_1799:
-    call Call_000_17ed
+    call ReflectBallY1
     jr jr_000_17b7
 
 jr_000_179e:
-    ld a, [$d779]
+    ld a, [wBallWorkDirection]
     ld l, a
     ld h, $00
-    ld de, $623f
+    ld de, BallReflectX2Table
     add hl, de
     ld l, [hl]
     ld h, $00
-    ld de, $621f
+    ld de, BallReflectY1Table
     add hl, de
     ld a, [hl]
-    ld [$d779], a
+    ld [wBallWorkDirection], a
     jr jr_000_17b7
 
 jr_000_17b5:
@@ -3817,74 +3825,79 @@ jr_000_17b5:
 jr_000_17b7:
     ret
 
-Call_000_17b8:
-    ld a, [$d779]
+; Change the ball direction with BallReflectX1Table.
+ReflectBallX1:
+    ld a, [wBallWorkDirection]
     ld l, a
     ld h, $00
-    ld de, $625f
+    ld de, BallReflectX1Table
     add hl, de
     ld a, [hl]
-    ld [$d779], a
-    ld a, [$d8a2]
+    ld [wBallWorkDirection], a
+    ld a, [wAntigravityActive]
     or a
     jr nz, jr_000_17e0
 
     ret
 
-Call_000_17cd:
-    ld a, [$d779]
+; Change the ball direction with BallReflectX2Table.
+ReflectBallX2:
+    ld a, [wBallWorkDirection]
     ld l, a
     ld h, $00
-    ld de, $623f
+    ld de, BallReflectX2Table
     add hl, de
     ld a, [hl]
-    ld [$d779], a
-    ld a, [$d8a2]
+    ld [wBallWorkDirection], a
+    ld a, [wAntigravityActive]
     or a
     ret z
 
 jr_000_17e0:
     ld a, [$d773]
-    ld [$d777], a
+    ld [wBallWorkXSub], a
     ld a, [$d774]
-    ld [$d778], a
+    ld [wBallWorkX], a
     ret
 
-Call_000_17ed:
-    ld a, [$d779]
+; Change the ball direction with BallReflectY1Table.
+ReflectBallY1:
+    ld a, [wBallWorkDirection]
     ld l, a
     ld h, $00
-    ld de, $621f
+    ld de, BallReflectY1Table
     add hl, de
     ld a, [hl]
-    ld [$d779], a
-    ld a, [$d8a2]
+    ld [wBallWorkDirection], a
+    ld a, [wAntigravityActive]
     or a
     jr nz, jr_000_1815
 
     ret
 
-Call_000_1802:
-    ld a, [$d779]
+; Change the ball direction with BallReflectY2Table.
+ReflectBallY2:
+    ld a, [wBallWorkDirection]
     ld l, a
     ld h, $00
-    ld de, $61ff
+    ld de, BallReflectY2Table
     add hl, de
     ld a, [hl]
-    ld [$d779], a
+    ld [wBallWorkDirection], a
 
-    ld a, [$d8a2]
+    ld a, [wAntigravityActive]
     or a
     ret z
 
 jr_000_1815:
     ld a, [$d771]
-    ld [$d775], a
+    ld [wBallWorkYSub], a
     ld a, [$d772]
-    ld [$d776], a
+    ld [wBallWorkY], a
     ret
 
-Call_000_1822:
+; Test one point of the ball. A ball moving down is tested against the bat first; otherwise the point is tested against the bricks.
+CollideBallPoint:
     ld b, a
     call Call_000_316c
     ret nz
@@ -3892,7 +3905,7 @@ Call_000_1822:
     call Call_000_319b
     ld e, b
     ld d, c
-    ld a, [$d779]
+    ld a, [wBallWorkDirection]
     cp $17
     jp nc, HitBrickAtBall
 
@@ -3921,20 +3934,20 @@ Call_000_1822:
     jr nc, HitBrickAtBall
 
     push af
-    ld a, [$d76b]
+    ld a, [wBatExplosionTimer]
     or a
     pop bc
     jr nz, jr_000_187d
 
     ld a, b
-    call Call_000_18db
-    ld [$d779], a
+    call BatBounceLookup
+    ld [wBallWorkDirection], a
     ld a, [hl]
     ld b, a
-    ld a, [$d77a]
+    ld a, [wBallWorkSpeed]
     and $f0
     or b
-    ld [$d77a], a
+    ld [wBallWorkSpeed], a
     ld a, $01
     ld [$d76f], a
     ld a, $01
@@ -3942,7 +3955,7 @@ Call_000_1822:
 
 jr_000_187d:
     xor a
-    ld [$d77b], a
+    ld [wBallWorkFlags], a
     sub $01
     ret
 
@@ -3976,7 +3989,7 @@ HitBrickAtBall:
 
     push af
     xor a
-    ld [$d77b], a
+    ld [wBallWorkFlags], a
     pop af
     jp HitBrickWithBall
 
@@ -3986,7 +3999,7 @@ jr_000_18af:
     call z, Call_001_64d4
 
 jr_000_18b6:
-    ld a, [$d77b]
+    ld a, [wBallWorkFlags]
     bit 7, a
     jr nz, jr_000_18c8
 
@@ -3994,7 +4007,7 @@ jr_000_18b6:
     jr z, jr_000_18c7
 
     inc a
-    ld [$d77b], a
+    ld [wBallWorkFlags], a
     jr jr_000_18d2
 
 jr_000_18c7:
@@ -4005,7 +4018,7 @@ jr_000_18c8:
     inc a
     and $07
     set 7, a
-    ld [$d77b], a
+    ld [wBallWorkFlags], a
 
 jr_000_18d2:
     ld a, $04
@@ -4014,7 +4027,8 @@ jr_000_18d2:
     or a
     ret
 
-Call_000_18db:
+; Look up the new ball direction and speed for a hit at offset A along the bat.
+BatBounceLookup:
     add a
     ld c, a
     ld b, $00
@@ -4028,7 +4042,7 @@ Call_000_18db:
     ld de, $0050
 
 jr_000_18f2:
-    ld a, [$d8a3]
+    ld a, [wSlowBallPending]
     or a
     jr z, jr_000_18f9
 
@@ -4039,13 +4053,14 @@ jr_000_18f9:
     ld a, [hl+]
     ret
 
-Call_000_18fc:
-    ld a, [$d76b]
+; Animate the bat explosion after a lost life.
+UpdateBatExplosion:
+    ld a, [wBatExplosionTimer]
     or a
     ret z
 
     dec a
-    ld [$d76b], a
+    ld [wBatExplosionTimer], a
     ld e, a
     ld d, $00
     ld hl, $6157
@@ -4098,7 +4113,7 @@ jr_000_1930:
     ret
 
 Call_000_1950:
-    ld a, [$d76b]
+    ld a, [wBatExplosionTimer]
     or a
     jr nz, jr_000_195d
 
@@ -4445,12 +4460,12 @@ CountBrickDestroyed:
     ld [wBricksLeft], a
     jr nz, jr_000_1b55
 
-    ld a, [$ffa0]
+    ld a, [hStateTimer]
     or a
     jr nz, jr_000_1b55
 
     xor a
-    ld [$ffa2], a
+    ld [hLifeLostTimer], a
     ld b, $02
     ld a, [wLevelsSincePassword]
     cp $04
@@ -4467,7 +4482,7 @@ jr_000_1b3b:
     ld a, b
     ld [hGameState], a
     ld a, $0f
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ld a, [wCurrentLevel]
     inc a
     cp $a0
@@ -5811,7 +5826,7 @@ jr_000_228f:
     ld a, $02
     ld [hGameState], a
     ld a, $28
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ld b, $00
     call Call_000_251b
 
@@ -5848,7 +5863,7 @@ jr_000_22d4:
     ld a, $02
     ld [hGameState], a
     ld a, $28
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ld b, $01
     call Call_000_251b
 
@@ -6186,7 +6201,7 @@ jr_000_2501:
 jr_000_2503:
     ld [hGameState], a
     ld a, $28
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ld a, $01
     ld [$ccb6], a
     ld a, $fe
@@ -6368,7 +6383,7 @@ jr_000_2661:
     ld a, $01
     ld [hGameState], a
     ld a, $1e
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ld a, $1a
     call PlaySound
 
@@ -6474,12 +6489,13 @@ Call_000_271b:
     ld [$dc23], a
     ret
 
-Call_000_2763:
+; Update the UFO on UFO levels and the blob on blob levels.
+UpdateEnemies:
     ld a, [wLevelType]
     bit 0, a
     jr z, jr_000_276d
 
-    call Call_000_2d66
+    call UpdateUfo
 
 jr_000_276d:
     call Call_000_2981
@@ -6487,12 +6503,12 @@ jr_000_276d:
     bit 1, a
     jr z, jr_000_277a
 
-    call Call_000_277b
+    call UpdateBlob
 
 jr_000_277a:
     ret
 
-Call_000_277b:
+UpdateBlob:
     ld a, [$dc24]
     or a
     jr z, jr_000_27f3
@@ -7154,7 +7170,7 @@ jr_000_2b48:
     dec a
     ld [$dbe0], a
     ld a, [$dbe5]
-    ld hl, $d77d
+    ld hl, wBalls
     ld a, [wBallCount]
     or a
     jr z, jr_000_2b62
@@ -7272,7 +7288,7 @@ jr_000_2b9b:
     ld a, [$dbe8]
     ld l, a
     ld h, $00
-    ld bc, $625f
+    ld bc, BallReflectX1Table
     add hl, bc
     ld a, [hl]
     ld [$dbe8], a
@@ -7298,7 +7314,7 @@ jr_000_2c20:
     ld l, a
 
     ld h, $00
-    ld bc, $623f
+    ld bc, BallReflectX2Table
     add hl, bc
     ld a, [hl]
     ld [$dbe8], a
@@ -7319,7 +7335,7 @@ jr_000_2c47:
     ld a, [$dbe8]
     ld l, a
     ld h, $00
-    ld bc, $621f
+    ld bc, BallReflectY1Table
     add hl, bc
     ld a, [hl]
     ld [$dbe8], a
@@ -7344,7 +7360,7 @@ jr_000_2c6a:
     ld a, [$dbe8]
     ld l, a
     ld h, $00
-    ld bc, $61ff
+    ld bc, BallReflectY2Table
     add hl, bc
     ld a, [hl]
     ld [$dbe8], a
@@ -7503,7 +7519,7 @@ Call_000_2d4d:
 
     jp HitBrickWithBall
 
-Call_000_2d66:
+UpdateUfo:
     ld a, [$dc2f]
     or a
     call nz, Call_000_3097
@@ -8098,7 +8114,7 @@ jr_000_30e7:
     ld a, [$c2b5]
     add d
     ld [$c2b5], a
-    ld a, [$d76b]
+    ld a, [wBatExplosionTimer]
     or a
     ret nz
 
@@ -8128,12 +8144,12 @@ jr_000_30e7:
     cp c
     ret c
 
-    ld a, [$ffa0]
+    ld a, [hStateTimer]
     or a
     ret nz
 
     ld a, $28
-    ld [$d76b], a
+    ld [wBatExplosionTimer], a
     ld a, [wBatY]
     sub $08
     ld [$d76c], a
@@ -8163,12 +8179,12 @@ jr_000_313d:
     ld a, $03
     ld [hGameState], a
     ld a, $28
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ret
 
 jr_000_3166:
     ld a, $01
-    ld [$ffa2], a
+    ld [hLifeLostTimer], a
     ret
 
 Call_000_316c:
@@ -8245,7 +8261,7 @@ Call_000_319b:
     ld [$dc18], a
     inc a
     ld [$dc24], a
-    ld [$d8aa], a
+    ld [wRemoveBall], a
     ld a, $0d
     call PlaySound
 
@@ -8253,7 +8269,8 @@ jr_000_31d8:
     xor a
     ret
 
-Call_000_31da:
+; Clear the shots and the weapon flag.
+ResetShots:
     xor a
     ld [wWeaponFlag], a
     ld [$dc3e], a
@@ -8273,7 +8290,8 @@ Call_000_31da:
     ld [$dc4d], a
     ret
 
-Call_000_320c:
+; Update the rocket, laser, grenade and plasma shots.
+UpdateShots:
     ld a, [$dc3e]
     or a
     jp nz, Jump_000_3479
@@ -9605,7 +9623,7 @@ jr_000_3ae3:
     ld a, $06
     ld [hGameState], a
     ld a, $01
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ret
 
 StateInit_Credits:
@@ -9778,7 +9796,7 @@ jr_000_3c04:
     ld a, $01
     ld [hGameState], a
     ld a, $28
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ld a, $1a
     call PlaySound
     ld a, [$dcf8]
@@ -10157,7 +10175,7 @@ jr_000_3ef8:
     ld a, $0c
     ld [hGameState], a
     ld a, $01
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ret
 
 StateInit_Ending:

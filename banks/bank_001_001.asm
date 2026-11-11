@@ -679,7 +679,7 @@ jr_001_511c:
     dec c
     jr nz, jr_001_50e4
 
-    ld a, [$d8a5]
+    ld a, [wSleepyBallActive]
     or a
     jr z, jr_001_513c
 
@@ -689,12 +689,12 @@ jr_001_511c:
     and $01
     jr nz, jr_001_513c
 
-    ld a, [$d8a6]
+    ld a, [wBallEffectTimer]
     dec a
-    ld [$d8a6], a
+    ld [wBallEffectTimer], a
     jr nz, jr_001_513c
 
-    ld [$d8a5], a
+    ld [wSleepyBallActive], a
 
 jr_001_513c:
     ld a, [wNinjaActive]
@@ -707,9 +707,9 @@ jr_001_513c:
     and $01
     jr nz, jr_001_5159
 
-    ld a, [$d8a6]
+    ld a, [wBallEffectTimer]
     dec a
-    ld [$d8a6], a
+    ld [wBallEffectTimer], a
     jr nz, jr_001_5159
 
     ld [wNinjaActive], a
@@ -765,7 +765,7 @@ CheckPowerupCaught:
     jr c, jr_001_51ae
 
 jr_001_519e:
-    ld a, [$d76b]
+    ld a, [wBatExplosionTimer]
     or a
     jr nz, jr_001_51cf
 
@@ -813,7 +813,7 @@ Powerup_Slowball:
     or a
     jr z, jr_001_51e9
 
-    ld hl, $d782
+    ld hl, wBalls + 5
     ld de, $0007
     ld b, a
 
@@ -826,18 +826,18 @@ jr_001_51e1:
     jr nz, jr_001_51e1
 
 jr_001_51e9:
-    ld a, [$d8a2]
+    ld a, [wAntigravityActive]
     or a
     jr z, jr_001_51f2
 
-    ld [$d8a9], a
+    ld [wAntigravityCancel], a
 
 jr_001_51f2:
     ld a, $01
-    ld [$d8a3], a
+    ld [wSlowBallPending], a
     xor a
-    ld [$d8a5], a
-    ld [$d8a2], a
+    ld [wSleepyBallActive], a
+    ld [wAntigravityActive], a
     ld [wNinjaActive], a
     ld hl, wLangTextSlowBall
     call Call_000_0001
@@ -868,9 +868,9 @@ Jump_001_5222:
 jr_001_522d:
     xor a
     ld [wBallSticks], a
-    ld [$d765], a
-    ld [$d766], a
-    ld [$d76a], a
+    ld [wStunActive], a
+    ld [wStunWobble], a
+    ld [wReverseActive], a
     inc a
     ld [wWeaponFlag], a
     ld a, [wBatWidth]
@@ -901,7 +901,7 @@ jr_001_526a:
     ld a, b
     ld [hGameState], a
     ld a, $0f
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ld a, [wCurrentLevel]
     inc a
     cp $a0
@@ -929,14 +929,14 @@ Powerup_Plasma:
 
 Powerup_Poison:
     ld a, $50
-    ld [$d768], a
+    ld [wBatEffectTimer], a
     ld a, $03
-    ld [$d765], a
-    ld [$d766], a
+    ld [wStunActive], a
+    ld [wStunWobble], a
     xor a
     ld [wBallSticks], a
     ld [wWeaponFlag], a
-    ld [$d76a], a
+    ld [wReverseActive], a
     ld hl, wLangTextStunBat
     call Call_000_0001
     ld a, [wBatWidth]
@@ -972,27 +972,27 @@ jr_001_52e8:
     xor a
     ld [wBallSticks], a
     ld [wWeaponFlag], a
-    ld [$d765], a
-    ld [$d766], a
-    ld [$d76a], a
+    ld [wStunActive], a
+    ld [wStunWobble], a
+    ld [wReverseActive], a
     ld hl, wLangTextBigBat
     call Call_000_0001
     jp PowerupCollected
 
 Powerup_Clock:
-    ld a, [$d8a2]
+    ld a, [wAntigravityActive]
     or a
     jr z, jr_001_5312
 
-    ld [$d8a9], a
+    ld [wAntigravityCancel], a
 
 jr_001_5312:
     ld a, $a0
-    ld [$d8a6], a
-    ld [$d8a5], a
+    ld [wBallEffectTimer], a
+    ld [wSleepyBallActive], a
     xor a
-    ld [$d8a2], a
-    ld [$d8a3], a
+    ld [wAntigravityActive], a
+    ld [wSlowBallPending], a
     ld [wNinjaActive], a
     ld hl, wLangTextSleepyBall
     call Call_000_0001
@@ -1000,11 +1000,11 @@ jr_001_5312:
 
 Powerup_Pepper:
     ld a, $a0
-    ld [$d8a6], a
-    ld [$d8a2], a
+    ld [wBallEffectTimer], a
+    ld [wAntigravityActive], a
     xor a
-    ld [$d8a5], a
-    ld [$d8a3], a
+    ld [wSleepyBallActive], a
+    ld [wSlowBallPending], a
     ld [wNinjaActive], a
     ld hl, wLangTextAntigravityBall
     call Call_000_0001
@@ -1014,10 +1014,10 @@ Powerup_Magnet:
     ld a, $01
     ld [wBallSticks], a
     xor a
-    ld [$d765], a
-    ld [$d766], a
+    ld [wStunActive], a
+    ld [wStunWobble], a
     ld [wWeaponFlag], a
-    ld [$d76a], a
+    ld [wReverseActive], a
     ld hl, wLangTextMagneticBat
     call Call_000_0001
     ld a, [wBatWidth]
@@ -1032,19 +1032,19 @@ Powerup_Magnet:
     jp PowerupCollected
 
 Powerup_TripleBall:
-    ld a, [$d8a2]
+    ld a, [wAntigravityActive]
     or a
     jr z, jr_001_5381
 
-    ld [$d8a9], a
+    ld [wAntigravityCancel], a
 
 jr_001_5381:
     ld a, $01
-    ld [$d8a1], a
+    ld [wMultiBallPending], a
     xor a
-    ld [$d8a5], a
-    ld [$d8a2], a
-    ld [$d8a3], a
+    ld [wSleepyBallActive], a
+    ld [wAntigravityActive], a
+    ld [wSlowBallPending], a
     ld [wNinjaActive], a
     ld hl, wLangTextMultiBall
     call Call_000_0001
@@ -1076,11 +1076,11 @@ Powerup_Laser:
 
 Powerup_Reverse:
     ld a, $50
-    ld [$d768], a
-    ld [$d76a], a
+    ld [wBatEffectTimer], a
+    ld [wReverseActive], a
     xor a
-    ld [$d765], a
-    ld [$d766], a
+    ld [wStunActive], a
+    ld [wStunWobble], a
     ld [wWeaponFlag], a
     ld [wBallSticks], a
     ld hl, wLangTextReverseBat
@@ -1097,23 +1097,23 @@ Powerup_Reverse:
     jr PowerupCollected
 
 Powerup_Ninja:
-    ld a, [$d8a2]
+    ld a, [wAntigravityActive]
     or a
     jr z, jr_001_5402
 
-    ld [$d8a9], a
+    ld [wAntigravityCancel], a
 
 jr_001_5402:
     ld a, $c8
-    ld [$d8a6], a
+    ld [wBallEffectTimer], a
     ld a, $01
     ld [wNinjaActive], a
     ld a, $04
-    ld [$d8a0], a
+    ld [wLaunchDirection], a
     xor a
-    ld [$d8a2], a
-    ld [$d8a3], a
-    ld [$d8a5], a
+    ld [wAntigravityActive], a
+    ld [wSlowBallPending], a
+    ld [wSleepyBallActive], a
     ld hl, wLangTextNinjaUp
     call Call_000_0001
     jr PowerupCollected
@@ -1623,7 +1623,7 @@ jr_001_5c9f:
     ld a, $02
     ld [hGameState], a
     ld a, $28
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ld a, $1a
     call PlaySound
 
@@ -2171,6 +2171,7 @@ jr_001_5f72:
 
     ret
 
+BatSpeedTable:
     db $00, $01, $01, $01, $01, $01, $01, $01, $01, $02, $00
 
     db $00, $01, $01, $01, $01, $01, $02, $02, $02, $03, $00
@@ -2342,6 +2343,7 @@ jr_001_5f72:
     db $73, $ff, $2d, $ff
     db $a0, $ff, $12, $ff, $d0, $ff, $08, $ff
 
+BallReflectY2Table:
     db $00
     db $01
 
@@ -2370,6 +2372,8 @@ jr_001_5f72:
     db $1e
 
     db $1f
+
+BallReflectY1Table:
     db $10
 
     db $0f, $0e, $0d, $0c, $0b
@@ -2400,6 +2404,7 @@ jr_001_5f72:
     db $13
     db $12, $11
 
+BallReflectX2Table:
     db $00
     db $1f
 
@@ -2430,6 +2435,7 @@ jr_001_5f72:
 
     db $1f
 
+BallReflectX1Table:
     db $00
     db $01
 
@@ -3701,7 +3707,7 @@ jr_001_6b76:
     ld a, $05
     ld [hGameState], a
     ld a, $28
-    ld [$ffa0], a
+    ld [hStateTimer], a
 
 Jump_001_6b8a:
     ret
@@ -4121,7 +4127,7 @@ Call_001_6ed4:
     ld hl, $c204
     ld a, [$c2b4]
     call Call_001_6e9a
-    ld a, [$d76b]
+    ld a, [wBatExplosionTimer]
     or a
     jr z, jr_001_6ee8
 
@@ -4169,7 +4175,7 @@ jr_001_6f03:
     ld de, $7b46
 
 jr_001_6f20:
-    ld a, [$d8a8]
+    ld a, [wBallOnBat]
     or a
     jr nz, jr_001_6f2f
 
@@ -4274,7 +4280,7 @@ jr_001_6f99:
     or a
     jr z, jr_001_6fdb
 
-    ld de, $d77d
+    ld de, wBalls
     ld c, a
 
 jr_001_6fa3:
@@ -5058,12 +5064,12 @@ jr_001_7618:
     ld a, [$ffa4]
     ld h, a
     call Call_001_75d8
-    ld a, [$ffa0]
+    ld a, [hStateTimer]
     or a
     jr z, jr_001_7618
 
     dec a
-    ld [$ffa0], a
+    ld [hStateTimer], a
     jr nz, jr_001_7618
 
     ld e, $00
@@ -5731,7 +5737,7 @@ jr_001_7a8d:
     ld a, $01
     ld [hGameState], a
     ld a, $28
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ld a, $1a
     call PlaySound
 
@@ -5861,7 +5867,7 @@ StateUpdateHandlers:
     ld a, $07
     ld [hGameState], a
     ld a, $28
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ld a, $05
     ld [$ccb6], a
     ld a, $ff
@@ -5884,12 +5890,12 @@ jr_001_7c02:
     ld a, $02
     ld [hGameState], a
     ld a, $28
-    ld [$ffa0], a
+    ld [hStateTimer], a
     xor a
     ld [hJoypad], a
-    ld [$ff8b], a
-    ld [$d75f], a
-    ld [$d760], a
+    ld [hLastDirection], a
+    ld [wBatMovingRight], a
+    ld [wBatMovingLeft], a
     ld a, $1a
     call PlaySound
 
@@ -5970,7 +5976,7 @@ jr_001_7c67:
     ld a, $02
     ld [hGameState], a
     ld a, $28
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ld a, $1a
     call PlaySound
 
@@ -5989,7 +5995,7 @@ jr_001_7c9d:
     ld a, $0b
     ld [hGameState], a
     ld a, $01
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ret
 
 jr_001_7ca8:
