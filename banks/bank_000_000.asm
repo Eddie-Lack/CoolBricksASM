@@ -31,7 +31,7 @@ ProgramStart:
     ld e, $00
     call Call_000_3e56
     xor a
-    call Call_000_3e64
+    call PlaySound
     call Call_000_3e7f
     call Call_000_3e7f
     call Call_000_3e7f
@@ -41,11 +41,11 @@ ProgramStart:
     jr nz, jr_000_0184
 
     ld a, $28
-    ld hl, $c200
-    call $6e9a
+    ld hl, wBatY
+    call Call_001_6e9a
 
 jr_000_0184:
-    call $75c4
+    call RunStateInit
     call Call_000_024b
     ld a, [$ffa1]
     or a
@@ -63,7 +63,7 @@ jr_000_0199:
 jr_000_019b:
     ldh [rLCDC], a
     ei
-    call $75c9
+    call RunStateUpdate
     di
     jr jr_000_0158
 
@@ -247,7 +247,7 @@ Call_000_0223:
     and $0f
     or e
     swap a
-    ld [$ff8a], a
+    ld [hJoypad], a
     ret
 
 Call_000_024b:
@@ -255,19 +255,19 @@ Call_000_024b:
     ld [$ff92], a
     ld a, $c3
     ld [$c35a], a
-    ld a, [$ff96]
+    ld a, [hVBlankHandler]
     ld [$ff93], a
-    ld a, [$ff97]
+    ld a, [hVBlankHandler + 1]
     ld [$ff94], a
-    ld a, [$ff98]
+    ld a, [hStatHandler]
     ld [$c35b], a
-    ld a, [$ff99]
+    ld a, [hStatHandler + 1]
     ld [$c35c], a
     ld a, $0f
     ld [ROM_BANK], a
     ld a, [$ff9c]
     or a
-    call nz, $4000
+    call nz, Call_00f_4000
     ld a, $01
     ld [ROM_BANK], a
     ld a, $40
@@ -312,9 +312,9 @@ VBlank:
     push hl
     xor a
     ldh [rSVBK], a
-    call $6c8a
+    call Call_001_6c8a
     call $ff80
-    call $5cbe
+    call Call_001_5cbe
     ld hl, $c3b6
     ld a, l
     ld [$c956], a
@@ -364,7 +364,7 @@ jr_000_0304:
     ld l, a
     ld a, [$df30]
     ld h, a
-    call Call_000_0e54
+    call DrawString
     jr jr_000_0346
 
 jr_000_0317:
@@ -382,7 +382,7 @@ jr_000_0317:
 
 jr_000_0328:
     ld hl, $745e
-    call Call_000_0e54
+    call DrawString
     jr jr_000_0361
 
 jr_000_0330:
@@ -395,7 +395,7 @@ jr_000_0330:
 
 jr_000_0339:
     ld hl, $d72a
-    call Call_000_0e54
+    call DrawString
     ld a, [$ff9d]
     ldh [rSCX], a
     jr jr_000_0361
@@ -417,7 +417,7 @@ jr_000_0346:
     inc e
     ld a, [hl+]
     ld [de], a
-    ld a, [$d8ac]
+    ld a, [wLives]
     inc a
     ld [$9813], a
 
@@ -469,7 +469,7 @@ jr_000_038b:
     ld [$c957], a
     ld a, $01
     ld [$ff95], a
-    ld hl, $ff8c
+    ld hl, hFrameCounter
     inc [hl]
     pop hl
     pop de
@@ -596,16 +596,16 @@ jr_000_0448:
     ld [$996b], a
     xor a
     ldh [rVBK], a
-    ld a, [$dad7]
+    ld a, [wPasswordEntry]
     sub $36
     ld [$9968], a
-    ld a, [$dad8]
+    ld a, [wPasswordEntry + 1]
     sub $36
     ld [$9969], a
-    ld a, [$dad9]
+    ld a, [wPasswordEntry + 2]
     sub $36
     ld [$996a], a
-    ld a, [$dada]
+    ld a, [wPasswordEntry + 3]
 
     sub $36
     ld [$996b], a
@@ -681,7 +681,7 @@ Jump_000_04f7:
 jr_000_04f7:
     ld a, $01
     ld [$ff95], a
-    ld hl, $ff8c
+    ld hl, hFrameCounter
     inc [hl]
     pop bc
     pop de
@@ -845,15 +845,16 @@ jr_000_05a1:
     pop af
     reti
 
+Jump_000_05d9:
     ld e, $06
     call Call_000_3e51
     ld a, $04
     ld [$c359], a
     ld hl, $03a4
     ld a, l
-    ld [$ff96], a
+    ld [hVBlankHandler], a
     ld a, h
-    ld [$ff97], a
+    ld [hVBlankHandler + 1], a
     ld a, $03
     ld [$ff9c], a
     xor a
@@ -910,8 +911,8 @@ jr_000_05a1:
     ld a, $01
     ld [$c959], a
     call ChangeROMBank
-    call $78c8
-    call $78fd
+    call Call_001_78c8
+    call Call_001_78fd
     ld a, $81
     ld [$ccc2], a
     xor a
@@ -949,8 +950,8 @@ jr_000_05a1:
     ld [$c95c], a
     ret
 
-    call $7899
-    call $78fd
+    call Call_001_7899
+    call Call_001_78fd
     ld a, [$ccb7]
     cp $ff
     jr z, jr_000_06fd
@@ -977,31 +978,31 @@ jr_000_06fd:
     jr nz, jr_000_072c
 
 jr_000_0708:
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     and $f0
     or a
     jr z, jr_000_072b
 
 Jump_000_0710:
 jr_000_0710:
-    ld a, [$ff9f]
+    ld a, [hGameState]
     cp $07
     ret nz
 
     ld a, [$ccb6]
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $01
     ld [$cccd], a
     ld a, $1e
     ld [$ffa0], a
     ld a, $1a
-    call Call_000_3e64
+    call PlaySound
 
 jr_000_072b:
     ret
 
 jr_000_072c:
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     ld b, a
     ld a, [$cccc]
     or a
@@ -1062,7 +1063,7 @@ jr_000_076f:
     inc a
     ld [$ccca], a
     ld a, $19
-    call Call_000_3e64
+    call PlaySound
     push hl
     pop hl
     ld a, [hl]
@@ -1091,7 +1092,7 @@ jr_000_0793:
     inc a
     ld [$ccc9], a
     ld a, $19
-    call Call_000_3e64
+    call PlaySound
     push hl
     pop hl
     ld a, [hl]
@@ -1120,7 +1121,7 @@ jr_000_07b7:
     ret nz
 
     ld a, $19
-    call Call_000_3e64
+    call PlaySound
     ld a, $01
     ld [$cccb], a
     ld a, [$cccc]
@@ -1270,19 +1271,19 @@ Call_000_0899:              ; this is NOT a function, it's just data that manage
 
 Call_000_089d:
     ld hl, $cb59
-    call Call_000_0e54
-    call Call_000_0e54
-    call Call_000_0e54
-    call Call_000_0e54
-    call Call_000_0e54
-    call Call_000_0e54
-    call Call_000_0e54
-    call Call_000_0e54
-    call Call_000_0e54
-    call Call_000_0e54
-    call Call_000_0e54
-    call Call_000_0e54
-    call Call_000_0e54
+    call DrawString
+    call DrawString
+    call DrawString
+    call DrawString
+    call DrawString
+    call DrawString
+    call DrawString
+    call DrawString
+    call DrawString
+    call DrawString
+    call DrawString
+    call DrawString
+    call DrawString
     ret
 
 Call_000_08c8:
@@ -1467,14 +1468,14 @@ jr_000_0995:
     rrca
     rrca
     rrca
-    ld [$ccb8], a
+    ld [wPasswordByteX], a
     ld a, $fd
     sub b
     xor $aa
     rrca
-    ld [$ccb9], a
+    ld [wPasswordByteY], a
     ld de, $cb7c
-    ld a, [$ccb8]
+    ld a, [wPasswordByteX]
     swap a
     and $0f
     ld hl, $4000
@@ -1484,7 +1485,7 @@ jr_000_0995:
     ld a, [hl]
     ld [de], a
     inc de
-    ld a, [$ccb9]
+    ld a, [wPasswordByteY]
     and $0f
     ld hl, $4000
     ld c, a
@@ -1493,7 +1494,7 @@ jr_000_0995:
     ld a, [hl]
     ld [de], a
     inc de
-    ld a, [$ccb8]
+    ld a, [wPasswordByteX]
     and $0f
     ld hl, $4000
     ld c, a
@@ -1502,7 +1503,7 @@ jr_000_0995:
     ld a, [hl]
     ld [de], a
     inc de
-    ld a, [$ccb9]
+    ld a, [wPasswordByteY]
     swap a
     and $0f
     ld hl, $4000
@@ -1512,12 +1513,15 @@ jr_000_0995:
     ld a, [hl]
     ld [de], a
     ld de, $cb7c
-    call Call_000_09fa
+    call CheckPassword
     ld a, $01
     call ChangeROMBank
     ret
 
-Call_000_09fa:
+; Decode the 4 letters at DE.
+; A level password stores the 0-based level in wStartLevel and returns NZ.
+; A cheat password sets its flag and returns Z. An invalid password returns Z.
+CheckPassword:
     ld a, [de]
 
     ld hl, $4000
@@ -1538,7 +1542,7 @@ jr_000_0a02:
 jr_000_0a0b:
     ld a, c
     swap a
-    ld [$ccb8], a
+    ld [wPasswordByteX], a
     inc de
     ld a, [de]
     ld hl, $4000
@@ -1558,7 +1562,7 @@ jr_000_0a1a:
 
 jr_000_0a23:
     ld a, c
-    ld [$ccb9], a
+    ld [wPasswordByteY], a
     inc de
     ld a, [de]
     ld hl, $4000
@@ -1577,9 +1581,9 @@ jr_000_0a30:
     ret
 
 jr_000_0a39:
-    ld a, [$ccb8]
+    ld a, [wPasswordByteX]
     or c
-    ld [$ccb8], a
+    ld [wPasswordByteX], a
     inc de
     ld a, [de]
     ld hl, $4000
@@ -1599,17 +1603,17 @@ jr_000_0a49:
 
 jr_000_0a52:
     swap c
-    ld a, [$ccb9]
+    ld a, [wPasswordByteY]
     or c
-    ld [$ccb9], a
-    ld a, [$ccb8]
+    ld [wPasswordByteY], a
+    ld a, [wPasswordByteX]
     rlca
     rlca
     rlca
 
     xor $55
     ld b, a
-    ld a, [$ccb9]
+    ld a, [wPasswordByteY]
     rlca
     xor $aa
     add b
@@ -1625,7 +1629,7 @@ jr_000_0a52:
     jr nz, jr_000_0a80
 
     ld a, $01
-    ld [$db51], a
+    ld [wCheatLivesRefill], a
     jr jr_000_0aaa
 
 jr_000_0a80:
@@ -1633,7 +1637,7 @@ jr_000_0a80:
     jr nz, jr_000_0a8b
 
     ld a, $01
-    ld [$db52], a
+    ld [wCheatLevelSkip], a
     jr jr_000_0aaa
 
 jr_000_0a8b:
@@ -1641,7 +1645,7 @@ jr_000_0a8b:
     jr nz, jr_000_0a96
 
     ld a, $01
-    ld [$db53], a
+    ld [wCheatPhotoBackground], a
     jr jr_000_0aaa
 
 jr_000_0a96:
@@ -1650,14 +1654,14 @@ jr_000_0a96:
     jr nz, jr_000_0aa1
 
     ld a, $01
-    ld [$db54], a
+    ld [wCheatShowVersion], a
     jr jr_000_0aaa
 
 jr_000_0aa1:
     cp $a0
     jr nc, jr_000_0aaa
 
-    ld [$ccba], a
+    ld [wStartLevel], a
     or a
     ret
 
@@ -1728,14 +1732,16 @@ jr_000_0aff:
     call Call_000_3e51
     ret
 
+; Game state 2: load the graphics, brick layout and power-up map of wCurrentLevel.
+LoadLevel:
     call Call_000_0aeb
     ld a, $00
     ld [$c359], a
     ld hl, $02e0
     ld a, l
-    ld [$ff96], a
+    ld [hVBlankHandler], a
     ld a, h
-    ld [$ff97], a
+    ld [hVBlankHandler + 1], a
     ld a, $01
     ld [$ff9c], a
     ld a, $08
@@ -1744,7 +1750,7 @@ jr_000_0aff:
     ld [$ff9a], a
     ld a, $94
     ld [$c958], a
-    ld a, [$cce8]
+    ld a, [wCurrentLevel]
     ld l, a
     ld h, $00
     add hl, hl
@@ -1758,7 +1764,7 @@ jr_000_0aff:
     ld e, a
     ld a, [hl+]
     ld d, a
-    ld a, [$db53]
+    ld a, [wCheatPhotoBackground]
     or a
     jr z, jr_000_0b49
 
@@ -1795,7 +1801,7 @@ jr_000_0b49:
     ld bc, $0040
     call DataTransfer
     pop hl
-    ld a, [$db53]
+    ld a, [wCheatPhotoBackground]
     or a
     jr z, jr_000_0b81
 
@@ -1817,12 +1823,12 @@ jr_000_0b81:
     ld b, a
     swap a
     and $0f
-    ld [$dc36], a
+    ld [wLevelFlagsHigh], a
     ld a, b
     and $0f
-    ld [$dc35], a
+    ld [wLevelType], a
     ld a, [hl]
-    ld [$dc27], a
+    ld [wUfoHeight], a
     ld a, $01
     call ChangeROMBank
     ld a, [$ffa1]
@@ -1834,8 +1840,8 @@ jr_000_0b81:
     ld a, $08
     call ChangeROMBank
     ld de, $4000
-    ld hl, $ccea
-    call Call_000_0dbb
+    ld hl, wBrickMap
+    call RleFill
     pop hl
     ld a, $05
     call ChangeROMBank
@@ -1846,11 +1852,11 @@ jr_000_0b81:
     push hl
     ld a, $08
     call ChangeROMBank
-    ld hl, $ccea
-    call Call_000_0dc8
+    ld hl, wBrickMap
+    call RleOverlay
     ld de, $4000
-    ld hl, $ccea
-    call Call_000_0dc8
+    ld hl, wBrickMap
+    call RleOverlay
     pop hl
     ld a, $05
     call ChangeROMBank
@@ -1860,9 +1866,9 @@ jr_000_0b81:
     ld d, a
     ld a, $0c
     call ChangeROMBank
-    ld hl, $ce0a
+    ld hl, wPowerupMap
 
-    call Call_000_0dbb
+    call RleFill
     ld a, $01
     call ChangeROMBank
     xor a
@@ -1874,11 +1880,11 @@ jr_000_0b81:
     call Call_000_0ee5
     call Call_000_271b
     call Call_000_31da
-    call $5025
-    call $627f
-    call $633e
+    call ClearFallingPowerups
+    call Call_001_627f
+    call Call_001_633e
     call Call_000_1df3
-    call $64c3
+    call Call_001_64c3
     xor a
     ld [$d9bd], a
     ld [$d9be], a
@@ -2038,21 +2044,21 @@ jr_000_0c9a:
     call ClearRAM
     call Call_000_0dde
     ld hl, $d72a
-    call Call_000_0e54
+    call DrawString
     xor a
     ld [$d746], a
     dec a
     ld [$d745], a
     ld a, $04
     ld [$ff9d], a
-    call $77c6
+    call Call_001_77c6
     xor a
     ldh [rVBK], a
     ld hl, $9800
     ld de, $d32a
     ld bc, $0400
     call DataTransfer
-    call $6ea5
+    call Call_001_6ea5
     ret
 
 Jump_000_0db5:
@@ -2061,8 +2067,8 @@ Jump_000_0db5:
     ld [$ffa1], a
     ret
 
-Call_000_0dbb:
-jr_000_0dbb:
+; Unpack (count, value) pairs from DE to HL until a count of 0.
+RleFill:
     ld a, [de]
     or a
     ret z
@@ -2077,10 +2083,10 @@ jr_000_0dc2:
     dec b
     jr nz, jr_000_0dc2
 
-    jr jr_000_0dbb
+    jr RleFill
 
-Call_000_0dc8:
-jr_000_0dc8:
+; Like RleFill, but a value of 0 skips count bytes instead of writing them.
+RleOverlay:
     ld a, [de]
     or a
     ret z
@@ -2097,14 +2103,14 @@ jr_000_0dd2:
     dec b
     jr nz, jr_000_0dd2
 
-    jr jr_000_0dc8
+    jr RleOverlay
 
 jr_000_0dd8:
     inc hl
     dec b
     jr nz, jr_000_0dd8
 
-    jr jr_000_0dc8
+    jr RleOverlay
 
 Call_000_0dde:
     ld a, [$df31]
@@ -2114,7 +2120,7 @@ Call_000_0dde:
     ld de, $d72a
     ld bc, $001b
     call DataTransfer
-    ld a, [$cce8]
+    ld a, [wCurrentLevel]
     inc a
     ld c, $00
 
@@ -2205,7 +2211,8 @@ jr_000_0e51:
     inc c
     jr jr_000_0df5
 
-Call_000_0e54:
+; Draw the string at HL: a 2-byte tile map address, then characters up to $ff.
+DrawString:
     ld a, [hl+]
     ld e, a
     ld a, [hl+]
@@ -2310,7 +2317,7 @@ jr_000_0eb2:
 
 Call_000_0eb7:
     ld a, $50
-    ld [$c201], a
+    ld [wBatX], a
     ld hl, $5f77
     ld a, l
     ld [$d761], a
@@ -2324,20 +2331,20 @@ Call_000_0eb7:
     ld [$d76a], a
     ld [$d76b], a
     ld a, $01
-    ld [$d763], a
+    ld [wBallSticks], a
     ld a, $20
-    ld [$d764], a
+    ld [wBatWidth], a
     ret
 
 Call_000_0ee5:
     ld a, $01
-    ld [$d77c], a
+    ld [wBallCount], a
     ld a, $89
     ld [$d77e], a
-    ld a, [$d764]
+    ld a, [wBatWidth]
     srl a
     ld b, a
-    ld a, [$c201]
+    ld a, [wBatX]
     sub $0c
     add b
     ld [$d780], a
@@ -2356,18 +2363,20 @@ Call_000_0ee5:
     ld [$d8a2], a
     ld [$d8a3], a
     ld [$d8a4], a
-    ld [$d76e], a
+    ld [wNinjaActive], a
     ld [$d8aa], a
     inc a
     ld [$d8a8], a
 
     ret
 
-    ld a, [$db52]
+; Per-frame gameplay update. Starts with the level skip cheat (B button).
+Gameplay_Update:
+    ld a, [wCheatLevelSkip]
     or a
     jr z, jr_000_0f77
 
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     bit 5, a
     jr z, jr_000_0f77
 
@@ -2393,20 +2402,20 @@ Call_000_0ee5:
 
 jr_000_0f5d:
     ld a, b
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $0f
     ld [$ffa0], a
-    ld a, [$cce8]
+    ld a, [wCurrentLevel]
     inc a
     cp $a0
     jr c, jr_000_0f74
 
     ld a, $0d
-    ld [$ff9f], a
+    ld [hGameState], a
     xor a
 
 jr_000_0f74:
-    ld [$cce8], a
+    ld [wCurrentLevel], a
 
 jr_000_0f77:
     ld a, [$d765]
@@ -2418,7 +2427,7 @@ jr_000_0f77:
     jr nz, jr_000_0f89
 
     ld a, $0f
-    call Call_000_3e64
+    call PlaySound
 
 jr_000_0f89:
     xor a
@@ -2460,7 +2469,7 @@ jr_000_0fbe:
     ld l, a
     ld a, [$d762]
     ld h, a
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     ld c, a
     ld a, [$d76a]
     or a
@@ -2479,7 +2488,7 @@ jr_000_0fbe:
     or b
     or d
     ld c, a
-    ld [$ff8a], a
+    ld [hJoypad], a
     ld a, [$d769]
     inc a
     ld [$d769], a
@@ -2539,9 +2548,9 @@ jr_000_102a:
     ld a, [$d766]
     add b
     ld b, a
-    ld a, [$d764]
+    ld a, [wBatWidth]
     ld d, a
-    ld a, [$c201]
+    ld a, [wBatX]
     add d
     add b
     cp $aa
@@ -2553,9 +2562,9 @@ jr_000_102a:
     ld b, a
 
 jr_000_1049:
-    ld a, [$c201]
+    ld a, [wBatX]
     add b
-    ld [$c201], a
+    ld [wBatX], a
     ld a, b
     cpl
     inc a
@@ -2592,7 +2601,7 @@ jr_000_106f:
     ld a, [$d766]
     add b
     ld b, a
-    ld a, [$c201]
+    ld a, [wBatX]
     sub b
     cp $17
     jr nc, jr_000_108a
@@ -2604,9 +2613,9 @@ jr_000_106f:
     ld b, a
 
 jr_000_108a:
-    ld a, [$c201]
+    ld a, [wBatX]
     sub b
-    ld [$c201], a
+    ld [wBatX], a
     ld a, b
 
     ld [$d89f], a
@@ -2625,7 +2634,7 @@ jr_000_109d:
     jr nz, jr_000_102a
 
     ld [$d75f], a
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     bit 1, a
     jr nz, jr_000_1062
 
@@ -2644,7 +2653,7 @@ Jump_000_10b5:
     jr nz, jr_000_106f
 
     ld [$d760], a
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     bit 0, a
     jp nz, Jump_000_101d
 
@@ -2655,9 +2664,9 @@ jr_000_10c6:
 
     ld a, [$d767]
     ld b, a
-    ld a, [$c201]
+    ld a, [wBatX]
     add b
-    ld [$c201], a
+    ld [wBatX], a
 
 jr_000_10d7:
     ld a, [$d8a9]
@@ -2673,13 +2682,13 @@ jr_000_10d7:
     ld [$d8a6], a
     jr z, jr_000_1111
 
-    ld a, [$d77c]
+    ld a, [wBallCount]
     or a
     jr z, jr_000_1134
 
     ld c, a
     ld b, $00
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     bit 0, a
     jr z, jr_000_10fe
 
@@ -2707,7 +2716,7 @@ jr_000_1111:
     xor a
     ld [$d8a9], a
     ld [$d8a2], a
-    ld a, [$d77c]
+    ld a, [wBallCount]
     or a
     jr z, jr_000_1134
 
@@ -2725,14 +2734,14 @@ jr_000_1127:
     jr nz, jr_000_1127
 
     ld a, $17
-    call Call_000_3e64
+    call PlaySound
 
 jr_000_1134:
     ld a, [$d8a1]
     or a
     jr nz, jr_000_114d
 
-    ld a, [$d763]
+    ld a, [wBallSticks]
     or a
     jr z, jr_000_116f
 
@@ -2740,7 +2749,7 @@ jr_000_1134:
     or a
     jr nz, jr_000_116f
 
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     bit 4, a
     jr z, jr_000_116f
 
@@ -2749,10 +2758,10 @@ jr_000_114d:
     or a
     jr z, jr_000_116a
 
-    ld a, [$d764]
+    ld a, [wBatWidth]
     srl a
     ld b, a
-    ld a, [$c201]
+    ld a, [wBatX]
     sub $08
     add b
     ld c, $01
@@ -2773,7 +2782,7 @@ jr_000_116c:
 
 jr_000_116f:
     call Call_000_18fc
-    ld a, [$d77c]
+    ld a, [wBallCount]
     or a
     jp z, Jump_000_12b7
 
@@ -2815,12 +2824,12 @@ Jump_000_1187:
     jp c, Jump_000_1251
 
     pop bc
-    ld a, [$d77c]
+    ld a, [wBallCount]
     cp $01
     jr nz, jr_000_122f
 
     dec a
-    ld [$d77c], a
+    ld [wBallCount], a
     ld c, a
     ld a, [$dbe0]
     or a
@@ -2841,33 +2850,33 @@ jr_000_11d2:
 
     ld a, $28
     ld [$d76b], a
-    ld a, [$c200]
+    ld a, [wBatY]
     sub $08
     ld [$d76c], a
     ld b, $f8
-    ld a, [$d764]
+    ld a, [wBatWidth]
     cp $20
     jr z, jr_000_11f8
 
     ld b, $fc
 
 jr_000_11f8:
-    ld a, [$c201]
+    ld a, [wBatX]
     add b
     ld [$d76d], a
     xor a
 
-    ld [$dc3d], a
+    ld [wWeaponFlag], a
     ld a, $0a
-    call Call_000_3e64
-    ld a, [$d8ac]
+    call PlaySound
+    ld a, [wLives]
     dec a
-    ld [$d8ac], a
+    ld [wLives], a
     or a
     jr nz, jr_000_121f
 
     ld a, $03
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $28
     ld [$ffa0], a
     jp Jump_000_12b7
@@ -2881,11 +2890,11 @@ jr_000_1227:
     pop bc
     xor a
     ld [$d8aa], a
-    ld a, [$d77c]
+    ld a, [wBallCount]
 
 jr_000_122f:
     dec a
-    ld [$d77c], a
+    ld [wBallCount], a
     ld a, b
     cp $01
     jr z, jr_000_126c
@@ -3003,29 +3012,29 @@ jr_000_12b7:
     or a
     jr z, jr_000_12d4
 
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     bit 4, a
     jr z, jr_000_12d4
 
     xor a
-    ld [$d763], a
+    ld [wBallSticks], a
     ld [$d8a8], a
     ld a, $07
-    call Call_000_3e64
+    call PlaySound
 
 jr_000_12d4:
-    call $50df
+    call UpdateFallingPowerups
     call Call_000_2763
     call Call_000_320c
-    call $6386
-    call $62e9
-    call $64f9
-    call $6ed4
+    call Call_001_6386
+    call Call_001_62e9
+    call Call_001_64f9
+    call Call_001_6ed4
     xor a
     ld [$d9be], a
     ld [$d9bd], a
     call Call_000_1950
-    call Call_000_1e1b
+    call ProcessBrickHitQueue
     call Call_000_1d7c
     ld a, [$ffa2]
     or a
@@ -3041,13 +3050,13 @@ jr_000_12d4:
     ld e, $00
     call Call_000_3e56
     xor a
-    call Call_000_3e64
+    call PlaySound
     call Call_000_3e7f
     call Call_000_3e7f
     call Call_000_1347
 
 jr_000_131c:
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     bit 7, a
     ret z
 
@@ -3056,17 +3065,17 @@ jr_000_131c:
     ret nz
 
     ld a, $04
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $01
     ld [$ffa0], a
     ld [$ffa1], a
     ld a, $1a
-    call Call_000_3e64
+    call PlaySound
     ld a, $1e
 
 jr_000_133b:
     push af
-    call $7c54
+    call WaitVBlank
     call Call_000_3e7f
     pop af
     dec a
@@ -3082,9 +3091,9 @@ Call_000_1347:
     ld b, $01
     xor a
     ld [$c2b5], a
-    ld [$ff8a], a
-    call $6838
-    call $6ea5
+    ld [hJoypad], a
+    call Call_001_6838
+    call Call_001_6ea5
     call Call_000_0eb7
     call Call_000_0ee5
     xor a
@@ -3094,14 +3103,14 @@ Call_000_1347:
     ld [$d745], a
     call Call_000_1def
     call Call_000_1950
-    call Call_000_1e1b
+    call ProcessBrickHitQueue
     call Call_000_1d7c
     call Call_000_31da
     call Call_000_271b
-    call $5025
-    call $627f
-    call $633e
-    call $64c3
+    call ClearFallingPowerups
+    call Call_001_627f
+    call Call_001_633e
+    call Call_001_64c3
     xor a
     ld [$c2b5], a
     ld de, $c2b9
@@ -3111,10 +3120,10 @@ Call_000_1347:
     ld [$c2b7], a
     ld a, $27
     ld [$c2b4], a
-    call $6ed4
+    call Call_001_6ed4
     ld b, $ff
     ld a, $20
-    call $6838
+    call Call_001_6838
     call Call_000_0aeb
     ret
 
@@ -3128,7 +3137,7 @@ Call_000_13ac:
     jr nz, jr_000_13c0
 
     ld a, $16
-    call Call_000_3e64
+    call PlaySound
     jr jr_000_1415
 
 jr_000_13c0:
@@ -3195,7 +3204,7 @@ jr_000_1415:
     or a
     jp nz, Jump_000_151b
 
-    ld a, [$d763]
+    ld a, [wBallSticks]
     or a
     jp z, Jump_000_14a5
 
@@ -3209,7 +3218,7 @@ jr_000_1415:
     ld a, [$d776]
     add $08
     ld b, a
-    ld a, [$c200]
+    ld a, [wBatY]
     sub $08
     cp b
     jr nc, jr_000_14a5
@@ -3218,7 +3227,7 @@ jr_000_1415:
     cp b
     jr c, jr_000_14a5
 
-    ld a, [$c201]
+    ld a, [wBatX]
     cp c
     jr nc, jr_000_14a5
 
@@ -3227,7 +3236,7 @@ jr_000_1415:
     jr c, jr_000_14a5
 
     ld a, $06
-    call Call_000_3e64
+    call PlaySound
 
 jr_000_1453:
     ld a, [$d8a0]
@@ -3237,7 +3246,7 @@ jr_000_1453:
     cp $04
     jr nz, jr_000_1479
 
-    ld a, [$c201]
+    ld a, [wBatX]
     sub $08
     ld b, a
     ld a, [$d778]
@@ -3298,7 +3307,7 @@ jr_000_14b9:
     ld [$d8a4], a
     ld a, b
     add $02
-    ld [$d77c], a
+    ld [wBallCount], a
     ld a, [$d779]
     ld c, a
     ld a, [$d775]
@@ -3886,7 +3895,7 @@ Call_000_1822:
     cp $09
     jp c, Jump_000_1884
 
-    ld a, [$c200]
+    ld a, [wBatY]
     sub $08
     cp b
     jp nc, Jump_000_1884
@@ -3895,9 +3904,9 @@ Call_000_1822:
     cp b
     jp c, Jump_000_1884
 
-    ld a, [$d764]
+    ld a, [wBatWidth]
     ld b, a
-    ld a, [$c201]
+    ld a, [wBatX]
     sub $08
     ld c, a
     ld a, d
@@ -3925,7 +3934,7 @@ Call_000_1822:
     ld a, $01
     ld [$d76f], a
     ld a, $01
-    call Call_000_3e64
+    call PlaySound
 
 jr_000_187d:
     xor a
@@ -3942,7 +3951,7 @@ jr_000_1884:
     ld l, a
     ld h, $00
     add hl, hl
-    ld de, $ccba
+    ld de, wBrickMap - $30
     add hl, de
     ld a, c
     and $f0
@@ -3965,12 +3974,12 @@ jr_000_1884:
     xor a
     ld [$d77b], a
     pop af
-    jp Jump_000_1a3a
+    jp HitBrickWithBall
 
 jr_000_18af:
     ld a, [$d8ab]
     or a
-    call z, $64d4
+    call z, Call_001_64d4
 
 jr_000_18b6:
     ld a, [$d77b]
@@ -3996,7 +4005,7 @@ jr_000_18c8:
 
 jr_000_18d2:
     ld a, $04
-    call Call_000_3e64
+    call PlaySound
     ld a, $01
     or a
     ret
@@ -4007,7 +4016,7 @@ Call_000_18db:
     ld b, $00
     ld hl, $5f8d
     ld de, $0040
-    ld a, [$d764]
+    ld a, [wBatWidth]
     cp $20
     jr z, jr_000_18f2
 
@@ -4089,7 +4098,7 @@ Call_000_1950:
     or a
     jr nz, jr_000_195d
 
-    ld a, [$d764]
+    ld a, [wBatWidth]
     cp $20
     jr nz, jr_000_19a6
 
@@ -4150,7 +4159,7 @@ jr_000_1991:
 jr_000_19a6:
     ld [$dab2], a
     ld hl, $0200
-    ld a, [$c201]
+    ld a, [wBatX]
     sub $08
     sra a
     sra a
@@ -4220,7 +4229,9 @@ jr_000_19de:
     ld [$d9bd], a
     ret
 
-Call_000_1a0b:
+; A rocket, laser, grenade or plasma shot hit the brick at HL. A = its hit points.
+; A plasma shot (wPlasmaState = 2) removes 2 hit points.
+HitBrickWithShot:
     and $0f
     ld c, l
     ld b, h
@@ -4231,19 +4242,19 @@ Call_000_1a0b:
 
     set 7, [hl]
     dec a
-    ld [$d8b5], a
+    ld [wHitNewValue], a
     or a
     jr z, jr_000_1a2b
 
-    ld a, [$dc47]
+    ld a, [wPlasmaState]
     cp $02
     jr nz, jr_000_1a2b
 
     dec a
-    ld [$d8b5], a
+    ld [wHitNewValue], a
 
 jr_000_1a2b:
-    ld a, [$dc47]
+    ld a, [wPlasmaState]
     cp $02
     jr nz, jr_000_1a58
 
@@ -4251,8 +4262,9 @@ jr_000_1a2b:
     ld [$d8ba], a
     jr jr_000_1a5c
 
-Call_000_1a3a:
-Jump_000_1a3a:
+; The ball hit the brick at HL. A = its hit points.
+; While Ninja is active the brick is set to 1 hit point and the ball does not bounce.
+HitBrickWithBall:
     and $0f
     ld c, l
     ld b, h
@@ -4263,15 +4275,15 @@ Jump_000_1a3a:
 
     set 7, [hl]
     dec a
-    ld [$d8b5], a
+    ld [wHitNewValue], a
     or a
     jr z, jr_000_1a58
 
-    ld a, [$d76e]
+    ld a, [wNinjaActive]
     or a
     jr z, jr_000_1a58
 
-    ld [$d8b5], a
+    ld [wHitNewValue], a
 
 jr_000_1a58:
     xor a
@@ -4279,9 +4291,9 @@ jr_000_1a58:
 
 jr_000_1a5c:
     ld a, l
-    ld [$d8b6], a
+    ld [wHitPowerupPtr], a
     ld a, h
-    ld [$d8b7], a
+    ld [wHitPowerupPtr + 1], a
     ld d, $00
     dec bc
     ld a, [bc]
@@ -4301,16 +4313,16 @@ jr_000_1a6e:
 
 jr_000_1a79:
     ld a, d
-    ld [$d8b4], a
+    ld [wHitRedrawIndex], a
     ld de, $3326
     add hl, de
     add hl, hl
-    call Call_000_1ae5
+    call QueueBrickHit
     ld b, $01
-    call $7c39
+    call Call_001_7c39
 
 jr_000_1a8a:
-    ld a, [$d76e]
+    ld a, [wNinjaActive]
     or a
     jr z, jr_000_1a92
 
@@ -4379,19 +4391,20 @@ jr_000_1ac6:
 jr_000_1ad7:
     ld a, b
     add a
-    ld [$d8b4], a
+    ld [wHitRedrawIndex], a
     ld de, $3327
     add hl, de
     add hl, hl
-    call Call_000_1b14
+    call CountBrickDestroyed
     ret
 
-Call_000_1ae5:
+; Add an entry to wBrickHitQueue.
+QueueBrickHit:
     ld de, $981f
     add hl, de
     ld c, l
     ld b, h
-    ld hl, $d8bc
+    ld hl, wBrickHitQueue
     ld de, $0008
 
 jr_000_1af1:
@@ -4405,13 +4418,13 @@ jr_000_1af1:
 jr_000_1af8:
     ld [hl], $05
     inc hl
-    ld a, [$d8b6]
+    ld a, [wHitPowerupPtr]
     ld [hl+], a
-    ld a, [$d8b7]
+    ld a, [wHitPowerupPtr + 1]
     ld [hl+], a
-    ld a, [$d8b5]
+    ld a, [wHitNewValue]
     ld [hl+], a
-    ld a, [$d8b4]
+    ld a, [wHitRedrawIndex]
     ld [hl+], a
     ld a, c
     ld [hl+], a
@@ -4421,10 +4434,11 @@ jr_000_1af8:
     ld [hl+], a
     ret
 
-Call_000_1b14:
-    ld a, [$cce7]
+; Count down wBricksLeft and end the level when it reaches 0.
+CountBrickDestroyed:
+    ld a, [wBricksLeft]
     dec a
-    ld [$cce7], a
+    ld [wBricksLeft], a
     jr nz, jr_000_1b55
 
     ld a, [$ffa0]
@@ -4447,20 +4461,20 @@ Call_000_1b14:
 
 jr_000_1b3b:
     ld a, b
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $0f
     ld [$ffa0], a
-    ld a, [$cce8]
+    ld a, [wCurrentLevel]
     inc a
     cp $a0
     jr nz, jr_000_1b52
 
     ld a, $0d
-    ld [$ff9f], a
+    ld [hGameState], a
     xor a
 
 jr_000_1b52:
-    ld [$cce8], a
+    ld [wCurrentLevel], a
 
 jr_000_1b55:
     ld a, h
@@ -4484,7 +4498,7 @@ jr_000_1b69:
 
 jr_000_1b70:
     push hl
-    ld a, [$d8b4]
+    ld a, [wHitRedrawIndex]
     ld e, a
     ld d, $00
     ld hl, $79de
@@ -4804,71 +4818,89 @@ jr_000_1cf2:
     ld [hl+], a
     ret
 
+Jump_000_1d0a:
     pop hl
     call Call_000_1b7f
     jp Jump_000_1c34
 
+Jump_000_1d11:
     pop hl
     call Call_000_1b7f
     jp Jump_000_1c9a
 
+Jump_000_1d18:
     pop hl
     call Call_000_1b7f
     jp Jump_000_1cbf
 
+Jump_000_1d1f:
     pop hl
 
     jp Jump_000_1b7f
 
+Jump_000_1d23:
     pop hl
     call Call_000_1bd9
     jp Jump_000_1c34
 
+Jump_000_1d2a:
     pop hl
     call Call_000_1bd9
     jp Jump_000_1c9a
 
+Jump_000_1d31:
     pop hl
     call Call_000_1bd9
     jp Jump_000_1cbf
 
+Jump_000_1d38:
     pop hl
     jp Jump_000_1bd9
 
+Jump_000_1d3c:
     pop hl
     call Call_000_1c07
     jp Jump_000_1c34
 
+Jump_000_1d43:
     pop hl
     call Call_000_1c07
     jp Jump_000_1c9a
 
+Jump_000_1d4a:
     pop hl
     call Call_000_1c07
     jp Jump_000_1cbf
 
+Jump_000_1d51:
     pop hl
     jp Jump_000_1c07
 
+Jump_000_1d55:
     pop hl
     call Call_000_1bac
     jp Jump_000_1c34
 
+Jump_000_1d5c:
     pop hl
     call Call_000_1bac
     jp Jump_000_1c9a
 
+Jump_000_1d63:
     pop hl
     call Call_000_1bac
     jp Jump_000_1cbf
 
+Jump_000_1d6a:
     pop hl
     jp Jump_000_1bac
 
+Jump_000_1d6e:
     pop hl
     call Call_000_1bac
     jp Jump_000_1c67
 
+Jump_000_1d75:
     pop hl
     call Call_000_1bac
     jp Jump_000_1ce4
@@ -4962,7 +4994,7 @@ Call_000_1df3:
     ld b, $00
 
 jr_000_1df5:
-    ld hl, $d8bc
+    ld hl, wBrickHitQueue
     ld c, $0c
 
 jr_000_1dfa:
@@ -4992,8 +5024,9 @@ jr_000_1e0c:
     ld [$dab4], a
     ret
 
-Call_000_1e1b:
-    ld hl, $d8bc
+; Redraw hit bricks, remove destroyed ones and release power-ups.
+ProcessBrickHitQueue:
+    ld hl, wBrickHitQueue
     ld de, $d9bf
     xor a
     ld [$d9bc], a
@@ -5039,9 +5072,9 @@ Jump_000_1e2a:
     ld b, a
     ld a, [hl+]
     or a
-    call nz, $628e
+    call nz, Call_001_628e
     ld a, $03
-    call Call_000_3e64
+    call PlaySound
     jp Jump_000_1f68
 
 jr_000_1e64:
@@ -5144,9 +5177,9 @@ Jump_000_1ed8:
     ld b, a
     ld a, [bc]
     and $7f
-    ld [$db6e], a
+    ld [wHitPowerupId], a
     ld a, [hl+]
-    ld [$db6f], a
+    ld [wHitBrickValue], a
     or a
     jr nz, jr_000_1eed
 
@@ -5235,10 +5268,10 @@ jr_000_1f35:
     ld a, [$d9bc]
     add $02
     ld [$d9bc], a
-    call $5034
+    call SpawnPowerup
     inc hl
     ld a, $02
-    call Call_000_3e64
+    call PlaySound
     jr jr_000_1f68
 
 Jump_000_1f61:
@@ -5262,15 +5295,16 @@ jr_000_1f68:
     ld [$dab0], a
     ret
 
+Jump_000_1f7b:
     ld e, $05
     call Call_000_3e51
     ld a, $04
     ld [$c359], a
     ld hl, $03a4
     ld a, l
-    ld [$ff96], a
+    ld [hVBlankHandler], a
     ld a, h
-    ld [$ff97], a
+    ld [hVBlankHandler + 1], a
     ld a, $01
     ld [$ff9c], a
     ld a, $01
@@ -5331,19 +5365,19 @@ jr_000_1f68:
 
     ld a, [$df43]
     ld [$dad2], a
-    call Call_000_20b3
+    call FormatLevelNumber
     ld a, [$df01]
     ld l, a
     ld a, [$df02]
     ld h, a
-    call Call_000_0e54
+    call DrawString
     ld hl, $dac3
-    call Call_000_0e54
+    call DrawString
     ld a, [$df0b]
     ld l, a
     ld a, [$df0c]
     ld h, a
-    call Call_000_0e54
+    call DrawString
     ld a, [$df07]
     ld l, a
     ld a, [$df08]
@@ -5358,7 +5392,7 @@ jr_000_1f68:
     ld h, a
 
 jr_000_205b:
-    call Call_000_0e54
+    call DrawString
     ld a, [$df03]
     ld l, a
     ld a, [$df04]
@@ -5373,13 +5407,13 @@ jr_000_205b:
     ld h, a
 
 jr_000_2074:
-    call Call_000_0e54
-    ld a, [$db54]
+    call DrawString
+    ld a, [wCheatShowVersion]
     or a
     jr z, jr_000_2083
 
     ld hl, $4000
-    call Call_000_0e54
+    call DrawString
 
 jr_000_2083:
     ld hl, $db56
@@ -5399,17 +5433,18 @@ jr_000_2083:
     ld [$dae1], a
     ld [$dac2], a
     ld [$db55], a
-    call $71ef
+    call Call_001_71ef
     ld a, $90
     ld [$ff9e], a
     ret
 
-Call_000_20b3:
+; Write wStartLevel + 1 as 3 decimal digits.
+FormatLevelNumber:
     ld a, $30
     ld [$dad3], a
     ld [$dad4], a
     ld [$dad5], a
-    ld a, [$ccba]
+    ld a, [wStartLevel]
     inc a
     ld c, $00
 
@@ -5465,7 +5500,7 @@ jr_000_20f6:
 jr_000_20f9:
     ret
 
-    call $7238
+    call Call_001_7238
     ld a, [$ff9e]
     or a
     ret nz
@@ -5481,7 +5516,7 @@ jr_000_20f9:
     ld [$dac1], a
     inc a
     ld [$dabf], a
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     ld b, a
     or a
     jr z, jr_000_2126
@@ -5494,28 +5529,28 @@ jr_000_2126:
     or a
     jr nz, jr_000_2131
 
-    ld hl, $dad7
+    ld hl, wPasswordEntry
     jr jr_000_214a
 
 jr_000_2131:
     cp $01
     jr nz, jr_000_213a
 
-    ld hl, $dad8
+    ld hl, wPasswordEntry + 1
     jr jr_000_214a
 
 jr_000_213a:
     cp $02
     jr nz, jr_000_2143
 
-    ld hl, $dad9
+    ld hl, wPasswordEntry + 2
     jr jr_000_214a
 
 jr_000_2143:
     cp $03
     jr nz, jr_000_214a
 
-    ld hl, $dada
+    ld hl, wPasswordEntry + 3
 
 jr_000_214a:
     bit 3, b
@@ -5528,7 +5563,7 @@ jr_000_214a:
     inc a
     ld [$dab6], a
     ld a, $19
-    call Call_000_3e64
+    call PlaySound
     ld a, [hl]
 
 jr_000_215e:
@@ -5572,7 +5607,7 @@ jr_000_2180:
     inc a
     ld [$dab7], a
     ld a, $19
-    call Call_000_3e64
+    call PlaySound
     ld a, [hl]
 
 jr_000_2194:
@@ -5613,7 +5648,7 @@ jr_000_21b2:
     ret nz
 
     ld a, $19
-    call Call_000_3e64
+    call PlaySound
     ld a, $01
     ld [$daba], a
     ld a, [$dadf]
@@ -5695,7 +5730,7 @@ jr_000_2213:
 
 jr_000_2225:
     cp $03
-    jr nz, jr_000_2234
+    jr nz, SubmitPassword
 
     ld a, $01
     ld [$dadd], a
@@ -5703,28 +5738,29 @@ jr_000_2225:
     ld [$dade], a
     ret
 
-jr_000_2234:
+; Check the typed password and add the "START nnn" menu entry if it is a level password.
+SubmitPassword:
     ld a, $02
     call ChangeROMBank
-    ld de, $dad7
-    call Call_000_09fa
+    ld de, wPasswordEntry
+    call CheckPassword
     push af
-    call nz, Call_000_20b3
+    call nz, FormatLevelNumber
     pop af
     jr z, jr_000_225e
 
     ld hl, $cce3
-    ld a, [$dad7]
+    ld a, [wPasswordEntry]
     ld [hl+], a
-    ld a, [$dad8]
+    ld a, [wPasswordEntry + 1]
 
     ld [hl+], a
-    ld a, [$dad9]
+    ld a, [wPasswordEntry + 2]
     ld [hl+], a
-    ld a, [$dada]
+    ld a, [wPasswordEntry + 3]
     ld [hl], a
     ld a, $1a
-    call Call_000_3e64
+    call PlaySound
 
 jr_000_225e:
     ld a, $01
@@ -5750,26 +5786,26 @@ Jump_000_226d:
     ld [$dabf], a
     ld [$dac0], a
     ld [$dac1], a
-    ld a, [$ccba]
+    ld a, [wStartLevel]
     or a
     jr nz, jr_000_228f
 
     ld [$dabe], a
 
 jr_000_228f:
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     and $f0
     or a
     jr z, jr_000_22b2
 
-    ld a, [$ff9f]
+    ld a, [hGameState]
     cp $02
     jr z, jr_000_22b2
 
     ld a, $1a
-    call Call_000_3e64
+    call PlaySound
     ld a, $02
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $28
     ld [$ffa0], a
     ld b, $00
@@ -5787,26 +5823,26 @@ jr_000_22b2:
     ld [$dabf], a
     ld [$dac0], a
     ld [$dac1], a
-    ld a, [$ccba]
+    ld a, [wStartLevel]
     or a
     jr nz, jr_000_22d4
 
     ld [$dabe], a
 
 jr_000_22d4:
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     and $f0
     or a
     jr z, jr_000_22f7
 
-    ld a, [$ff9f]
+    ld a, [hGameState]
     cp $02
     jr z, jr_000_22f7
 
     ld a, $1a
-    call Call_000_3e64
+    call PlaySound
     ld a, $02
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $28
     ld [$ffa0], a
     ld b, $01
@@ -5824,14 +5860,14 @@ jr_000_22f7:
     ld [$dabe], a
     ld [$dac0], a
     ld [$dac1], a
-    ld a, [$ccba]
+    ld a, [wStartLevel]
     or a
     jr nz, jr_000_231a
 
     ld [$dabe], a
 
 jr_000_231a:
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     and $f0
     or a
     jr z, jr_000_2357
@@ -5841,7 +5877,7 @@ jr_000_231a:
     jr nz, jr_000_235b
 
     ld a, $1a
-    call Call_000_3e64
+    call PlaySound
     ld a, $01
     ld [$dac2], a
     ld [$daba], a
@@ -5851,10 +5887,10 @@ jr_000_231a:
     dec a
     ld [$dadf], a
     ld a, $42
-    ld [$dad7], a
-    ld [$dad8], a
-    ld [$dad9], a
-    ld [$dada], a
+    ld [wPasswordEntry], a
+    ld [wPasswordEntry + 1], a
+    ld [wPasswordEntry + 2], a
+    ld [wPasswordEntry + 3], a
     ld a, $04
     ld [$dadb], a
     jr jr_000_235b
@@ -5875,7 +5911,7 @@ jr_000_235b:
     ld [$dabe], a
     ld [$dabf], a
     ld [$dac1], a
-    ld a, [$ccba]
+    ld a, [wStartLevel]
     or a
     jr nz, jr_000_237e
 
@@ -5893,14 +5929,14 @@ jr_000_237e:
     ld [$dabe], a
     ld [$dabf], a
     ld [$dac0], a
-    ld a, [$ccba]
+    ld a, [wStartLevel]
     or a
     jr nz, jr_000_23a1
 
     ld [$dabe], a
 
 jr_000_23a1:
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     ld b, a
     or a
     jr z, jr_000_23ad
@@ -5919,7 +5955,7 @@ jr_000_23ad:
     inc a
     ld [$dab6], a
     ld a, $19
-    call Call_000_3e64
+    call PlaySound
     ld a, [$dab5]
     inc a
     cp $05
@@ -5930,7 +5966,7 @@ jr_000_23ad:
 
 jr_000_23cb:
     ld c, a
-    ld a, [$ccba]
+    ld a, [wStartLevel]
     or a
     ld a, c
     jr nz, jr_000_23d8
@@ -5959,7 +5995,7 @@ jr_000_23e1:
     inc a
     ld [$dab7], a
     ld a, $19
-    call Call_000_3e64
+    call PlaySound
     ld a, [$dab5]
     dec a
     cp $ff
@@ -5971,7 +6007,7 @@ jr_000_23e1:
 jr_000_2400:
     ld c, a
 
-    ld a, [$ccba]
+    ld a, [wStartLevel]
     or a
     ld a, c
     jr nz, jr_000_240d
@@ -6006,7 +6042,7 @@ jr_000_2416:
     inc a
     ld [$daba], a
     ld a, $19
-    call Call_000_3e64
+    call PlaySound
     ld a, [$dab5]
     cp $03
     jr nz, jr_000_244e
@@ -6045,7 +6081,7 @@ jr_000_245c:
     inc a
     ld [$dab8], a
     ld a, $19
-    call Call_000_3e64
+    call PlaySound
     ld a, [$dab5]
     cp $03
     jr nz, jr_000_248a
@@ -6084,7 +6120,7 @@ jr_000_2498:
     inc a
     ld [$dab9], a
     ld a, $19
-    call Call_000_3e64
+    call PlaySound
     ld a, [$dab5]
     cp $03
     jr nz, jr_000_24c6
@@ -6128,7 +6164,7 @@ jr_000_24d4:
     ld [$ccb7], a
     jr nz, jr_000_251a
 
-    ld a, [$ff9f]
+    ld a, [hGameState]
     cp $01
     jr nz, jr_000_251a
 
@@ -6144,7 +6180,7 @@ jr_000_2501:
     ld a, $08
 
 jr_000_2503:
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $28
     ld [$ffa0], a
     ld a, $01
@@ -6152,30 +6188,30 @@ jr_000_2503:
     ld a, $fe
     ld [$ccb7], a
     ld a, $1a
-    call Call_000_3e64
+    call PlaySound
 
 jr_000_251a:
     ret
 
 Call_000_251b:
-    call $7c2d
+    call Call_001_7c2d
     xor a
     ld [$dcfe], a
     ld [$dcff], a
     ld a, $05
-    ld [$d8ac], a
+    ld [wLives], a
     ld a, b
     or a
     jr z, jr_000_2533
 
-    ld a, [$ccba]
+    ld a, [wStartLevel]
     jr jr_000_2535
 
 jr_000_2533:
     ld a, $00
 
 jr_000_2535:
-    ld [$cce8], a
+    ld [wCurrentLevel], a
     ld hl, $05dc
     ld a, l
     ld [$dd4d], a
@@ -6188,15 +6224,16 @@ jr_000_2535:
     ld [$dd50], a
     ret
 
+Jump_000_254f:
     ld e, $01
     call Call_000_3e51
     ld a, $00
     ld [$c359], a
     ld hl, $02b3
     ld a, l
-    ld [$ff96], a
+    ld [hVBlankHandler], a
     ld a, h
-    ld [$ff97], a
+    ld [hVBlankHandler + 1], a
     ld a, $04
     ld [$ff9c], a
     xor a
@@ -6305,36 +6342,37 @@ jr_000_2640:
     ld [$dabf], a
     ld [$dac0], a
     ld [$dac1], a
-    ld a, [$ccba]
+    ld a, [wStartLevel]
     or a
     jr nz, jr_000_2661
 
     ld [$dabe], a
 
 jr_000_2661:
-    call $6e25
+    call Call_001_6e25
     ret
 
-    ld a, [$ff9f]
+    ld a, [hGameState]
     cp $01
     jr z, jr_000_2683
 
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     and $f0
     or a
     jr z, jr_000_2683
 
     ld a, $01
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $1e
     ld [$ffa0], a
     ld a, $1a
-    call Call_000_3e64
+    call PlaySound
 
 jr_000_2683:
-    call $6cd4
+    call Call_001_6cd4
     ret
 
+Jump_000_2687:
     ld a, [$dabc]
     or a
     jr nz, jr_000_2692
@@ -6345,9 +6383,9 @@ jr_000_2683:
 jr_000_2692:
     ld hl, $02b3
     ld a, l
-    ld [$ff96], a
+    ld [hVBlankHandler], a
     ld a, h
-    ld [$ff97], a
+    ld [hVBlankHandler + 1], a
     xor a
     ld [$ff9c], a
     ld a, $01
@@ -6433,7 +6471,7 @@ Call_000_271b:
     ret
 
 Call_000_2763:
-    ld a, [$dc35]
+    ld a, [wLevelType]
     bit 0, a
     jr z, jr_000_276d
 
@@ -6441,7 +6479,7 @@ Call_000_2763:
 
 jr_000_276d:
     call Call_000_2981
-    ld a, [$dc35]
+    ld a, [wLevelType]
     bit 1, a
     jr z, jr_000_277a
 
@@ -6496,7 +6534,7 @@ jr_000_27b0:
     ld a, [$dc12]
     add $04
     ld c, a
-    ld a, [$ff8c]
+    ld a, [hFrameCounter]
     and $07
     ld d, $00
     ld e, a
@@ -6525,7 +6563,7 @@ jr_000_27e0:
 jr_000_27eb:
     call Call_000_295a
     ld a, $0e
-    call Call_000_3e64
+    call PlaySound
 
 jr_000_27f3:
     ld hl, $4f57
@@ -6582,7 +6620,7 @@ jr_000_2831:
     inc de
     push de
     ld d, a
-    ld a, [$dc36]
+    ld a, [wLevelFlagsHigh]
     add d
     pop de
     ld [hl+], a
@@ -6903,7 +6941,7 @@ jr_000_29f5:
 
     ld e, a
     ld a, $0b
-    call Call_000_3e64
+    call PlaySound
     ld a, e
 
 jr_000_2a00:
@@ -6967,12 +7005,12 @@ Jump_000_2a4b:
     jr z, jr_000_2a59
 
     ld a, $0c
-    call Call_000_3e64
+    call PlaySound
     jr jr_000_2a5e
 
 jr_000_2a59:
     ld a, $09
-    call Call_000_3e64
+    call PlaySound
 
 jr_000_2a5e:
     ld a, [$dbe5]
@@ -7113,7 +7151,7 @@ jr_000_2b48:
     ld [$dbe0], a
     ld a, [$dbe5]
     ld hl, $d77d
-    ld a, [$d77c]
+    ld a, [wBallCount]
     or a
     jr z, jr_000_2b62
 
@@ -7138,9 +7176,9 @@ jr_000_2b62:
     xor a
     ld [hl+], a
     ld [hl], a
-    ld a, [$d77c]
+    ld a, [wBallCount]
     inc a
-    ld [$d77c], a
+    ld [wBallCount], a
     ret
 
 Jump_000_2b81:
@@ -7386,7 +7424,7 @@ Call_000_2d01:
     ld l, a
     ld h, $00
     add hl, hl
-    ld de, $ccba
+    ld de, wBrickMap - $30
     add hl, de
     ld a, c
     and $f0
@@ -7407,7 +7445,7 @@ Call_000_2d01:
 
 jr_000_2d1f:
     ld a, $04
-    call Call_000_3e64
+    call PlaySound
     ld a, $01
     or a
     ret
@@ -7417,7 +7455,7 @@ Call_000_2d28:
     ld l, a
     ld h, $00
     add hl, hl
-    ld de, $ccba
+    ld de, wBrickMap - $30
     add hl, de
     ld a, c
     and $f0
@@ -7437,7 +7475,7 @@ Call_000_2d28:
 
 jr_000_2d44:
     ld a, $04
-    call Call_000_3e64
+    call PlaySound
     ld a, $01
     or a
     ret
@@ -7447,7 +7485,7 @@ Call_000_2d4d:
     ld l, a
     ld h, $00
     add hl, hl
-    ld de, $ccba
+    ld de, wBrickMap - $30
     add hl, de
     ld a, c
     and $f0
@@ -7459,7 +7497,7 @@ Call_000_2d4d:
     or a
     ret z
 
-    jp Jump_000_1a3a
+    jp HitBrickWithBall
 
 Call_000_2d66:
     ld a, [$dc2f]
@@ -7520,7 +7558,7 @@ jr_000_2db7:
     ld [$dc25], a
     ld a, h
     ld [$dc26], a
-    ld a, [$ff8c]
+    ld a, [hFrameCounter]
     cp $80
     jr c, jr_000_2dd0
 
@@ -7552,14 +7590,14 @@ jr_000_2dd6:
 
     add $0a
     ld [$dc30], a
-    ld a, [$dc27]
+    ld a, [wUfoHeight]
     add $10
     ld [$dc31], a
     ld [$dc32], a
     ld a, $01
     ld [$dc2f], a
     ld a, $14
-    call Call_000_3e64
+    call PlaySound
 
 jr_000_2e10:
     ld a, d
@@ -7587,7 +7625,7 @@ jr_000_2e24:
     ld l, a
     ld a, [$c2b7]
     ld h, a
-    ld a, [$dc27]
+    ld a, [wUfoHeight]
     add $08
     ld b, a
     ld de, $4ff7
@@ -7630,7 +7668,7 @@ jr_000_2e3a:
     ld c, a
     ld a, [$dc4f]
     ld b, a
-    ld a, [$dc27]
+    ld a, [wUfoHeight]
     cp b
     jr nc, jr_000_2ebe
 
@@ -7648,7 +7686,7 @@ jr_000_2e3a:
 
     xor a
     ld [$dc2d], a
-    ld a, [$dc47]
+    ld a, [wPlasmaState]
     or a
     jr nz, jr_000_2eb6
 
@@ -7678,7 +7716,7 @@ jr_000_2e3a:
 
 jr_000_2eb6:
     ld a, $15
-    call Call_000_3e64
+    call PlaySound
     call Call_000_306f
 
 jr_000_2ebe:
@@ -7691,7 +7729,7 @@ jr_000_2ebe:
     ld c, a
     ld a, [$dc53]
     ld b, a
-    ld a, [$dc27]
+    ld a, [wUfoHeight]
     cp b
     jr nc, jr_000_2f1b
 
@@ -7709,7 +7747,7 @@ jr_000_2ebe:
 
     xor a
     ld [$dc2d], a
-    ld a, [$dc47]
+    ld a, [wPlasmaState]
     or a
     jr nz, jr_000_2f13
 
@@ -7739,7 +7777,7 @@ jr_000_2ebe:
 
 jr_000_2f13:
     ld a, $15
-    call Call_000_3e64
+    call PlaySound
     call Call_000_306f
 
 jr_000_2f1b:
@@ -7752,7 +7790,7 @@ jr_000_2f1b:
     ld c, a
     ld a, [$dc57]
     ld b, a
-    ld a, [$dc27]
+    ld a, [wUfoHeight]
     cp b
     jr nc, jr_000_2f71
 
@@ -7795,7 +7833,7 @@ jr_000_2f1b:
 
 jr_000_2f69:
     ld a, $15
-    call Call_000_3e64
+    call PlaySound
     call Call_000_306f
 
 jr_000_2f71:
@@ -7808,7 +7846,7 @@ jr_000_2f71:
     ld c, a
     ld a, [$dc5b]
     ld b, a
-    ld a, [$dc27]
+    ld a, [wUfoHeight]
     cp b
     jr nc, jr_000_2fc7
 
@@ -7851,7 +7889,7 @@ jr_000_2f71:
 
 jr_000_2fbf:
     ld a, $15
-    call Call_000_3e64
+    call PlaySound
     call Call_000_306f
 
 jr_000_2fc7:
@@ -7864,7 +7902,7 @@ jr_000_2fc7:
     ld c, a
     ld a, [$dc5e]
     ld b, a
-    ld a, [$dc27]
+    ld a, [wUfoHeight]
     cp b
     jr nc, jr_000_301d
 
@@ -7907,7 +7945,7 @@ jr_000_2fc7:
 
 jr_000_3015:
     ld a, $15
-    call Call_000_3e64
+    call PlaySound
     call Call_000_306f
 
 jr_000_301d:
@@ -7920,7 +7958,7 @@ jr_000_301d:
     ld c, a
     ld a, [$dc61]
     ld b, a
-    ld a, [$dc27]
+    ld a, [wUfoHeight]
     cp b
 
     ret nc
@@ -7965,7 +8003,7 @@ jr_000_301d:
 
 jr_000_3066:
     ld a, $15
-    call Call_000_3e64
+    call PlaySound
     call Call_000_306f
     ret
 
@@ -7978,7 +8016,7 @@ Call_000_306f:
     ld b, $00
     ld c, a
     add hl, bc
-    ld a, [$dc27]
+    ld a, [wUfoHeight]
     add $04
     ld d, a
     ld a, [$dc26]
@@ -7987,10 +8025,10 @@ Call_000_306f:
     ld a, [hl+]
     push hl
     ld e, $01
-    call $634d
+    call Call_001_634d
     pop hl
     ld b, [hl]
-    call $7c39
+    call Call_001_7c39
     ret
 
 Call_000_3097:
@@ -8066,7 +8104,7 @@ jr_000_30e7:
     ld a, [$dc31]
     add $08
     ld b, a
-    ld a, [$c200]
+    ld a, [wBatY]
     sub $08
     cp b
     ret nc
@@ -8075,13 +8113,13 @@ jr_000_30e7:
     cp b
     ret c
 
-    ld a, [$c201]
+    ld a, [wBatX]
     sub $08
     cp c
     ret nc
 
     ld e, a
-    ld a, [$d764]
+    ld a, [wBatWidth]
     add e
     cp c
     ret c
@@ -8092,34 +8130,34 @@ jr_000_30e7:
 
     ld a, $28
     ld [$d76b], a
-    ld a, [$c200]
+    ld a, [wBatY]
     sub $08
     ld [$d76c], a
     ld b, $f8
-    ld a, [$d764]
+    ld a, [wBatWidth]
     cp $20
     jr z, jr_000_313d
 
     ld b, $fc
 
 jr_000_313d:
-    ld a, [$c201]
+    ld a, [wBatX]
     add b
     ld [$d76d], a
     xor a
-    ld [$dc3d], a
+    ld [wWeaponFlag], a
     xor a
     ld [$dc2f], a
     ld a, $0a
-    call Call_000_3e64
-    ld a, [$d8ac]
+    call PlaySound
+    ld a, [wLives]
     dec a
-    ld [$d8ac], a
+    ld [wLives], a
     or a
     jr nz, jr_000_3166
 
     ld a, $03
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $28
     ld [$ffa0], a
     ret
@@ -8134,7 +8172,7 @@ Call_000_316c:
     or a
     ret z
 
-    ld a, [$dc27]
+    ld a, [wUfoHeight]
     cp b
     jr nc, jr_000_3199
 
@@ -8156,7 +8194,7 @@ Call_000_316c:
     call Call_000_306f
     pop bc
     ld a, $15
-    call Call_000_3e64
+    call PlaySound
     ld a, $01
     or a
     ret
@@ -8170,7 +8208,7 @@ Call_000_319b:
     or a
     ret z
 
-    ld a, [$d76e]
+    ld a, [wNinjaActive]
     or a
     ret nz
 
@@ -8205,7 +8243,7 @@ Call_000_319b:
     ld [$dc24], a
     ld [$d8aa], a
     ld a, $0d
-    call Call_000_3e64
+    call PlaySound
 
 jr_000_31d8:
     xor a
@@ -8213,7 +8251,7 @@ jr_000_31d8:
 
 Call_000_31da:
     xor a
-    ld [$dc3d], a
+    ld [wWeaponFlag], a
     ld [$dc3e], a
     ld [$dc3f], a
     ld [$dc40], a
@@ -8222,9 +8260,9 @@ Call_000_31da:
     ld [$dc43], a
     ld [$dc44], a
     ld [$dc46], a
-    ld [$dc47], a
+    ld [wPlasmaState], a
     ld [$dc4c], a
-    ld [$dc48], a
+    ld [wGrenadeCount], a
     ld [$dc4b], a
     ld [$dc49], a
     ld [$dc4a], a
@@ -8262,11 +8300,11 @@ Jump_000_322f:
     jp nz, Jump_000_389d
 
 Jump_000_3236:
-    ld a, [$dc3d]
+    ld a, [wWeaponFlag]
     or a
     ret z
 
-    ld a, [$dc48]
+    ld a, [wGrenadeCount]
     ld b, a
     or a
     jp z, Jump_000_32da
@@ -8275,7 +8313,7 @@ Jump_000_3236:
     or a
     ret nz
 
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     bit 4, a
     jr z, jr_000_326b
 
@@ -8306,10 +8344,10 @@ jr_000_326b:
 
     ld a, b
     dec a
-    ld [$dc48], a
+    ld [wGrenadeCount], a
     jr nz, jr_000_327f
 
-    ld [$dc3d], a
+    ld [wWeaponFlag], a
 
 jr_000_327f:
     push af
@@ -8326,14 +8364,14 @@ jr_000_327f:
     ld a, $04
     ld [$dc4b], a
     call Call_000_0006
-    ld a, [$c201]
+    ld a, [wBatX]
     add $04
     ld b, a
-    ld a, [$c200]
+    ld a, [wBatY]
     sub $0c
     ld c, a
     ld l, $00
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     bit 0, a
     jr z, jr_000_32af
 
@@ -8366,7 +8404,7 @@ jr_000_32b5:
     pop hl
     call Call_000_295a
     ld a, $10
-    call Call_000_3e64
+    call PlaySound
     ret
 
 Jump_000_32da:
@@ -8374,7 +8412,7 @@ Jump_000_32da:
     or a
     jr nz, jr_000_3324
 
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     bit 4, a
     ret z
 
@@ -8387,10 +8425,10 @@ Jump_000_32da:
     ret nz
 
     ld a, $02
-    ld [$dc47], a
+    ld [wPlasmaState], a
     xor a
-    ld [$dc3d], a
-    ld a, [$c201]
+    ld [wWeaponFlag], a
+    ld a, [wBatX]
     sub $0c
     add $08
     ld [$dc4e], a
@@ -8405,7 +8443,7 @@ Jump_000_32da:
     ld [$dc3e], a
     ld [$dc3f], a
     ld a, $11
-    call Call_000_3e64
+    call PlaySound
     ret
 
 jr_000_3324:
@@ -8418,7 +8456,7 @@ jr_000_3324:
     ret
 
 jr_000_332f:
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     bit 4, a
     jr nz, jr_000_333b
 
@@ -8446,11 +8484,11 @@ jr_000_333b:
 
 jr_000_3356:
     ld a, b
-    call Call_000_3e64
-    ld a, [$dc45]
+    call PlaySound
+    ld a, [wShotReloadDelay]
     ld [$dc4d], a
     ld [$dc44], a
-    ld a, [$c201]
+    ld a, [wBatX]
     sub $0c
     add $10
     ld [$dc4e], a
@@ -8477,11 +8515,11 @@ jr_000_337b:
 
 jr_000_3391:
     ld a, b
-    call Call_000_3e64
-    ld a, [$dc45]
+    call PlaySound
+    ld a, [wShotReloadDelay]
     ld [$dc4d], a
     ld [$dc44], a
-    ld a, [$c201]
+    ld a, [wBatX]
     sub $0c
     add $10
     ld [$dc52], a
@@ -8508,11 +8546,11 @@ jr_000_33b6:
 
 jr_000_33cc:
     ld a, b
-    call Call_000_3e64
-    ld a, [$dc45]
+    call PlaySound
+    ld a, [wShotReloadDelay]
     ld [$dc4d], a
     ld [$dc44], a
-    ld a, [$c201]
+    ld a, [wBatX]
     sub $0c
     add $10
     ld [$dc56], a
@@ -8533,11 +8571,11 @@ jr_000_33f1:
     jr nz, jr_000_3422
 
     ld a, $13
-    call Call_000_3e64
-    ld a, [$dc45]
+    call PlaySound
+    ld a, [wShotReloadDelay]
     ld [$dc4d], a
     ld [$dc44], a
-    ld a, [$c201]
+    ld a, [wBatX]
     sub $0c
     add $10
     ld [$dc5a], a
@@ -8554,11 +8592,11 @@ jr_000_3422:
     jr nz, jr_000_344e
 
     ld a, $13
-    call Call_000_3e64
-    ld a, [$dc45]
+    call PlaySound
+    ld a, [wShotReloadDelay]
     ld [$dc4d], a
     ld [$dc44], a
-    ld a, [$c201]
+    ld a, [wBatX]
     sub $0c
     add $10
     ld [$dc5d], a
@@ -8575,11 +8613,11 @@ jr_000_344e:
     ret nz
 
     ld a, $13
-    call Call_000_3e64
-    ld a, [$dc45]
+    call PlaySound
+    ld a, [wShotReloadDelay]
     ld [$dc4d], a
     ld [$dc44], a
-    ld a, [$c201]
+    ld a, [wBatX]
     sub $0c
     add $10
     ld [$dc60], a
@@ -8597,7 +8635,7 @@ Jump_000_3479:
     ld a, [$c2b7]
     ld h, a
     ld e, $01
-    ld a, [$dc47]
+    ld a, [wPlasmaState]
     cp $02
     jr z, jr_000_349c
 
@@ -8682,7 +8720,7 @@ jr_000_34ea:
     ld l, a
     ld h, $00
     add hl, hl
-    ld de, $ccba
+    ld de, wBrickMap - $30
     add hl, de
     ld a, c
     and $f0
@@ -8700,13 +8738,13 @@ jr_000_34ea:
     cp $0e
     jr z, jr_000_352e
 
-    call Call_000_1a0b
-    ld a, [$dc47]
+    call HitBrickWithShot
+    ld a, [wPlasmaState]
     cp $02
     jp z, Jump_000_3213
 
 jr_000_352e:
-    ld a, [$dc47]
+    ld a, [wPlasmaState]
     or a
     jr z, jr_000_353e
 
@@ -8715,7 +8753,7 @@ jr_000_352e:
     jr nz, jr_000_353e
 
     xor a
-    ld [$dc47], a
+    ld [wPlasmaState], a
 
 jr_000_353e:
     xor a
@@ -8750,7 +8788,7 @@ Jump_000_356b:
     ld a, [$c2b7]
     ld h, a
     ld e, $01
-    ld a, [$dc47]
+    ld a, [wPlasmaState]
     cp $02
     jr z, jr_000_358e
 
@@ -8835,7 +8873,7 @@ jr_000_35dc:
     ld l, a
     ld h, $00
     add hl, hl
-    ld de, $ccba
+    ld de, wBrickMap - $30
     add hl, de
     ld a, c
     and $f0
@@ -8853,13 +8891,13 @@ jr_000_35dc:
     cp $0e
     jr z, jr_000_3620
 
-    call Call_000_1a0b
-    ld a, [$dc47]
+    call HitBrickWithShot
+    ld a, [wPlasmaState]
     cp $02
     jp z, Jump_000_321a
 
 jr_000_3620:
-    ld a, [$dc47]
+    ld a, [wPlasmaState]
     or a
     jr z, jr_000_3630
 
@@ -8868,7 +8906,7 @@ jr_000_3620:
     jr nz, jr_000_3630
 
     xor a
-    ld [$dc47], a
+    ld [wPlasmaState], a
 
 jr_000_3630:
     xor a
@@ -8978,7 +9016,7 @@ jr_000_36bc:
     ld l, a
     ld h, $00
     add hl, hl
-    ld de, $ccba
+    ld de, wBrickMap - $30
     add hl, de
     ld a, c
     and $f0
@@ -8996,7 +9034,7 @@ jr_000_36bc:
     cp $0e
     jr z, jr_000_36f8
 
-    call Call_000_1a3a
+    call HitBrickWithBall
 
 jr_000_36f8:
     xor a
@@ -9097,7 +9135,7 @@ jr_000_3778:
     ld l, a
     ld h, $00
     add hl, hl
-    ld de, $ccba
+    ld de, wBrickMap - $30
     add hl, de
     ld a, c
     and $f0
@@ -9115,7 +9153,7 @@ jr_000_3778:
     cp $0e
     jr z, jr_000_37b4
 
-    call Call_000_1a3a
+    call HitBrickWithBall
 
 jr_000_37b4:
     xor a
@@ -9216,7 +9254,7 @@ jr_000_3834:
     ld l, a
     ld h, $00
     add hl, hl
-    ld de, $ccba
+    ld de, wBrickMap - $30
     add hl, de
     ld a, c
     and $f0
@@ -9234,7 +9272,7 @@ jr_000_3834:
     cp $0e
     jr z, jr_000_3870
 
-    call Call_000_1a3a
+    call HitBrickWithBall
 
 jr_000_3870:
     xor a
@@ -9335,7 +9373,7 @@ jr_000_38f0:
     ld l, a
     ld h, $00
     add hl, hl
-    ld de, $ccba
+    ld de, wBrickMap - $30
     add hl, de
     ld a, c
     and $f0
@@ -9353,7 +9391,7 @@ jr_000_38f0:
     cp $0e
     jr z, jr_000_392c
 
-    call Call_000_1a3a
+    call HitBrickWithBall
 
 jr_000_392c:
     xor a
@@ -9381,11 +9419,12 @@ jr_000_392c:
     ld [$dc44], a
     jp Jump_000_3228
 
+Jump_000_3959:
     ld hl, $02b3
     ld a, l
-    ld [$ff96], a
+    ld [hVBlankHandler], a
     ld a, h
-    ld [$ff97], a
+    ld [hVBlankHandler + 1], a
     xor a
     ld [$ff9c], a
     ld a, $01
@@ -9433,26 +9472,27 @@ jr_000_392c:
     ld l, a
     ld a, [$df4d]
     ld h, a
-    call Call_000_0e54
+    call DrawString
     ld a, $01
     call ChangeROMBank
-    ld a, [$db51]
+    ld a, [wCheatLivesRefill]
     or a
     jr z, jr_000_39ec
 
     ld a, $09
-    ld [$d8ac], a
+    ld [wLives], a
 
 jr_000_39ec:
     ret
 
+Jump_000_39ed:
     ld a, $46
     ld [$ff91], a
     ld hl, $02b3
     ld a, l
-    ld [$ff96], a
+    ld [hVBlankHandler], a
     ld a, h
-    ld [$ff97], a
+    ld [hVBlankHandler + 1], a
     xor a
     ld [$ff9c], a
     ld a, $01
@@ -9490,23 +9530,26 @@ jr_000_39ec:
     call Call_000_01d4
     ld a, $01
     call ChangeROMBank
+
+ClearCheatFlags:
     ld a, $00
-    ld [$db51], a
+    ld [wCheatLivesRefill], a
     ld a, $00
-    ld [$db52], a
+    ld [wCheatLevelSkip], a
     ld a, $00
-    ld [$db53], a
+    ld [wCheatPhotoBackground], a
     ld a, $00
-    ld [$db54], a
+    ld [wCheatShowVersion], a
     ret
 
+Jump_000_3a6c:
     ld a, $46
     ld [$ff91], a
     ld hl, $02b3
     ld a, l
-    ld [$ff96], a
+    ld [hVBlankHandler], a
     ld a, h
-    ld [$ff97], a
+    ld [hVBlankHandler + 1], a
     ld a, $01
     ld [$ff9c], a
     ld [$ff9b], a
@@ -9556,18 +9599,19 @@ jr_000_39ec:
 
 jr_000_3ae3:
     ld a, $06
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $01
     ld [$ffa0], a
     ret
 
+Jump_000_3aee:
     ld e, $09
     call Call_000_3e51
     ld hl, $05a9
     ld a, l
-    ld [$ff96], a
+    ld [hVBlankHandler], a
     ld a, h
-    ld [$ff97], a
+    ld [hVBlankHandler + 1], a
     xor a
     ld [$ff9b], a
     ld a, $03
@@ -9728,11 +9772,11 @@ jr_000_3bfe:
 
 jr_000_3c04:
     ld a, $01
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $28
     ld [$ffa0], a
     ld a, $1a
-    call Call_000_3e64
+    call PlaySound
     ld a, [$dcf8]
     ld l, a
     ld a, [$dcf9]
@@ -9771,18 +9815,19 @@ jr_000_3c3d:
     ld [$dcfe], a
     ret
 
+Jump_000_3c45:
     ld a, $00
     ld [$c359], a
     ld hl, $02b3
     ld a, l
-    ld [$ff96], a
+    ld [hVBlankHandler], a
     ld a, h
-    ld [$ff97], a
+    ld [hVBlankHandler + 1], a
     ld hl, $0298
     ld a, l
-    ld [$ff98], a
+    ld [hStatHandler], a
     ld a, h
-    ld [$ff99], a
+    ld [hStatHandler + 1], a
     ld a, $1c
     ld [$ff9b], a
     xor a
@@ -9902,7 +9947,7 @@ jr_000_3d1d:
     ld [$dd49], a
     ld a, h
     ld [$dd4a], a
-    call $5c09
+    call Call_001_5c09
     ld a, [$dd4f]
     ld l, a
     ld a, [$dd50]
@@ -9915,11 +9960,11 @@ jr_000_3d1d:
     ld [$dd50], a
     ld b, h
     ld c, l
-    call $7c3c
+    call Call_001_7c3c
     ld hl, $dd0b
-    call Call_000_0e54
-    call Call_000_0e54
-    call Call_000_0e54
+    call DrawString
+    call DrawString
+    call DrawString
     ld a, $2d
     ld [$dd4b], a
     ld hl, $67ad
@@ -9938,11 +9983,11 @@ jr_000_3d1d:
     ld a, h
     ld [$dd7f], a
     ld hl, $dd60
-    call $5d2e
+    call Call_001_5d2e
     ld hl, $dd6f
-    call $5d2e
+    call Call_001_5d2e
     ld hl, $dd7e
-    call $5d2e
+    call Call_001_5d2e
     ld hl, $dd8d
     ld a, l
     ld [$dd6d], a
@@ -9964,11 +10009,12 @@ jr_000_3d1d:
     call DataTransfer
     ret
 
+Jump_000_3dee:
     ld hl, $02b3
     ld a, l
-    ld [$ff96], a
+    ld [hVBlankHandler], a
     ld a, h
-    ld [$ff97], a
+    ld [hVBlankHandler + 1], a
     ld a, $01
     ld [$ff9c], a
     ld [$ff9b], a
@@ -10020,7 +10066,8 @@ Call_000_3e56:
     ld [ROM_BANK], a
     ret
 
-Call_000_3e64:
+; Play sound effect A.
+PlaySound:
     push de
     push hl
     push bc
@@ -10031,7 +10078,7 @@ Call_000_3e64:
 
     ld a, $06
     ld [ROM_BANK], a
-    call $4819
+    call Call_006_4819
     ld a, $01
     ld [ROM_BANK], a
 
@@ -10045,18 +10092,19 @@ jr_000_3e7b:
 Call_000_3e7f:
     ld a, $06
     ld [ROM_BANK], a
-    call $4000
+    call Call_006_4000
     ld a, $01
     ld [ROM_BANK], a
     ret
 
+Jump_000_3e8d:
     ld a, $46
     ld [$ff91], a
     ld hl, $02b3
     ld a, l
-    ld [$ff96], a
+    ld [hVBlankHandler], a
     ld a, h
-    ld [$ff97], a
+    ld [hVBlankHandler + 1], a
     ld a, $01
     ld [$ff9c], a
     ld [$ff9b], a
@@ -10102,20 +10150,21 @@ Call_000_3e7f:
 
 jr_000_3ef8:
     ld a, $0c
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $01
     ld [$ffa0], a
     ret
 
+Jump_000_3f03:
     ld e, $08
     call Call_000_3e51
     xor a
     ldh [rSCX], a
     ld hl, $02b3
     ld a, l
-    ld [$ff96], a
+    ld [hVBlankHandler], a
     ld a, h
-    ld [$ff97], a
+    ld [hVBlankHandler + 1], a
     xor a
     ld [$ff9c], a
     ld [$dcfe], a
@@ -10174,7 +10223,7 @@ jr_000_3ef8:
     call Call_000_0e84
     call Call_000_0e84
     ld a, $01
-    ld [$d8ac], a
+    ld [wLives], a
     call ChangeROMBank
     ret
 
