@@ -48,12 +48,13 @@ The sources build to the matching ROM with RGBDS 0.8.0 (`make`), with no warning
 
 - **Names inside routines.** Every subroutine in banks 0 and 1 has a name, but about 60 jump targets (`Jump_000_xxxx`) and about 700 `jr_` labels inside routines are still automatic. About 25 subroutines are named only after the screen that uses them and their address, for example `LevelPassword_Sub5c09`.
 - **RAM.** `include/ram.inc` has about 195 real names. Another 242 variables have placeholder names (`wUnk_xxxx`, `hUnk_xxxx`). Code in banks 0 and 1 no longer contains raw work RAM addresses.
-- **Relocation.** `tools/relocation_test.py` shifts a bank by 3 bytes, rebuilds, and compares a scripted play-through with the original. Banks 0, 1, 2, 3, 5, 7, 8, 9, `$0A`, `$0C`, `$0D`, `$0E` and `$0F` pass. What is not covered:
-  - The session plays in English, so the other four language tables and banks `$10`–`$13` are not exercised. The language graphics banks (`$0B`, `$10`–`$13`) share one layout and must stay identical in structure.
-  - Bank `$0B` cannot be shifted by a few bytes: the "HIGH SCORE" animation is sent with HDMA and must stay 16-byte aligned. An `ASSERT` checks this.
+- **Relocation.** `tools/relocation_test.py` shifts a bank by 3 bytes, rebuilds, and compares a scripted play-through with the original. The session covers the menus, the high score and credits screens that appear when the menu idles, every level load, pause, the password screens, the ending and game over.
+  - In English, banks 0, 1, 2, 3, 5, 7, 8, 9, `$0A`, `$0C`, `$0D`, `$0E` and `$0F` pass.
+  - In Spanish, French, German and Italian, banks 0, 1, 5, `$0C` and `$0E` pass. These hold the language tables and text. Bank `$0F` (credits) also passes in French.
+  - The language graphics banks (`$0B`, `$10`–`$13`) share one layout and must stay identical in structure. They cannot be shifted by a few bytes: the "HIGH SCORE" animation is sent with HDMA and must stay 16-byte aligned. An `ASSERT` checks this for bank `$0B`.
   - Bank 6 (music) fails. Its data has pointers that are still numbers.
   - Bank 4 ends with an image and cannot be tested this way.
-  - Sound is not compared, only the screen.
+  - Only the screen is compared, not sound.
 - **Graphics.** Tile data is in `gfx/*.2bpp`. Six newer files have no PNG yet. Some images are loaded in two parts but stored as one file.
 - **Music.** Bank 6 holds the music driver and its data. Only the first routines are labelled.
 - **Unlabelled data.** `docs/ROM_MAP.md` shows the blocks with no meaningful name yet. Banks `$0B` and `$10`–`$13` (language graphics) and bank 9 are the largest.

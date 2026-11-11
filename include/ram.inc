@@ -190,6 +190,9 @@ DEF wBallEffectTick        EQU $d8a7 ; Frame counter for wBallEffectTimer
 DEF wBrickRedrawQueue      EQU $d91c ; Brick tile changes waiting to be drawn, 4 bytes each
 DEF wStartLevelText        EQU $dad3 ; The three digits of "START nnn" on the menu
 DEF wMenuSparkles          EQU $dae3 ; The sparkles on the menu screens
+DEF wMenuIdleTimer         EQU $ccb7 ; Counts down every second frame on the menu; any button resets it. At 0 the high scores or the credits appear
+DEF wMenuTick              EQU $dae0 ; Counts frames on the menu
+DEF wAttractToggle         EQU $dae2 ; Alternates between the high scores and the credits each time the menu idles
 
 ; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
 DEF wLanguage              EQU $defc
@@ -297,7 +300,6 @@ DEF wUnk_ccad EQU $ccad
 DEF wUnk_ccb4 EQU $ccb4
 DEF wUnk_ccb5 EQU $ccb5
 DEF wUnk_ccb6 EQU $ccb6
-DEF wUnk_ccb7 EQU $ccb7
 DEF wUnk_ccbb EQU $ccbb
 DEF wUnk_ccbc EQU $ccbc
 DEF wUnk_ccbd EQU $ccbd
@@ -347,9 +349,7 @@ DEF wUnk_dab8 EQU $dab8
 DEF wUnk_dab9 EQU $dab9
 DEF wUnk_dac3 EQU $dac3
 DEF wUnk_dad2 EQU $dad2
-DEF wUnk_dae0 EQU $dae0
 DEF wUnk_dae1 EQU $dae1
-DEF wUnk_dae2 EQU $dae2
 DEF wUnk_daed EQU $daed
 DEF wUnk_daf7 EQU $daf7
 DEF wUnk_db4f EQU $db4f
