@@ -221,15 +221,17 @@ One of the four corner cases has a mistake in the original code. For an exact di
 - **Ghost and Ninja:** the blob cannot catch the ball while `wGhostActive` or `wNinjaActive` is set. Ghost lasts until `wGhostTimer` runs out.
 - **Projectiles:** `wProjectiles` has 4 slots of 9 bytes. Grenades use the same slots.
 
-`hJoypad` bits: 0 = right, 1 = left, 4 = A, 5 = B, 7 = Start.
-
 ## Weapons
 
 `UpdateShots` updates six shot slots (`wShotActive`), then `Shots_HandleFire` reads the A button.
 
 - **Grenade:** holding A raises `wGrenadePower` up to a limit. Releasing A throws the grenade, takes one from `wGrenadeCount` and shows the "GRENADE n" message from `GrenadeTexts_*`. Left or right held at that moment sets the throw direction. Using the last grenade clears `wWeaponFlag`.
-- **Rocket and Laser:** `wRocketLaserBat` is 1 and `wLaserBat` picks the type. `wShotReloadDelay` is the wait between shots.
-- **Plasma:** A fires when no shot is in flight. Firing sets `wPlasmaState` to 2 and clears `wWeaponFlag`.
+- **Rocket and Laser:** `wRocketLaserBat` is 1 and `wLaserBat` picks the type. Each shot needs a new press of A (`wFireLatch`) and the cooldown `wShotCooldown` must have run out.
+  - Rocket: cooldown 30 frames, at most 3 on screen (slots 0 to 2), 1 pixel per frame.
+  - Laser: cooldown 8 frames, at most 6 on screen (slots 0 to 5), 2 pixels per frame.
+  - A shot starts at the bat and flies straight up. It ends at the top of the playfield, on an unbreakable brick, or on the first brick it hits.
+- **Shot slots differ.** Slots 0 and 1 hit bricks with `HitBrickWithShot`. Slots 2 to 5 use `HitBrickWithBall`, the ball's routine. So while Ninja is active, a shot from slots 2 to 5 sets a brick to 1 hit point as the ball would, and a shot from slots 0 and 1 removes 1 hit point as usual.
+- **Plasma:** A fires when no shot is in flight. Firing sets `wPlasmaState` to 2 and clears `wWeaponFlag`. The plasma shot uses slot 0 and passes through the bricks it hits.
 
 ## Score and effects
 
@@ -246,6 +248,15 @@ Three small effect lists are updated every frame in bank 1:
 - `wBrickBreakEffects` (14 slots), started by `SpawnBrickBreakEffect` when a brick is destroyed
 - `wPickupEffects` (4 slots), started by `SpawnPickupEffect` where a power-up is collected
 - `wUnbreakableHitEffects` (10 slots), started by `SpawnUnbreakableHitEffect` when the ball hits an unbreakable brick
+
+## Main menu and password entry
+
+`MainMenu_Update` (`00:20FA`) has two modes.
+
+- **Navigation** (`MainMenu_Navigate`): `wMenuCursor` selects one of 5 items: start, start at the password level, enter password, music and sound effects. The second item is hidden until a level password has been entered. A, B, Select or Start on either start item calls `StartGame`, which sets 5 lives, clears the score and sets the level.
+- **Password entry** (`MainMenu_PasswordEntry`): up and down change the letter at `wPasswordCursor`. The letters run from B to Z without the vowels, so 21 letters can be typed, but only the 16 in `PasswordAlphabet` are valid. A, Start or right moves to the next letter and B, Select or left moves back. Moving past the fourth letter calls `SubmitPassword`.
+
+`hJoypad` bits: 0 = right, 1 = left, 2 = up, 3 = down, 4 = A, 5 = B, 6 = Select, 7 = Start.
 
 ## Useful RAM
 
