@@ -7,300 +7,370 @@ SECTION "ROM Bank $00e", ROMX[$4000], BANK[$e]
 
     db $a6, $98, $00, $04, $56, $45, $52, $20, $32, $33, $20, $30, $32, $ff
 
-    db $c4, $98, $00, $04, $20, $20, $43, $4f, $4d, $45, $4e, $5a, $41, $52, $ff, $e3
-    db $98, $00, $01, $43, $4f, $4d, $45, $4e, $5a, $41, $52, $20, $00, $01, $4c, $30
-    db $30, $30, $ff, $23, $99, $00, $01, $20, $20, $43, $4f, $4e, $54, $52, $41, $53
-    db $45, $f0, $41, $20, $20, $ff, $64, $99, $00, $01, $20, $20, $4d, $ee, $53, $49
-    db $43, $41, $20, $53, $ef, $20, $ff
+Text_Spanish_StartGame:
+    dw $98c4
+    db $00, $04, "  COMENZAR", $ff
 
-    db $64, $99, $00, $01, $20, $20, $4d, $ee, $53, $49, $43, $41, $20, $4e, $4f, $20
-    db $ff
-    db $84, $99, $00, $01, $20, $20, $20, $53, $46, $58, $20, $53, $ef, $20, $20, $ff
+Text_Spanish_StartLevel:
+    dw $98e3
+    db $00, $01, "COMENZAR ", $00, $01, "L000", $ff
 
-    db $84, $99, $00, $01, $20, $20, $20, $53, $46, $58, $20, $4e, $4f, $20, $20, $ff
-    db $c4, $98, $00, $04, $53, $54, $41, $52, $54, $20, $47, $41, $4d, $45, $ff, $e1
-    db $98, $00, $01, $20, $20, $20, $53, $54, $41, $52, $54, $20, $00, $01, $4c, $30
-    db $30, $30, $ff, $23, $99, $00, $01, $45, $4e, $54, $45, $52, $20, $50, $41, $53
-    db $53, $57, $4f, $52, $44, $ff, $64, $99, $00, $01, $4d, $55, $53, $49, $43, $20
-    db $49, $53, $20, $4f, $4e, $20, $ff
+Text_Spanish_EnterPassword:
+    dw $9923
+    db $00, $01, "  CONTRASE", $f0, "A  ", $ff
 
-    db $64, $99, $00
-    db $01, $4d, $55, $53, $49, $43, $20, $49, $53, $20, $4f, $46, $46, $ff
-    db $84, $99, $00, $01, $53, $46, $58, $20, $41, $52, $45, $20, $4f, $4e, $20, $ff
+Text_Spanish_MusicOn:
+    dw $9964
+    db $00, $01, "  M", $ee, "SICA S", $ef, " ", $ff
 
-    db $84, $99, $00, $01, $53, $46, $58, $20, $41, $52, $45, $20, $4f, $46, $46, $ff
-    db $c4, $98, $00, $04, $20, $43, $4f, $4d, $4d, $45, $4e, $43, $45, $52, $ff, $e2
-    db $98, $00, $01, $20, $20, $20, $41, $4c, $4c, $45, $52, $20, $00, $01, $4c, $30
-    db $30, $30, $ff, $23, $99, $00, $01, $20, $4d, $4f, $54, $20, $44, $45, $20, $50
-    db $41, $53, $53, $45, $20, $ff
+Text_Spanish_MusicOff:
+    dw $9964
+    db $00, $01, "  M", $ee, "SICA NO ", $ff
 
-    db $64, $99, $00, $01, $4d, $55, $53, $49, $51, $55, $45, $20, $4e, $4f, $4e, $20
-    db $ff
-    db $64, $99, $00, $01, $4d, $55, $53, $49, $51, $55, $45, $20, $4f, $55, $49, $20
-    db $ff, $84, $99, $00, $01, $53, $4f, $4e, $4f, $52, $45, $53, $20, $4f, $55, $49
-    db $ff
+Text_Spanish_SfxOn:
+    dw $9984
+    db $00, $01, "   SFX S", $ef, "  ", $ff
 
-    db $84, $99, $00, $01, $53, $4f, $4e, $4f, $52, $45, $53, $20, $4e, $4f, $4e, $ff
-    db $c4, $98, $00, $04, $20, $20, $42, $45, $47, $49, $4e, $4e, $45, $4e, $ff, $e3
-    db $98, $00, $01, $42, $45, $47, $49, $4e, $4e, $45, $4e, $20, $00, $01, $4c, $30
-    db $30, $30, $ff, $23, $99, $00, $01, $20, $20, $20, $50, $41, $53, $53, $57, $4f
-    db $52, $54, $20, $20, $20, $ff, $64, $99, $00, $01, $20, $20, $4d, $55, $53, $49
-    db $4b, $20, $41, $4e, $20, $20, $ff
+Text_Spanish_SfxOff:
+    dw $9984
+    db $00, $01, "   SFX NO  ", $ff
 
-    db $64, $99, $00, $01, $20, $20, $4d, $55, $53, $49, $4b, $20, $41, $55, $53, $20
-    db $ff
-    db $84, $99, $00, $01, $20, $20, $53, $46, $58, $20, $41, $4e, $20, $20, $20, $ff
+Text_English_StartGame:
+    dw $98c4
+    db $00, $04, "START GAME", $ff
 
-    db $84, $99, $00, $01, $20, $20, $53, $46, $58, $20, $41, $55, $53, $20, $20, $ff
-    db $c4, $98, $00, $04, $20, $20, $49, $4e, $49, $5a, $49, $4f, $20, $20, $ff, $e2
-    db $98, $00, $01, $20, $20, $49, $4e, $49, $5a, $49, $4f, $20, $00, $01, $4c, $30
-    db $30, $30, $ff, $23, $99, $00, $01, $20, $20, $20, $50, $41, $53, $53, $57, $4f
-    db $52, $44, $20, $20, $20, $ff, $64, $99, $00, $01, $20, $4d, $55, $53, $49, $43
-    db $41, $20, $53, $ed, $20, $20, $ff, $64, $99, $00, $01, $20, $4d, $55, $53, $49
-    db $43, $41, $20, $4e, $4f, $20, $20, $ff, $84, $99, $00, $01, $20, $45, $46, $46
-    db $45, $54, $54, $49, $20, $53, $ed, $20, $ff, $84, $99, $00, $01, $20, $45, $46
-    db $46, $45, $54, $54, $49, $20, $4e, $4f, $20, $ff
+Text_English_StartLevel:
+    dw $98e1
+    db $00, $01, "   START ", $00, $01, "L000", $ff
 
-    db $00, $20, $20, $20, $20, $20, $4d, $55, $4c, $54, $49, $a6, $42, $41, $4c, $4c
-    db $20, $20, $20, $20, $20
+Text_English_EnterPassword:
+    dw $9923
+    db $00, $01, "ENTER PASSWORD", $ff
 
-    db $00, $20, $20, $20, $20, $4d, $55, $4c, $54, $49, $a6, $42, $41, $4c, $4c, $45
-    db $53, $20, $20, $20, $20, $00, $20, $20, $20, $20, $20, $4d, $55, $4c, $54, $49
-    db $a6, $42, $41
-    db $4c, $4c
-    db $20, $20, $20, $20
-    db $20
+Text_English_MusicOn:
+    dw $9964
+    db $00, $01, "MUSIC IS ON ", $ff
 
-    db $04, $20, $20, $20, $20, $20, $4d, $55, $4c, $54, $49, $20, $50, $41, $4c, $4c
-    db $41, $20, $20, $20, $20
+Text_English_MusicOff:
+    dw $9964
+    db $00, $01, "MUSIC IS OFF", $ff
 
-    db $04, $20, $20, $20, $20, $20, $4d, $55, $4c, $54, $49, $a6, $42, $4f, $4c, $41
-    db $53, $20, $20, $20, $20
+Text_English_SfxOn:
+    dw $9984
+    db $00, $01, "SFX ARE ON ", $ff
 
-    db $04, $20, $20, $20, $20, $20, $20, $53, $4c, $4f, $57, $20, $42, $41, $4c, $4c
-    db $20, $20, $20, $20, $20
+Text_English_SfxOff:
+    dw $9984
+    db $00, $01, "SFX ARE OFF", $ff
 
-    db $04, $20, $20, $20, $20, $20, $42, $41, $4c, $4c, $45, $20, $4c, $45, $4e, $54
-    db $45, $20, $20, $20, $20, $00, $20, $20, $20, $53, $43, $48, $4e, $45, $43, $4b
-    db $45, $4e, $a6
-    db $42, $41
-    db $4c, $4c, $20, $20
-    db $20
+Text_French_StartGame:
+    dw $98c4
+    db $00, $04, " COMMENCER", $ff
 
-    db $04, $20, $20, $20, $20, $20, $50, $41, $4c, $4c, $41, $20, $4c, $45, $4e, $54
-    db $41, $20, $20, $20, $20
+Text_French_StartLevel:
+    dw $98e2
+    db $00, $01, "   ALLER ", $00, $01, "L000", $ff
 
-    db $00, $20, $20, $20, $20, $20, $42, $4f, $4c, $41, $20, $4c, $45, $4e, $54, $41
-    db $20, $20, $20, $20, $20
+Text_French_EnterPassword:
+    dw $9923
+    db $00, $01, " MOT DE PASSE ", $ff
 
-    db $00, $20, $20, $41, $4e, $54, $49, $47, $52, $41, $56, $49, $54, $59, $20, $42
-    db $41, $4c, $4c, $20, $20
+Text_French_MusicOff:
+    dw $9964
+    db $00, $01, "MUSIQUE NON ", $ff
 
-    db $04, $20, $20, $42, $41, $4c, $4c, $45, $20, $41, $4e, $54, $49, $47, $52, $41
-    db $56, $49, $54, $ac, $20
+Text_French_MusicOn:
+    dw $9964
+    db $00, $01, "MUSIQUE OUI ", $ff
 
-    db $00, $20, $20, $41, $4e, $54, $49, $a6, $53, $43, $48, $57, $45, $52, $4b, $52
-    db $41, $46, $54, $20, $20
-    db $00, $20, $41, $4e, $54, $49, $47, $52, $41, $56, $49, $54, $41, $5a, $49, $4f
-    db $4e, $41, $4c, $45, $20
+Text_French_SfxOn:
+    dw $9984
+    db $00, $01, "SONORES OUI", $ff
 
-    db $00, $20, $42, $4f, $4c, $41, $20, $41, $4e, $54, $49, $a6, $47, $52, $41, $56
-    db $45, $44, $41, $44, $20
+Text_French_SfxOff:
+    dw $9984
+    db $00, $01, "SONORES NON", $ff
 
-    db $04, $20, $20, $20, $20, $20, $53, $4c, $45, $45, $50, $59, $20, $42, $41, $4c
-    db $4c, $20, $20, $20, $20
+Text_German_StartGame:
+    dw $98c4
+    db $00, $04, "  BEGINNEN", $ff
 
-    db $00, $20, $20, $20, $42, $41, $4c, $4c, $45, $20, $45, $4e, $44, $4f, $52, $4d
-    db $49, $45, $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $53, $43, $48, $4c, $41, $46, $a6, $42
-    db $41, $4c, $4c, $20, $20, $20, $20
-    db $00, $20, $50, $41, $4c, $4c, $41, $20, $41, $44, $44, $4f, $52, $4d, $45, $4e
-    db $54, $41, $54, $41, $20
+Text_German_StartLevel:
+    dw $98e3
+    db $00, $01, "BEGINNEN ", $00, $01, "L000", $ff
 
-    db $04, $20, $20, $20, $42, $4f, $4c, $41, $20, $41, $4c, $45, $54, $41, $52, $47
-    db $41, $44, $41, $20, $20
+Text_German_EnterPassword:
+    dw $9923
+    db $00, $01, "   PASSWORT   ", $ff
 
-    db $00, $20, $20, $20, $20, $20, $52, $4f, $43, $4b, $45, $54, $20, $42, $41, $54
-    db $20, $20, $20, $20, $20
+Text_German_MusicOn:
+    dw $9964
+    db $00, $01, "  MUSIK AN  ", $ff
 
-    db $04, $20, $20, $20, $20, $20, $42, $41, $54, $54, $45, $20, $46, $55, $53, $ac
-    db $45, $20, $20, $20, $20
+Text_German_MusicOff:
+    dw $9964
+    db $00, $01, "  MUSIK AUS ", $ff
 
-    db $00, $20, $20, $52, $41, $4b, $45, $54, $45, $4e, $a6, $53, $43, $48, $4c, $a7
-    db $47, $45, $52, $20, $20
+Text_German_SfxOn:
+    dw $9984
+    db $00, $01, "  SFX AN   ", $ff
 
-    db $04, $20, $20, $4d, $41, $5a, $5a, $41, $20, $4c, $41, $4e, $43, $49, $41, $52
-    db $41, $5a, $5a, $49, $20
+Text_German_SfxOff:
+    dw $9984
+    db $00, $01, "  SFX AUS  ", $ff
 
-    db $04, $20, $20, $20, $20, $20, $42, $41, $54, $45, $20, $43, $4f, $48, $45, $54
-    db $45, $20, $20, $20, $20
+Text_Italian_StartGame:
+    dw $98c4
+    db $00, $04, "  INIZIO  ", $ff
 
-    db $00, $20, $20, $20, $20, $20, $50, $4c, $41, $53, $4d, $41, $20, $42, $41, $54
-    db $20, $20, $20, $20, $20
+Text_Italian_StartLevel:
+    dw $98e2
+    db $00, $01, "  INIZIO ", $00, $01, "L000", $ff
 
-    db $04, $20, $20, $20, $20, $20, $4d, $4f, $44, $45, $20, $50, $4c, $41, $53, $4d
-    db $41, $20, $20, $20, $20, $04, $20, $20, $20, $50, $4c, $41, $53, $4d, $41, $a6
-    db $53, $43, $48
-    db $4c, $a7
-    db $47, $45, $52, $20, $20
-    db $04, $20, $20, $20, $4d, $41, $5a, $5a, $41, $20, $41, $4c, $20, $50, $4c, $41
-    db $53, $4d, $41, $20, $20
+Text_Italian_EnterPassword:
+    dw $9923
+    db $00, $01, "   PASSWORD   ", $ff
 
-    db $04, $20, $20, $20, $20, $20, $42, $41, $54, $45, $20, $50, $4c, $41, $53, $4d
-    db $41, $20, $20, $20, $20
+Text_Italian_MusicOn:
+    dw $9964
+    db $00, $01, " MUSICA S", $ed, "  ", $ff
 
-    db $04, $20, $20, $20, $20, $20, $20, $20, $42, $49, $47, $20, $42, $41, $54, $20
-    db $20, $20, $20, $20, $20
+Text_Italian_MusicOff:
+    dw $9964
+    db $00, $01, " MUSICA NO  ", $ff
 
-    db $00
-    db $20, $20, $20, $20, $20, $4d, $ac, $47, $41, $20, $42, $41, $54, $54, $45, $20
-    db $20, $20, $20, $20, $04, $20, $20, $20, $52
-    db $49, $45, $53, $45, $4e, $a6, $53, $43, $48
-    db $4c, $a7
-    db $47, $45, $52, $20, $20, $04, $20, $20, $20, $20, $4d, $41, $5a
-    db $5a, $41
-    db $20, $47, $49, $47
-    db $41, $4e, $54, $45, $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $42, $41, $54, $45, $20, $47, $52, $41
-    db $4e
-    db $44
-    db $45, $20, $20, $20, $20
-    db $00, $20, $20, $20, $20, $20, $20, $53, $54, $55, $4e, $20, $42, $41, $54, $20
-    db $20, $20, $20, $20, $20
+Text_Italian_SfxOn:
+    dw $9984
+    db $00, $01, " EFFETTI S", $ed, " ", $ff
 
-    db $04, $20, $20
-    db $42, $41, $54, $54, $45, $20, $45, $4d
-    db $50, $4f, $49, $53, $4f, $4e, $4e, $ac, $45
-    db $20, $00
-    db $20, $20, $20, $20, $20, $56, $45, $52, $57
-    db $49, $52, $52, $54
-    db $45, $52, $20, $20, $20, $20
-    db $20, $00
-    db $20, $20, $20, $4d, $41, $5a, $5a, $41, $20, $53, $54, $4f, $52
-    db $44, $49
-    db $54, $41, $20, $20
-    db $20
+Text_Italian_SfxOff:
+    dw $9984
+    db $00, $01, " EFFETTI NO ", $ff
 
-    db $04, $20, $20, $20, $20, $42, $41, $54, $45, $20, $41, $54, $55, $52, $44, $49
-    db $44, $4f, $20, $20, $20
+PowerupText_English_MultiBall:
+    db $00, "     MULTI", $a6, "BALL     "
 
-    db $00, $20, $20, $20, $20, $4d, $41, $47, $4e, $45, $54, $49, $43, $20, $42, $41
-    db $54, $20, $20, $20, $20
+PowerupText_French_MultiBall:
+    db $00, "    MULTI", $a6, "BALLES    "
 
-    db $00, $20, $20, $42, $41, $54, $54, $45, $20, $4d, $41, $47, $4e, $ac, $54, $49
-    db $51, $55, $45
-    db $20, $20, $04, $20, $20, $20, $4d, $41, $47, $4e, $45, $54
-    db $a6, $53, $43, $48
-    db $4c, $a7, $47, $45, $52, $20, $20
-    db $04, $20, $20, $20, $4d, $41, $5a, $5a, $41, $20, $4d, $41, $47, $4e, $45, $54
-    db $49, $43, $41, $20, $20
+PowerupText_German_MultiBall:
+    db $00, "     MULTI", $a6, "BALL     "
 
-    db $00, $20, $20, $20, $42, $41, $54, $45, $20, $4d, $41, $47, $4e, $ac, $54, $49
-    db $43, $4f, $20, $20, $20
+PowerupText_Italian_MultiBall:
+    db $04, "     MULTI PALLA    "
 
-    db $00, $20, $20, $20, $20, $20, $45, $58, $54, $52, $41, $20, $4c, $49, $46, $45
-    db $20, $20, $20, $20, $20
+PowerupText_Spanish_MultiBall:
+    db $04, "     MULTI", $a6, "BOLAS    "
 
-    db $04, $20, $20, $20, $20, $20, $20, $42, $4f, $4e, $55, $53, $20, $56, $49, $45
-    db $20, $20, $20, $20, $20, $04, $20, $20, $20, $20
-    db $20, $45, $58, $54, $52, $41, $20, $4c, $45
-    db $42, $45
-    db $4e, $20, $20, $20, $20, $00, $20, $20, $20, $20, $20, $56, $49
-    db $54, $41
-    db $20, $45, $58, $54
-    db $52, $41
-    db $20, $20, $20, $20, $20, $00
-    db $20, $20, $20, $20, $20, $56, $49, $44
-    db $41, $20, $45, $58, $54
-    db $52, $41
-    db $20, $20, $20, $20
-    db $20
+PowerupText_English_SlowBall:
+    db $04, "      SLOW BALL     "
 
-    db $04, $20, $20, $20, $20, $20, $20, $4c, $41, $5a, $45, $52, $20, $42, $41, $54
-    db $20, $20, $20, $20, $20
+PowerupText_French_SlowBall:
+    db $04, "     BALLE LENTE    "
 
-    db $00, $20, $20, $20, $20
-    db $20, $4d, $4f
-    db $44, $45
-    db $20, $4c, $41, $53, $45, $52, $20, $20
-    db $20, $20, $20, $00
-    db $20, $20, $20, $4c, $41, $53, $45, $52
-    db $a6, $53, $43, $48, $4c
-    db $a7, $47
-    db $45, $52
-    db $20, $20
-    db $20
+PowerupText_German_SlowBall:
+    db $00, "   SCHNECKEN", $a6, "BALL   "
 
-    db $04, $20, $20, $4d, $41, $5a, $5a, $41, $20, $53, $50, $41, $52, $41, $20, $4c
-    db $41, $53, $45, $52, $20
+PowerupText_Italian_SlowBall:
+    db $04, "     PALLA LENTA    "
 
-    db $00, $20, $20, $20, $20, $20, $42, $41, $54, $45, $20, $4c, $ad, $53, $45, $52
-    db $20, $20, $20, $20, $20
+PowerupText_Spanish_SlowBall:
+    db $00, "     BOLA LENTA     "
 
-    db $04, $20, $20, $20, $20, $20, $52, $45, $56, $45, $52, $53, $45, $20, $42, $41
-    db $54, $20, $20, $20, $20
+PowerupText_English_AntigravityBall:
+    db $00, "  ANTIGRAVITY BALL  "
 
-    db $00, $20, $20, $20, $42, $41, $54, $54, $45, $20, $49, $4e, $56, $45, $52, $53
-    db $ac, $45, $20, $20, $20, $00
-    db $20, $20, $20, $20, $20, $56, $45, $52, $4b, $45, $48, $52, $54
-    db $45, $52, $20, $20, $20, $20, $20, $04, $20, $20, $20, $4d
-    db $41, $5a, $5a, $41, $20, $49, $4d, $50, $41
-    db $5a, $5a
-    db $49, $54, $41, $20, $20, $00, $20, $20, $20, $42, $41, $54, $45
-    db $20, $49
-    db $4e, $56, $45, $52
-    db $54, $49, $44, $4f, $20, $20
-    db $20
+PowerupText_French_AntigravityBall:
+    db $04, "  BALLE ANTIGRAVIT", $ac, " "
 
-    db $00, $20, $20, $20, $20, $20, $20, $47, $48, $4f, $53, $54, $20, $55, $50, $20
-    db $20, $20, $20, $20, $20
+PowerupText_German_AntigravityBall:
+    db $00, "  ANTI", $a6, "SCHWERKRAFT  "
 
-    db $04, $20, $20, $20, $20, $20, $20, $20, $20
-    db $4d
-    db $41, $47, $49, $45, $20, $20, $20, $20, $20, $20, $20, $04, $20, $20, $20, $47
-    db $48, $4f, $53
-    db $54, $20, $41, $4b, $54, $49
-    db $56, $49
-    db $45, $52
-    db $54, $20, $20
-    db $04, $20, $20, $20, $20, $20, $20, $20, $20, $4d, $41, $47, $49, $41, $20, $20
-    db $20, $20, $20, $20, $20
+PowerupText_Italian_AntigravityBall:
+    db $00, " ANTIGRAVITAZIONALE "
 
-    db $00, $20, $20, $20, $20, $20, $4d, $4f, $44, $4f, $20, $4d, $41, $47, $49, $41
-    db $20, $20, $20, $20, $20
+PowerupText_Spanish_AntigravityBall:
+    db $00, " BOLA ANTI", $a6, "GRAVEDAD "
 
-    db $04, $20, $20, $20, $20, $20, $47, $52, $45, $4e, $41, $44, $45, $20, $42, $41
-    db $54, $20, $20, $20, $20
+PowerupText_English_SleepyBall:
+    db $04, "     SLEEPY BALL    "
 
-    db $00, $20, $20, $20, $20, $4d, $4f, $44, $45, $20, $47, $52, $45, $4e, $41, $44
-    db $45, $20, $20, $20, $20, $04, $20, $20, $47, $52, $41, $4e, $41, $54, $45, $4e
-    db $a6, $53, $43
-    db $48, $4c
-    db $a7, $47, $45, $52, $20, $04, $20, $20, $20, $20
-    db $4c, $41, $4e, $43
-    db $49, $41
-    db $47, $52, $41
-    db $4e, $41, $54, $45, $20, $20, $20, $00
-    db $20, $20, $20, $20, $42, $41, $54, $45, $20, $47, $52, $41, $4e
-    db $41, $44
-    db $41, $20, $20
-    db $20, $20
-    db $00, $20, $20, $20, $20, $20, $20, $4e, $49, $4e, $4a, $41, $20, $55, $50, $20
-    db $20, $20, $20, $20, $20
+PowerupText_French_SleepyBall:
+    db $00, "   BALLE ENDORMIE   "
 
-    db $04, $20, $20, $20, $20, $20, $20, $20, $20
-    db $4e, $49
-    db $4e, $4a, $41, $20, $20, $20, $20, $20, $20, $20, $04, $20, $20, $20, $4e
-    db $49, $4e, $4a, $41, $20, $41, $4b, $54, $49
-    db $56, $49
-    db $45, $52
-    db $54
-    db $20, $20
-    db $04, $20, $20, $20, $20, $20, $43, $4f, $4c, $50, $4f, $20, $4e, $49, $4e, $4a
-    db $41, $20, $20, $20, $20
+PowerupText_German_SleepyBall:
+    db $04, "     SCHLAF", $a6, "BALL    "
 
-    db $00, $20, $20, $20, $20, $20, $4d, $4f, $44, $4f, $20, $4e, $49, $4e, $4a, $41
-    db $20, $20, $20, $20, $20
+PowerupText_Italian_SleepyBall:
+    db $00, " PALLA ADDORMENTATA "
+
+PowerupText_Spanish_SleepyBall:
+    db $04, "   BOLA ALETARGADA  "
+
+PowerupText_English_RocketBat:
+    db $00, "     ROCKET BAT     "
+
+PowerupText_French_RocketBat:
+    db $04, "     BATTE FUS", $ac, "E    "
+
+PowerupText_German_RocketBat:
+    db $00, "  RAKETEN", $a6, "SCHL", $a7, "GER  "
+
+PowerupText_Italian_RocketBat:
+    db $04, "  MAZZA LANCIARAZZI "
+
+PowerupText_Spanish_RocketBat:
+    db $04, "     BATE COHETE    "
+
+PowerupText_English_PlasmaBat:
+    db $00, "     PLASMA BAT     "
+
+PowerupText_French_PlasmaBat:
+    db $04, "     MODE PLASMA    "
+
+PowerupText_German_PlasmaBat:
+    db $04, "   PLASMA", $a6, "SCHL", $a7, "GER  "
+
+PowerupText_Italian_PlasmaBat:
+    db $04, "   MAZZA AL PLASMA  "
+
+PowerupText_Spanish_PlasmaBat:
+    db $04, "     BATE PLASMA    "
+
+PowerupText_English_BigBat:
+    db $04, "       BIG BAT      "
+
+PowerupText_French_BigBat:
+    db $00, "     M", $ac, "GA BATTE     "
+
+PowerupText_German_BigBat:
+    db $04, "   RIESEN", $a6, "SCHL", $a7, "GER  "
+
+PowerupText_Italian_BigBat:
+    db $04, "    MAZZA GIGANTE   "
+
+PowerupText_Spanish_BigBat:
+    db $04, "     BATE GRANDE    "
+
+PowerupText_English_StunBat:
+    db $00, "      STUN BAT      "
+
+PowerupText_French_StunBat:
+    db $04, "  BATTE EMPOISONN", $ac, "E "
+
+PowerupText_German_StunBat:
+    db $00, "     VERWIRRTER     "
+
+PowerupText_Italian_StunBat:
+    db $00, "   MAZZA STORDITA   "
+
+PowerupText_Spanish_StunBat:
+    db $04, "    BATE ATURDIDO   "
+
+PowerupText_English_MagneticBat:
+    db $00, "    MAGNETIC BAT    "
+
+PowerupText_French_MagneticBat:
+    db $00, "  BATTE MAGN", $ac, "TIQUE  "
+
+PowerupText_German_MagneticBat:
+    db $04, "   MAGNET", $a6, "SCHL", $a7, "GER  "
+
+PowerupText_Italian_MagneticBat:
+    db $04, "   MAZZA MAGNETICA  "
+
+PowerupText_Spanish_MagneticBat:
+    db $00, "   BATE MAGN", $ac, "TICO   "
+
+PowerupText_English_ExtraLife:
+    db $00, "     EXTRA LIFE     "
+
+PowerupText_French_ExtraLife:
+    db $04, "      BONUS VIE     "
+
+PowerupText_German_ExtraLife:
+    db $04, "     EXTRA LEBEN    "
+
+PowerupText_Italian_ExtraLife:
+    db $00, "     VITA EXTRA     "
+
+PowerupText_Spanish_ExtraLife:
+    db $00, "     VIDA EXTRA     "
+
+PowerupText_English_LazerBat:
+    db $04, "      LAZER BAT     "
+
+PowerupText_French_LazerBat:
+    db $00, "     MODE LASER     "
+
+PowerupText_German_LazerBat:
+    db $00, "   LASER", $a6, "SCHL", $a7, "GER   "
+
+PowerupText_Italian_LazerBat:
+    db $04, "  MAZZA SPARA LASER "
+
+PowerupText_Spanish_LazerBat:
+    db $00, "     BATE L", $ad, "SER     "
+
+PowerupText_English_ReverseBat:
+    db $04, "     REVERSE BAT    "
+
+PowerupText_French_ReverseBat:
+    db $00, "   BATTE INVERS", $ac, "E   "
+
+PowerupText_German_ReverseBat:
+    db $00, "     VERKEHRTER     "
+
+PowerupText_Italian_ReverseBat:
+    db $04, "   MAZZA IMPAZZITA  "
+
+PowerupText_Spanish_ReverseBat:
+    db $00, "   BATE INVERTIDO   "
+
+PowerupText_English_GhostUp:
+    db $00, "      GHOST UP      "
+
+PowerupText_French_GhostUp:
+    db $04, "        MAGIE       "
+
+PowerupText_German_GhostUp:
+    db $04, "   GHOST AKTIVIERT  "
+
+PowerupText_Italian_GhostUp:
+    db $04, "        MAGIA       "
+
+PowerupText_Spanish_GhostUp:
+    db $00, "     MODO MAGIA     "
+
+PowerupText_English_GrenadeBat:
+    db $04, "     GRENADE BAT    "
+
+PowerupText_French_GrenadeBat:
+    db $00, "    MODE GRENADE    "
+
+PowerupText_German_GrenadeBat:
+    db $04, "  GRANATEN", $a6, "SCHL", $a7, "GER "
+
+PowerupText_Italian_GrenadeBat:
+    db $04, "    LANCIAGRANATE   "
+
+PowerupText_Spanish_GrenadeBat:
+    db $00, "    BATE GRANADA    "
+
+PowerupText_English_NinjaUp:
+    db $00, "      NINJA UP      "
+
+PowerupText_French_NinjaUp:
+    db $04, "        NINJA       "
+
+PowerupText_German_NinjaUp:
+    db $04, "   NINJA AKTIVIERT  "
+
+PowerupText_Italian_NinjaUp:
+    db $04, "     COLPO NINJA    "
+
+PowerupText_Spanish_NinjaUp:
+    db $00, "     MODO NINJA     "
 
     db $08, $9d, $00, $02, $50, $41, $55, $53, $45, $ff
 
@@ -362,67 +432,75 @@ SECTION "ROM Bank $00e", ROMX[$4000], BANK[$e]
     db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
-    db $40, $98, $00, $0a, $20, $20, $20, $43, $4f, $4e, $47, $52, $41, $54, $55, $4c
-    db $41, $54, $49, $4f, $4e, $53, $20, $20, $ff, $a0, $98, $00, $0a, $20, $20, $59
-    db $4f, $55, $20, $48, $41, $56
-    db $45, $20, $4d, $41, $53, $54, $45, $52, $45, $44, $20, $ff, $e0, $98, $00, $0a
-    db $20, $20
-    db $20, $20, $20, $43, $4f, $4f, $4c
-    db $42, $52, $49, $43, $4b, $53, $20, $20, $20, $20, $20, $ff
-    db $40, $99, $00, $0a, $20, $20, $20, $20, $20, $4e, $4f, $57, $20, $54, $52
-    db $59, $20, $49, $54, $20, $20, $20, $20, $20, $ff, $80, $99, $00
-    db $0a, $20, $20, $20, $20
-    db $20, $20, $57, $49, $54
-    db $48, $20, $4a, $55, $53
-    db $54, $20, $20, $20, $20, $20, $ff, $c0, $99
-    db $00
-    db $0a, $20, $20, $20, $20, $20, $20, $4f, $4e, $45
-    db $20, $4c
-    db $49, $46
-    db $45, $20, $20, $20, $20, $20, $20, $ff
-    db $40, $98, $00, $0a, $20, $20, $20, $46, $45, $4c, $49, $43, $49, $54, $41, $54
-    db $49, $4f, $4e, $53, $20, $20, $20, $20, $ff, $a0, $98, $00, $0a, $20, $20, $20
-    db $54, $55, $20, $41, $53, $20, $4d, $41, $49, $54, $52, $49, $53, $45, $20, $20
-    db $20, $ff, $e0, $98, $00, $0a, $20, $20, $20, $20, $43, $4f, $4f, $4c, $42, $52
-    db $49, $43, $4b, $53, $20, $20, $20, $20, $20, $20, $ff, $40, $99, $00, $0a, $20
-    db $20, $20, $20, $20, $20, $20, $45, $53, $53, $41, $49, $45, $20, $20, $20, $20
-    db $20, $20, $20, $ff, $80, $99, $00, $0a, $20, $20, $20, $20, $20, $20, $20, $20
-    db $41, $56, $45, $43, $20, $20, $20, $20, $20, $20, $20, $20, $ff, $c0, $99, $00
-    db $0a, $20, $20, $20, $55, $4e, $45, $20, $53, $45, $55, $4c, $45, $20, $56, $49
-    db $45, $20, $20, $20, $20, $ff
+Text_English_Ending:
+    dw $9840
+    db $00, $0a, "   CONGRATULATIONS  ", $ff
+    dw $98a0
+    db $00, $0a, "  YOU HAVE MASTERED ", $ff
+    dw $98e0
+    db $00, $0a, "     COOLBRICKS     ", $ff
+    dw $9940
+    db $00, $0a, "     NOW TRY IT     ", $ff
+    dw $9980
+    db $00, $0a, "      WITH JUST     ", $ff
+    dw $99c0
+    db $00, $0a, "      ONE LIFE      ", $ff
 
-    db $40, $98, $00, $0a, $20, $20, $20, $20, $47, $4c, $5b, $43, $4b, $57, $5b, $4e
-    db $53, $43, $48, $45, $20, $20, $20, $20, $ff, $a0, $98, $00, $0a, $53, $49, $45
-    db $20, $48, $41, $42, $45, $4e, $20, $43, $4f, $4f, $4c, $42, $52, $49, $43, $4b
-    db $53, $ff, $e0, $98, $00, $0a, $20, $20, $20, $20, $20, $47, $45, $4d, $45, $49
-    db $53, $54, $45, $52, $54, $20, $20, $20, $20, $20, $ff, $40, $99, $00, $0a, $20
-    db $20, $56, $45, $52, $53, $55, $43, $48, $45, $4e, $20, $53, $49, $45, $20, $45
-    db $53, $20, $20, $ff, $80, $99, $00, $0a, $20, $20, $20, $4a, $45, $54, $5a, $54
-    db $20, $4d, $49, $54, $20, $4e, $55, $52, $20, $20, $20, $20, $ff, $c0, $99, $00
-    db $0a, $20, $20, $20, $20, $45, $49, $4e, $45, $4d, $20, $4c, $45, $42, $45, $4e
-    db $20, $20, $20, $20, $20, $ff
+Text_French_Ending:
+    dw $9840
+    db $00, $0a, "   FELICITATIONS    ", $ff
+    dw $98a0
+    db $00, $0a, "   TU AS MAITRISE   ", $ff
+    dw $98e0
+    db $00, $0a, "    COOLBRICKS      ", $ff
+    dw $9940
+    db $00, $0a, "       ESSAIE       ", $ff
+    dw $9980
+    db $00, $0a, "        AVEC        ", $ff
+    dw $99c0
+    db $00, $0a, "   UNE SEULE VIE    ", $ff
 
-    db $40, $98, $00, $0a, $20, $20, $43, $4f, $4e, $47, $52, $41, $54, $55, $4c, $41
-    db $5a, $49, $4f, $4e, $49, $20, $20, $20, $ff, $a0, $98, $00, $0a, $20, $53, $45
-    db $49, $20, $49, $4c, $20, $43, $41, $4d, $50, $49, $4f, $4e, $45, $20, $44, $49
-    db $20, $ff, $e0, $98, $00, $0a, $20, $20, $20, $20, $20, $43, $4f, $4f, $4c, $42
-    db $52, $49, $43, $4b, $53, $20, $20, $20, $20, $20, $ff, $40, $99, $00, $0a, $20
-    db $20, $20, $20, $20, $4f, $52, $41, $20, $50, $52, $4f, $56, $41, $20, $20, $20
-    db $20, $20, $20, $ff, $80, $99, $00, $0a, $20, $20, $20, $20, $20, $20, $20, $20
-    db $43, $4f, $4e, $20, $20, $20, $20, $20, $20, $20, $20, $20, $ff, $c0, $99, $00
-    db $0a, $20, $20, $20, $53, $4f, $4c, $4f, $20, $55, $4e, $41, $20, $56, $49, $54
-    db $41, $20, $20, $20, $20, $ff
+Text_German_Ending:
+    dw $9840
+    db $00, $0a, "    GL[CKW[NSCHE    ", $ff
+    dw $98a0
+    db $00, $0a, "SIE HABEN COOLBRICKS", $ff
+    dw $98e0
+    db $00, $0a, "     GEMEISTERT     ", $ff
+    dw $9940
+    db $00, $0a, "  VERSUCHEN SIE ES  ", $ff
+    dw $9980
+    db $00, $0a, "   JETZT MIT NUR    ", $ff
+    dw $99c0
+    db $00, $0a, "    EINEM LEBEN     ", $ff
 
-    db $40, $98, $00, $0a, $20, $20, $20, $20, $45, $4e, $48, $4f, $52, $41, $42, $55
-    db $45, $4e, $41, $20, $20, $20, $20, $20, $ff, $a0, $98, $00, $0a, $20, $20, $20
-    db $20, $48, $41, $53, $20, $44, $4f, $4d, $49, $4e, $41, $44, $4f, $20, $20, $20
-    db $20, $ff, $e0, $98, $00, $0a, $20, $20, $20, $20, $20, $43, $4f, $4f, $4c, $42
-    db $52, $49, $43, $4b, $53, $20, $20, $20, $20, $20, $ff, $40, $99, $00, $0a, $20
-    db $20, $49, $4e, $54, $62, $4e, $54, $41, $4c, $4f, $20, $41, $48, $4f, $52, $41
-    db $20, $20, $20, $ff, $80, $99, $00, $0a, $20, $20, $20, $20, $20, $20, $20, $20
-    db $43, $4f, $4e, $20, $20, $20, $20, $20, $20, $20, $20, $20, $ff, $c0, $99, $00
-    db $0a, $20, $20, $20, $53, $4f, $4c, $4f, $20, $55, $4e, $41, $20, $56, $49, $44
-    db $41, $20, $20, $20, $20, $ff
+Text_Italian_Ending:
+    dw $9840
+    db $00, $0a, "  CONGRATULAZIONI   ", $ff
+    dw $98a0
+    db $00, $0a, " SEI IL CAMPIONE DI ", $ff
+    dw $98e0
+    db $00, $0a, "     COOLBRICKS     ", $ff
+    dw $9940
+    db $00, $0a, "     ORA PROVA      ", $ff
+    dw $9980
+    db $00, $0a, "        CON         ", $ff
+    dw $99c0
+    db $00, $0a, "   SOLO UNA VITA    ", $ff
+
+Text_Spanish_Ending:
+    dw $9840
+    db $00, $0a, "    ENHORABUENA     ", $ff
+    dw $98a0
+    db $00, $0a, "    HAS DOMINADO    ", $ff
+    dw $98e0
+    db $00, $0a, "     COOLBRICKS     ", $ff
+    dw $9940
+    db $00, $0a, "  INTbNTALO AHORA   ", $ff
+    dw $9980
+    db $00, $0a, "        CON         ", $ff
+    dw $99c0
+    db $00, $0a, "   SOLO UNA VIDA    ", $ff
 
     INCBIN "gfx/image_00e_674f.2bpp"
 

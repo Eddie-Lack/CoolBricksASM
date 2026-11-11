@@ -180,7 +180,7 @@ jr_000_009e:
     ldh [rSVBK], a
     ret
 
-StateInit_State10:
+StateInit_ColorOnly:
     ld hl, $02b3
     ld a, l
     ld [$ff96], a

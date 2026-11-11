@@ -360,9 +360,9 @@ jr_000_0304:
     ld [$d745], a
     jr nz, jr_000_0317
 
-    ld a, [$df2f]
+    ld a, [wLangTextHud]
     ld l, a
-    ld a, [$df30]
+    ld a, [wLangTextHud + 1]
     ld h, a
     call DrawString
     jr jr_000_0346
@@ -845,7 +845,7 @@ jr_000_05a1:
     pop af
     reti
 
-StateInit_State07:
+StateInit_HighScores:
     ld e, $06
     call Call_000_3e51
     ld a, $04
@@ -888,7 +888,7 @@ StateInit_State07:
     ld de, $8b40
     ld bc, $0090
     call DataTransfer
-    ld a, [$df44]
+    ld a, [wLangGraphicsBank]
     call ChangeROMBank
     ld a, $26
     ld de, $9800
@@ -1400,7 +1400,7 @@ jr_000_0921:
     inc hl
     inc hl
     ld de, $d73b
-    ld a, [$defc]
+    ld a, [wLanguage]
     cp $04
     jr nz, jr_000_095b
 
@@ -1680,7 +1680,7 @@ Call_000_0aac:
     cp $03
     jr z, jr_000_0aca
 
-    ld a, [$df44]
+    ld a, [wLangGraphicsBank]
     ld [ROM_BANK], a
     ld a, [$cb55]
     ldh [rHDMA1], a
@@ -2113,9 +2113,9 @@ jr_000_0dd8:
     jr RleOverlay
 
 Call_000_0dde:
-    ld a, [$df31]
+    ld a, [wLangTextLevelTitle]
     ld l, a
-    ld a, [$df32]
+    ld a, [wLangTextLevelTitle + 1]
     ld h, a
     ld de, $d72a
     ld bc, $001b
@@ -2135,7 +2135,7 @@ jr_000_0df5:
 
     add $30
     ld d, a
-    ld a, [$defc]
+    ld a, [wLanguage]
     cp $04
     jr nz, jr_000_0e0e
 
@@ -2167,7 +2167,7 @@ jr_000_0e18:
 
     add $30
     ld d, a
-    ld a, [$defc]
+    ld a, [wLanguage]
     cp $04
     jr nz, jr_000_0e31
 
@@ -2188,7 +2188,7 @@ jr_000_0e38:
     ld a, b
     add $30
     ld d, a
-    ld a, [$defc]
+    ld a, [wLanguage]
     cp $04
     jr nz, jr_000_0e49
 
@@ -5355,9 +5355,9 @@ StateInit_MainMenu:
     call Call_000_01d4
     ld a, $0e
     call ChangeROMBank
-    ld a, [$df46]
+    ld a, [wLangTextStartLevel]
     ld l, a
-    ld a, [$df47]
+    ld a, [wLangTextStartLevel + 1]
     ld h, a
     ld de, $dac3
     ld bc, $0014
@@ -5366,44 +5366,44 @@ StateInit_MainMenu:
     ld a, [$df43]
     ld [$dad2], a
     call FormatLevelNumber
-    ld a, [$df01]
+    ld a, [wLangTextStartGame]
     ld l, a
-    ld a, [$df02]
+    ld a, [wLangTextStartGame + 1]
     ld h, a
     call DrawString
     ld hl, $dac3
     call DrawString
-    ld a, [$df0b]
+    ld a, [wLangTextEnterPassword]
     ld l, a
-    ld a, [$df0c]
+    ld a, [wLangTextEnterPassword + 1]
     ld h, a
     call DrawString
-    ld a, [$df07]
+    ld a, [wLangTextMusicOn]
     ld l, a
-    ld a, [$df08]
+    ld a, [wLangTextMusicOn + 1]
     ld h, a
     ld a, [$dabb]
     or a
     jr z, jr_000_205b
 
-    ld a, [$df09]
+    ld a, [wLangTextMusicOff]
     ld l, a
-    ld a, [$df0a]
+    ld a, [wLangTextMusicOff + 1]
     ld h, a
 
 jr_000_205b:
     call DrawString
-    ld a, [$df03]
+    ld a, [wLangTextSfxOn]
     ld l, a
-    ld a, [$df04]
+    ld a, [wLangTextSfxOn + 1]
     ld h, a
     ld a, [$dabc]
     or a
     jr z, jr_000_2074
 
-    ld a, [$df05]
+    ld a, [wLangTextSfxOff]
     ld l, a
-    ld a, [$df06]
+    ld a, [wLangTextSfxOff + 1]
     ld h, a
 
 jr_000_2074:
@@ -6268,7 +6268,7 @@ StateInit_TitleScreen:
     ld b, $14
     ld c, $12
     call Call_000_01d4
-    ld a, [$defc]
+    ld a, [wLanguage]
     or a
     jr z, jr_000_25cf
 
@@ -6291,7 +6291,7 @@ jr_000_25cf:
     ld de, $8800
     ld bc, $0620
     call DataTransfer
-    ld a, [$defc]
+    ld a, [wLanguage]
     ld hl, $6538
     dec a
     jr z, jr_000_2605
@@ -6321,7 +6321,7 @@ jr_000_2605:
     ld b, $14
     ld c, $12
     call Call_000_01d4
-    ld a, [$defc]
+    ld a, [wLanguage]
     or a
     jr z, jr_000_2640
 
@@ -6429,9 +6429,9 @@ jr_000_2692:
     ld b, $14
     ld c, $12
     call Call_000_01d4
-    ld a, [$df4e]
+    ld a, [wLangTextGameOver]
     ld l, a
-    ld a, [$df4f]
+    ld a, [wLangTextGameOver + 1]
     ld h, a
     call Call_000_0e84
     ld a, $01
@@ -9604,7 +9604,7 @@ jr_000_3ae3:
     ld [$ffa0], a
     ret
 
-StateInit_State08:
+StateInit_Credits:
     ld e, $09
     call Call_000_3e51
     ld hl, $05a9
@@ -9649,7 +9649,7 @@ StateInit_State08:
 
 Call_000_3b50:
     ld hl, $4a84
-    ld a, [$defc]
+    ld a, [wLanguage]
     or a
     jr z, jr_000_3b6e
 
@@ -9874,10 +9874,10 @@ StateInit_LevelPassword:
     ld de, $dd03
     ld bc, $0006
     call DataTransfer
-    ld a, [$df33]
+    ld a, [wLangTextLevelPassword]
 
     ld l, a
-    ld a, [$df34]
+    ld a, [wLangTextLevelPassword + 1]
     ld h, a
     ld de, $dd0b
     ld bc, $003e
@@ -9891,7 +9891,7 @@ StateInit_LevelPassword:
     ld [$dd0a], a
     call Call_000_0dde
     ld hl, $dd17
-    ld a, [$defc]
+    ld a, [wLanguage]
     cp $04
     jr nz, jr_000_3d12
 
@@ -10035,7 +10035,7 @@ StateInit_LanguageSelect:
     ld c, $12
     call Call_000_01d4
     xor a
-    ld [$defc], a
+    ld [wLanguage], a
     ld [$defd], a
     ld [$defe], a
     ldh [rVBK], a
@@ -10212,9 +10212,9 @@ StateInit_Ending:
     ld b, $14
     ld c, $09
     call Call_000_01d4
-    ld a, [$df0d]
+    ld a, [wLangTextEnding]
     ld l, a
-    ld a, [$df0e]
+    ld a, [wLangTextEnding + 1]
     ld h, a
     call Call_000_0e84
     call Call_000_0e84

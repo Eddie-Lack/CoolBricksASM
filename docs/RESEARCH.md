@@ -148,7 +148,7 @@ Levels affected:
 
 ## Game states
 
-`hGameState` (`$FF9F`) selects the current screen. `RunStateInit` and `RunStateUpdate` (bank 1) jump through `StateInitHandlers` and `StateUpdateHandlers`. The values below were read in the emulator on each screen.
+`hGameState` (`$FF9F`) selects the current screen. `RunStateInit` and `RunStateUpdate` (bank 1) jump through `StateInitHandlers` and `StateUpdateHandlers`. The values below were read in the emulator on each screen. States 7 and 8 were confirmed by forcing the value, and state 10 by running the ROM as an original Game Boy.
 
 | Value | Screen |
 |---|---|
@@ -159,15 +159,30 @@ Levels affected:
 | 4 | Pause |
 | 5 | Title picture |
 | 6 | "Developed by" logos |
-| 7 | Entered for one frame between game over and the title. Not understood yet |
-| 8 | Not seen yet |
+| 7 | High score table, shown after game over |
+| 8 | Credits |
 | 9 | Password screen after every fourth level |
-| 10 | Not seen yet |
+| 10 | "Please use a Game Boy Color" screen, shown on older consoles |
 | 11 | Language selection |
 | 12 | SCi logo |
 | 13 | Ending text after level 160 |
 
 The value changes when the old screen starts to fade out, so the old screen stays visible for a short time afterwards.
+
+## Languages and text
+
+`wLanguage` (`$DEFC`) holds the chosen language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian. When the language is confirmed, the code at `01:6B40` copies that language's table (`$51` bytes, `LanguageTable_*` in bank 1) to `wLangTable` (`$DF01`).
+
+The table holds:
+
+- 7 pointers to menu and ending strings in bank `$0E`
+- 15 pointers to power-up messages in bank `$0E`
+- pointers to the HUD, level title, high-score and "latest score" strings in bank 1
+- a pointer to the level password screen strings in bank `$0C` and to the game over string in bank 5
+- tile map addresses and a few single bytes that are not understood yet
+- the number of the bank that holds the language's graphics: `$0B` English, `$12` Spanish, `$11` French, `$13` German, `$10` Italian
+
+A string for `DrawString` is a 2-byte tile map address, then characters, and ends with `$FF`. A `$00` byte is followed by an attribute byte. A power-up message is 21 bytes: an attribute byte and 20 characters.
 
 ## Useful RAM
 

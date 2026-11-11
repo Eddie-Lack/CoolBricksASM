@@ -39,6 +39,42 @@ DEF hVBlankHandler         EQU $ff96 ; Address of the current VBlank handler
 DEF hStatHandler           EQU $ff98 ; Address of the current LCD STAT handler
 DEF hGameState             EQU $ff9f ; Game state, index into the state handler tables
 
+; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
+DEF wLanguage              EQU $defc
+
+; Copy of the chosen LanguageTable_*
+DEF wLangTable             EQU $df01
+DEF wLangTextStartGame         EQU wLangTable + $00
+DEF wLangTextSfxOn             EQU wLangTable + $02
+DEF wLangTextSfxOff            EQU wLangTable + $04
+DEF wLangTextMusicOn           EQU wLangTable + $06
+DEF wLangTextMusicOff          EQU wLangTable + $08
+DEF wLangTextEnterPassword     EQU wLangTable + $0a
+DEF wLangTextEnding            EQU wLangTable + $0c
+DEF wLangTextMultiBall         EQU wLangTable + $0e
+DEF wLangTextSlowBall          EQU wLangTable + $10
+DEF wLangTextAntigravityBall   EQU wLangTable + $12
+DEF wLangTextSleepyBall        EQU wLangTable + $14
+DEF wLangTextRocketBat         EQU wLangTable + $16
+DEF wLangTextPlasmaBat         EQU wLangTable + $18
+DEF wLangTextBigBat            EQU wLangTable + $1a
+DEF wLangTextStunBat           EQU wLangTable + $1c
+DEF wLangTextMagneticBat       EQU wLangTable + $1e
+DEF wLangTextExtraLife         EQU wLangTable + $20
+DEF wLangTextLazerBat          EQU wLangTable + $22
+DEF wLangTextReverseBat        EQU wLangTable + $24
+DEF wLangTextGhostUp           EQU wLangTable + $26
+DEF wLangTextGrenadeBat        EQU wLangTable + $28
+DEF wLangTextNinjaUp           EQU wLangTable + $2a
+DEF wLangTextHud               EQU wLangTable + $2e
+DEF wLangTextLevelTitle        EQU wLangTable + $30
+DEF wLangTextLevelPassword     EQU wLangTable + $32
+DEF wLangGraphicsBank          EQU wLangTable + $43
+DEF wLangTextStartLevel        EQU wLangTable + $45
+DEF wLangTextHighScorePassword EQU wLangTable + $49
+DEF wLangTextGameOver          EQU wLangTable + $4d
+DEF wLangTextLatestScore       EQU wLangTable + $4f
+
 ; Values of hGameState
 DEF STATE_COPYRIGHT          EQU  0 ; Copyright screen shown at power-on
 DEF STATE_MAIN_MENU          EQU  1 ; Main menu and password entry
@@ -47,10 +83,10 @@ DEF STATE_GAME_OVER          EQU  3 ; Game over screen
 DEF STATE_PAUSE              EQU  4 ; Pause screen
 DEF STATE_TITLE_SCREEN       EQU  5 ; Title picture
 DEF STATE_DEVELOPER_LOGOS    EQU  6 ; "Developed by" logos
-DEF STATE_07                 EQU  7 ; Entered for one frame between game over and the title; not understood yet
-DEF STATE_08                 EQU  8 ; Not seen yet
+DEF STATE_HIGH_SCORES        EQU  7 ; High score table, shown after game over
+DEF STATE_CREDITS            EQU  8 ; Credits
 DEF STATE_LEVEL_PASSWORD     EQU  9 ; Password screen shown after every fourth level
-DEF STATE_10                 EQU 10 ; Not seen yet
+DEF STATE_COLOR_ONLY         EQU 10 ; "Please use a Game Boy Color" screen on older consoles
 DEF STATE_LANGUAGE_SELECT    EQU 11 ; Language selection
 DEF STATE_PUBLISHER_LOGO     EQU 12 ; SCi logo
 DEF STATE_ENDING             EQU 13 ; Ending text after level 160
