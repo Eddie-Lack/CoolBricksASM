@@ -281,7 +281,7 @@ BrickPalette_49b0:
     db $00, $00, $40, $01, $60, $01, $06, $01, $00, $00, $80, $00, $a0, $00
     db $83, $00
 
-Data_001_49c0:
+UpdateProjectileData_001_49c0:
     db $fe, $fe, $06, $0a, $06, $06, $06, $0a, $01, $00, $00, $39, $0b, $fe
     db $fe, $06, $0a, $06, $06, $06, $0a, $03, $ff, $ff, $36, $0b, $ff, $07, $37, $0b
     db $07, $ff, $38, $0b, $fe, $fe, $06, $0a, $06, $06, $06, $0a, $04
@@ -302,7 +302,7 @@ Data_001_49c0:
     db $fc
     db $30, $0b, $04, $04, $31, $0b
 
-Data_001_4a14:
+UpdateProjectileData_001_4a14:
     db $fe, $fe, $06, $0a, $06, $06, $06, $0a, $01, $00
     db $00, $41, $0f, $fe, $fe, $06, $0a, $06, $06, $06, $0a, $03, $ff, $ff, $3e, $0f
     db $ff, $07, $3f, $0f, $07, $ff, $40, $0f, $fe, $fe, $06, $0a, $06, $06, $06, $0a
@@ -322,7 +322,7 @@ Data_001_4a14:
     db $fc
     db $5b, $0f, $04, $04, $5c, $0f
 
-Data_001_4a68:
+UpdateProjectilesData_001_4a68:
     db $01, $00, $00, $42, $0c, $04
     db $fc
     db $fc
@@ -354,7 +354,7 @@ Data_001_4a68:
     db $0c, $f9, $04, $4a, $0c, $04, $f9, $4b, $0c, $02, $f9, $f9, $4a, $0c, $f9, $04
     db $4b, $0c, $01, $f9, $f9, $4b, $0c
 
-Data_001_4b21:
+UpdateProjectilesData_001_4b21:
     db $b4
     db $b4, $b4, $b4, $ab, $ab, $ab, $ab, $9e, $9e, $9e, $9e, $8d, $8d, $8d, $8d, $7c
     db $7c, $7c, $7c, $6b, $6b, $6b, $6b, $5a, $5a, $5a, $5a, $49, $49, $49, $49, $38
@@ -388,7 +388,7 @@ Data_001_4b21:
     db $00, $00, $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d
     db $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $22
 
-Data_001_4ca8:
+ColorOnlyData_001_4ca8:
     db $22, $22, $22, $22, $22, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $22, $22, $22, $22, $22, $22, $22, $22, $22
@@ -431,7 +431,7 @@ Data_001_4ca8:
     db $3b, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00
     db $00
 
-Data_001_4e6e:
+UpdateBlobData_001_4e6e:
     db $00
     db $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $3b
     db $3b, $3b, $3b, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d
@@ -706,7 +706,7 @@ jr_001_50f5:
     jr nz, jr_001_50f0
 
     ld a, h
-    ld hl, Data_001_7706
+    ld hl, UpdateFallingPowerupsData_001_7706
     add l
     ld l, a
     jr nc, jr_001_5108
@@ -1435,33 +1435,33 @@ GrenadeThrowTable:
     db $00
     db $55, $4b
 
-Data_001_583e:
+Text_German_LatestScoreData_001_583e:
     db $f8, $f8, $f8
 
-Data_001_5841:
+Text_German_LatestScoreData_001_5841:
     db $f8, $f8, $f8
 
-Data_001_5844:
+Text_German_LatestScoreData_001_5844:
     db $f8, $f8, $f8
 
-Data_001_5847:
+Text_German_LatestScoreData_001_5847:
     db $f8, $f8, $f8
 
-Data_001_584a:
+Text_German_LatestScoreData_001_584a:
     db $f8, $f8, $f8
 
-Data_001_584d:
+Text_German_LatestScoreData_001_584d:
     db $f8
     db $f8, $f8, $fd, $fe, $fe, $ff, $00
 
-Data_001_5855:
+Text_German_LatestScoreData_001_5855:
     db $12, $00, $00, $00, $01, $00, $08, $00, $01
     db $00, $10, $00, $01, $08, $00, $00, $01, $08, $08, $00, $01, $08, $10, $00, $01
     db $10, $00, $00, $01, $10, $08, $00, $01, $10, $10, $00, $01, $18, $00, $20, $01
     db $18, $08, $21, $01, $18, $10, $22, $01, $20, $00, $32, $01, $20, $08, $33, $01
     db $20, $10, $34, $01, $28, $00, $42, $01, $28, $08, $43, $01, $28, $10, $44, $01
 
-Data_001_589e:
+Text_German_LatestScoreData_001_589e:
     db $24, $00, $00, $01, $00, $00, $08, $02, $00, $00, $10, $03, $00, $08, $00, $0b
     db $00, $08, $08, $0c, $00, $08, $10, $0d, $00, $10, $00, $14, $00, $10, $08, $15
     db $00, $10, $10, $16, $00, $18, $00, $23, $01, $18, $08, $24, $01, $18, $10, $25
@@ -1473,7 +1473,7 @@ Data_001_589e:
     db $00, $20, $10, $00, $00, $28, $00, $00, $00, $28, $08, $00, $00, $28, $10, $00
     db $00
 
-Data_001_592f:
+Text_German_LatestScoreData_001_592f:
     db $24, $00, $00, $04, $00, $00, $08, $05, $00, $00, $10, $06, $00, $08, $00
     db $0e, $00, $08, $08, $0f, $00, $08, $10, $10, $00, $10, $00, $17, $00, $10, $08
     db $18, $00, $10, $10, $19, $00, $18, $00, $26, $01, $18, $08, $27, $01, $18, $10
@@ -1485,7 +1485,7 @@ Data_001_592f:
     db $00, $00, $20, $10, $00, $00, $28, $00, $00, $00, $28, $08, $00, $00, $28, $10
     db $00, $00
 
-Data_001_59c0:
+Text_German_LatestScoreData_001_59c0:
     db $24, $00, $00, $07, $00, $00, $08, $08, $00, $00, $10, $09, $00, $08
     db $00, $11, $00, $08, $08, $0f, $00, $08, $10, $12, $00, $10, $00, $1a, $00, $10
     db $08, $1b, $00, $10, $10, $1c, $00, $18, $00, $29, $01, $18, $08, $2a, $01, $18
@@ -1497,7 +1497,7 @@ Data_001_59c0:
     db $08, $00, $00, $20, $10, $00, $00, $28, $00, $00, $00, $28, $08, $00, $00, $28
     db $10, $00, $00
 
-Data_001_5a51:
+Text_German_LatestScoreData_001_5a51:
     db $24, $00, $00, $0a, $00, $00, $08, $00, $00, $00, $10, $00, $00
     db $08, $00, $13, $00, $08, $08, $00, $00, $08, $10, $00, $00, $10, $00, $1d, $00
     db $10, $08, $1e, $00, $10, $10, $1f, $00, $18, $00, $2c, $01, $18, $08, $2d, $01
@@ -1509,19 +1509,19 @@ Data_001_5a51:
     db $20, $08, $00, $00, $20, $10, $00, $00, $28, $00, $00, $00, $28, $08, $00, $00
     db $28, $10, $00, $00
 
-Data_001_5ae2:
+Text_German_LatestScoreData_001_5ae2:
     db $12, $00, $00, $00, $01, $00, $08, $00, $01, $00, $10, $00
     db $01, $08, $00, $00, $01, $08, $08, $00, $01, $08, $10, $00, $01, $10, $00, $00
     db $01, $10, $08, $00, $01, $10, $10, $00, $01, $18, $00, $2f, $01, $18, $08, $30
     db $01, $18, $10, $31, $01, $20, $00, $3f, $01, $20, $08, $40, $01, $20, $10, $41
     db $01, $28, $00, $51, $01, $28, $08, $52
 
-Data_001_5b26:
+Text_German_LatestScoreData_001_5b26:
     db $01, $28, $10, $53, $01, $01, $98, $03
     db $c1, $5b, $04, $98, $03, $af, $5b, $07, $98, $03, $9d, $5b, $0a, $98, $03, $8b
     db $5b, $0d, $98, $03, $79, $5b
 
-Data_001_5b44:
+Text_German_LatestScoreData_001_5b44:
     db $10, $98, $03, $67, $5b, $01, $98, $03, $d3, $5b
     db $04, $98, $03, $e5, $5b, $07, $98, $03, $e5, $5b, $0a, $98, $03, $e5, $5b, $0d
     db $98, $03, $f7, $5b, $10, $98, $03, $d3, $5b, $0f, $10, $11, $20, $21, $11, $31
@@ -1724,7 +1724,7 @@ jr_001_5cf5:
     or a
     jr nz, jr_001_5d05
 
-    ld hl, Data_001_6784
+    ld hl, LevelPasswordData_001_6784
     ld a, [hl+]
 
 jr_001_5d05:
@@ -1988,7 +1988,7 @@ Jump_001_5e35:
     or a
     jr nz, jr_001_5e99
 
-    ld hl, Data_001_660a
+    ld hl, LevelPasswordData_001_660a
     ld a, [$dd5e]
     ld e, a
     ld a, [$dd5f]
@@ -2152,7 +2152,7 @@ jr_001_5f20:
     push hl
     ld l, a
     ld h, $00
-    ld bc, Data_001_65a8
+    ld bc, LevelPasswordData_001_65a8
     add hl, bc
     ld a, [hl+]
     ld b, [hl]
@@ -2859,7 +2859,7 @@ Call_001_63fa:
 
     ld b, $16
     ld hl, $99d1
-    ld de, Data_001_7b8a
+    ld de, UpdatePickupEffectsData_001_7b8a
 
 Jump_001_6407:
     push de
@@ -3104,7 +3104,7 @@ jr_001_653e:
 
     ret
 
-Data_001_6543:
+LevelPasswordData_001_6543:
     db $01, $00, $2e, $99, $64, $0a, $00, $26, $99, $69, $14, $00, $d2, $98, $64, $1e
     db $00, $92, $99, $69, $28, $00, $90, $98, $64, $32, $00, $ad, $99, $69, $3c, $00
     db $87, $99, $64, $46, $00, $82, $99, $69, $50, $00, $20, $99, $64, $64, $00, $c1
@@ -3113,7 +3113,7 @@ Data_001_6543:
     db $6e, $6f, $70, $71, $72, $73, $74, $75, $76, $77, $78, $59, $5a, $5b, $5c, $55
     db $56, $57, $58, $00, $00
 
-Data_001_65a8:
+LevelPasswordData_001_65a8:
     db $00, $00, $7a, $65, $7a, $65, $7a, $65, $7a, $65, $7e
     db $65, $7e, $65, $7e, $65, $7e, $65, $82, $65, $82, $65, $82, $65, $82, $65, $86
     db $65, $86, $65, $86, $65, $86, $65, $8a, $65, $8a, $65, $8a, $65, $8a, $65, $8e
@@ -3124,7 +3124,7 @@ Data_001_65a8:
 
     db $a6, $65
 
-Data_001_660a:
+LevelPasswordData_001_660a:
     db $5c, $fe, $32, $66, $a4, $01, $70, $66, $2e, $ff, $13, $67, $d2, $00, $13, $67
     db $d4, $fe, $ae, $66, $2c, $01, $ae, $66, $1a, $ff, $e6, $66, $e6, $00, $e6, $66
     db $52, $fe, $4d, $67, $ae, $01, $4d, $67, $fc, $fc, $fd, $fd, $fd, $fd, $fd, $fe
@@ -3153,23 +3153,23 @@ Data_001_660a:
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $7f
 
-Data_001_6784:
+LevelPasswordData_001_6784:
     db $03, $03, $03, $03, $03, $03, $03, $03, $02, $01
     db $ff, $fe, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd
     db $fd, $fd, $fe, $ff, $01, $02, $03, $03, $03, $03, $03, $03, $03, $03, $00
 
-Data_001_67ad:
+LevelPasswordData_001_67ad:
     db $50
     db $a0, $f4, $ff, $01, $04, $40, $a0, $eb, $ff, $1f, $05
 
     db $ff, $ad, $67
 
-Data_001_67bc:
+LevelPasswordData_001_67bc:
     db $6e, $d8, $e9, $ff, $1e, $06, $1e, $d8, $f8, $ff, $02, $04
 
     db $ff, $bc, $67
 
-Data_001_67cb:
+LevelPasswordData_001_67cb:
     db $6e, $c0, $f4, $ff, $01, $04, $82, $c0, $ed, $ff, $1f, $05
 
     db $ff, $cb, $67, $3e, $80, $e0, $68, $0e, $40
@@ -3834,7 +3834,7 @@ Call_001_6c8a:
     add a
     ld l, a
     ld h, b
-    ld de, Data_001_5b44
+    ld de, Text_German_LatestScoreData_001_5b44
     add hl, de
     add hl, bc
     ld a, [hl+]
@@ -3858,7 +3858,7 @@ Call_001_6c8a:
     add a
     ld l, a
     ld h, b
-    ld de, Data_001_5b26
+    ld de, Text_German_LatestScoreData_001_5b26
     add hl, de
     add hl, bc
     ld a, [hl+]
@@ -3915,7 +3915,7 @@ jr_001_6cfe:
     add b
     ld [$db5b], a
     ld c, a
-    ld hl, Data_001_5855
+    ld hl, Text_German_LatestScoreData_001_5855
     jp Jump_001_6e0b
 
 jr_001_6d15:
@@ -3946,7 +3946,7 @@ jr_001_6d30:
     add b
     ld [$db5c], a
     ld c, a
-    ld hl, Data_001_589e
+    ld hl, Text_German_LatestScoreData_001_589e
     jp Jump_001_6e0b
 
 jr_001_6d47:
@@ -3977,7 +3977,7 @@ jr_001_6d62:
     add b
     ld [$db5d], a
     ld c, a
-    ld hl, Data_001_592f
+    ld hl, Text_German_LatestScoreData_001_592f
     jp Jump_001_6e0b
 
 jr_001_6d79:
@@ -4008,7 +4008,7 @@ jr_001_6d94:
     add b
     ld [$db5e], a
     ld c, a
-    ld hl, Data_001_59c0
+    ld hl, Text_German_LatestScoreData_001_59c0
     jr jr_001_6e0b
 
 jr_001_6daa:
@@ -4039,7 +4039,7 @@ jr_001_6dc5:
     add b
     ld [$db5f], a
     ld c, a
-    ld hl, Data_001_5a51
+    ld hl, Text_German_LatestScoreData_001_5a51
     jr jr_001_6e0b
 
 jr_001_6ddb:
@@ -4070,7 +4070,7 @@ jr_001_6df5:
     add b
     ld [$db60], a
     ld c, a
-    ld hl, Data_001_5ae2
+    ld hl, Text_German_LatestScoreData_001_5ae2
     jr jr_001_6e0b
 
 Jump_001_6e0b:
@@ -4109,32 +4109,32 @@ Call_001_6e25:
     ld [$db5e], a
     ld [$db5f], a
     ld [$db60], a
-    ld hl, Data_001_583e
+    ld hl, Text_German_LatestScoreData_001_583e
     ld a, l
     ld [$db61], a
     ld a, h
     ld [$db62], a
-    ld hl, Data_001_5841
+    ld hl, Text_German_LatestScoreData_001_5841
     ld a, l
     ld [$db63], a
     ld a, h
     ld [$db64], a
-    ld hl, Data_001_5844
+    ld hl, Text_German_LatestScoreData_001_5844
     ld a, l
     ld [$db65], a
     ld a, h
     ld [$db66], a
-    ld hl, Data_001_5847
+    ld hl, Text_German_LatestScoreData_001_5847
     ld a, l
     ld [$db67], a
     ld a, h
     ld [$db68], a
-    ld hl, Data_001_584a
+    ld hl, Text_German_LatestScoreData_001_584a
     ld a, l
     ld [$db69], a
     ld a, h
     ld [$db6a], a
-    ld hl, Data_001_584d
+    ld hl, Text_German_LatestScoreData_001_584d
     ld a, l
     ld [$db6b], a
     ld a, h
@@ -4163,7 +4163,7 @@ jr_001_6e9f:
 ; Copy the 9 sprites of the bat and ball to the OAM buffer.
 InitBatSprites:
     ld hl, wOamBuffer
-    ld de, Data_001_7b0c
+    ld de, InitBatSpritesData_001_7b0c
     ld b, $09
 
 jr_001_6ead:
@@ -4217,12 +4217,12 @@ jr_001_6ee8:
     or a
     jr nz, jr_001_6efe
 
-    ld de, Data_001_7b30
+    ld de, DrawBatSpritesData_001_7b30
     ld c, $03
     jr jr_001_6f03
 
 jr_001_6efe:
-    ld de, Data_001_7b36
+    ld de, DrawBatSpritesData_001_7b36
     ld c, $04
 
 jr_001_6f03:
@@ -4241,12 +4241,12 @@ jr_001_6f03:
     dec c
     jr nz, jr_001_6f03
 
-    ld de, Data_001_7b3e
+    ld de, DrawBatSpritesData_001_7b3e
     ld a, [wWeaponFlag]
     or a
     jr z, jr_001_6f20
 
-    ld de, Data_001_7b46
+    ld de, DrawBatSpritesData_001_7b46
 
 jr_001_6f20:
     ld a, [wBallOnBat]
@@ -4257,7 +4257,7 @@ jr_001_6f20:
     or a
     jr z, jr_001_6f2f
 
-    ld de, Data_001_7b4e
+    ld de, DrawBatSpritesData_001_7b4e
 
 jr_001_6f2f:
     ld a, [wBatWidth]
@@ -4728,7 +4728,7 @@ LanguageTable_German:
 
 InitMenuSparkles:
     ld hl, $dae3
-    ld de, Data_001_7592
+    ld de, InitMenuSparklesData_001_7592
     ld b, $0a
 
 jr_001_71f7:
@@ -4738,7 +4738,7 @@ jr_001_71f7:
     dec b
     jr nz, jr_001_71f7
 
-    ld de, Data_001_75ba
+    ld de, InitMenuSparklesData_001_75ba
     ld hl, $daed
     ld b, $0a
 
@@ -4750,7 +4750,7 @@ jr_001_7205:
     jr nz, jr_001_7205
 
     ld hl, $daf7
-    ld de, Data_001_74b4
+    ld de, InitMenuSparklesData_001_74b4
     ld b, $0b
 
 jr_001_7213:
@@ -4779,7 +4779,7 @@ jr_001_7213:
     dec b
     jr nz, jr_001_7213
 
-    ld hl, Data_001_749b
+    ld hl, InitMenuSparklesData_001_749b
     ld a, l
     ld [$db4f], a
     ld a, h
@@ -4788,7 +4788,7 @@ jr_001_7213:
 
 UpdateMenuSparkles:
     ld hl, wOamBuffer
-    ld de, Data_001_7542
+    ld de, UpdateMenuSparklesData_001_7542
     ld a, $05
     ld bc, $dae3
 
@@ -4845,7 +4845,7 @@ jr_001_7270:
     or a
     jr nz, jr_001_727d
 
-    ld bc, Data_001_75af
+    ld bc, UpdateMenuSparklesData_001_75af
     ld a, [bc]
 
 jr_001_727d:
@@ -4963,7 +4963,7 @@ jr_001_7305:
     add a
     ld l, a
     ld h, $00
-    ld de, Data_001_752c
+    ld de, UpdateMenuSparklesData_001_752c
     add hl, de
     pop de
     ld a, [hl+]
@@ -5045,7 +5045,7 @@ Text_Italian_LevelTitle:
     dw $9801
     db $00, $04, "    LEVELLO ", $00, $01, "000   ", $ff
 
-Data_001_745e:
+VBlank_InGameData_001_745e:
     dw $9800
     db $00, $04, "                    ", $ff
 
@@ -5070,13 +5070,13 @@ Tilemap_Level_001_748b:
     db $2f
     db $30
 
-Data_001_749b:
+InitMenuSparklesData_001_749b:
     db $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8
     db $f8, $f9, $04, $04, $fd, $fd, $fe, $ff
 
     db $00
 
-Data_001_74b4:
+InitMenuSparklesData_001_74b4:
     db $01, $00, $82, $79, $c8, $00, $0a, $00, $51, $81, $c9, $00, $14, $00, $70, $38
     db $cb, $00, $1e, $00, $18, $50, $cc, $00, $64, $00, $0a, $3a, $cd, $00, $6e, $00
     db $8e, $35, $ce, $00, $78, $00, $51, $40, $cf, $00, $b4, $00, $40, $57, $d0, $00
@@ -5086,11 +5086,11 @@ Data_001_74b4:
     db $00, $00, $3c, $00, $08, $3e, $00, $00, $40, $00, $08, $42, $00, $00, $44, $00
     db $08, $46, $00, $00, $48, $00, $08, $4a
 
-Data_001_752c:
+UpdateMenuSparklesData_001_752c:
     db $f6, $74, $fc, $74, $02, $75, $08, $75
     db $0e, $75, $14, $75, $1a, $75, $20, $75, $26, $75, $fc, $74, $f6, $74
 
-Data_001_7542:
+UpdateMenuSparklesData_001_7542:
     db $00, $00
     db $00, $01, $00, $08, $02, $01, $10, $00, $14, $00, $10, $08, $16, $00, $00, $00
     db $04, $01, $00, $08, $06, $01, $10, $00, $18, $00, $10, $08, $1a, $00, $00, $00
@@ -5098,16 +5098,16 @@ Data_001_7542:
     db $0c, $01, $00, $08, $0e, $01, $10, $00, $20, $00, $10, $08, $22, $00, $00, $00
     db $10, $01, $00, $08, $12, $01, $10, $00, $24, $00, $10, $08, $26, $00
 
-Data_001_7592:
+InitMenuSparklesData_001_7592:
     db $90, $a4
     db $90, $a4, $90, $a4, $90, $a4, $90, $a4, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
 
-Data_001_75af:
+UpdateMenuSparklesData_001_75af:
     db $fe, $fe, $fe, $ff, $ff
     db $01, $01, $02, $02, $02, $00
 
-Data_001_75ba:
+InitMenuSparklesData_001_75ba:
     db $a4, $75, $a2, $75, $a0, $75, $9e, $75, $9c, $75
 
 ; Jump to the init handler of game state hGameState.
@@ -5316,7 +5316,7 @@ PowerupHandlers:
     dw Powerup_Ghost
     dw Powerup_Grenade
 
-Data_001_7706:
+UpdateFallingPowerupsData_001_7706:
     db $80, $00
 
     db $80, $00
@@ -5582,7 +5582,7 @@ Call_001_7899:
     cp $01
     jr nz, jr_001_78b7
 
-    ld hl, Data_001_79b8
+    ld hl, SetUpBricksData_001_79b8
 
 jr_001_78b7:
     ld a, [hl+]
@@ -5598,7 +5598,7 @@ jr_001_78b7:
 Call_001_78c8:
     ld b, $14
     ld hl, wOamBuffer
-    ld de, Data_001_7990
+    ld de, SetUpBricksData_001_7990
 
 jr_001_78d0:
     ld a, [de]
@@ -5662,7 +5662,7 @@ jr_001_7908:
     add a
     ld l, a
     ld h, $00
-    ld de, Data_001_7950
+    ld de, SetUpBricksData_001_7950
     add hl, de
     ld d, h
     ld e, l
@@ -5719,21 +5719,21 @@ jr_001_793b:
 
     ret
 
-Data_001_7950:
+SetUpBricksData_001_7950:
     db $00, $02, $00, $02, $04, $06, $04, $06, $08, $0a, $08, $0a, $0c, $0e, $0c, $0e
     db $10, $12, $10, $12, $14, $16, $14, $16, $18, $1a, $18, $1a, $1c, $1e, $1c, $1e
     db $20, $22, $20, $22, $24, $26, $24, $26, $28, $2a, $28, $2a, $2c, $2e, $2c, $2e
     db $30, $32, $30, $32, $34, $36, $34, $36, $38, $3a, $38, $3a, $3c, $3e, $3c, $3e
 
-Data_001_7990:
+SetUpBricksData_001_7990:
     db $37, $a6, $37, $ba, $37, $ce, $37, $e2, $37, $f6, $4f, $a6, $4f, $ba, $4f, $ce
     db $4f, $e2, $4f, $f6, $67, $a6, $67, $ba, $67, $ce, $67, $e2, $67, $f6, $7f, $a6
     db $7f, $ba, $7f, $ce, $7f, $e2, $7f, $f6
 
-Data_001_79b8:
+SetUpBricksData_001_79b8:
     db $00, $40
 
-Data_001_79ba:
+HighScoresData_001_79ba:
     db $60, $43, $c0, $46, $20, $4a
     db $80, $4d, $e0, $50, $40, $54, $a0, $57, $00, $5b, $60, $5e, $c0, $61, $20, $65
     db $80, $68, $e0, $6b, $40, $6f, $a0, $72, $00, $76, $60, $79, $01
@@ -5929,25 +5929,25 @@ GBC_Check:
     ld [hGameState], a               ; Store to RAM
     ret                         ; return
 
-Data_001_7b0c:
+InitBatSpritesData_001_7b0c:
     db $98, $50, $1e, $02, $98, $58, $1f, $02, $98, $60, $20, $02, $98, $68, $21, $02
     db $90, $48, $56, $02, $90, $50, $57, $02, $90, $58, $57, $22, $90, $60, $56, $22
     db $89, $54, $00, $03
 
-Data_001_7b30:
+DrawBatSpritesData_001_7b30:
     db $1f, $02, $20, $02, $21, $02
 
-Data_001_7b36:
+DrawBatSpritesData_001_7b36:
     db $1f, $02, $20, $02, $20, $02
     db $21, $02
 
-Data_001_7b3e:
+DrawBatSpritesData_001_7b3e:
     db $56, $02, $57, $02, $57, $22, $56, $22
 
-Data_001_7b46:
+DrawBatSpritesData_001_7b46:
     db $56, $02, $08, $01, $08, $21, $56, $22
 
-Data_001_7b4e:
+DrawBatSpritesData_001_7b4e:
     db $56, $02, $07, $01, $07, $21, $56, $22
 
 UnbreakableHitEffectFrames:
@@ -5967,7 +5967,7 @@ PickupEffectFrames:
 
     db $15, $17, $19, $1b
 
-Data_001_7b8a:
+UpdatePickupEffectsData_001_7b8a:
     db $01, $02, $03, $04, $05, $06, $07, $08, $09, $09, $09, $09, $09, $08, $07, $06
     db $05, $04, $03, $02, $01, $ff
 
@@ -6168,7 +6168,7 @@ ColorOnly_Update:
     ld b, $14
     ld c, $12
     call CopyTilemapRect
-    ld hl, Data_001_4ca8
+    ld hl, ColorOnlyData_001_4ca8
     ld de, $dd03
     ld bc, $0006
     call DataTransfer
@@ -6181,7 +6181,7 @@ ColorOnly_Update:
     call DataTransfer
     ld a, $01
     call ChangeROMBank
-    ld hl, Data_001_6784
+    ld hl, LevelPasswordData_001_6784
     ld a, l
     ld [$dd09], a
     ld a, h
@@ -6264,17 +6264,17 @@ jr_001_7d1d:
     call DrawString
     ld a, $2d
     ld [$dd4b], a
-    ld hl, Data_001_67ad
+    ld hl, LevelPasswordData_001_67ad
     ld a, l
     ld [$dd60], a
     ld a, h
     ld [$dd61], a
-    ld hl, Data_001_67bc
+    ld hl, LevelPasswordData_001_67bc
     ld a, l
     ld [$dd6f], a
     ld a, h
     ld [$dd70], a
-    ld hl, Data_001_67cb
+    ld hl, LevelPasswordData_001_67cb
     ld a, l
     ld [$dd7e], a
     ld a, h
@@ -6300,7 +6300,7 @@ jr_001_7d1d:
     ld [$dd8b], a
     ld a, h
     ld [$dd8c], a
-    ld hl, Data_001_6543
+    ld hl, LevelPasswordData_001_6543
     ld de, $de81
     ld bc, $0037
     call DataTransfer

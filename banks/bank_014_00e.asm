@@ -5,7 +5,7 @@
 
 SECTION "ROM Bank $00e", ROMX[$4000], BANK[$e]
 
-Data_00e_4000:
+MainMenuData_00e_4000:
     db $a6, $98, $00, $04, $56, $45, $52, $20, $32, $33, $20, $30, $32, $ff
 
 Text_Spanish_StartGame:

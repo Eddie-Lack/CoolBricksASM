@@ -61,7 +61,7 @@ Gfx_TitleScreen_007_5f28:
 
     INCBIN "gfx/image_007_6528.2bpp"
 
-Data_007_6538:
+TitleScreenData_007_6538:
     db $00, $00, $0e, $1c, $17, $18, $09, $12, $1f, $00
     db $10
     db $1f, $12, $1b, $00, $1b
@@ -99,12 +99,12 @@ Data_007_6538:
     db $72, $83, $21, $42, $63, $00, $00, $63, $82, $f3, $00, $f3
     INCBIN "gfx/image_007_6628.2bpp"
 
-Data_007_6678:
+TitleScreenData_007_6678:
     INCBIN "gfx/image_007_6678.2bpp"
 
     INCBIN "gfx/image_007_6778.2bpp"
 
-Data_007_67b8:
+TitleScreenData_007_67b8:
     INCBIN "gfx/image_007_67b8.2bpp"
 
     INCBIN "gfx/image_007_68b8.2bpp"
