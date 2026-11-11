@@ -22,7 +22,7 @@ make check
 
 `tools/gbasm.py` supports only the syntax these sources use. It has no macros.
 
-The sources build to the matching ROM with RGBDS 0.8.0 (`make`), with no warnings under `rgbasm -Wall`, and with `tools/gbasm.py` (`make check`). All 41 PNG files convert back to identical `.2bpp` files with `rgbgfx`.
+The sources build to the matching ROM with RGBDS 0.8.0 (`make`), with no warnings under `rgbasm -Wall`, and with `tools/gbasm.py` (`make check`). All 47 PNG files convert back to identical `.2bpp` files with `rgbgfx`.
 
 ## What has been done since the fork
 
@@ -55,7 +55,7 @@ The sources build to the matching ROM with RGBDS 0.8.0 (`make`), with no warning
   - Bank 6 (music) fails. Its data has pointers that are still numbers.
   - Bank 4 ends with an image and cannot be tested this way.
   - Only the screen is compared, not sound.
-- **Graphics.** Tile data is in `gfx/*.2bpp`. Six newer files have no PNG yet. Some images are loaded in two parts but stored as one file.
+- **Graphics.** Tile data is in `gfx/*.2bpp`. Every file has a PNG. Some images are loaded in two parts but stored as one file.
 - **Music.** Bank 6 holds the music driver and its data. Only the first routines are labelled.
 - **Unlabelled data.** `docs/ROM_MAP.md` shows the blocks with no meaningful name yet. Banks `$0B` and `$10`–`$13` (language graphics) and bank 9 are the largest.
 - **Filler.** Banks `$14`–`$1F` are 12 copies of one bank, bank `$20` is a copy of bank `$13`, and banks `$21`–`$3F` are empty.
