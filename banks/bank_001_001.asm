@@ -785,9 +785,9 @@ jr_001_511c:
     or a
     jr z, jr_001_513c
 
-    ld a, [wUnk_d8a7]
+    ld a, [wBallEffectTick]
     inc a
-    ld [wUnk_d8a7], a
+    ld [wBallEffectTick], a
     and $01
     jr nz, jr_001_513c
 
@@ -803,9 +803,9 @@ jr_001_513c:
     or a
     jr z, jr_001_5159
 
-    ld a, [wUnk_d8a7]
+    ld a, [wBallEffectTick]
     inc a
-    ld [wUnk_d8a7], a
+    ld [wBallEffectTick], a
     and $01
     jr nz, jr_001_5159
 
@@ -4876,7 +4876,7 @@ LanguageTable_German:
     dw Text_German_LatestScore
 
 InitMenuSparkles:
-    ld hl, wUnk_dae3
+    ld hl, wMenuSparkles
     ld de, InitMenuSparklesData_001_7592
     ld b, $0a
 
@@ -4939,7 +4939,7 @@ UpdateMenuSparkles:
     ld hl, wOamBuffer
     ld de, UpdateMenuSparklesData_001_7542
     ld a, $05
-    ld bc, wUnk_dae3
+    ld bc, wMenuSparkles
 
 jr_001_7243:
     push af
@@ -4980,7 +4980,7 @@ jr_001_724e:
     dec a
     jr nz, jr_001_7243
 
-    ld de, wUnk_dae3
+    ld de, wMenuSparkles
     ld hl, wUnk_daed
     ld a, $05
 
@@ -6281,7 +6281,7 @@ AddScore:
 ; Add BC to the score.
 AddScoreBC:
     ld a, $0b
-    ld hl, wUnk_d8b2
+    ld hl, wScoreDigits + 5
 
 jr_001_7c41:
     inc [hl]
