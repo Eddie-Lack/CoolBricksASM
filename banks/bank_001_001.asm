@@ -740,9 +740,9 @@ jr_001_511c:
     or a
     jr z, jr_001_513c
 
-    ld a, [$d8a7]
+    ld a, [wUnk_d8a7]
     inc a
-    ld [$d8a7], a
+    ld [wUnk_d8a7], a
     and $01
     jr nz, jr_001_513c
 
@@ -758,9 +758,9 @@ jr_001_513c:
     or a
     jr z, jr_001_5159
 
-    ld a, [$d8a7]
+    ld a, [wUnk_d8a7]
     inc a
-    ld [$d8a7], a
+    ld [wUnk_d8a7], a
     and $01
     jr nz, jr_001_5159
 
@@ -776,9 +776,9 @@ jr_001_5159:
     or a
     ret z
 
-    ld a, [$dc22]
+    ld a, [wUnk_dc22]
     inc a
-    ld [$dc22], a
+    ld [wUnk_dc22], a
     and $07
     ret nz
 
@@ -952,7 +952,7 @@ Powerup_Smiley:
     jr nz, jr_001_526a
 
     call NextLevelMusic
-    ld a, [$dcff]
+    ld a, [wUnk_dcff]
     or a
     jr nz, jr_001_526a
 
@@ -1537,9 +1537,9 @@ Text_German_LatestScoreData_001_5b44:
     db $0a, $0a, $04, $04, $04, $04, $04, $04, $04, $04, $04
 
 LevelPassword_Sub5c09:
-    ld a, [$df37]
+    ld a, [wUnk_df37]
     ld c, a
-    ld a, [$df38]
+    ld a, [wUnk_df38]
     ld b, a
     xor a
 
@@ -1619,23 +1619,23 @@ LevelPassword_Update:
     ld [wLevelsSincePassword], a
     call LevelPassword_Sub5d63
     call LevelPassword_Sub5f18
-    ld a, [$dd4b]
+    ld a, [wUnk_dd4b]
     or a
     jr z, jr_001_5c7c
 
     dec a
-    ld [$dd4b], a
+    ld [wUnk_dd4b], a
     jr jr_001_5c9f
 
 jr_001_5c7c:
-    ld a, [$dd49]
+    ld a, [wUnk_dd49]
     ld l, a
-    ld a, [$dd4a]
+    ld a, [wUnk_dd4a]
     ld h, a
     or l
     jr z, jr_001_5c9f
 
-    ld a, [$dd4c]
+    ld a, [wUnk_dd4c]
     xor $01
     jr z, jr_001_5c92
 
@@ -1647,9 +1647,9 @@ jr_001_5c92:
     call LevelPassword_Sub5c09
     pop hl
     ld a, l
-    ld [$dd49], a
+    ld [wUnk_dd49], a
     ld a, h
-    ld [$dd4a], a
+    ld [wUnk_dd4a], a
 
 jr_001_5c9f:
     ld a, [hGameState]
@@ -1672,7 +1672,7 @@ jr_001_5cbd:
     ret
 
 LevelPassword_VBlank:
-    ld a, [$dd00]
+    ld a, [wUnk_dd00]
     or a
     ret z
 
@@ -1680,7 +1680,7 @@ LevelPassword_VBlank:
     ldh [rIE], a
     ld hl, $dd32
     call DrawString
-    ld a, [$defa]
+    ld a, [wUnk_defa]
     or a
     jr z, jr_001_5cf5
 
@@ -1713,12 +1713,12 @@ jr_001_5cd6:
     jr nz, jr_001_5cd6
 
     xor a
-    ld [$defa], a
+    ld [wUnk_defa], a
 
 jr_001_5cf5:
-    ld a, [$dd09]
+    ld a, [wUnk_dd09]
     ld l, a
-    ld a, [$dd0a]
+    ld a, [wUnk_dd0a]
     ld h, a
     ld a, [hl+]
     or a
@@ -1729,25 +1729,25 @@ jr_001_5cf5:
 
 jr_001_5d05:
     ld b, a
-    ld a, [$dd03]
+    ld a, [wUnk_dd03]
     add b
-    ld [$dd03], a
-    ld a, [$dd07]
+    ld [wUnk_dd03], a
+    ld a, [wUnk_dd07]
     sub b
-    ld [$dd07], a
+    ld [wUnk_dd07], a
     ld a, l
-    ld [$dd09], a
+    ld [wUnk_dd09], a
     ld a, h
-    ld [$dd0a], a
+    ld [wUnk_dd0a], a
     ld hl, $dd03
     ld a, [hl+]
     ldh [rSCX], a
     ld a, [hl+]
     ldh [rLYC], a
     ld a, l
-    ld [$dd01], a
+    ld [wUnk_dd01], a
     ld a, h
-    ld [$dd02], a
+    ld [wUnk_dd02], a
     ret
 
 LevelPassword_Sub5d2e:
@@ -1807,21 +1807,21 @@ jr_001_5d41:
     ret
 
 LevelPassword_Sub5d63:
-    ld a, [$de80]
+    ld a, [wUnk_de80]
     inc a
     and $03
-    ld [$de80], a
+    ld [wUnk_de80], a
     ld hl, wOamBuffer
-    ld a, [$de7d]
+    ld a, [wUnk_de7d]
     inc a
     call ClearOamEntries
     xor a
-    ld [$de7d], a
+    ld [wUnk_de7d], a
     ld hl, wOamBuffer
     ld a, l
-    ld [$de7e], a
+    ld [wUnk_de7e], a
     ld a, h
-    ld [$de7f], a
+    ld [wUnk_de7f], a
     ld a, $03
     ld hl, $dd60
 
@@ -1857,13 +1857,13 @@ jr_001_5da0:
     ret
 
 LevelPassword_Sub5dab:
-    ld a, [$dd5d]
+    ld a, [wUnk_dd5d]
     or a
     jp z, Jump_001_5e35
 
-    ld a, [$dd5e]
+    ld a, [wUnk_dd5e]
     ld e, a
-    ld a, [$dd5f]
+    ld a, [wUnk_dd5f]
     ld d, a
     ld a, $0a
 
@@ -1917,9 +1917,9 @@ jr_001_5dbc:
     ld [de], a
     inc de
     push af
-    ld a, [$de7e]
+    ld a, [wUnk_de7e]
     ld l, a
-    ld a, [$de7f]
+    ld a, [wUnk_de7f]
     ld h, a
     pop af
     ld [hl+], a
@@ -1929,7 +1929,7 @@ jr_001_5dbc:
     ld [hl+], a
     ld a, [de]
     ld b, a
-    ld a, [$de80]
+    ld a, [wUnk_de80]
     or a
     jr nz, jr_001_5e0a
 
@@ -1943,13 +1943,13 @@ jr_001_5e0a:
     ld [de], a
     inc de
     ld [hl+], a
-    ld a, [$de7d]
+    ld a, [wUnk_de7d]
     inc a
-    ld [$de7d], a
+    ld [wUnk_de7d], a
     ld a, l
-    ld [$de7e], a
+    ld [wUnk_de7e], a
     ld a, h
-    ld [$de7f], a
+    ld [wUnk_de7f], a
     jr jr_001_5e26
 
 jr_001_5e1f:
@@ -1975,13 +1975,13 @@ jr_001_5e2b:
     ret
 
 Jump_001_5e35:
-    ld a, [$dd57]
+    ld a, [wUnk_dd57]
     ld e, a
-    ld a, [$dd58]
+    ld a, [wUnk_dd58]
     ld d, a
-    ld a, [$dd5a]
+    ld a, [wUnk_dd5a]
     ld l, a
-    ld a, [$dd5b]
+    ld a, [wUnk_dd5b]
     ld h, a
     add hl, de
     ld a, h
@@ -1989,13 +1989,13 @@ Jump_001_5e35:
     jr nz, jr_001_5e99
 
     ld hl, LevelPasswordData_001_660a
-    ld a, [$dd5e]
+    ld a, [wUnk_dd5e]
     ld e, a
-    ld a, [$dd5f]
+    ld a, [wUnk_dd5f]
     ld d, a
     ld c, $0a
     ld a, c
-    ld [$dd5d], a
+    ld [wUnk_dd5d], a
     ld a, [hGameState]
     cp $02
     jr z, jr_001_5e67
@@ -2007,7 +2007,7 @@ jr_001_5e67:
     xor a
     ld [de], a
     inc de
-    ld a, [$dd54]
+    ld a, [wUnk_dd54]
     ld [de], a
     inc de
     ld a, [hl+]
@@ -2022,7 +2022,7 @@ jr_001_5e67:
     ld a, [hl+]
     ld [de], a
     inc de
-    ld a, [$dd56]
+    ld a, [wUnk_dd56]
     ld [de], a
     inc de
     cp $90
@@ -2047,10 +2047,10 @@ jr_001_5e90:
 
 jr_001_5e99:
     ld a, l
-    ld [$dd5a], a
+    ld [wUnk_dd5a], a
     ld a, h
-    ld [$dd5b], a
-    ld a, [$dd59]
+    ld [wUnk_dd5b], a
+    ld a, [wUnk_dd59]
     ld l, a
     ld h, $00
     add hl, hl
@@ -2064,11 +2064,11 @@ jr_001_5e99:
     ld a, [hl+]
     ld e, a
     ld d, [hl]
-    ld a, [$dd53]
+    ld a, [wUnk_dd53]
     ld l, a
-    ld a, [$dd54]
+    ld a, [wUnk_dd54]
     ld h, a
-    ld a, [$dd5b]
+    ld a, [wUnk_dd5b]
 
 jr_001_5ebf:
     add hl, bc
@@ -2076,14 +2076,14 @@ jr_001_5ebf:
     jr nz, jr_001_5ebf
 
     ld a, l
-    ld [$dd53], a
+    ld [wUnk_dd53], a
     ld a, h
-    ld [$dd54], a
-    ld a, [$dd55]
+    ld [wUnk_dd54], a
+    ld a, [wUnk_dd55]
     ld l, a
-    ld a, [$dd56]
+    ld a, [wUnk_dd56]
     ld h, a
-    ld a, [$dd5b]
+    ld a, [wUnk_dd5b]
 
 jr_001_5ed6:
     add hl, de
@@ -2091,41 +2091,41 @@ jr_001_5ed6:
     jr nz, jr_001_5ed6
 
     ld a, l
-    ld [$dd55], a
+    ld [wUnk_dd55], a
     ld a, h
-    ld [$dd56], a
-    ld a, [$de7e]
+    ld [wUnk_dd56], a
+    ld a, [wUnk_de7e]
     ld l, a
-    ld a, [$de7f]
+    ld a, [wUnk_de7f]
     ld h, a
-    ld a, [$dd56]
+    ld a, [wUnk_dd56]
     ld [hl+], a
-    ld a, [$dd54]
+    ld a, [wUnk_dd54]
     ld [hl+], a
     xor a
     ld [hl+], a
-    ld a, [$dd5c]
+    ld a, [wUnk_dd5c]
     ld b, a
-    ld a, [$de80]
+    ld a, [wUnk_de80]
     or a
     jr nz, jr_001_5f06
 
     ld a, b
     inc a
     and $07
-    ld [$dd5c], a
+    ld [wUnk_dd5c], a
     ld b, a
 
 jr_001_5f06:
     ld a, b
     ld [hl+], a
-    ld a, [$de7d]
+    ld a, [wUnk_de7d]
     inc a
-    ld [$de7d], a
+    ld [wUnk_de7d], a
     ld a, l
-    ld [$de7e], a
+    ld [wUnk_de7e], a
     ld a, h
-    ld [$de7f], a
+    ld [wUnk_de7f], a
     ret
 
 LevelPassword_Sub5f18:
@@ -2180,9 +2180,9 @@ jr_001_5f20:
     inc bc
     ld [de], a
     inc de
-    ld a, [$defa]
+    ld a, [wUnk_defa]
     inc a
-    ld [$defa], a
+    ld [wUnk_defa], a
     pop hl
     ld bc, $0005
     add hl, bc
@@ -2853,7 +2853,7 @@ jr_001_63f5:
     ret
 
 FrameLoop_Sub63fa:
-    ld a, [$dae1]
+    ld a, [wUnk_dae1]
     or a
     ret z
 
@@ -2868,7 +2868,7 @@ Jump_001_6407:
     call WaitVBlank
     pop de
     xor a
-    ld [$d9bd], a
+    ld [wBrickRedrawCount], a
     ld a, [de]
     inc de
     ld c, a
@@ -2932,9 +2932,9 @@ jr_001_644c:
     ld a, b
     ld [de], a
     inc de
-    ld a, [$d9bd]
+    ld a, [wBrickRedrawCount]
     add $02
-    ld [$d9bd], a
+    ld [wBrickRedrawCount], a
 
 jr_001_6468:
     push hl
@@ -2968,9 +2968,9 @@ jr_001_6468:
     ld a, [bc]
     ld [de], a
     inc de
-    ld a, [$d9bd]
+    ld a, [wBrickRedrawCount]
     add $02
-    ld [$d9bd], a
+    ld [wBrickRedrawCount], a
     pop hl
     ld bc, $ffe2
     add hl, bc
@@ -3011,19 +3011,19 @@ jr_001_64bd:
 
 ClearUnbreakableHitEffects:
     ld a, $ff
-    ld [$dcf3], a
+    ld [wUnk_dcf3], a
     ld hl, wUnbreakableHitEffects
     ld a, l
-    ld [$dcd3], a
+    ld [wUnk_dcd3], a
     ld a, h
-    ld [$dcd4], a
+    ld [wUnk_dcd4], a
     ret
 
 ; Start the effect shown when the ball hits an unbreakable brick.
 SpawnUnbreakableHitEffect:
-    ld a, [$dcd3]
+    ld a, [wUnk_dcd3]
     ld l, a
-    ld a, [$dcd4]
+    ld a, [wUnk_dcd4]
     ld h, a
     ld [hl], $12
     inc hl
@@ -3039,11 +3039,11 @@ SpawnUnbreakableHitEffect:
 
 jr_001_64eb:
     ld a, l
-    ld [$dcd3], a
+    ld [wUnk_dcd3], a
     ld a, h
-    ld [$dcd4], a
+    ld [wUnk_dcd4], a
     ld a, $01
-    ld [$d8ab], a
+    ld [wUnk_d8ab], a
     ret
 
 UpdateUnbreakableHitEffects:
@@ -3246,11 +3246,11 @@ jr_001_683a:
     add b
     push af
     push bc
-    ld [$ff8d], a
+    ld [hTemp], a
     ld bc, $0040
     ld hl, $c9dd
     ld de, $ca9d
-    ld a, [$ff9c]
+    ld a, [hPaletteMode]
     cp $02
     jr nz, jr_001_685d
 
@@ -3262,7 +3262,7 @@ jr_001_683a:
 
 jr_001_685d:
     push bc
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     add b
@@ -3273,7 +3273,7 @@ jr_001_685d:
 
 jr_001_686a:
     ld c, a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     add b
@@ -3295,7 +3295,7 @@ jr_001_6877:
     swap a
     and $03
     ld c, a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     add b
@@ -3318,7 +3318,7 @@ jr_001_6895:
 
     xor a
     ldh [rSVBK], a
-    ld a, [$ff9c]
+    ld a, [hPaletteMode]
     cp $02
     jr z, jr_001_68bd
 
@@ -3363,7 +3363,7 @@ jr_001_68dd:
     add b
     push af
     push bc
-    ld [$ff8d], a
+    ld [hTemp], a
     ld bc, $0240
     ld a, $02
     ldh [rSVBK], a
@@ -3372,7 +3372,7 @@ jr_001_68dd:
 
 jr_001_68f0:
     push bc
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     sub b
@@ -3382,7 +3382,7 @@ jr_001_68f0:
 
 jr_001_68fa:
     ld c, a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     sub b
@@ -3403,7 +3403,7 @@ jr_001_6904:
     swap a
     and $03
     ld c, a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     sub b
@@ -3434,7 +3434,7 @@ jr_001_691f:
     ret
 
 AnimatePalettes:
-    ld a, [$ff9c]
+    ld a, [hPaletteMode]
     or a
     ret z
 
@@ -3444,118 +3444,118 @@ AnimatePalettes:
     cp $04
     ret z
 
-    ld a, [$c958]
+    ld a, [wUnk_c958]
     ldh [rOCPS], a
     ld a, $9e
     ldh [rBCPS], a
     ld hl, $cb1d
-    ld a, [$caf7]
+    ld a, [wUnk_caf7]
     ld [hl+], a
-    ld a, [$caf8]
+    ld a, [wUnk_caf8]
     ld [hl+], a
-    ld a, [$cafb]
+    ld a, [wUnk_cafb]
     ld [hl+], a
-    ld a, [$cafc]
+    ld a, [wUnk_cafc]
     ld [hl+], a
-    ld a, [$cab5]
+    ld a, [wUnk_cab5]
     ld [hl+], a
-    ld a, [$cab6]
+    ld a, [wUnk_cab6]
     ld [hl+], a
-    ld a, [$caf7]
+    ld a, [wUnk_caf7]
     ld [hl+], a
-    ld a, [$caf8]
+    ld a, [wUnk_caf8]
     ld [hl+], a
-    ld a, [$cafb]
+    ld a, [wUnk_cafb]
     ld [hl+], a
-    ld a, [$cafc]
+    ld a, [wUnk_cafc]
     ld [hl+], a
-    ld a, [$cafb]
+    ld a, [wUnk_cafb]
     ld [hl+], a
-    ld a, [$cafc]
+    ld a, [wUnk_cafc]
     ld [hl+], a
-    ld a, [$caf7]
+    ld a, [wUnk_caf7]
     ld [hl+], a
-    ld a, [$caf8]
+    ld a, [wUnk_caf8]
     ld [hl+], a
-    ld a, [$caf9]
+    ld a, [wUnk_caf9]
     ld [hl+], a
-    ld a, [$cafa]
+    ld a, [wUnk_cafa]
     ld [hl+], a
-    ld a, [$caf9]
+    ld a, [wUnk_caf9]
     ld [hl+], a
-    ld a, [$cafa]
+    ld a, [wUnk_cafa]
     ld [hl+], a
-    ld a, [$caf7]
+    ld a, [wUnk_caf7]
     ld [hl+], a
-    ld a, [$caf8]
+    ld a, [wUnk_caf8]
     ld [hl+], a
-    ld a, [$caf9]
+    ld a, [wUnk_caf9]
     ld [hl+], a
-    ld a, [$cafa]
+    ld a, [wUnk_cafa]
     ld [hl+], a
-    ld a, [$caf7]
+    ld a, [wUnk_caf7]
     ld [hl+], a
-    ld a, [$caf8]
+    ld a, [wUnk_caf8]
     ld [hl+], a
-    ld a, [$caf1]
+    ld a, [wUnk_caf1]
     ld [hl+], a
-    ld a, [$caf2]
+    ld a, [wUnk_caf2]
     ld [hl+], a
-    ld a, [$caf3]
+    ld a, [wUnk_caf3]
     ld [hl+], a
-    ld a, [$caf4]
+    ld a, [wUnk_caf4]
     ld [hl+], a
-    ld a, [$caed]
+    ld a, [wUnk_caed]
     ld [hl+], a
-    ld a, [$caee]
+    ld a, [wUnk_caee]
     ld [hl+], a
-    ld a, [$caf1]
+    ld a, [wUnk_caf1]
     ld [hl+], a
-    ld a, [$caf2]
+    ld a, [wUnk_caf2]
     ld [hl+], a
-    ld a, [$caf3]
+    ld a, [wUnk_caf3]
     ld [hl+], a
-    ld a, [$caf4]
+    ld a, [wUnk_caf4]
     ld [hl+], a
-    ld a, [$caf1]
+    ld a, [wUnk_caf1]
     ld [hl+], a
-    ld a, [$caf2]
+    ld a, [wUnk_caf2]
     ld [hl+], a
-    ld a, [$caf1]
+    ld a, [wUnk_caf1]
     ld [hl+], a
-    ld a, [$caf2]
+    ld a, [wUnk_caf2]
     ld [hl+], a
-    ld a, [$caf3]
+    ld a, [wUnk_caf3]
     ld [hl+], a
-    ld a, [$caf4]
+    ld a, [wUnk_caf4]
     ld [hl+], a
-    ld a, [$caf3]
+    ld a, [wUnk_caf3]
     ld [hl+], a
-    ld a, [$caf4]
+    ld a, [wUnk_caf4]
     ld [hl+], a
-    ld a, [$caf1]
+    ld a, [wUnk_caf1]
     ld [hl+], a
-    ld a, [$caf2]
+    ld a, [wUnk_caf2]
     ld [hl+], a
-    ld a, [$caf3]
+    ld a, [wUnk_caf3]
     ld [hl+], a
-    ld a, [$caf4]
+    ld a, [wUnk_caf4]
     ld [hl+], a
-    ld a, [$cab5]
+    ld a, [wUnk_cab5]
     ld [hl+], a
-    ld a, [$cab6]
+    ld a, [wUnk_cab6]
     ld [hl+], a
-    ld a, [$caf1]
+    ld a, [wUnk_caf1]
     ld [hl+], a
-    ld a, [$caf2]
+    ld a, [wUnk_caf2]
     ld [hl+], a
-    ld a, [$caf3]
+    ld a, [wUnk_caf3]
     ld [hl+], a
-    ld a, [$caf4]
+    ld a, [wUnk_caf4]
     ld [hl+], a
-    ld a, [$cabb]
+    ld a, [wUnk_cabb]
     ld [hl+], a
-    ld a, [$cabc]
+    ld a, [wUnk_cabc]
     ld [hl+], a
     ld hl, $c3b6
     ld b, $09
@@ -3663,7 +3663,7 @@ jr_001_6ab0:
 jr_001_6abe:
     ld a, [hJoypad]
     ld b, a
-    ld a, [$defd]
+    ld a, [wUnk_defd]
     or a
     jr nz, jr_001_6ae2
 
@@ -3671,7 +3671,7 @@ jr_001_6abe:
     jr z, jr_001_6aea
 
     ld a, b
-    ld [$defd], a
+    ld [wUnk_defd], a
     ld a, [wLanguage]
     cp $04
     jr z, jr_001_6aea
@@ -3687,10 +3687,10 @@ jr_001_6ae2:
     jr nz, jr_001_6aea
 
     xor a
-    ld [$defd], a
+    ld [wUnk_defd], a
 
 jr_001_6aea:
-    ld a, [$defe]
+    ld a, [wUnk_defe]
     or a
     jr nz, jr_001_6b09
 
@@ -3698,7 +3698,7 @@ jr_001_6aea:
     jr z, jr_001_6b11
 
     ld a, b
-    ld [$defe], a
+    ld [wUnk_defe], a
     ld a, [wLanguage]
     or a
     jr z, jr_001_6b11
@@ -3714,7 +3714,7 @@ jr_001_6b09:
     jr nz, jr_001_6b11
 
     xor a
-    ld [$defe], a
+    ld [wUnk_defe], a
 
 jr_001_6b11:
     ld a, b
@@ -3763,7 +3763,7 @@ Jump_001_6b40:
     ld de, $cc99
     ld bc, $001b
     call DataTransfer
-    ld a, [$df43]
+    ld a, [wUnk_df43]
     ld hl, $cb96
     ld de, $001c
     ld b, $0a
@@ -3825,7 +3825,7 @@ Text_German_LatestScore:
     db $00, $84, "       LETZTE ", $00, $81, "000000", $ff
 
 TitleScreen_VBlank:
-    ld a, [$db5a]
+    ld a, [wUnk_db5a]
     or a
     ret z
 
@@ -3852,7 +3852,7 @@ TitleScreen_VBlank:
     xor a
     ld c, $06
     call CopyTilemapRect
-    ld a, [$db5a]
+    ld a, [wUnk_db5a]
     ld c, a
     ld b, $00
     add a
@@ -3873,14 +3873,14 @@ TitleScreen_VBlank:
     ld l, a
     xor a
     ldh [rVBK], a
-    ld [$db5a], a
+    ld [wUnk_db5a], a
     ld a, $ad
     ld c, $06
     call CopyTilemapRect
     ret
 
 TitleScreen_Sub6cd4:
-    ld a, [$db6d]
+    ld a, [wUnk_db6d]
     or a
     ret z
 
@@ -3892,29 +3892,29 @@ TitleScreen_Sub6cd4:
     cp $01
     jr nz, jr_001_6d15
 
-    ld a, [$db61]
+    ld a, [wUnk_db61]
     ld l, a
-    ld a, [$db62]
+    ld a, [wUnk_db62]
     ld h, a
     ld a, [hl+]
     or a
     jr nz, jr_001_6cfe
 
     ld a, $02
-    ld [$db6d], a
+    ld [wUnk_db6d], a
     ld a, $01
-    ld [$db5a], a
+    ld [wUnk_db5a], a
     ret
 
 jr_001_6cfe:
     ld b, a
     ld a, l
-    ld [$db61], a
+    ld [wUnk_db61], a
     ld a, h
-    ld [$db62], a
-    ld a, [$db5b]
+    ld [wUnk_db62], a
+    ld a, [wUnk_db5b]
     add b
-    ld [$db5b], a
+    ld [wUnk_db5b], a
     ld c, a
     ld hl, Text_German_LatestScoreData_001_5855
     jp Jump_001_6e0b
@@ -3923,29 +3923,29 @@ jr_001_6d15:
     cp $02
     jr nz, jr_001_6d47
 
-    ld a, [$db63]
+    ld a, [wUnk_db63]
     ld l, a
-    ld a, [$db64]
+    ld a, [wUnk_db64]
     ld h, a
     ld a, [hl+]
     or a
     jr nz, jr_001_6d30
 
     ld a, $03
-    ld [$db6d], a
+    ld [wUnk_db6d], a
     ld a, $02
-    ld [$db5a], a
+    ld [wUnk_db5a], a
     ret
 
 jr_001_6d30:
     ld b, a
     ld a, l
-    ld [$db63], a
+    ld [wUnk_db63], a
     ld a, h
-    ld [$db64], a
-    ld a, [$db5c]
+    ld [wUnk_db64], a
+    ld a, [wUnk_db5c]
     add b
-    ld [$db5c], a
+    ld [wUnk_db5c], a
     ld c, a
     ld hl, Text_German_LatestScoreData_001_589e
     jp Jump_001_6e0b
@@ -3954,29 +3954,29 @@ jr_001_6d47:
     cp $03
     jr nz, jr_001_6d79
 
-    ld a, [$db65]
+    ld a, [wUnk_db65]
     ld l, a
-    ld a, [$db66]
+    ld a, [wUnk_db66]
     ld h, a
     ld a, [hl+]
     or a
     jr nz, jr_001_6d62
 
     ld a, $04
-    ld [$db6d], a
+    ld [wUnk_db6d], a
     ld a, $03
-    ld [$db5a], a
+    ld [wUnk_db5a], a
     ret
 
 jr_001_6d62:
     ld b, a
     ld a, l
-    ld [$db65], a
+    ld [wUnk_db65], a
     ld a, h
-    ld [$db66], a
-    ld a, [$db5d]
+    ld [wUnk_db66], a
+    ld a, [wUnk_db5d]
     add b
-    ld [$db5d], a
+    ld [wUnk_db5d], a
     ld c, a
     ld hl, Text_German_LatestScoreData_001_592f
     jp Jump_001_6e0b
@@ -3985,29 +3985,29 @@ jr_001_6d79:
     cp $04
     jr nz, jr_001_6daa
 
-    ld a, [$db67]
+    ld a, [wUnk_db67]
     ld l, a
-    ld a, [$db68]
+    ld a, [wUnk_db68]
     ld h, a
     ld a, [hl+]
     or a
     jr nz, jr_001_6d94
 
     ld a, $05
-    ld [$db6d], a
+    ld [wUnk_db6d], a
     ld a, $04
-    ld [$db5a], a
+    ld [wUnk_db5a], a
     ret
 
 jr_001_6d94:
     ld b, a
     ld a, l
-    ld [$db67], a
+    ld [wUnk_db67], a
     ld a, h
-    ld [$db68], a
-    ld a, [$db5e]
+    ld [wUnk_db68], a
+    ld a, [wUnk_db5e]
     add b
-    ld [$db5e], a
+    ld [wUnk_db5e], a
     ld c, a
     ld hl, Text_German_LatestScoreData_001_59c0
     jr jr_001_6e0b
@@ -4016,29 +4016,29 @@ jr_001_6daa:
     cp $05
     jr nz, jr_001_6ddb
 
-    ld a, [$db69]
+    ld a, [wUnk_db69]
     ld l, a
-    ld a, [$db6a]
+    ld a, [wUnk_db6a]
     ld h, a
     ld a, [hl+]
     or a
     jr nz, jr_001_6dc5
 
     ld a, $06
-    ld [$db6d], a
+    ld [wUnk_db6d], a
     ld a, $05
-    ld [$db5a], a
+    ld [wUnk_db5a], a
     ret
 
 jr_001_6dc5:
     ld b, a
     ld a, l
-    ld [$db69], a
+    ld [wUnk_db69], a
     ld a, h
-    ld [$db6a], a
-    ld a, [$db5f]
+    ld [wUnk_db6a], a
+    ld a, [wUnk_db5f]
     add b
-    ld [$db5f], a
+    ld [wUnk_db5f], a
     ld c, a
     ld hl, Text_German_LatestScoreData_001_5a51
     jr jr_001_6e0b
@@ -4047,29 +4047,29 @@ jr_001_6ddb:
     cp $06
     jr nz, jr_001_6e0b
 
-    ld a, [$db6b]
+    ld a, [wUnk_db6b]
     ld l, a
-    ld a, [$db6c]
+    ld a, [wUnk_db6c]
     ld h, a
     ld a, [hl+]
     or a
     jr nz, jr_001_6df5
 
     xor a
-    ld [$db6d], a
+    ld [wUnk_db6d], a
     ld a, $06
-    ld [$db5a], a
+    ld [wUnk_db5a], a
     ret
 
 jr_001_6df5:
     ld b, a
     ld a, l
-    ld [$db6b], a
+    ld [wUnk_db6b], a
     ld a, h
-    ld [$db6c], a
-    ld a, [$db60]
+    ld [wUnk_db6c], a
+    ld a, [wUnk_db60]
     add b
-    ld [$db60], a
+    ld [wUnk_db60], a
     ld c, a
     ld hl, Text_German_LatestScoreData_001_5ae2
     jr jr_001_6e0b
@@ -4104,44 +4104,44 @@ jr_001_6e11:
 
 TitleScreen_Init6e25:
     ld a, $a8
-    ld [$db5b], a
-    ld [$db5c], a
-    ld [$db5d], a
-    ld [$db5e], a
-    ld [$db5f], a
-    ld [$db60], a
+    ld [wUnk_db5b], a
+    ld [wUnk_db5c], a
+    ld [wUnk_db5d], a
+    ld [wUnk_db5e], a
+    ld [wUnk_db5f], a
+    ld [wUnk_db60], a
     ld hl, Text_German_LatestScoreData_001_583e
     ld a, l
-    ld [$db61], a
+    ld [wUnk_db61], a
     ld a, h
-    ld [$db62], a
+    ld [wUnk_db62], a
     ld hl, Text_German_LatestScoreData_001_5841
     ld a, l
-    ld [$db63], a
+    ld [wUnk_db63], a
     ld a, h
-    ld [$db64], a
+    ld [wUnk_db64], a
     ld hl, Text_German_LatestScoreData_001_5844
     ld a, l
-    ld [$db65], a
+    ld [wUnk_db65], a
     ld a, h
-    ld [$db66], a
+    ld [wUnk_db66], a
     ld hl, Text_German_LatestScoreData_001_5847
     ld a, l
-    ld [$db67], a
+    ld [wUnk_db67], a
     ld a, h
-    ld [$db68], a
+    ld [wUnk_db68], a
     ld hl, Text_German_LatestScoreData_001_584a
     ld a, l
-    ld [$db69], a
+    ld [wUnk_db69], a
     ld a, h
-    ld [$db6a], a
+    ld [wUnk_db6a], a
     ld hl, Text_German_LatestScoreData_001_584d
     ld a, l
-    ld [$db6b], a
+    ld [wUnk_db6b], a
     ld a, h
-    ld [$db6c], a
+    ld [wUnk_db6c], a
     ld a, $01
-    ld [$db6d], a
+    ld [wUnk_db6d], a
     ret
 
     db $40, $98, $00, $0a, $20, $20, $20, $46, $45, $4c, $49, $43, $49, $54, $41, $54
@@ -4189,7 +4189,7 @@ jr_001_6ead:
     ld [wOamUsedLastFrame], a
     dec a
     ld [wOamUsed], a
-    ld [$db70], a
+    ld [wUnk_db70], a
     ld de, $c2b9
     ld a, e
     ld [wOamWritePtr], a
@@ -4214,7 +4214,7 @@ jr_001_6ee8:
     ld a, [wBatX]
     add $08
     ld b, a
-    ld a, [$ff90]
+    ld a, [hTemp2]
     or a
     jr nz, jr_001_6efe
 
@@ -4272,14 +4272,14 @@ jr_001_6f3a:
     xor a
 
 jr_001_6f3b:
-    ld [$ff90], a
+    ld [hTemp2], a
     ld c, $04
     ld a, [wBatX]
     sub $08
     ld b, a
 
 jr_001_6f46:
-    ld a, [$ff90]
+    ld a, [hTemp2]
     or a
     jr z, jr_001_6f55
 
@@ -4340,7 +4340,7 @@ jr_001_6f87:
     or a
     jr z, jr_001_6f99
 
-    ld a, [$c2b8]
+    ld a, [wUnk_c2b8]
     inc a
     cp $03
     jr nz, jr_001_6f96
@@ -4348,7 +4348,7 @@ jr_001_6f87:
     xor a
 
 jr_001_6f96:
-    ld [$c2b8], a
+    ld [wUnk_c2b8], a
 
 jr_001_6f99:
     ld a, [wBallCount]
@@ -4374,7 +4374,7 @@ jr_001_6fa3:
     or a
     jr z, jr_001_6fd4
 
-    ld a, [$c2b8]
+    ld a, [wUnk_c2b8]
     or a
     jr nz, jr_001_6fbf
 
@@ -4414,7 +4414,7 @@ jr_001_6fd8:
 jr_001_6fdb:
     ld de, wFallingPowerups
     ld a, $08
-    ld [$ff8d], a
+    ld [hTemp], a
 
 jr_001_6fe3:
     ld a, [de]
@@ -4473,9 +4473,9 @@ jr_001_6fe3:
     ld a, [de]
     inc de
     ld [hl+], a
-    ld a, [$db70]
+    ld a, [wUnk_db70]
     add $04
-    ld [$db70], a
+    ld [wUnk_db70], a
     jr jr_001_702f
 
 jr_001_7028:
@@ -4487,13 +4487,13 @@ jr_001_7028:
     inc d
 
 jr_001_702f:
-    ld a, [$ff8d]
+    ld a, [hTemp]
     dec a
-    ld [$ff8d], a
+    ld [hTemp], a
     jr nz, jr_001_6fe3
 
     ld b, $08
-    ld a, [$ff90]
+    ld a, [hTemp2]
     or a
     jr z, jr_001_7041
 
@@ -4503,7 +4503,7 @@ jr_001_7041:
     ld a, [wBallCount]
     add b
     ld b, a
-    ld a, [$db70]
+    ld a, [wUnk_db70]
     add b
     ld b, a
     ld a, [wOamUsed]
@@ -4511,7 +4511,7 @@ jr_001_7041:
     ld [wOamUsedLastFrame], a
     xor a
     ld [wOamUsed], a
-    ld [$db70], a
+    ld [wUnk_db70], a
     ret
 
 ; Language tables, $51 bytes each. The table of the chosen language is copied to wLangTable.
@@ -4782,9 +4782,9 @@ jr_001_7213:
 
     ld hl, InitMenuSparklesData_001_749b
     ld a, l
-    ld [$db4f], a
+    ld [wUnk_db4f], a
     ld a, h
-    ld [$db50], a
+    ld [wUnk_db50], a
     ret
 
 UpdateMenuSparkles:
@@ -4867,32 +4867,32 @@ jr_001_727d:
     dec a
     jr nz, jr_001_7270
 
-    ld a, [$ff9e]
+    ld a, [hUnk_ff9e]
     or a
     jr z, jr_001_72ae
 
-    ld a, [$db4f]
+    ld a, [wUnk_db4f]
     ld l, a
-    ld a, [$db50]
+    ld a, [wUnk_db50]
     ld h, a
     ld a, [hl+]
     ld b, a
     ld a, l
-    ld [$db4f], a
+    ld [wUnk_db4f], a
     ld a, h
-    ld [$db50], a
-    ld a, [$ff9e]
+    ld [wUnk_db50], a
+    ld a, [hUnk_ff9e]
     add b
-    ld [$ff9e], a
+    ld [hUnk_ff9e], a
     ret
 
 jr_001_72ae:
     ld a, $14
     ld hl, $c250
     call ClearOamEntries
-    ld a, [$ff8f]
+    ld a, [hUnk_ff8f]
     inc a
-    ld [$ff8f], a
+    ld [hUnk_ff8f], a
     ld a, $0b
     ld hl, $daf7
     ld de, $c250
@@ -4919,7 +4919,7 @@ jr_001_72c5:
 
 jr_001_72da:
     ld b, [hl]
-    ld a, [$ff8f]
+    ld a, [hUnk_ff8f]
     and $03
     jr nz, jr_001_72e3
 
@@ -4951,7 +4951,7 @@ jr_001_72e3:
 
 jr_001_7305:
     ld [hl+], a
-    ld [$ff8e], a
+    ld [hTemp + 1], a
     ld a, [hl+]
     ld c, a
     ld a, [hl+]
@@ -4960,7 +4960,7 @@ jr_001_7305:
     push hl
     push af
     push de
-    ld a, [$ff8e]
+    ld a, [hTemp + 1]
     add a
     ld l, a
     ld h, $00
@@ -4971,7 +4971,7 @@ jr_001_7305:
     ld h, [hl]
     ld l, a
     ld a, $02
-    ld [$ff8d], a
+    ld [hTemp], a
 
 jr_001_7325:
     ld a, [hl+]
@@ -4989,9 +4989,9 @@ jr_001_7325:
     ld [de], a
     inc de
     push af
-    ld a, [$ff8d]
+    ld a, [hTemp]
     dec a
-    ld [$ff8d], a
+    ld [hTemp], a
     jr nz, jr_001_7325
 
     pop af
@@ -5139,22 +5139,22 @@ FrameLoop:
     ld b, $ff
     ld a, $20
     call FadePalettes
-    ld a, [$ff9c]
+    ld a, [hPaletteMode]
     cp $04
     jr nz, jr_001_75fc
 
     ld a, $02
-    ld [$ff9c], a
+    ld [hPaletteMode], a
     ld a, $03
     ldh [rIE], a
     ld b, $ff
     ld a, $20
     call FadePalettes2
     ld a, $04
-    ld [$ff9c], a
+    ld [hPaletteMode], a
 
 jr_001_75fc:
-    ld a, [$ff9c]
+    ld a, [hPaletteMode]
     cp $03
     jr nz, jr_001_7615
 
@@ -5165,7 +5165,7 @@ jr_001_75fc:
     ld d, $04
     call HighScores_Sub7929
     ld a, $02
-    ld [$cb53], a
+    ld [wUnk_cb53], a
 
 jr_001_7615:
     call FrameLoop_Sub63fa
@@ -5200,33 +5200,33 @@ jr_001_7640:
     dec a
     jr nz, jr_001_7640
 
-    ld a, [$ff9c]
+    ld a, [hPaletteMode]
     cp $03
     jr nz, jr_001_7665
 
-    ld [$cb53], a
+    ld [wUnk_cb53], a
     ld d, $fc
     call HighScores_Sub7929
     call WaitVBlank
     ld a, $01
     ldh [rIE], a
     xor a
-    ld [$ff9c], a
+    ld [hPaletteMode], a
 
 jr_001_7665:
-    ld a, [$ff9c]
+    ld a, [hPaletteMode]
     cp $04
     jr nz, jr_001_7680
 
     ld a, $02
-    ld [$ff9c], a
+    ld [hPaletteMode], a
     ld b, $01
     xor a
     call FadePalettes2
     ld a, $01
     ldh [rIE], a
     ld a, $04
-    ld [$ff9c], a
+    ld [hPaletteMode], a
 
 jr_001_7680:
     ld b, $01
@@ -5567,17 +5567,17 @@ jr_001_7894:
     ret
 
 HighScores_Sub7899:
-    ld a, [$cb58]
+    ld a, [wUnk_cb58]
     inc a
-    ld [$cb58], a
+    ld [wUnk_cb58], a
     cp $03
     ret nz
 
     xor a
-    ld [$cb58], a
-    ld a, [$cb56]
+    ld [wUnk_cb58], a
+    ld a, [wUnk_cb56]
     ld l, a
-    ld a, [$cb57]
+    ld a, [wUnk_cb57]
     ld h, a
     ld a, [hl]
     cp $01
@@ -5587,13 +5587,13 @@ HighScores_Sub7899:
 
 jr_001_78b7:
     ld a, [hl+]
-    ld [$cb54], a
+    ld [wUnk_cb54], a
     ld a, [hl+]
-    ld [$cb55], a
+    ld [wUnk_cb55], a
     ld a, l
-    ld [$cb56], a
+    ld [wUnk_cb56], a
     ld a, h
-    ld [$cb57], a
+    ld [wUnk_cb57], a
     ret
 
 HighScores_InitSprites:
@@ -5819,12 +5819,12 @@ Credits_Update:
     jr z, jr_001_7a6e
 
     dec a
-    ld [$c954], a
+    ld [wUnk_c954], a
 
 jr_001_7a6e:
-    ld a, [$dcf7]
+    ld a, [wUnk_dcf7]
     inc a
-    ld [$dcf7], a
+    ld [wUnk_dcf7], a
     ld de, $c3be
     ld hl, $c3c8
     ld b, $8f
@@ -5852,7 +5852,7 @@ jr_001_7a8d:
     jr nz, jr_001_7a7d
 
     xor a
-    ld [$dcf5], a
+    ld [wUnk_dcf5], a
     ld a, [hGameState]
     cp $01
     ret z
@@ -5863,7 +5863,7 @@ jr_001_7a8d:
     jr z, jr_001_7ab6
 
     ld a, $ff
-    ld [$dcf5], a
+    ld [wUnk_dcf5], a
     ld a, $01
     ld [hGameState], a
     ld a, $28
@@ -5879,13 +5879,13 @@ GBC_Check:
     xor a                       ; switch WRAM1 to Bank 0
     ldh [rSVBK], a
     xor a                       ; store 0 to first byte of WRAM1
-    ld [$d000], a
+    ld [wUnk_d000], a
     ld a, $02                   ; switch WRAM to Bank 2
     ldh [rSVBK], a
-    ld [$d000], a               ; Store value $02 to the first byte of WRAM1 Bank 2
+    ld [wUnk_d000], a               ; Store value $02 to the first byte of WRAM1 Bank 2
     xor a                       ; switch WRAM1 back to Bank 0
     ldh [rSVBK], a
-    ld a, [$d000]               ; Read value from first byte of WRAM1
+    ld a, [wUnk_d000]               ; Read value from first byte of WRAM1
     or a                        ; Bitwise OR with itself, Zero flag should be set. LD instruction doesn't change register flags in Z80...
     jr z, .RAMCheckPass         ; RAM check passed, WRAM bank switching works so this is a GBC with a MBC
 
@@ -6021,9 +6021,9 @@ GameOver_Update:
     ld a, $28
     ld [hStateTimer], a
     ld a, $05
-    ld [$ccb6], a
+    ld [wUnk_ccb6], a
     ld a, $ff
-    ld [$ccb7], a
+    ld [wUnk_ccb7], a
     call BuildScoreText
     ld a, $1a
     call PlaySound
@@ -6110,12 +6110,12 @@ WaitVBlank:
 jr_001_7c67:
     halt
     nop
-    ld a, [$ff95]
+    ld a, [hVBlankDone]
     or a
     jr z, jr_001_7c67
 
     xor a
-    ld [$ff95], a
+    ld [hVBlankDone], a
     ret
 
 Ending_Update:
@@ -6139,12 +6139,12 @@ jr_001_7c91:
     ret
 
 DeveloperLogos_Update:
-    ld a, [$ff91]
+    ld a, [hUnk_ff91]
     or a
     jr z, jr_001_7c9d
 
     dec a
-    ld [$ff91], a
+    ld [hUnk_ff91], a
     ret
 
 jr_001_7c9d:
@@ -6184,78 +6184,78 @@ ColorOnly_Update:
     call ChangeROMBank
     ld hl, LevelPasswordData_001_6784
     ld a, l
-    ld [$dd09], a
+    ld [wUnk_dd09], a
     ld a, h
-    ld [$dd0a], a
+    ld [wUnk_dd0a], a
     call BuildLevelTitle
     ld hl, $dd17
     ld a, [wLanguage]
     cp $04
     jr nz, jr_001_7d12
 
-    ld a, [$d73c]
+    ld a, [wLevelTitleText + 18]
     ld [hl+], a
-    ld a, [$d73d]
+    ld a, [wLevelTitleText + 19]
     ld [hl+], a
-    ld a, [$d73e]
+    ld a, [wLevelTitleText + 20]
     jr jr_001_7d1d
 
 jr_001_7d12:
-    ld a, [$d73b]
+    ld a, [wLevelTitleText + 17]
     ld [hl+], a
-    ld a, [$d73c]
+    ld a, [wLevelTitleText + 18]
     ld [hl+], a
-    ld a, [$d73d]
+    ld a, [wLevelTitleText + 19]
 
 jr_001_7d1d:
     ld [hl-], a
     dec hl
     call ParseDecimal
-    ld a, [$df35]
+    ld a, [wUnk_df35]
     ld l, a
-    ld a, [$df36]
+    ld a, [wUnk_df36]
     ld h, a
     ld de, $cce3
-    ld a, [$cb7c]
+    ld a, [wUnk_cb7c]
     ld [hl+], a
     ld [de], a
     inc de
-    ld a, [$cb7d]
+    ld a, [wUnk_cb7d]
     ld [hl+], a
     ld [de], a
     inc de
-    ld a, [$cb7e]
+    ld a, [wUnk_cb7e]
     ld [hl+], a
     ld [de], a
     inc de
-    ld a, [$cb7f]
+    ld a, [wUnk_cb7f]
     ld [hl+], a
     ld [de], a
-    ld a, [$dd4d]
+    ld a, [wUnk_dd4d]
     ld l, a
-    ld a, [$dd4e]
+    ld a, [wUnk_dd4e]
     ld h, a
     ld de, $01f4
     add hl, de
     ld a, l
-    ld [$dd4d], a
+    ld [wUnk_dd4d], a
     ld a, h
-    ld [$dd4e], a
+    ld [wUnk_dd4e], a
     ld a, l
-    ld [$dd49], a
+    ld [wUnk_dd49], a
     ld a, h
-    ld [$dd4a], a
+    ld [wUnk_dd4a], a
     call LevelPassword_Sub5c09
-    ld a, [$dd4f]
+    ld a, [wUnk_dd4f]
     ld l, a
-    ld a, [$dd50]
+    ld a, [wUnk_dd50]
     ld h, a
     ld de, $0032
     add hl, de
     ld a, l
-    ld [$dd4f], a
+    ld [wUnk_dd4f], a
     ld a, h
-    ld [$dd50], a
+    ld [wUnk_dd50], a
     ld b, h
     ld c, l
     call AddScoreBC
@@ -6264,22 +6264,22 @@ jr_001_7d1d:
     call DrawString
     call DrawString
     ld a, $2d
-    ld [$dd4b], a
+    ld [wUnk_dd4b], a
     ld hl, LevelPasswordData_001_67ad
     ld a, l
-    ld [$dd60], a
+    ld [wUnk_dd60], a
     ld a, h
-    ld [$dd61], a
+    ld [wUnk_dd61], a
     ld hl, LevelPasswordData_001_67bc
     ld a, l
-    ld [$dd6f], a
+    ld [wUnk_dd6f], a
     ld a, h
-    ld [$dd70], a
+    ld [wUnk_dd70], a
     ld hl, LevelPasswordData_001_67cb
     ld a, l
-    ld [$dd7e], a
+    ld [wUnk_dd7e], a
     ld a, h
-    ld [$dd7f], a
+    ld [wUnk_dd7f], a
     ld hl, $dd60
     call LevelPassword_Sub5d2e
     ld hl, $dd6f
@@ -6288,19 +6288,19 @@ jr_001_7d1d:
     call LevelPassword_Sub5d2e
     ld hl, $dd8d
     ld a, l
-    ld [$dd6d], a
+    ld [wUnk_dd6d], a
     ld a, h
-    ld [$dd6e], a
+    ld [wUnk_dd6e], a
     ld hl, $dddd
     ld a, l
-    ld [$dd7c], a
+    ld [wUnk_dd7c], a
     ld a, h
-    ld [$dd7d], a
+    ld [wUnk_dd7d], a
     ld hl, $de2d
     ld a, l
-    ld [$dd8b], a
+    ld [wUnk_dd8b], a
     ld a, h
-    ld [$dd8c], a
+    ld [wUnk_dd8c], a
     ld hl, LevelPasswordData_001_6543
     ld de, $de81
     ld bc, $0037

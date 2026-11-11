@@ -19,17 +19,17 @@ RST_08::
     ld h, [hl]
     ld l, a
     ld a, [hl+]
-    ld [$ff9d], a
+    ld [hUnk_ff9d], a
 
 RST_10::
     xor a
-    ld [$d746], a
-    ld [$d75e], a
+    ld [wUnk_d746], a
+    ld [wUnk_d75e], a
     dec a
 
 RST_18::
-    ld [$d745], a
-    ld de, $d72a
+    ld [wUnk_d745], a
+    ld de, wLevelTitleText
     xor a
     ld [de], a
 
@@ -117,7 +117,7 @@ JoypadTransitionInterrupt::
 LoadPalettes:
     ld hl, $c9dd
     ld b, $10
-    ld a, [$ff9c]
+    ld a, [hPaletteMode]
     cp $02
     jr nz, jr_000_0076
 
@@ -155,7 +155,7 @@ jr_000_0079:
     dec b
     jr nz, jr_000_0079
 
-    ld a, [$ff9c]
+    ld a, [hPaletteMode]
 
     cp $02
     jr nz, jr_000_009e
@@ -175,14 +175,14 @@ jr_000_009e:
 StateInit_ColorOnly:
     ld hl, $02b3
     ld a, l
-    ld [$ff96], a
+    ld [hUnk_ff96], a
     ld a, h
-    ld [$ff97], a
+    ld [hUnk_ff97], a
     ld a, $01
-    ld [$ff9c], a
-    ld [$ff9b], a
+    ld [hPaletteMode], a
+    ld [hUnk_ff9b], a
     ld a, $01
-    ld [$ff9a], a
+    ld [hUnk_ff9a], a
     ld a, $e4
 
     ldh [rBGP], a
