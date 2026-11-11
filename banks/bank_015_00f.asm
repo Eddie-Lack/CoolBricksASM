@@ -11,8 +11,8 @@ SetUpRasterEffect:
     dec a
     jr nz, jr_00f_400f
 
-    ld hl, RasterHandler_412e
-    ld de, $c35a
+    ld hl, RasterHandler_Mode1
+    ld de, wStatJump
     ld bc, $0052
     jp Raster_CopyBytes
 
@@ -20,105 +20,106 @@ jr_00f_400f:
     cp $03
     jr nz, jr_00f_405e
 
-    ld hl, $c3b6
+    ld hl, wRasterTable
     ld bc, $0009
     ld a, $00
-    call Raster_Sub4113
-    ld hl, $c3b8
-    ld de, RasterData_4724
-    call Raster_Sub4104
-    ld hl, $c3ba
-    ld de, RasterData_4844
-    call Raster_Sub4104
-    ld hl, $c3bc
-    ld de, RasterData_4964
-    call Raster_Sub4104
-    ld hl, $c3bf
-    ld de, RasterData_4214
-    call Raster_Sub411c
-    ld hl, $c3be
+    call Raster_FillWordColumn
+    ld hl, wRasterTable + 2
+    ld de, RasterColours_Mode4_1
+    call Raster_CopyWordColumn
+    ld hl, wRasterTable + 4
+    ld de, RasterColours_Mode4_2
+    call Raster_CopyWordColumn
+    ld hl, wRasterTable + 6
+    ld de, RasterColours_Mode4_3
+    call Raster_CopyWordColumn
+    ld hl, wRasterTable + 9
+    ld de, RasterNextLines
+    call Raster_CopyByteColumn
+    ld hl, wRasterTable + 8
     xor a
     ld e, $90
-    call Raster_Sub4128
+    call Raster_FillByteColumn
     ld a, $02
-    ld [$ff9c], a
-    ld de, $c3b6
+    ld [hPaletteMode], a
+    ld de, wRasterTable
     call LoadPalettes
     ld a, $04
-    ld [$ff9c], a
+    ld [hPaletteMode], a
     xor a
     jr jr_00f_40a4
 
 jr_00f_405e:
     cp $02
-    jp z, Jump_00f_40ca
+    jp z, SetUpRasterEffect_Mode3
 
-    ld hl, $c3b6
+    ld hl, wRasterTable
     ld bc, $0009
     ld a, $00
-    call Raster_Sub4113
-    ld hl, $c3b8
-    ld de, RasterData_4604
-    call Raster_Sub4104
-    ld hl, $c3ba
-    ld de, RasterData_44e4
-    call Raster_Sub4104
-    ld hl, $c3bc
-    ld de, RasterData_43c4
-    call Raster_Sub4104
-    ld hl, $c3bf
-    ld de, RasterData_4214
-    call Raster_Sub411c
-    ld hl, $c3be
+    call Raster_FillWordColumn
+    ld hl, wRasterTable + 2
+    ld de, RasterColours_Mode2_1
+    call Raster_CopyWordColumn
+    ld hl, wRasterTable + 4
+    ld de, RasterColours_Mode2_2
+    call Raster_CopyWordColumn
+    ld hl, wRasterTable + 6
+    ld de, RasterColours_Mode2_3
+    call Raster_CopyWordColumn
+    ld hl, wRasterTable + 9
+    ld de, RasterNextLines
+    call Raster_CopyByteColumn
+    ld hl, wRasterTable + 8
     ld a, $f8
     ld e, $90
-    call Raster_Sub4128
-    ld de, $c3b6
+    call Raster_FillByteColumn
+    ld de, wRasterTable
     call LoadPalettes
     ld a, $ff
 
 jr_00f_40a4:
-    ld hl, $c3b6
+    ld hl, wRasterTable
     ld bc, $0009
-    call Raster_Sub4113
-    ld hl, $c3b8
-    call Raster_Sub4113
-    ld hl, $c3ba
-    call Raster_Sub4113
-    ld hl, $c3bc
-    call Raster_Sub4113
-    ld hl, RasterData_4180
-    ld de, $c35a
+    call Raster_FillWordColumn
+    ld hl, wRasterTable + 2
+    call Raster_FillWordColumn
+    ld hl, wRasterTable + 4
+    call Raster_FillWordColumn
+    ld hl, wRasterTable + 6
+    call Raster_FillWordColumn
+    ld hl, RasterHandler_Mode2And4
+    ld de, wStatJump
     ld bc, $005c
     jr Raster_CopyBytes
 
-Jump_00f_40ca:
-    ld hl, $c3b6
-    ld de, RasterData_42a4
+SetUpRasterEffect_Mode3:
+    ld hl, wRasterTable
+    ld de, RasterColours_Mode3
     ld bc, $0003
-    call Raster_Sub4104
-    ld hl, $c3b9
-    ld de, RasterData_4214
-    call Raster_Sub411c
-    ld hl, $c3b8
+    call Raster_CopyWordColumn
+    ld hl, wRasterTable + 3
+    ld de, RasterNextLines
+    call Raster_CopyByteColumn
+    ld hl, wRasterTable + 2
     ld a, $f8
     ld e, $17
-    call Raster_Sub4128
+    call Raster_FillByteColumn
     ld a, $fc
     ld e, $78
-    call Raster_Sub4128
+    call Raster_FillByteColumn
     ld a, $f8
     ld e, $01
-    call Raster_Sub4128
-    ld hl, RasterHandler_41dc
-    ld de, $c35a
+    call Raster_FillByteColumn
+    ld hl, RasterHandler_Mode3
+    ld de, wStatJump
     ld bc, $0038
 
 Raster_CopyBytes:
     call DataTransfer
     ret
 
-Raster_Sub4104:
+; Copy 144 words from DE to one column of wRasterTable. HL = first entry, BC = record size - 1.
+Raster_CopyWordColumn:
     ld a, $90
 
 jr_00f_4106:
@@ -136,7 +137,8 @@ jr_00f_4106:
 
     ret
 
-Raster_Sub4113:
+; Fill one word column of wRasterTable with A for 144 lines.
+Raster_FillWordColumn:
     ld e, $90
 
 jr_00f_4115:
@@ -148,7 +150,8 @@ jr_00f_4115:
 
     ret
 
-Raster_Sub411c:
+; Copy 144 bytes from DE to one column of wRasterTable.
+Raster_CopyByteColumn:
     ld a, $90
 
 jr_00f_411e:
@@ -163,39 +166,149 @@ jr_00f_411e:
 
     ret
 
-Raster_Sub4128:
+; Fill E lines of one byte column of wRasterTable with A.
+Raster_FillByteColumn:
     ld [hl+], a
     add hl, bc
     dec e
-    jr nz, Raster_Sub4128
+    jr nz, Raster_FillByteColumn
 
     ret
 
-; LCD STAT handlers. They run from RAM, not from here.
-RasterHandler_412e:
-    db $e5, $21, $6b, $ff, $36, $00, $36, $00, $36, $00, $36, $00, $2e, $69, $36, $00
-    db $36, $00, $2e, $68, $36, $9e, $2e, $6a, $36, $94, $2e, $45, $36, $09, $2e, $43
-    db $36, $00, $f5, $fa, $56, $c9, $6f, $fa, $57, $c9, $67, $2a, $ea, $5f, $c3, $2a
-    db $ea, $61, $c3, $2a, $ea, $63, $c3, $2a, $ea, $65, $c3, $2a, $ea, $69, $c3, $2a
-    db $ea, $6b, $c3, $2a, $ea, $77, $c3, $7d, $ea, $56, $c9, $7c, $ea, $57, $c9, $f1
-    db $e1, $d9
+; LCD STAT handlers. SetUpRasterEffect copies one of them to wStatJump and it runs there once per screen line.
+; Each handler writes the values for this line, then patches its own operands with the next record of wRasterTable.
+; Mode 1. Each line: two sprite colours, one background colour and the next line number. Records are 7 bytes.
+RasterHandler_Mode1:
+    push hl
+    ld hl, rOCPD
+    ld [hl], $00 ; rOCPD (value patched from the table)
+    ld [hl], $00 ; rOCPD (value patched from the table)
+    ld [hl], $00 ; rOCPD (value patched from the table)
+    ld [hl], $00 ; rOCPD (value patched from the table)
+    ld l, LOW(rBCPD)
+    ld [hl], $00 ; rBCPD (value patched from the table)
+    ld [hl], $00 ; rBCPD (value patched from the table)
+    ld l, LOW(rBCPS)
+    ld [hl], $9e ; rBCPS
+    ld l, LOW(rOCPS)
+    ld [hl], $94 ; rOCPS
+    ld l, LOW(rLYC)
+    ld [hl], $09 ; rLYC (value patched from the table)
+    ld l, LOW(rSCX)
+    ld [hl], $00 ; rSCX
+    push af
+    ld a, [wRasterPtr]
+    ld l, a
+    ld a, [wRasterPtr + 1]
+    ld h, a
+    ld a, [hl+]
+    ld [wStatJump + $05], a
+    ld a, [hl+]
+    ld [wStatJump + $07], a
+    ld a, [hl+]
+    ld [wStatJump + $09], a
+    ld a, [hl+]
+    ld [wStatJump + $0b], a
+    ld a, [hl+]
+    ld [wStatJump + $0f], a
+    ld a, [hl+]
+    ld [wStatJump + $11], a
+    ld a, [hl+]
+    ld [wStatJump + $1d], a
+    ld a, l
+    ld [wRasterPtr], a
+    ld a, h
+    ld [wRasterPtr + 1], a
+    pop af
+    pop hl
+    reti
 
-RasterData_4180:
-    db $e5, $21, $69, $ff, $36, $00, $36, $00, $36, $00, $36, $00, $36, $00
-    db $36, $00, $36, $00, $36, $00, $2e, $43, $36, $00, $2e, $68, $36, $80, $2e, $45
-    db $36, $01, $f5, $fa, $56, $c9, $6f, $fa, $57, $c9, $67, $2a, $ea, $5f, $c3, $2a
-    db $ea, $61, $c3, $2a, $ea, $63, $c3, $2a, $ea, $65, $c3, $2a, $ea, $67, $c3, $2a
-    db $ea, $69, $c3, $2a, $ea, $6b, $c3, $2a, $ea, $6d, $c3, $2a, $ea, $71, $c3, $2a
-    db $ea, $79, $c3, $7d, $ea, $56, $c9, $7c, $ea, $57, $c9, $f1, $e1, $d9
+; Modes 2 and 4. Each line: four background colours, the horizontal scroll and the next line number. Records are 10 bytes.
+RasterHandler_Mode2And4:
+    push hl
+    ld hl, rBCPD
+    ld [hl], $00 ; rBCPD (value patched from the table)
+    ld [hl], $00 ; rBCPD (value patched from the table)
+    ld [hl], $00 ; rBCPD (value patched from the table)
+    ld [hl], $00 ; rBCPD (value patched from the table)
+    ld [hl], $00 ; rBCPD (value patched from the table)
+    ld [hl], $00 ; rBCPD (value patched from the table)
+    ld [hl], $00 ; rBCPD (value patched from the table)
+    ld [hl], $00 ; rBCPD (value patched from the table)
+    ld l, LOW(rSCX)
+    ld [hl], $00 ; rSCX (value patched from the table)
+    ld l, LOW(rBCPS)
+    ld [hl], $80 ; rBCPS
+    ld l, LOW(rLYC)
+    ld [hl], $01 ; rLYC (value patched from the table)
+    push af
+    ld a, [wRasterPtr]
+    ld l, a
+    ld a, [wRasterPtr + 1]
+    ld h, a
+    ld a, [hl+]
+    ld [wStatJump + $05], a
+    ld a, [hl+]
+    ld [wStatJump + $07], a
+    ld a, [hl+]
+    ld [wStatJump + $09], a
+    ld a, [hl+]
+    ld [wStatJump + $0b], a
+    ld a, [hl+]
+    ld [wStatJump + $0d], a
+    ld a, [hl+]
+    ld [wStatJump + $0f], a
+    ld a, [hl+]
+    ld [wStatJump + $11], a
+    ld a, [hl+]
+    ld [wStatJump + $13], a
+    ld a, [hl+]
+    ld [wStatJump + $17], a
+    ld a, [hl+]
+    ld [wStatJump + $1f], a
+    ld a, l
+    ld [wRasterPtr], a
+    ld a, h
+    ld [wRasterPtr + 1], a
+    pop af
+    pop hl
+    reti
 
-RasterHandler_41dc:
-    db $e5, $21
-    db $6b, $ff, $36, $00, $36, $00, $2e, $43, $36, $fc, $2e, $6a, $36, $82, $2e, $45
-    db $36, $01, $f5, $fa, $56, $c9, $6f, $fa, $57, $c9, $67, $2a, $ea, $5f, $c3, $2a
-    db $ea, $61, $c3, $2a, $ea, $65, $c3, $2a, $ea, $6d, $c3, $7d, $ea, $56, $c9, $7c
-    db $ea, $57, $c9, $f1, $e1, $d9
+; Mode 3. Each line: one sprite colour, the horizontal scroll and the next line number. Records are 4 bytes.
+RasterHandler_Mode3:
+    push hl
+    ld hl, rOCPD
+    ld [hl], $00 ; rOCPD (value patched from the table)
+    ld [hl], $00 ; rOCPD (value patched from the table)
+    ld l, LOW(rSCX)
+    ld [hl], $fc ; rSCX (value patched from the table)
+    ld l, LOW(rOCPS)
+    ld [hl], $82 ; rOCPS
+    ld l, LOW(rLYC)
+    ld [hl], $01 ; rLYC (value patched from the table)
+    push af
+    ld a, [wRasterPtr]
+    ld l, a
+    ld a, [wRasterPtr + 1]
+    ld h, a
+    ld a, [hl+]
+    ld [wStatJump + $05], a
+    ld a, [hl+]
+    ld [wStatJump + $07], a
+    ld a, [hl+]
+    ld [wStatJump + $0b], a
+    ld a, [hl+]
+    ld [wStatJump + $13], a
+    ld a, l
+    ld [wRasterPtr], a
+    ld a, h
+    ld [wRasterPtr + 1], a
+    pop af
+    pop hl
+    reti
 
-RasterData_4214:
+; The line number that follows each of the 144 screen lines, for rLYC.
+RasterNextLines:
     db $02, $03, $04, $05, $06, $07, $08, $09, $0a, $0b
     db $0c, $0d, $0e, $0f, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $1a, $1b
     db $1c, $1d, $1e, $1f, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $2a, $2b
@@ -207,7 +320,8 @@ RasterData_4214:
     db $7c, $7d, $7e, $7f, $80, $81, $82, $83, $84, $85, $86, $87, $88, $89, $8a, $8b
     db $8c, $8d, $8e, $8f, $00, $01
 
-RasterData_42a4:
+; Colour tables: one 15-bit colour for each of the 144 screen lines.
+RasterColours_Mode3:
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -228,7 +342,7 @@ RasterData_42a4:
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00
 
-RasterData_43c4:
+RasterColours_Mode2_3:
     db $00, $00, $00, $00, $21, $04, $21, $04, $42, $08
     db $42, $08, $63, $0c, $63, $0c, $63, $0c, $84, $10, $84, $10, $a5, $14, $a5, $14
     db $c6, $18, $c6, $18, $c6, $18, $e7, $1c, $e7, $1c, $08, $21, $08, $21, $29, $25
@@ -249,7 +363,7 @@ RasterData_43c4:
     db $63, $0c, $63, $0c, $63, $0c, $42, $08, $42, $08, $21, $04, $21, $04, $00, $00
     db $00, $00, $00, $00, $00, $00
 
-RasterData_44e4:
+RasterColours_Mode2_2:
     db $00, $00, $00, $00, $00, $00, $21, $04, $21, $04
     db $21, $04, $42, $08, $42, $08, $42, $08, $42, $08, $63, $0c, $63, $0c, $63, $0c
     db $84, $10, $84, $10, $84, $10, $a5, $14, $a5, $14, $a5, $14, $a5, $14, $c6, $18
@@ -270,7 +384,7 @@ RasterData_44e4:
     db $42, $08, $42, $08, $42, $08, $21, $04, $21, $04, $21, $04, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00
 
-RasterData_4604:
+RasterColours_Mode2_1:
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     db $00, $00, $00, $00, $21, $04, $21, $04, $21, $04, $21, $04, $21, $04, $21, $04
     db $21, $04, $42, $08, $42, $08, $42, $08, $42, $08, $42, $08, $42, $08, $42, $08
@@ -291,7 +405,7 @@ RasterData_4604:
     db $21, $04, $21, $04, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00
 
-RasterData_4724:
+RasterColours_Mode4_1:
     db $4c, $00, $4c, $00, $4c, $00, $4c, $00, $4c, $00
     db $6c, $04, $6c, $04, $6c, $04, $6c, $04, $6c, $04, $6c, $04, $8c, $08, $8c, $08
     db $8c, $08, $8c, $08, $8c, $08, $ac, $0c, $ab, $0c, $ab, $0c, $ab, $0c, $ab, $10
@@ -312,7 +426,7 @@ RasterData_4724:
     db $49, $14, $49, $14, $49, $10, $29, $0c, $2a, $0c, $2a, $08, $0a, $04, $0b, $04
     db $0b, $00, $0b, $00, $4c, $00
 
-RasterData_4844:
+RasterColours_Mode4_2:
     db $98, $00, $98, $00, $b8, $04, $b8, $04, $b8, $04
     db $d8, $08, $d8, $08, $d8, $08, $f8, $0c, $f8, $0c, $f8, $0c, $18, $11, $18, $11
     db $18, $11, $38, $15, $38, $15, $58, $19, $57, $19, $57, $19, $57, $1d, $57, $1d
@@ -333,7 +447,7 @@ RasterData_4844:
     db $b0, $2c, $b1, $28, $92, $24, $72, $1c, $73, $18, $53, $14, $34, $0c, $34, $08
     db $15, $04, $15, $00, $98, $00
 
-RasterData_4964:
+RasterColours_Mode4_3:
     db $9f, $01, $9f, $05, $bf, $09, $bf, $09, $df, $0d
     db $df, $11, $ff, $11, $ff, $15, $1f, $1a, $1f, $1e, $3f, $1e, $3f, $22, $5f, $26
     db $5f, $26, $7f, $2a, $7f, $2e, $9f, $32, $9f, $32, $9f, $36, $9f, $3a, $9f, $3e
