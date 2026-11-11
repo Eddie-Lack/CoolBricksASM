@@ -6230,7 +6230,7 @@ GameOver_Update:
     ld a, $05
     ld [wUnk_ccb6], a
     ld a, $ff
-    ld [wUnk_ccb7], a
+    ld [wMenuIdleTimer], a
     call BuildScoreText
     ld a, $1a
     call PlaySound
