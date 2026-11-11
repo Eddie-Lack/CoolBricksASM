@@ -115,7 +115,7 @@ JoypadTransitionInterrupt::
 
 ; Unpack the colour palettes at DE into the palette buffer.
 LoadPalettes:
-    ld hl, wUnk_c9dd
+    ld hl, wPaletteBuffer
     ld b, $10
     ld a, [hPaletteMode]
     cp $02
@@ -173,7 +173,7 @@ jr_000_009e:
     ret
 
 StateInit_ColorOnly:
-    ld hl, $02b3
+    ld hl, VBlank
     ld a, l
     ld [hUnk_ff96], a
     ld a, h

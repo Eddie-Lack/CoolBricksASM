@@ -169,6 +169,21 @@ DEF wBonusDelay            EQU $dd4b ; Frames before the countdown starts
 DEF wLevelBonus            EQU $dd4d ; Bonus in points: 2000 at the first password screen, 500 more each time
 DEF wLevelBonusUnits       EQU $dd4f ; The same bonus in score units (points / 10)
 
+; More variables found by watching memory in the emulator
+DEF wBgPalettes            EQU $c95d ; Background palettes of the level
+DEF wObjPalettes           EQU $c99d ; Sprite palettes of the level
+DEF wPaletteBuffer         EQU $c9dd ; Palettes unpacked by LoadPalettes
+DEF wUfoTick               EQU $dc2b ; Counts frames on UFO levels
+DEF wUfoTickMask           EQU $dc2c ; The UFO wait timer only counts down on frames where wUfoTick AND this is 0
+DEF wUfoPassIndex          EQU $dc2e ; Which UFO pass comes next (index into UfoPassTable)
+DEF hLogoTimer             EQU $ff91 ; Counts down while a logo screen is shown
+DEF wBrickShinePtr         EQU $dab3 ; Position in BrickShineAnimation (bank 9), the shine that sweeps over the bricks
+
+; HDMA transfers
+DEF wHdmaMode              EQU $cb53 ; 0 or 1 = no transfer, 3 = from bank $0C, other = from the language graphics bank
+DEF wHdmaSource            EQU $cb54 ; Source address of the next HDMA transfer (low byte first)
+DEF wHighScoreAnimPtr      EQU $cb56 ; Position in HighScoreAnimFrames
+
 ; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
 DEF wLanguage              EQU $defc
 
@@ -203,6 +218,7 @@ DEF wLangTextLevelPassword     EQU wLangTable + $32
 DEF wLangGraphicsBank          EQU wLangTable + $43
 DEF wLangTextStartLevel        EQU wLangTable + $45
 DEF wLangTextHighScorePassword EQU wLangTable + $49
+DEF wLangTextPause          EQU wLangTable + $4b
 DEF wLangTextGameOver          EQU wLangTable + $4d
 DEF wLangTextLatestScore       EQU wLangTable + $4f
 
@@ -240,10 +256,6 @@ DEF wUnk_c959 EQU $c959
 DEF wUnk_c95a EQU $c95a
 DEF wUnk_c95b EQU $c95b
 DEF wUnk_c95c EQU $c95c
-DEF wUnk_c95d EQU $c95d
-DEF wUnk_c96d EQU $c96d
-DEF wUnk_c99d EQU $c99d
-DEF wUnk_c9dd EQU $c9dd
 DEF wUnk_ca9d EQU $ca9d
 DEF wUnk_cab5 EQU $cab5
 DEF wUnk_cab6 EQU $cab6
@@ -263,11 +275,6 @@ DEF wUnk_cafa EQU $cafa
 DEF wUnk_cafb EQU $cafb
 DEF wUnk_cafc EQU $cafc
 DEF wUnk_cb1d EQU $cb1d
-DEF wUnk_cb53 EQU $cb53
-DEF wUnk_cb54 EQU $cb54
-DEF wUnk_cb55 EQU $cb55
-DEF wUnk_cb56 EQU $cb56
-DEF wUnk_cb57 EQU $cb57
 DEF wUnk_cb58 EQU $cb58
 DEF wUnk_cb69 EQU $cb69
 DEF wUnk_cb7c EQU $cb7c
@@ -319,10 +326,6 @@ DEF wUnk_d746 EQU $d746
 DEF wUnk_d75e EQU $d75e
 DEF wUnk_d76c EQU $d76c
 DEF wUnk_d76d EQU $d76d
-DEF wUnk_d77e EQU $d77e
-DEF wUnk_d77f EQU $d77f
-DEF wUnk_d780 EQU $d780
-DEF wUnk_d783 EQU $d783
 DEF wUnk_d895 EQU $d895
 DEF wUnk_d8a4 EQU $d8a4
 DEF wUnk_d8a7 EQU $d8a7
@@ -340,8 +343,6 @@ DEF wUnk_daaf EQU $daaf
 DEF wUnk_dab0 EQU $dab0
 DEF wUnk_dab1 EQU $dab1
 DEF wUnk_dab2 EQU $dab2
-DEF wUnk_dab3 EQU $dab3
-DEF wUnk_dab4 EQU $dab4
 DEF wUnk_dab8 EQU $dab8
 DEF wUnk_dab9 EQU $dab9
 DEF wUnk_dac3 EQU $dac3
@@ -398,9 +399,6 @@ DEF wUnk_dbec EQU $dbec
 DEF wUnk_dc1e EQU $dc1e
 DEF wUnk_dc1f EQU $dc1f
 DEF wUnk_dc22 EQU $dc22
-DEF wUnk_dc2b EQU $dc2b
-DEF wUnk_dc2c EQU $dc2c
-DEF wUnk_dc2e EQU $dc2e
 DEF wUnk_dc32 EQU $dc32
 DEF wUnk_dc37 EQU $dc37
 DEF wUnk_dc38 EQU $dc38
@@ -488,7 +486,6 @@ DEF wUnk_df49 EQU $df49
 DEF wUnk_df4c EQU $df4c
 DEF wUnk_df4d EQU $df4d
 DEF hUnk_ff8f EQU $ff8f
-DEF hUnk_ff91 EQU $ff91
 DEF hUnk_ff96 EQU $ff96
 DEF hUnk_ff97 EQU $ff97
 DEF hUnk_ff9a EQU $ff9a

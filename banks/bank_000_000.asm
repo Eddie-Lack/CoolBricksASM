@@ -287,6 +287,7 @@ InstallInterruptHandlers:
     ld [wUnk_c957], a
     ret
 
+Stat_Default:
     push af
     push hl
     ld a, [wUnk_dd01]
@@ -821,6 +822,7 @@ jr_000_05a1:
 
     jp Jump_000_04f7
 
+VBlank_Credits:
     push af
     push hl
     push de
@@ -854,7 +856,7 @@ StateInit_HighScores:
     call PlayMusic
     ld a, $04
     ld [wLcdcFlags], a
-    ld hl, $03a4
+    ld hl, VBlankMenus
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -881,7 +883,7 @@ StateInit_HighScores:
     ld de, $9000                            ; Destination (VRAM)
     ld bc, $05c0                            ; Data Length
     call DataTransfer                       ; Start data transfer
-    ld hl, $472c
+    ld hl, HighScoresTextureData + $5c0
     ld de, $8000
     ld bc, $0400
     call DataTransfer
@@ -901,7 +903,7 @@ StateInit_HighScores:
     ld c, $03
     call CopyTilemapRect
     ld a, $01
-    ld [wUnk_cb53], a
+    ld [wHdmaMode], a
     ldh [rVBK], a
     xor a
     ld de, $9800
@@ -939,15 +941,18 @@ StateInit_HighScores:
     ld [wUnk_ccc6], a
     ld [wUnk_ccc7], a
     ld [wUnk_ccc8], a
+    ; Start address of the first animation frame, low byte then high byte.
+    ; The frames are sent with HDMA, which needs source addresses that are multiples of 16.
+    ASSERT LOW(HighScoreAnim_00b_4000) == 0, "the high score animation must start at an address ending in $00"
     xor a
-    ld [wUnk_cb54], a
-    ld a, $40
-    ld [wUnk_cb55], a
-    ld hl, HighScoresData_001_79ba
+    ld [wHdmaSource], a
+    ld a, HIGH(HighScoreAnim_00b_4000)
+    ld [wHdmaSource + 1], a
+    ld hl, HighScoreAnimFrames_Second
     ld a, l
-    ld [wUnk_cb56], a
+    ld [wHighScoreAnimPtr], a
     ld a, h
-    ld [wUnk_cb57], a
+    ld [wHighScoreAnimPtr + 1], a
     xor a
     ld [wUnk_c95b], a
     ld a, $04
@@ -1676,7 +1681,7 @@ jr_000_0aaa:
     ret
 
 StartHdmaTransfer:
-    ld a, [wUnk_cb53]
+    ld a, [wHdmaMode]
     or a
     ret z
 
@@ -1688,9 +1693,9 @@ StartHdmaTransfer:
 
     ld a, [wLangGraphicsBank]
     ld [ROM_BANK], a
-    ld a, [wUnk_cb55]
+    ld a, [wHdmaSource + 1]
     ldh [rHDMA1], a
-    ld a, [wUnk_cb54]
+    ld a, [wHdmaSource]
     ldh [rHDMA2], a
     jr jr_000_0ad6
 
@@ -1744,7 +1749,7 @@ LoadLevel:
     call PlayLevelMusic
     ld a, $00
     ld [wLcdcFlags], a
-    ld hl, $02e0
+    ld hl, VBlank_InGame
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -1763,7 +1768,7 @@ LoadLevel:
     add hl, hl
     add hl, hl
     add hl, hl
-    ld de, Palettes_Level
+    ld de, LevelTable
     add hl, de
     ld a, $05
     call ChangeROMBank
@@ -1800,11 +1805,11 @@ jr_000_0b49:
     push bc
     ld a, $01
     call ChangeROMBank
-    ld de, wUnk_c95d
+    ld de, wBgPalettes
     ld bc, $0040
     call DataTransfer
     ld hl, LevelSpritePalettes
-    ld de, wUnk_c99d
+    ld de, wObjPalettes
     ld bc, $0040
     call DataTransfer
     pop hl
@@ -1815,13 +1820,13 @@ jr_000_0b49:
     ld hl, BrickPalette_4830
 
 jr_000_0b81:
-    ld de, wUnk_c95d
+    ld de, wBgPalettes
     ld bc, $0008
     call DataTransfer
-    ld de, wUnk_c96d
+    ld de, wBgPalettes + $10
     ld bc, $0008
     call DataTransfer
-    ld de, wUnk_c95d
+    ld de, wBgPalettes
     call LoadPalettes
     ld a, $05
     call ChangeROMBank
@@ -2350,22 +2355,22 @@ InitBall:
     ld a, $01
     ld [wBallCount], a
     ld a, $89
-    ld [wUnk_d77e], a
+    ld [wBalls + 1], a
     ld a, [wBatWidth]
     srl a
     ld b, a
     ld a, [wBatX]
     sub $0c
     add b
-    ld [wUnk_d780], a
+    ld [wBalls + 3], a
     ld a, $10
     ld [wBalls + 4], a
     ld a, $83
     ld [wBalls + 5], a
     xor a
     ld [wBalls], a
-    ld [wUnk_d77f], a
-    ld [wUnk_d783], a
+    ld [wBalls + 2], a
+    ld [wBalls + 6], a
     xor a
     ld [wMultiBallPending], a
     ld [wSleepyBallActive], a
@@ -4975,9 +4980,9 @@ jr_000_1d93:
 jr_000_1dae:
     ld a, $09
     ld [ROM_BANK], a
-    ld a, [wUnk_dab3]
+    ld a, [wBrickShinePtr]
     ld l, a
-    ld a, [wUnk_dab4]
+    ld a, [wBrickShinePtr + 1]
     ld h, a
     ld b, $0c
 
@@ -4986,7 +4991,7 @@ jr_000_1dbd:
     cp $ff
     jr nz, jr_000_1dc6
 
-    ld hl, BrickRedrawData_009_4000
+    ld hl, BrickShineAnimation
     ld a, [hl+]
 
 jr_000_1dc6:
@@ -5002,9 +5007,9 @@ jr_000_1dc6:
     jr nz, jr_000_1dbd
 
     ld a, l
-    ld [wUnk_dab3], a
+    ld [wBrickShinePtr], a
     ld a, h
-    ld [wUnk_dab4], a
+    ld [wBrickShinePtr + 1], a
     ld a, $01
     ld [ROM_BANK], a
     ld a, [wBrickRedrawCount]
@@ -5047,11 +5052,11 @@ jr_000_1e0c:
     dec c
     jr nz, jr_000_1dfa
 
-    ld hl, Palettes_Level
+    ld hl, BrickShineAnimation
     ld a, l
-    ld [wUnk_dab3], a
+    ld [wBrickShinePtr], a
     ld a, h
-    ld [wUnk_dab4], a
+    ld [wBrickShinePtr + 1], a
     ret
 
 ; Redraw hit bricks, remove destroyed ones and release power-ups.
@@ -5330,7 +5335,7 @@ StateInit_MainMenu:
     call PlayMusic
     ld a, $04
     ld [wLcdcFlags], a
-    ld hl, $03a4
+    ld hl, VBlankMenus
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -5340,11 +5345,11 @@ StateInit_MainMenu:
     ld a, $01
     ld [hUnk_ff9a], a
     xor a
-    ld [wUnk_cb53], a
+    ld [wHdmaMode], a
     ldh [rSCX], a
     ldh [rSCY], a
     ld [wUnk_c959], a
-    ld de, Palettes_Level
+    ld de, Palettes_MainMenu
     call LoadPalettes
     ld hl, $9800
     call ClearTileMap
@@ -5368,11 +5373,11 @@ StateInit_MainMenu:
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $683c
+    ld hl, Gfx_MainMenu_002_603c + $800
     ld de, $8800
     ld bc, $0340
     call DataTransfer
-    ld hl, $6b7c
+    ld hl, Gfx_MainMenu_002_603c + $b40
     ld de, $8b40
     ld bc, $0090
     call DataTransfer
@@ -6265,7 +6270,7 @@ StateInit_TitleScreen:
     call PlayMusic
     ld a, $00
     ld [wLcdcFlags], a
-    ld hl, $02b3
+    ld hl, VBlank
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -6290,11 +6295,11 @@ StateInit_TitleScreen:
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $4800
+    ld hl, Gfx_TitleScreen_007_4000 + $800
     ld de, $8800
     ld bc, $0620
     call DataTransfer
-    ld hl, $6468
+    ld hl, Gfx_TitleScreen_007_5f28 + $540
     ld de, $8000
     ld bc, $00d0
     call DataTransfer
@@ -6319,11 +6324,11 @@ jr_000_25cf:
     xor a
     ld [wUnk_dae1], a
     ldh [rVBK], a
-    ld hl, $4e10
+    ld hl, Gfx_TitleScreen_007_4000 + $e10
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $5610
+    ld hl, Gfx_TitleScreen_007_4000 + $1610
     ld de, $8800
     ld bc, $0620
     call DataTransfer
@@ -6418,7 +6423,7 @@ StateInit_GameOver:
     call StartSong
 
 jr_000_2692:
-    ld hl, $02b3
+    ld hl, VBlank
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -6440,7 +6445,7 @@ jr_000_2692:
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $516c
+    ld hl, Gfx_GameOver_005_496c + $800
     ld de, $8800
     ld bc, $0340
     call DataTransfer
@@ -6452,11 +6457,11 @@ jr_000_2692:
     call CopyTilemapRect
     xor a
     ldh [rVBK], a
-    ld hl, $54ac
+    ld hl, Gfx_GameOver_005_496c + $b40
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $5cac
+    ld hl, Gfx_GameOver_005_496c + $1340
     ld de, $8800
     ld bc, $0590
     call DataTransfer
@@ -6485,13 +6490,13 @@ ResetEnemies:
     ld [wBlobThrowCount], a
     ld [wUnk_dbea], a
     ld [wUfoHits], a
-    ld [wUnk_dc2e], a
-    ld [wUnk_dc2b], a
+    ld [wUfoPassIndex], a
+    ld [wUfoTick], a
     ld [wUfoBombActive], a
     dec a
     ld [wUfoWaitTimer], a
     ld a, $01
-    ld [wUnk_dc2c], a
+    ld [wUfoTickMask], a
     ld b, $f0
     ld c, $32
     ld a, c
@@ -6581,13 +6586,13 @@ jr_000_27b0:
     cp $68
     jr nc, jr_000_27e0
 
-    ld hl, $4f1e
+    ld hl, BlobThrowDirections_Left
     add hl, de
     ld l, [hl]
     ld h, d
     ld a, $40
 
-    ld de, $4d7d
+    ld de, BlobThrowData_Left
 
     jr jr_000_27eb
 
@@ -7068,7 +7073,7 @@ jr_000_2a6c:
     jr nc, jr_000_2a77
 
     ld a, $20
-    ld hl, $4e92
+    ld hl, ProjectileData_4e92
     jr jr_000_2ab3
 
 jr_000_2a77:
@@ -7076,7 +7081,7 @@ jr_000_2a77:
     jr nc, jr_000_2a82
 
     ld a, $1c
-    ld hl, $4eb2
+    ld hl, ProjectileData_4eb2
     jr jr_000_2ab3
 
 jr_000_2a82:
@@ -7084,7 +7089,7 @@ jr_000_2a82:
     jr nc, jr_000_2a8d
 
     ld a, $18
-    ld hl, $4ece
+    ld hl, ProjectileData_4ece
     jr jr_000_2ab3
 
 jr_000_2a8d:
@@ -7092,7 +7097,7 @@ jr_000_2a8d:
     jr nc, jr_000_2a98
 
     ld a, $14
-    ld hl, $4ee6
+    ld hl, ProjectileData_4ee6
     jr jr_000_2ab3
 
 jr_000_2a98:
@@ -7100,7 +7105,7 @@ jr_000_2a98:
     jr nc, jr_000_2aa3
 
     ld a, $10
-    ld hl, $4efa
+    ld hl, ProjectileData_4efa
     jr jr_000_2ab3
 
 jr_000_2aa3:
@@ -7108,12 +7113,12 @@ jr_000_2aa3:
     jr nc, jr_000_2aae
 
     ld a, $0c
-    ld hl, $4f0a
+    ld hl, ProjectileData_4f0a
     jr jr_000_2ab3
 
 jr_000_2aae:
     ld a, $08
-    ld hl, $4f16
+    ld hl, ProjectileData_4f16
 
 jr_000_2ab3:
     ld [wProjectileWork], a
@@ -7554,11 +7559,11 @@ UpdateUfo:
     or a
     jr nz, jr_000_2dd6
 
-    ld a, [wUnk_dc2c]
+    ld a, [wUfoTickMask]
     ld b, a
-    ld a, [wUnk_dc2b]
+    ld a, [wUfoTick]
     inc a
-    ld [wUnk_dc2b], a
+    ld [wUfoTick], a
     and b
     ret nz
 
@@ -7569,9 +7574,9 @@ UpdateUfo:
 
     inc a
     ld [wUfoFlying], a
-    ld a, [wUnk_dc2e]
+    ld a, [wUfoPassIndex]
     inc a
-    ld [wUnk_dc2e], a
+    ld [wUfoPassIndex], a
     and $07
     add a
     ld e, a
@@ -8994,13 +8999,13 @@ UpdateShot2:
     ld l, a
     ld a, [wOamWritePtr + 1]
     ld h, a
-    ld bc, $5468
+    ld bc, ShotSprite_Rocket
     ld e, $01
     ld a, [wShots + 11]
     or a
     jr z, jr_000_3677
 
-    ld bc, $5474
+    ld bc, ShotSprite_Laser
     ld e, $02
 
 jr_000_3677:
@@ -9122,7 +9127,7 @@ UpdateShot3:
     ld l, a
     ld a, [wOamWritePtr + 1]
     ld h, a
-    ld bc, $5474
+    ld bc, ShotSprite_Laser
     ld a, [wShotActive + 3]
     inc a
     ld [wShotActive + 3], a
@@ -9241,7 +9246,7 @@ UpdateShot4:
     ld l, a
     ld a, [wOamWritePtr + 1]
     ld h, a
-    ld bc, $5474
+    ld bc, ShotSprite_Laser
     ld a, [wShotActive + 4]
     inc a
     ld [wShotActive + 4], a
@@ -9360,7 +9365,7 @@ UpdateShot5:
     ld l, a
     ld a, [wOamWritePtr + 1]
     ld h, a
-    ld bc, $5474
+    ld bc, ShotSprite_Laser
     ld a, [wShotActive + 5]
     inc a
     ld [wShotActive + 5], a
@@ -9474,7 +9479,7 @@ jr_000_392c:
     jp Jump_000_3228
 
 StateInit_Pause:
-    ld hl, $02b3
+    ld hl, VBlank
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -9496,7 +9501,7 @@ StateInit_Pause:
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $50c1
+    ld hl, Gfx_Pause_00e_48c1 + $800
     ld de, $8800
     ld bc, $0340
     call DataTransfer
@@ -9508,11 +9513,11 @@ StateInit_Pause:
     call CopyTilemapRect
     xor a
     ldh [rVBK], a
-    ld hl, $5401
+    ld hl, Gfx_Pause_00e_48c1 + $b40
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $5c01
+    ld hl, Gfx_Pause_00e_48c1 + $1340
     ld de, $8800
     ld bc, $0590
     call DataTransfer
@@ -9541,8 +9546,8 @@ jr_000_39ec:
 
 StateInit_DeveloperLogos:
     ld a, $46
-    ld [hUnk_ff91], a
-    ld hl, $02b3
+    ld [hLogoTimer], a
+    ld hl, VBlank
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -9567,11 +9572,11 @@ StateInit_DeveloperLogos:
     call CopyTilemapRect
     xor a
     ldh [rVBK], a
-    ld hl, $739c
+    ld hl, Gfx_MainMenu_002_6edc + $4c0
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $7b9c
+    ld hl, Gfx_MainMenu_002_6edc + $cc0
     ld de, $8800
     ld bc, $00f0
     call DataTransfer
@@ -9598,8 +9603,8 @@ ClearCheatFlags:
 
 StateInit_PublisherLogo:
     ld a, $46
-    ld [hUnk_ff91], a
-    ld hl, $02b3
+    ld [hLogoTimer], a
+    ld hl, VBlank
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -9644,12 +9649,12 @@ StateInit_PublisherLogo:
     ret
 
 PublisherLogo_Update:
-    ld a, [hUnk_ff91]
+    ld a, [hLogoTimer]
     or a
     jr z, jr_000_3ae3
 
     dec a
-    ld [hUnk_ff91], a
+    ld [hLogoTimer], a
     ret
 
 jr_000_3ae3:
@@ -9662,7 +9667,7 @@ jr_000_3ae3:
 StateInit_Credits:
     ld e, $09
     call PlayMusic
-    ld hl, $05a9
+    ld hl, VBlank_Credits
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -9689,7 +9694,7 @@ StateInit_Credits:
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $6d0c
+    ld hl, Gfx_Credits_005_650c + $800
     ld de, $8800
     ld bc, $0500
     call DataTransfer
@@ -9875,12 +9880,12 @@ jr_000_3c3d:
 StateInit_LevelPassword:
     ld a, $00
     ld [wLcdcFlags], a
-    ld hl, $02b3
+    ld hl, VBlank
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
     ld [hVBlankHandler + 1], a
-    ld hl, $0298
+    ld hl, Stat_Default
     ld a, l
     ld [hStatHandler], a
     ld a, h
@@ -9913,11 +9918,11 @@ StateInit_LevelPassword:
     ld de, $9000
     ld bc, $0790
     call DataTransfer
-    ld hl, $5584
+    ld hl, Gfx_LevelPassword_00c_4de4 + $7a0
     ld de, $8b40
     ld bc, $0090
     call DataTransfer
-    ld hl, $5574
+    ld hl, Gfx_LevelPassword_00c_4de4 + $790
     ld de, $8000
     ld bc, $0010
     call DataTransfer
@@ -10067,7 +10072,7 @@ jr_000_3d1d:
     ret
 
 StateInit_LanguageSelect:
-    ld hl, $02b3
+    ld hl, VBlank
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -10102,7 +10107,7 @@ StateInit_LanguageSelect:
     call DataTransfer
     ld de, $9800
 
-    ld hl, $4fe8
+    ld hl, Gfx_LanguageSelect_00d_49b8 + $630
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -10159,8 +10164,8 @@ UpdateSound:
 
 StateInit_Copyright:
     ld a, $46
-    ld [hUnk_ff91], a
-    ld hl, $02b3
+    ld [hLogoTimer], a
+    ld hl, VBlank
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -10201,12 +10206,12 @@ StateInit_Copyright:
     ret
 
 Copyright_Update:
-    ld a, [hUnk_ff91]
+    ld a, [hLogoTimer]
     or a
     jr z, jr_000_3ef8
 
     dec a
-    ld [hUnk_ff91], a
+    ld [hLogoTimer], a
     ret
 
 jr_000_3ef8:
@@ -10221,7 +10226,7 @@ StateInit_Ending:
     call PlayMusic
     xor a
     ldh [rSCX], a
-    ld hl, $02b3
+    ld hl, VBlank
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
@@ -10242,7 +10247,7 @@ StateInit_Ending:
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $6f4f
+    ld hl, Gfx_Ending_00e_674f + $800
     ld de, $8800
     ld bc, $0790
     call DataTransfer
@@ -10254,11 +10259,11 @@ StateInit_Ending:
     call CopyTilemapRect
     xor a
     ldh [rVBK], a
-    ld hl, $73cf
+    ld hl, Gfx_Ending_00e_674f + $c80
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $7bcf
+    ld hl, Gfx_Ending_00e_674f + $1480
     ld de, $8800
     ld bc, $0150
     call DataTransfer
