@@ -243,6 +243,8 @@ One of the four corner cases has a mistake in the original code. For an exact di
 | Power-up collected | `$0A` | 100 |
 | Smiley, or Extra life at 9 lives | `$32` | 500 |
 
+The password screen after every fourth level adds a bonus: 2000 points the first time and 500 more at each later screen (`wLevelBonus`). `StartGame` resets it.
+
 Three small effect lists are updated every frame in bank 1:
 
 - `wBrickBreakEffects` (14 slots), started by `SpawnBrickBreakEffect` when a brick is destroyed
