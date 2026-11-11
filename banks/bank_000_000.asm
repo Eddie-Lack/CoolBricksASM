@@ -384,7 +384,7 @@ jr_000_0317:
     inc [hl]
 
 jr_000_0328:
-    ld hl, Data_001_745e
+    ld hl, VBlank_InGameData_001_745e
     call DrawString
     jr jr_000_0361
 
@@ -942,7 +942,7 @@ StateInit_HighScores:
     ld [$cb54], a
     ld a, $40
     ld [$cb55], a
-    ld hl, Data_001_79ba
+    ld hl, HighScoresData_001_79ba
     ld a, l
     ld [$cb56], a
     ld a, h
@@ -4987,7 +4987,7 @@ jr_000_1dbd:
     cp $ff
     jr nz, jr_000_1dc6
 
-    ld hl, Data_009_4000
+    ld hl, CountBrickDestroyedData_009_4000
     ld a, [hl+]
 
 jr_000_1dc6:
@@ -5443,7 +5443,7 @@ jr_000_2074:
     or a
     jr z, jr_000_2083
 
-    ld hl, Data_00e_4000
+    ld hl, MainMenuData_00e_4000
     call DrawString
 
 jr_000_2083:
@@ -6329,15 +6329,15 @@ jr_000_25cf:
     ld bc, $0620
     call DataTransfer
     ld a, [wLanguage]
-    ld hl, Data_007_6538
+    ld hl, TitleScreenData_007_6538
     dec a
     jr z, jr_000_2605
 
-    ld hl, Data_007_67b8
+    ld hl, TitleScreenData_007_67b8
     dec a
     jr z, jr_000_2605
 
-    ld hl, Data_007_6678
+    ld hl, TitleScreenData_007_6678
     dec a
     jr z, jr_000_2605
 
@@ -6598,7 +6598,7 @@ jr_000_27e0:
     ld l, [hl]
     ld h, d
     ld a, $24
-    ld de, Data_001_4e6e
+    ld de, UpdateBlobData_001_4e6e
 
 jr_000_27eb:
     call SpawnProjectile
@@ -6990,10 +6990,10 @@ jr_000_29f5:
 jr_000_2a00:
     ld e, a
     ld d, $00
-    ld hl, Data_001_4b21
+    ld hl, UpdateProjectilesData_001_4b21
     add hl, de
     ld e, [hl]
-    ld hl, Data_001_4a68
+    ld hl, UpdateProjectilesData_001_4a68
     add hl, de
     ld d, h
     ld e, l
@@ -7061,7 +7061,7 @@ jr_000_2a5e:
     jr nc, jr_000_2a6c
 
     ld a, $24
-    ld hl, Data_001_4e6e
+    ld hl, UpdateBlobData_001_4e6e
     jr jr_000_2ab3
 
 jr_000_2a6c:
@@ -7233,12 +7233,12 @@ Jump_000_2b81:
     ld h, a
     add hl, de
     ld e, [hl]
-    ld hl, Data_001_49c0
+    ld hl, UpdateProjectileData_001_49c0
     ld a, [$dbe9]
     bit 7, a
     jr z, jr_000_2b9b
 
-    ld hl, Data_001_4a14
+    ld hl, UpdateProjectileData_001_4a14
 
 jr_000_2b9b:
     add hl, de
@@ -9928,7 +9928,7 @@ StateInit_LevelPassword:
     ld b, $14
     ld c, $12
     call CopyTilemapRect
-    ld hl, Data_00c_4ca8
+    ld hl, LevelPasswordData_00c_4ca8
     ld de, $dd03
     ld bc, $0006
     call DataTransfer
@@ -9942,7 +9942,7 @@ StateInit_LevelPassword:
     call DataTransfer
     ld a, $01
     call ChangeROMBank
-    ld hl, Data_001_6784
+    ld hl, LevelPasswordData_001_6784
     ld a, l
     ld [$dd09], a
     ld a, h
@@ -10025,17 +10025,17 @@ jr_000_3d1d:
     call DrawString
     ld a, $2d
     ld [$dd4b], a
-    ld hl, Data_001_67ad
+    ld hl, LevelPasswordData_001_67ad
     ld a, l
     ld [$dd60], a
     ld a, h
     ld [$dd61], a
-    ld hl, Data_001_67bc
+    ld hl, LevelPasswordData_001_67bc
     ld a, l
     ld [$dd6f], a
     ld a, h
     ld [$dd70], a
-    ld hl, Data_001_67cb
+    ld hl, LevelPasswordData_001_67cb
     ld a, l
     ld [$dd7e], a
     ld a, h
@@ -10061,7 +10061,7 @@ jr_000_3d1d:
     ld [$dd8b], a
     ld a, h
     ld [$dd8c], a
-    ld hl, Data_001_6543
+    ld hl, LevelPasswordData_001_6543
     ld de, $de81
     ld bc, $0037
     call DataTransfer
