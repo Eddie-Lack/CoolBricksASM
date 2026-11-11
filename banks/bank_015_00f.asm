@@ -9,16 +9,16 @@ SECTION "ROM Bank $00f", ROMX[$4000], BANK[$f]
 ; to RAM at wStatJump and fills the per-line tables it uses.
 SetUpRasterEffect:
     dec a
-    jr nz, jr_00f_400f
+    jr nz, .notMode1
 
     ld hl, RasterHandler_Mode1
     ld de, wStatJump
     ld bc, $0052
     jp Raster_CopyBytes
 
-jr_00f_400f:
+.notMode1:
     cp $03
-    jr nz, jr_00f_405e
+    jr nz, .notMode4
 
     ld hl, wRasterTable
     ld bc, $0009
@@ -47,9 +47,9 @@ jr_00f_400f:
     ld a, $04
     ld [hPaletteMode], a
     xor a
-    jr jr_00f_40a4
+    jr .fillColoursInstallHandler
 
-jr_00f_405e:
+.notMode4:
     cp $02
     jp z, SetUpRasterEffect_Mode3
 
@@ -77,7 +77,7 @@ jr_00f_405e:
     call LoadPalettes
     ld a, $ff
 
-jr_00f_40a4:
+.fillColoursInstallHandler:
     ld hl, wRasterTable
     ld bc, $0009
     call Raster_FillWordColumn
@@ -122,7 +122,7 @@ Raster_CopyBytes:
 Raster_CopyWordColumn:
     ld a, $90
 
-jr_00f_4106:
+.copyWordLoop:
     push af
     ld a, [de]
     inc de
@@ -133,7 +133,7 @@ jr_00f_4106:
     add hl, bc
     pop af
     dec a
-    jr nz, jr_00f_4106
+    jr nz, .copyWordLoop
 
     ret
 
@@ -141,12 +141,12 @@ jr_00f_4106:
 Raster_FillWordColumn:
     ld e, $90
 
-jr_00f_4115:
+.fillWordLoop:
     ld [hl+], a
     ld [hl], a
     add hl, bc
     dec e
-    jr nz, jr_00f_4115
+    jr nz, .fillWordLoop
 
     ret
 
@@ -154,7 +154,7 @@ jr_00f_4115:
 Raster_CopyByteColumn:
     ld a, $90
 
-jr_00f_411e:
+.copyByteLoop:
     push af
     ld a, [de]
     inc de
@@ -162,7 +162,7 @@ jr_00f_411e:
     add hl, bc
     pop af
     dec a
-    jr nz, jr_00f_411e
+    jr nz, .copyByteLoop
 
     ret
 

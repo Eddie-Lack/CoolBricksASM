@@ -24,6 +24,12 @@ The password is valid when `(a + b) & $FF == $FD` and `b` is a multiple of 4.
 
 `tools/pw.py` encodes and decodes passwords.
 
+### The encoder
+
+`EncodeLevelPassword` (`00:0974`) is the reverse of the check. It reads a 3-digit level number, builds `X` and `Y` from `b = level - 1`, and writes the four letters to `wPasswordChars`. It then calls `CheckPassword` on its own result, so `wStartLevel` is set as a side effect. The level password screen uses it.
+
+The four cheat passwords are what the encoder would produce for levels 201, 205, 209 and 213 (`b` = `$C8`, `$CC`, `$D0`, `$D4`). `CheckPassword` tests for these values before its range check.
+
 ## Cheat flags
 
 | Password | Flag | Used at | Effect |
@@ -182,7 +188,7 @@ The table holds:
 - tile map addresses and a few single bytes that are not understood yet
 - the number of the bank that holds the language's graphics: `$0B` English, `$12` Spanish, `$11` French, `$13` German, `$10` Italian
 
-A string for `DrawString` is a 2-byte tile map address, then characters, and ends with `$FF`. A `$00` byte is followed by an attribute byte. A power-up message is 21 bytes: an attribute byte and 20 characters.
+A string for `DrawString` is a 2-byte tile map address, then characters, and ends with `$FF`. A `$00` byte is followed by an attribute byte. A power-up message is 21 bytes: a horizontal scroll value and 20 characters. The scroll value is 0 or 4 and shifts the top row by half a tile, which centres texts of odd or even length. `ShowMessage` stores it in `hLevelScrollX`.
 
 ## Gameplay update
 
@@ -196,7 +202,7 @@ A string for `DrawString` is a 2-byte tile map address, then characters, and end
 6. `Gameplay_UpdateBalls`: copies each 7-byte ball from `wBalls` to `wBallWork`, calls `UpdateBall` and stores it back. A ball whose Y reaches `$A0` is removed.
    - When the last ball is lost, the bat explodes, `wWeaponFlag` is cleared and a life is taken.
    - With no lives left the state changes to game over. Otherwise `hLifeLostTimer` counts to `$28` and `RestartAfterLifeLost` runs.
-7. `Gameplay_AfterBalls`: `UpdateFallingPowerups`, `UpdateEnemies` (UFO or blob), `UpdateShots`, three bank 1 routines that are not understood yet, and `ProcessBrickHitQueue`.
+7. `Gameplay_AfterBalls`: `UpdateFallingPowerups`, `UpdateEnemies` (UFO or blob), `UpdateShots`, `UpdatePickupEffects`, `UpdateBrickBreakEffects`, `UpdateUnbreakableHitEffects`, `DrawBatSprites`, `UpdateBatTiles` and `ProcessBrickHitQueue`.
 8. `Gameplay_CheckPause`: Start changes the state to pause.
 
 ## Ball movement and collision
@@ -247,7 +253,7 @@ The password screen after every fourth level adds a bonus: 2000 points the first
 
 Three small effect lists are updated every frame in bank 1:
 
-- `wBrickBreakEffects` (14 slots), started by `SpawnBrickBreakEffect` when a brick is destroyed
+- `wBrickBreakEffects` (14 slots), started by `SpawnBrickBreakEffect` when a plasma shot destroys a brick. The effect appears at the X of the shot (`wPlasmaShotX`). Bricks destroyed in any other way start no effect
 - `wPickupEffects` (4 slots), started by `SpawnPickupEffect` where a power-up is collected
 - `wUnbreakableHitEffects` (10 slots), started by `SpawnUnbreakableHitEffect` when the ball hits an unbreakable brick
 
@@ -326,6 +332,174 @@ Special cases, also tested in the emulator:
 - **Level title.** When a level starts, the top row shows the level title and blinks. `wLevelTitleTimer` counts down, and then the row shows the score again.
 - **High score screen.** `HighScores_AdvanceAnim` steps the "HIGH SCORE" animation every third frame. `HighScores_SlideSprites` slides the four rows of sprites in and out, and rows alternate direction.
 
+## Music and sound driver
+
+Bank 6 holds the sound driver (`06:4000`–`06:487A`) and all song and sound effect data (up to `06:67D2`). The rest of the bank is leftover bytes that nothing reads. Bank 0 reaches the driver through three small routines that switch to bank 6 and back:
+
+| Bank 0 | Bank 6 | Meaning |
+|---|---|---|
+| `UpdateSound` | `UpdateSoundDriver` | Runs once per frame. |
+| `PlayMusic`, `StartSong` | `PlaySong` | Starts song `E`. `PlayMusic` does nothing while music is turned off. |
+| `PlaySound` | `PlaySfx` | Plays sound effect `A`. Does nothing while sound effects are turned off. |
+
+The driver is a small tracker player. A tracker stores music as short blocks of notes (patterns) and a list that says in which order the patterns play (an order list).
+
+### The four channels
+
+The Game Boy has four sound channels and the driver gives each one its own track.
+
+- Channels 1 and 2 are pulse channels. They use the same code and the same instruments.
+- Channel 3 is the wave channel. It plays a 32-step waveform from wave RAM.
+- Channel 4 is the noise channel.
+
+Each channel has a block of variables in RAM (`wCh1Tick` at `$C000`, `wCh2Tick` at `$C017`, `wCh3Tick` at `$C02E`, `wCh4Tick` at `$C046`). `include/ram.inc` lists every field.
+
+### The update, once per frame
+
+`UpdateSoundDriver` is one long routine. Its parts run in a fixed order and fall into each other: channel 1, channel 2, channel 3, channel 4, the muted channel and the wave animation.
+
+Each channel part does one of two things.
+
+1. **Timing.** `wChNTick` counts frames. When it reaches 0 it starts again from `wSongTempo` and one *row step* has passed. `wChNRows` counts row steps. When it reaches 0 the channel reads its next row.
+2. **Effects.** On every other frame the channel steps its instrument tables and writes the result to the sound registers (`Channel1Effects` and so on).
+
+When a row starts a new note, the effects are skipped for that frame. The note is therefore heard one frame later.
+
+### Songs
+
+`PlaySong` reads a 13-byte header from `SongHeaders`:
+
+| Bytes | Meaning |
+|---|---|
+| 0–7 | Four pointers, one order list per channel |
+| 8 | Tempo: frames per row step (6, 7 or 8) |
+| 9–10 | Pointer to the wave animation |
+| 11–12 | Pointer to the 16-byte waveform that is copied to wave RAM |
+
+There are 10 songs:
+
+| Song | Label | Used for |
+|---|---|---|
+| 0 | `Song_Silence` | Stops the music. Each channel plays one silent note and holds it |
+| 1 | `Song_Title` | Title screen |
+| 2, 3, 4 | `Song_Level1` to `Song_Level3` | Levels. `wLevelMusicIndex` picks one and steps when the password screen appears |
+| 5 | `Song_MainMenu` | Main menu |
+| 6 | `Song_HighScores` | High scores. Same as song 5 with another channel 2 |
+| 7 | `Song_GameOver` | Game over. Plays once |
+| 8 | `Song_Ending` | Ending |
+| 9 | `Song_Credits` | Credits |
+
+An **order list** is a row of 2-byte entries: transpose, pattern number. The transpose value is added to every note of the pattern, so one pattern can be played in several keys. `PatternPointers` turns the pattern number into an address. There are 128 patterns, and songs share them.
+
+An order list has no end mark. The last pattern of a track ends with a jump instead. Songs that loop jump back to the start of their order list. Songs that play once jump to `Order_Silence`, which repeats a pattern that only holds (`Pattern_1B`) for ever.
+
+### Patterns
+
+A **pattern** is a list of rows. Every row starts with its length in row steps. Then comes one of these:
+
+| Bytes after the length | Constant | Meaning |
+|---|---|---|
+| `$FF` | `ROW_HOLD` | Nothing changes. The note goes on, or the channel stays silent |
+| `$FE` | `ROW_RELEASE` | The note is released. The channel gets the release envelope of its instrument |
+| `$FD` | `ROW_RETRIGGER` | The note starts again with the same instrument. Channel 3 does not know this command |
+| note, instrument | | A new note. The note number is 0 to 71. The instrument is an index into `InstrumentPointers`, or into `NoiseInstrumentPointers` on channel 4 |
+
+Where the next length would be, two values are special:
+
+- `$00` (`PATTERN_END`): the pattern is over. The channel reads the next order list entry.
+- `$FF` (`PATTERN_JUMP`): a pointer to an order list entry follows. The channel continues there.
+
+Notes are semitones. Note 0 is the C at 65.4 Hz, and `NoteFrequencies` holds the register value of 72 notes (6 octaves). With a waveform of one cycle, the wave channel sounds one octave lower for the same value. The noise channel ignores the note number.
+
+### Instruments
+
+An instrument is a short record that points to *tables*. A table changes one value of the sound over time, one step per entry. All tables share one layout:
+
+- An entry is a length in frames followed by the value (1 or 2 bytes).
+- A length of 0 (`TABLE_END`) is followed by a pointer to the entry that comes next. This makes loops. A table that should stop points to a last entry that loops to itself.
+
+An instrument does not point to the first entry itself but to the byte or two bytes before it, because the driver first steps forward and then reads. The sources write these pointers as `Arpeggio_05 - 1` or `PitchSlide_03 - 2`.
+
+A pulse instrument (channels 1 and 2) is 9 bytes:
+
+| Bytes | Meaning |
+|---|---|
+| 0 | Duty, written to `NR11`/`NR21` every frame |
+| 1 | Volume envelope for the start of a note (`NR12`/`NR22`) |
+| 2 | Volume envelope after a release |
+| 3–4 | Arpeggio table: a number of semitones added to the note. Fast steps sound like a chord |
+| 5–6 | Pitch slide table: a 16-bit amount added to the *pitch offset* on every frame. Up and down steps make vibrato |
+| 7–8 | Pitch mode table, see below |
+
+The pitch mode says how the frequency is built on that frame:
+
+- Mode 0: the pitch offset alone. The note number is ignored. This is used for drum-like sounds and sweeps.
+- Mode 1: the frequency of note + arpeggio from `NoteFrequencies`. The pitch offset is ignored.
+- Mode 2: the frequency of note + arpeggio, plus the pitch offset.
+
+A wave instrument (channel 3) is 10 bytes: five table pointers. The first two are volume tables for `NR32`, one for the note and one for after a release. The wave channel has no volume envelope of its own, so the table makes one. The other three are the arpeggio, pitch slide and pitch mode tables.
+
+A noise instrument (channel 4) is 7 bytes: the length value for `NR41`, the two envelopes, and two tables. The values of the first table go to `NR43` (the noise shape) and the values of the second to `NR44`.
+
+### Wave animation
+
+The song header points to a waveform and to a wave animation. The animation is a table with 3-byte entries: length in frames, low byte of a wave RAM address (`$30` to `$3F`), value. Every step writes one byte of the waveform, so the tone colour changes slowly while the song plays. For the write the driver switches the wave channel off and on again and restarts the note (`UpdateWaveAnim`).
+
+### Sound effects
+
+`SfxTable` has 30 entries of 4 bytes: priority, pointer to the data, channel. Channel 2 means pulse channel 2. Any other value (the table uses 3) means the noise channel.
+
+A sound effect *takes over* its channel:
+
+- The channel reads its rows from the sound effect data (`wSfxPtr`) instead of the song. The rows have the same format as pattern rows. One row step is always 4 frames, and notes are not transposed.
+- The data ends with `$00` and two more bytes. If the second of these is 0, the effect is over. If not, the two bytes are a pointer to more data. No sound effect in the ROM uses this.
+- Meanwhile `UpdateMutedChannel` keeps reading the song rows of that channel without making a sound. When the effect ends, the song is at the right place and the channel joins in again with its next note.
+
+Only one sound effect plays at a time. `PlaySfx` ignores a new effect when its priority is lower than the priority of the effect that plays (`wSfxPriority`). An equal or higher priority cuts the old effect off. `PlaySong` also stops the sound effect.
+
+The game uses these numbers (the callers are routine names in bank 0 and bank 1):
+
+| Sound effect | Played by |
+|---|---|
+| 0 | `ProgramStart`, `FrameLoop`, `Gameplay_AfterBalls`. It is one silent note with priority 127, so it stops any other effect |
+| 1 | `CollideBallPoint` |
+| 2, 3 | `ProcessBrickHitQueue` |
+| 4 | `HitBrickAtBall`, `Projectile_CheckBrick` |
+| 5 | `SpawnPowerup` |
+| 6, 22 | `UpdateBall` |
+| 7 | `Gameplay_AfterBalls` |
+| 8 | `PowerupCollected_AddScore` |
+| 9, 12 | `UpdateProjectile_HitBrick` |
+| 10 | `Gameplay_BallLoop`, `UpdateUfoBomb` |
+| 11 | `UpdateProjectiles` |
+| 13, 14 | `CheckBlobCatch`, `UpdateBlob` |
+| 15 | `Gameplay_UpdateStun` |
+| 16, 17, 19 | The shot routines (`Shots_HandleFire` and so on) |
+| 20, 21 | `UpdateUfo`, `CheckUfoHit` |
+| 23 | `Gameplay_AntigravitySteering` |
+| 24 | `UpdateFallingPowerups` |
+| 25 | The menus (`MainMenu_Navigate`, `LanguageSelect_Update` and two more) |
+| 26 | The menus and the screens that wait for a button (`Pause_Update`, `TitleScreen_Update` and 11 more) |
+| 27, 28 | `Firework_Fly` |
+
+Numbers 18 and 29 were not found in a direct call. `Shots_FireRocketOrLaser` also plays a number that it computes.
+
+### Faults in the original data
+
+The data has small faults. They are part of the ROM, so the disassembly keeps them.
+
+- **Stray noise pointer.** `NoiseInstrument_00` is the silent noise instrument. Its `NR43` table pointer points to a pitch slide table (`PitchSlide_00`), which has 3-byte entries. The noise code reads 2-byte entries. After 255 frames it takes the end mark and the low byte of the real loop pointer as a pointer: `$1C00`, in the code of bank 0. From then on it writes bytes from bank 0 to `NR43`. The envelope is 0, so nothing is heard. This happens in normal play, for example while `Song_Silence` plays.
+- **Notes above the table.** Note number + transpose + arpeggio can be more than 71. The frequency is then read from `SfxTable`, which follows `NoteFrequencies`. Sound effect 22 does this: its instrument adds 15 semitones to note 60 for one frame.
+- **Missing end mark.** `PitchSlide_19` (instrument `$13`) has its loop pointer but no end mark before it. If a note with this instrument lasts longer than 257 frames, the driver reads the pointer and the next instrument as slide entries.
+- **Jumps in sound effects.** The `$FF` jump command does not work in sound effect data: it would write to the variables of the song channel. No sound effect uses it.
+- **Transpose on noise.** Channel 4 adds the transpose value to the note and then throws the result away.
+
+These faults matter for moving the data. The first one makes the sound depend on the low byte of the address of `PitchSlide_00`. The second makes it depend on the high byte of the address of `Sfx_01`. See the relocation notes in the README.
+
+### What is not used
+
+No song or sound effect reaches 3 patterns, 15 pulse and wave instruments, 3 noise instruments and 22 tables or waveforms. Four more instruments are not in the pointer tables at all, and three short pieces of order list, pattern and sound effect data have no pointer to them. The sources mark them with "not used" or "Nothing points here". They are still written with labels, so they move with the rest.
+
 ## Useful RAM
 
 | Address | Meaning |
@@ -335,8 +509,10 @@ Special cases, also tested in the emulator:
 | `$D8AC` | Lives |
 | `$D77C` | Balls in play |
 | `$DAD7`–`$DADA` | Letters on the password screen (ASCII) |
-| `$DC35` | Level type: 1 = UFO, 2 = Blob |
+| `$DC35` | Level type (`wLevelType`): bit 0 = UFO, bit 1 = blob |
+| `$DC36` | `wBlobPalette`: the high nibble of the level type byte, added to the attributes of the blob's sprites |
 | `$DB71` | Falling power-ups, 8 × 12 bytes: active, y, x, type, 4 × (tile, attribute) |
+| `$C000`–`$C068` | Sound driver variables (`wSoundState`) |
 
 ## Other findings
 
@@ -344,6 +520,9 @@ Special cases, also tested in the emulator:
 - The ending text says "Congratulations, you have mastered Cool Bricks. Now try with just one life" (bank `$0E`, around `0E:6465`).
 - The default high-score names are CLIVE, ANDY, MARCUS, RACHEL and VICKY (`02:4045`).
 - The ending sets `wEndingSeen`. While it is set, no level password screen appears. `StartGame` clears it.
+- The main menu has five hidden sprites that spell B, O, I, N, G. `UpdateMenuSparkles` draws them from `BoingLetterSprites` and moves them with `BoingLetterBobSteps`. They start below the visible screen (`BoingLetterStartPositions`) and never come into view.
+- The end of several banks is stale filler, not code or data. Bank 1 from `$7CAA` is a copy of the last 854 bytes of bank 0. Banks 2 to `$0D` end with a copy of the last 164 bytes of bank 0. Banks `$0F` to `$20` end with a copy of the last 360 bytes of bank `$0E`.
+- Some variables are written and never read: `wMessageUnused`, `wLevelPasswordUnused`, and the two bytes at `wBlob + 13`. `wBonusCountdownPaused` is read but never written.
 - Level 33 has two unbreakable bricks with the power-up id `$29`. They can never drop anything.
 
 ## Check against the community savestates
