@@ -1212,13 +1212,13 @@ Jump_001_5450:
     pop hl
     ret
 
-Data_001_5468:
+ShotSprite_Rocket:
     db $55, $04, $51, $41, $54, $44
 
-Data_001_546e:
+ShotSprite_Plasma:
     db $5e, $05, $5d, $05, $5c, $05
 
-Data_001_5474:
+ShotSprite_Laser:
     db $12, $0c, $10, $0c
     db $11, $0c
 

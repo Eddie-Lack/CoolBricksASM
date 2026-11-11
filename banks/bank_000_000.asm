@@ -7701,10 +7701,10 @@ jr_000_2e3a:
     or a
     jr z, jr_000_2ebe
 
-    ld a, [$dc4e]
+    ld a, [wShots]
     add $04
     ld c, a
-    ld a, [$dc4f]
+    ld a, [wShots + 1]
     ld b, a
     ld a, [wUfoHeight]
     cp b
@@ -7750,7 +7750,7 @@ jr_000_2e3a:
     or a
     jr nz, jr_000_2eb6
 
-    ld [$dc44], a
+    ld [wShotCooldown], a
 
 jr_000_2eb6:
     ld a, $15
@@ -7762,10 +7762,10 @@ jr_000_2ebe:
     or a
     jr z, jr_000_2f1b
 
-    ld a, [$dc52]
+    ld a, [wShots + 4]
     add $04
     ld c, a
-    ld a, [$dc53]
+    ld a, [wShots + 5]
     ld b, a
     ld a, [wUfoHeight]
     cp b
@@ -7811,7 +7811,7 @@ jr_000_2ebe:
     or a
     jr nz, jr_000_2f13
 
-    ld [$dc44], a
+    ld [wShotCooldown], a
 
 jr_000_2f13:
     ld a, $15
@@ -7823,10 +7823,10 @@ jr_000_2f1b:
     or a
     jr z, jr_000_2f71
 
-    ld a, [$dc56]
+    ld a, [wShots + 8]
     add $04
     ld c, a
-    ld a, [$dc57]
+    ld a, [wShots + 9]
     ld b, a
     ld a, [wUfoHeight]
     cp b
@@ -7867,7 +7867,7 @@ jr_000_2f1b:
     or a
     jr nz, jr_000_2f69
 
-    ld [$dc44], a
+    ld [wShotCooldown], a
 
 jr_000_2f69:
     ld a, $15
@@ -7879,10 +7879,10 @@ jr_000_2f71:
     or a
     jr z, jr_000_2fc7
 
-    ld a, [$dc5a]
+    ld a, [wShots + 12]
     add $04
     ld c, a
-    ld a, [$dc5b]
+    ld a, [wShots + 13]
     ld b, a
     ld a, [wUfoHeight]
     cp b
@@ -7923,7 +7923,7 @@ jr_000_2f71:
     or a
     jr nz, jr_000_2fbf
 
-    ld [$dc44], a
+    ld [wShotCooldown], a
 
 jr_000_2fbf:
     ld a, $15
@@ -7935,10 +7935,10 @@ jr_000_2fc7:
     or a
     jr z, jr_000_301d
 
-    ld a, [$dc5d]
+    ld a, [wShots + 15]
     add $04
     ld c, a
-    ld a, [$dc5e]
+    ld a, [wShots + 16]
     ld b, a
     ld a, [wUfoHeight]
     cp b
@@ -7979,7 +7979,7 @@ jr_000_2fc7:
     or a
     jr nz, jr_000_3015
 
-    ld [$dc44], a
+    ld [wShotCooldown], a
 
 jr_000_3015:
     ld a, $15
@@ -7991,10 +7991,10 @@ jr_000_301d:
     or a
     ret z
 
-    ld a, [$dc60]
+    ld a, [wShots + 18]
     add $04
     ld c, a
-    ld a, [$dc61]
+    ld a, [wShots + 19]
     ld b, a
     ld a, [wUfoHeight]
     cp b
@@ -8037,7 +8037,7 @@ jr_000_301d:
     or a
     jr nz, jr_000_3066
 
-    ld [$dc44], a
+    ld [wShotCooldown], a
 
 jr_000_3066:
     ld a, $15
@@ -8300,7 +8300,7 @@ ResetShots:
     ld [wShotActive + 3], a
     ld [wShotActive + 4], a
     ld [wShotActive + 5], a
-    ld [$dc44], a
+    ld [wShotCooldown], a
     ld [wRocketLaserBat], a
     ld [wPlasmaState], a
     ld [wLaserBat], a
@@ -8308,7 +8308,7 @@ ResetShots:
     ld [wGrenadeDelay], a
     ld [wGrenadePower], a
     ld [wGrenadePower + 1], a
-    ld [$dc4d], a
+    ld [wFireLatch], a
     ret
 
 ; Update the rocket, laser, grenade and plasma shots.
@@ -8476,14 +8476,14 @@ Shots_FireRocketLaserPlasma:
     ld a, [wBatX]
     sub $0c
     add $08
-    ld [$dc4e], a
+    ld [wShots], a
     add $10
-    ld [$dc52], a
+    ld [wShots + 4], a
     ld a, $88
-    ld [$dc4f], a
-    ld [$dc50], a
-    ld [$dc53], a
-    ld [$dc54], a
+    ld [wShots + 1], a
+    ld [wShots + 2], a
+    ld [wShots + 5], a
+    ld [wShots + 6], a
     ld a, $01
     ld [wShotActive], a
     ld [wShotActive + 1], a
@@ -8492,12 +8492,12 @@ Shots_FireRocketLaserPlasma:
     ret
 
 Shots_FireRocketOrLaser:
-    ld a, [$dc44]
+    ld a, [wShotCooldown]
     or a
     jr z, jr_000_332f
 
     dec a
-    ld [$dc44], a
+    ld [wShotCooldown], a
     ret
 
 jr_000_332f:
@@ -8506,11 +8506,11 @@ jr_000_332f:
     jr nz, jr_000_333b
 
     xor a
-    ld [$dc4d], a
+    ld [wFireLatch], a
     ret
 
 jr_000_333b:
-    ld a, [$dc4d]
+    ld a, [wFireLatch]
     or a
     ret nz
 
@@ -8518,28 +8518,28 @@ jr_000_333b:
     or a
     jr nz, jr_000_337b
 
-    ld [$dc51], a
+    ld [wShots + 3], a
     ld b, $12
     ld a, [wLaserBat]
     or a
     jr z, jr_000_3356
 
-    ld [$dc51], a
+    ld [wShots + 3], a
     ld b, $13
 
 jr_000_3356:
     ld a, b
     call PlaySound
     ld a, [wShotReloadDelay]
-    ld [$dc4d], a
-    ld [$dc44], a
+    ld [wFireLatch], a
+    ld [wShotCooldown], a
     ld a, [wBatX]
     sub $0c
     add $10
-    ld [$dc4e], a
+    ld [wShots], a
     ld a, $88
-    ld [$dc4f], a
-    ld [$dc50], a
+    ld [wShots + 1], a
+    ld [wShots + 2], a
     ld a, $01
     ld [wShotActive], a
     ret
@@ -8549,28 +8549,28 @@ jr_000_337b:
     or a
     jr nz, jr_000_33b6
 
-    ld [$dc55], a
+    ld [wShots + 7], a
     ld b, $12
     ld a, [wLaserBat]
     or a
     jr z, jr_000_3391
 
-    ld [$dc55], a
+    ld [wShots + 7], a
     ld b, $13
 
 jr_000_3391:
     ld a, b
     call PlaySound
     ld a, [wShotReloadDelay]
-    ld [$dc4d], a
-    ld [$dc44], a
+    ld [wFireLatch], a
+    ld [wShotCooldown], a
     ld a, [wBatX]
     sub $0c
     add $10
-    ld [$dc52], a
+    ld [wShots + 4], a
     ld a, $88
-    ld [$dc53], a
-    ld [$dc54], a
+    ld [wShots + 5], a
+    ld [wShots + 6], a
     ld a, $01
     ld [wShotActive + 1], a
     ret
@@ -8580,28 +8580,28 @@ jr_000_33b6:
     or a
     jr nz, jr_000_33f1
 
-    ld [$dc59], a
+    ld [wShots + 11], a
     ld b, $12
     ld a, [wLaserBat]
     or a
     jr z, jr_000_33cc
 
-    ld [$dc59], a
+    ld [wShots + 11], a
     ld b, $13
 
 jr_000_33cc:
     ld a, b
     call PlaySound
     ld a, [wShotReloadDelay]
-    ld [$dc4d], a
-    ld [$dc44], a
+    ld [wFireLatch], a
+    ld [wShotCooldown], a
     ld a, [wBatX]
     sub $0c
     add $10
-    ld [$dc56], a
+    ld [wShots + 8], a
     ld a, $88
-    ld [$dc57], a
-    ld [$dc58], a
+    ld [wShots + 9], a
+    ld [wShots + 10], a
     ld a, $01
     ld [wShotActive + 2], a
     ret
@@ -8618,15 +8618,15 @@ jr_000_33f1:
     ld a, $13
     call PlaySound
     ld a, [wShotReloadDelay]
-    ld [$dc4d], a
-    ld [$dc44], a
+    ld [wFireLatch], a
+    ld [wShotCooldown], a
     ld a, [wBatX]
     sub $0c
     add $10
-    ld [$dc5a], a
+    ld [wShots + 12], a
     ld a, $88
-    ld [$dc5b], a
-    ld [$dc5c], a
+    ld [wShots + 13], a
+    ld [wShots + 14], a
     ld a, $01
     ld [wShotActive + 3], a
     ret
@@ -8639,15 +8639,15 @@ jr_000_3422:
     ld a, $13
     call PlaySound
     ld a, [wShotReloadDelay]
-    ld [$dc4d], a
-    ld [$dc44], a
+    ld [wFireLatch], a
+    ld [wShotCooldown], a
     ld a, [wBatX]
     sub $0c
     add $10
-    ld [$dc5d], a
+    ld [wShots + 15], a
     ld a, $88
-    ld [$dc5e], a
-    ld [$dc5f], a
+    ld [wShots + 16], a
+    ld [wShots + 17], a
     ld a, $01
     ld [wShotActive + 4], a
     ret
@@ -8660,15 +8660,15 @@ jr_000_344e:
     ld a, $13
     call PlaySound
     ld a, [wShotReloadDelay]
-    ld [$dc4d], a
-    ld [$dc44], a
+    ld [wFireLatch], a
+    ld [wShotCooldown], a
     ld a, [wBatX]
     sub $0c
     add $10
-    ld [$dc60], a
+    ld [wShots + 18], a
     ld a, $88
-    ld [$dc61], a
-    ld [$dc62], a
+    ld [wShots + 19], a
+    ld [wShots + 20], a
     ld a, $01
     ld [wShotActive + 5], a
     ret
@@ -8685,18 +8685,18 @@ UpdateShot0:
     cp $02
     jr z, jr_000_349c
 
-    ld bc, Data_001_5468
-    ld a, [$dc51]
+    ld bc, ShotSprite_Rocket
+    ld a, [wShots + 3]
     or a
     jr z, jr_000_34a5
 
-    ld bc, Data_001_5474
+    ld bc, ShotSprite_Laser
     ld e, $02
     jr jr_000_34a5
 
 jr_000_349c:
-    ld bc, Data_001_546e
-    ld a, [$dc4e]
+    ld bc, ShotSprite_Plasma
+    ld a, [wShots]
     ld [$d8bb], a
 
 jr_000_34a5:
@@ -8707,9 +8707,9 @@ jr_000_34a5:
     jr nc, jr_000_34c1
 
     inc d
-    ld a, [$dc50]
+    ld a, [wShots + 2]
     ld [hl+], a
-    ld a, [$dc4e]
+    ld a, [wShots]
     ld [hl+], a
     ld a, [bc]
     inc bc
@@ -8722,14 +8722,14 @@ jr_000_34a5:
 jr_000_34c1:
     inc bc
     inc bc
-    ld a, [$dc4f]
+    ld a, [wShots + 1]
     sub e
-    ld [$dc4f], a
+    ld [wShots + 1], a
     cp $18
     jr z, jr_000_352e
 
     ld [hl+], a
-    ld a, [$dc4e]
+    ld a, [wShots]
     ld [hl+], a
     ld a, [bc]
     inc bc
@@ -8737,10 +8737,10 @@ jr_000_34c1:
     ld a, [bc]
     inc bc
     ld [hl+], a
-    ld a, [$dc4f]
+    ld a, [wShots + 1]
     add $08
     ld [hl+], a
-    ld a, [$dc4e]
+    ld a, [wShots]
     ld [hl+], a
     ld a, [bc]
     inc bc
@@ -8758,10 +8758,10 @@ jr_000_34ea:
     ld a, [$c2b5]
     add d
     ld [$c2b5], a
-    ld a, [$dc4e]
+    ld a, [wShots]
     add $04
     ld c, a
-    ld a, [$dc4f]
+    ld a, [wShots + 1]
     and $f8
     ld l, a
     ld h, $00
@@ -8824,7 +8824,7 @@ jr_000_353e:
     or a
     jp nz, Jump_000_3213
 
-    ld [$dc44], a
+    ld [wShotCooldown], a
     jp Jump_000_3213
 
 UpdateShot1:
@@ -8838,18 +8838,18 @@ UpdateShot1:
     cp $02
     jr z, jr_000_358e
 
-    ld bc, Data_001_5468
-    ld a, [$dc55]
+    ld bc, ShotSprite_Rocket
+    ld a, [wShots + 7]
     or a
     jr z, jr_000_3597
 
-    ld bc, Data_001_5474
+    ld bc, ShotSprite_Laser
     ld e, $02
     jr jr_000_3597
 
 jr_000_358e:
-    ld bc, Data_001_546e
-    ld a, [$dc52]
+    ld bc, ShotSprite_Plasma
+    ld a, [wShots + 4]
     ld [$d8bb], a
 
 jr_000_3597:
@@ -8860,9 +8860,9 @@ jr_000_3597:
     jr nc, jr_000_35b3
 
     inc d
-    ld a, [$dc54]
+    ld a, [wShots + 6]
     ld [hl+], a
-    ld a, [$dc52]
+    ld a, [wShots + 4]
     ld [hl+], a
     ld a, [bc]
     inc bc
@@ -8875,14 +8875,14 @@ jr_000_3597:
 jr_000_35b3:
     inc bc
     inc bc
-    ld a, [$dc53]
+    ld a, [wShots + 5]
     sub e
-    ld [$dc53], a
+    ld [wShots + 5], a
     cp $18
     jr z, jr_000_3620
 
     ld [hl+], a
-    ld a, [$dc52]
+    ld a, [wShots + 4]
     ld [hl+], a
     ld a, [bc]
     inc bc
@@ -8890,10 +8890,10 @@ jr_000_35b3:
     ld a, [bc]
     inc bc
     ld [hl+], a
-    ld a, [$dc53]
+    ld a, [wShots + 5]
     add $08
     ld [hl+], a
-    ld a, [$dc52]
+    ld a, [wShots + 4]
     ld [hl+], a
     ld a, [bc]
     inc bc
@@ -8911,10 +8911,10 @@ jr_000_35dc:
     ld a, [$c2b5]
     add d
     ld [$c2b5], a
-    ld a, [$dc52]
+    ld a, [wShots + 4]
     add $04
     ld c, a
-    ld a, [$dc53]
+    ld a, [wShots + 5]
     and $f8
     ld l, a
     ld h, $00
@@ -8977,7 +8977,7 @@ jr_000_3630:
     or a
     jp nz, Jump_000_321a
 
-    ld [$dc44], a
+    ld [wShotCooldown], a
     jp Jump_000_321a
 
 ; Shot slots 2 to 5 hit bricks with HitBrickWithBall.
@@ -8989,7 +8989,7 @@ UpdateShot2:
     ld h, a
     ld bc, $5468
     ld e, $01
-    ld a, [$dc59]
+    ld a, [wShots + 11]
     or a
     jr z, jr_000_3677
 
@@ -9004,9 +9004,9 @@ jr_000_3677:
     jr nc, jr_000_3693
 
     inc d
-    ld a, [$dc58]
+    ld a, [wShots + 10]
     ld [hl+], a
-    ld a, [$dc56]
+    ld a, [wShots + 8]
     ld [hl+], a
     ld a, [bc]
     inc bc
@@ -9019,14 +9019,14 @@ jr_000_3677:
 jr_000_3693:
     inc bc
     inc bc
-    ld a, [$dc57]
+    ld a, [wShots + 9]
     sub e
-    ld [$dc57], a
+    ld [wShots + 9], a
     cp $18
     jr z, jr_000_36f8
 
     ld [hl+], a
-    ld a, [$dc56]
+    ld a, [wShots + 8]
     ld [hl+], a
     ld a, [bc]
     inc bc
@@ -9034,10 +9034,10 @@ jr_000_3693:
     ld a, [bc]
     inc bc
     ld [hl+], a
-    ld a, [$dc57]
+    ld a, [wShots + 9]
     add $08
     ld [hl+], a
-    ld a, [$dc56]
+    ld a, [wShots + 8]
     ld [hl+], a
     ld a, [bc]
     inc bc
@@ -9055,10 +9055,10 @@ jr_000_36bc:
     ld a, [$c2b5]
     add d
     ld [$c2b5], a
-    ld a, [$dc56]
+    ld a, [wShots + 8]
     add $04
     ld c, a
-    ld a, [$dc57]
+    ld a, [wShots + 9]
     and $f8
     ld l, a
     ld h, $00
@@ -9106,7 +9106,7 @@ jr_000_36f8:
     or a
     jp nz, Jump_000_3221
 
-    ld [$dc44], a
+    ld [wShotCooldown], a
     jp Jump_000_3221
 
 UpdateShot3:
@@ -9123,9 +9123,9 @@ UpdateShot3:
     jr nc, jr_000_374e
 
     inc d
-    ld a, [$dc5c]
+    ld a, [wShots + 14]
     ld [hl+], a
-    ld a, [$dc5a]
+    ld a, [wShots + 12]
     ld [hl+], a
     ld a, [bc]
     inc bc
@@ -9138,14 +9138,14 @@ UpdateShot3:
 jr_000_374e:
     inc bc
     inc bc
-    ld a, [$dc5b]
+    ld a, [wShots + 13]
     sub $02
-    ld [$dc5b], a
+    ld [wShots + 13], a
     cp $18
     jr z, jr_000_37b4
 
     ld [hl+], a
-    ld a, [$dc5a]
+    ld a, [wShots + 12]
     ld [hl+], a
     ld a, [bc]
     inc bc
@@ -9153,10 +9153,10 @@ jr_000_374e:
     ld a, [bc]
     inc bc
     ld [hl+], a
-    ld a, [$dc5b]
+    ld a, [wShots + 13]
     add $08
     ld [hl+], a
-    ld a, [$dc5a]
+    ld a, [wShots + 12]
     ld [hl+], a
     ld a, [bc]
     inc bc
@@ -9174,10 +9174,10 @@ jr_000_3778:
     ld a, [$c2b5]
     add d
     ld [$c2b5], a
-    ld a, [$dc5a]
+    ld a, [wShots + 12]
     add $04
     ld c, a
-    ld a, [$dc5b]
+    ld a, [wShots + 13]
     and $f8
     ld l, a
     ld h, $00
@@ -9225,7 +9225,7 @@ jr_000_37b4:
     or a
     jp nz, Jump_000_3228
 
-    ld [$dc44], a
+    ld [wShotCooldown], a
     jp Jump_000_3228
 
 UpdateShot4:
@@ -9242,9 +9242,9 @@ UpdateShot4:
     jr nc, jr_000_380a
 
     inc d
-    ld a, [$dc5f]
+    ld a, [wShots + 17]
     ld [hl+], a
-    ld a, [$dc5d]
+    ld a, [wShots + 15]
     ld [hl+], a
     ld a, [bc]
     inc bc
@@ -9257,14 +9257,14 @@ UpdateShot4:
 jr_000_380a:
     inc bc
     inc bc
-    ld a, [$dc5e]
+    ld a, [wShots + 16]
     sub $02
-    ld [$dc5e], a
+    ld [wShots + 16], a
     cp $18
     jr z, jr_000_3870
 
     ld [hl+], a
-    ld a, [$dc5d]
+    ld a, [wShots + 15]
     ld [hl+], a
     ld a, [bc]
     inc bc
@@ -9272,10 +9272,10 @@ jr_000_380a:
     ld a, [bc]
     inc bc
     ld [hl+], a
-    ld a, [$dc5e]
+    ld a, [wShots + 16]
     add $08
     ld [hl+], a
-    ld a, [$dc5d]
+    ld a, [wShots + 15]
     ld [hl+], a
     ld a, [bc]
     inc bc
@@ -9293,10 +9293,10 @@ jr_000_3834:
     ld a, [$c2b5]
     add d
     ld [$c2b5], a
-    ld a, [$dc5d]
+    ld a, [wShots + 15]
     add $04
     ld c, a
-    ld a, [$dc5e]
+    ld a, [wShots + 16]
     and $f8
     ld l, a
     ld h, $00
@@ -9344,7 +9344,7 @@ jr_000_3870:
     or a
     jp nz, Jump_000_322f
 
-    ld [$dc44], a
+    ld [wShotCooldown], a
     jp Jump_000_3228
 
 UpdateShot5:
@@ -9361,9 +9361,9 @@ UpdateShot5:
     jr nc, jr_000_38c6
 
     inc d
-    ld a, [$dc62]
+    ld a, [wShots + 20]
     ld [hl+], a
-    ld a, [$dc60]
+    ld a, [wShots + 18]
     ld [hl+], a
     ld a, [bc]
     inc bc
@@ -9376,14 +9376,14 @@ UpdateShot5:
 jr_000_38c6:
     inc bc
     inc bc
-    ld a, [$dc61]
+    ld a, [wShots + 19]
     sub $02
-    ld [$dc61], a
+    ld [wShots + 19], a
     cp $18
     jr z, jr_000_392c
 
     ld [hl+], a
-    ld a, [$dc60]
+    ld a, [wShots + 18]
     ld [hl+], a
     ld a, [bc]
     inc bc
@@ -9391,10 +9391,10 @@ jr_000_38c6:
     ld a, [bc]
     inc bc
     ld [hl+], a
-    ld a, [$dc61]
+    ld a, [wShots + 19]
     add $08
     ld [hl+], a
-    ld a, [$dc60]
+    ld a, [wShots + 18]
     ld [hl+], a
     ld a, [bc]
     inc bc
@@ -9412,10 +9412,10 @@ jr_000_38f0:
     ld a, [$c2b5]
     add d
     ld [$c2b5], a
-    ld a, [$dc60]
+    ld a, [wShots + 18]
     add $04
     ld c, a
-    ld a, [$dc61]
+    ld a, [wShots + 19]
     and $f8
     ld l, a
     ld h, $00
@@ -9463,7 +9463,7 @@ jr_000_392c:
     or a
     jp nz, Shots_HandleFire
 
-    ld [$dc44], a
+    ld [wShotCooldown], a
     jp Jump_000_3228
 
 StateInit_Pause:
