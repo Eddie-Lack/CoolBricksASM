@@ -375,15 +375,25 @@ PowerupText_Italian_NinjaUp:
 PowerupText_Spanish_NinjaUp:
     db $00, "     MODO NINJA     "
 
-    db $08, $9d, $00, $02, $50, $41, $55, $53, $45, $ff
+Text_English_Pause:
+    dw $9d08
+    db $00, $02, "PAUSE", $ff
 
-    db $08, $9d, $00, $02, $50, $41, $55, $53, $45, $ff
+Text_French_Pause:
+    dw $9d08
+    db $00, $02, "PAUSE", $ff
 
-    db $08, $9d, $00, $02, $50, $41, $55, $53, $41, $ff
+Text_Spanish_Pause:
+    dw $9d08
+    db $00, $02, "PAUSA", $ff
 
-    db $08, $9d, $00, $02, $50, $41, $55, $53, $45, $ff
+Text_German_Pause:
+    dw $9d08
+    db $00, $02, "PAUSE", $ff
 
-    db $08, $9d, $00, $02, $50, $41, $55, $53, $41, $ff
+Text_Italian_Pause:
+    dw $9d08
+    db $00, $02, "PAUSA", $ff
 
 Gfx_Pause_00e_48c1:
     INCBIN "gfx/image_00e_48c1.2bpp"

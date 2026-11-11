@@ -213,6 +213,7 @@ DEF wLangTextLevelPassword     EQU wLangTable + $32
 DEF wLangGraphicsBank          EQU wLangTable + $43
 DEF wLangTextStartLevel        EQU wLangTable + $45
 DEF wLangTextHighScorePassword EQU wLangTable + $49
+DEF wLangTextPause          EQU wLangTable + $4b
 DEF wLangTextGameOver          EQU wLangTable + $4d
 DEF wLangTextLatestScore       EQU wLangTable + $4f
 
