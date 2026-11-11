@@ -34,6 +34,7 @@ python tools/gbasm.py game.asm game.gbc 5a7673f1e61cd707bdc880ff76396a3d
    - All other banks are data.
 2. **RAM has names.** `include/ram.inc` names the variables that are understood so far. Code in banks 0, 1, 6 and `$0F` uses the names.
 3. **Known routines have names and comments.** Examples: `CheckPassword`, `LoadLevel`, `HitBrickWithBall`, `SpawnPowerup` and the 16 `Powerup_*` pick-up handlers.
+   - The handlers of the 14 game states are named `StateInit_*` and `StateUpdate_*`. `include/ram.inc` lists the state values.
 4. **Pointer tables use labels.**
    - `LevelTable` (bank 5) points to `Background_*`, `LevelHeader_*`, `BrickLayout_Level*` (bank 8) and `PowerupMap_Level*` (bank `$0C`).
    - Bank 1 has `PowerupHandlers`, `PowerupSprites`, `StateInitHandlers`, `StateUpdateHandlers` and `BrickRedrawHandlers`.

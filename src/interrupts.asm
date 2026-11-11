@@ -180,7 +180,7 @@ jr_000_009e:
     ldh [rSVBK], a
     ret
 
-Jump_000_00a6:
+StateInit_State10:
     ld hl, $02b3
     ld a, l
     ld [$ff96], a

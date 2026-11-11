@@ -146,6 +146,29 @@ Levels affected:
 - Triple ball bricks: 4, 5, 6, 9, 13, 16, 17, 22, 30, 31, 34, 44, 46, 48, 49, 50, 51, 56, 62, 63, 66, 68, 69, 70, 74, 75, 76, 82, 86, 88, 91, 97, 98, 104, 106, 107, 110, 117, 123, 124, 127, 130, 132, 134, 137, 141, 149, 154, 157
 - Random bricks (both rules apply to the result): 33, 53, 72, 87, 103, 140
 
+## Game states
+
+`hGameState` (`$FF9F`) selects the current screen. `RunStateInit` and `RunStateUpdate` (bank 1) jump through `StateInitHandlers` and `StateUpdateHandlers`. The values below were read in the emulator on each screen.
+
+| Value | Screen |
+|---|---|
+| 0 | Copyright screen at power-on |
+| 1 | Main menu and password entry |
+| 2 | Playing a level |
+| 3 | Game over |
+| 4 | Pause |
+| 5 | Title picture |
+| 6 | "Developed by" logos |
+| 7 | Entered for one frame between game over and the title. Not understood yet |
+| 8 | Not seen yet |
+| 9 | Password screen after every fourth level |
+| 10 | Not seen yet |
+| 11 | Language selection |
+| 12 | SCi logo |
+| 13 | Ending text after level 160 |
+
+The value changes when the old screen starts to fade out, so the old screen stays visible for a short time afterwards.
+
 ## Useful RAM
 
 | Address | Meaning |

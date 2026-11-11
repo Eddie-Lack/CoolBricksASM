@@ -845,7 +845,7 @@ jr_000_05a1:
     pop af
     reti
 
-Jump_000_05d9:
+StateInit_State07:
     ld e, $06
     call Call_000_3e51
     ld a, $04
@@ -5295,7 +5295,7 @@ jr_000_1f68:
     ld [$dab0], a
     ret
 
-Jump_000_1f7b:
+StateInit_MainMenu:
     ld e, $05
     call Call_000_3e51
     ld a, $04
@@ -6224,7 +6224,7 @@ jr_000_2535:
     ld [$dd50], a
     ret
 
-Jump_000_254f:
+StateInit_TitleScreen:
     ld e, $01
     call Call_000_3e51
     ld a, $00
@@ -6372,7 +6372,7 @@ jr_000_2683:
     call Call_001_6cd4
     ret
 
-Jump_000_2687:
+StateInit_GameOver:
     ld a, [$dabc]
     or a
     jr nz, jr_000_2692
@@ -9419,7 +9419,7 @@ jr_000_392c:
     ld [$dc44], a
     jp Jump_000_3228
 
-Jump_000_3959:
+StateInit_Pause:
     ld hl, $02b3
     ld a, l
     ld [hVBlankHandler], a
@@ -9485,7 +9485,7 @@ Jump_000_3959:
 jr_000_39ec:
     ret
 
-Jump_000_39ed:
+StateInit_DeveloperLogos:
     ld a, $46
     ld [$ff91], a
     ld hl, $02b3
@@ -9542,7 +9542,7 @@ ClearCheatFlags:
     ld [wCheatShowVersion], a
     ret
 
-Jump_000_3a6c:
+StateInit_PublisherLogo:
     ld a, $46
     ld [$ff91], a
     ld hl, $02b3
@@ -9604,7 +9604,7 @@ jr_000_3ae3:
     ld [$ffa0], a
     ret
 
-Jump_000_3aee:
+StateInit_State08:
     ld e, $09
     call Call_000_3e51
     ld hl, $05a9
@@ -9815,7 +9815,7 @@ jr_000_3c3d:
     ld [$dcfe], a
     ret
 
-Jump_000_3c45:
+StateInit_LevelPassword:
     ld a, $00
     ld [$c359], a
     ld hl, $02b3
@@ -10009,7 +10009,7 @@ jr_000_3d1d:
     call DataTransfer
     ret
 
-Jump_000_3dee:
+StateInit_LanguageSelect:
     ld hl, $02b3
     ld a, l
     ld [hVBlankHandler], a
@@ -10097,7 +10097,7 @@ Call_000_3e7f:
     ld [ROM_BANK], a
     ret
 
-Jump_000_3e8d:
+StateInit_Copyright:
     ld a, $46
     ld [$ff91], a
     ld hl, $02b3
@@ -10155,7 +10155,7 @@ jr_000_3ef8:
     ld [$ffa0], a
     ret
 
-Jump_000_3f03:
+StateInit_Ending:
     ld e, $08
     call Call_000_3e51
     xor a
