@@ -558,12 +558,12 @@ ClearFallingPowerups:
     ld c, $08
     xor a
 
-jr_001_502b:
+.clearSlotLoop:
     ld [hl], a
     ld de, $000c
     add hl, de
     dec c
-    jr nz, jr_001_502b
+    jr nz, .clearSlotLoop
 
     ret
 
@@ -584,15 +584,15 @@ SpawnPowerup:
     ld hl, wFallingPowerups
     ld de, $000c
 
-jr_001_5046:
+.findFreeSlot:
     ld a, [hl]
     or a
-    jr z, jr_001_504d
+    jr z, .slotFound
 
     add hl, de
-    jr jr_001_5046
+    jr .findFreeSlot
 
-jr_001_504d:
+.slotFound:
     inc a
     ld [hl+], a
     dec c
@@ -620,70 +620,70 @@ jr_001_504d:
     ld a, [wHitPowerupId]
     dec a
     cp $10
-    jr nz, jr_001_508d
+    jr nz, .checkType9
 
     ld a, [hFrameCounter]
     and $0f
     push af
     ld a, [wLevelType]
     bit 1, a
-    jr z, jr_001_5089
+    jr z, .subtractOffset
 
     ld d, $03
 
-jr_001_5089:
+.subtractOffset:
     pop af
     sub d
     and $0f
 
-jr_001_508d:
+.checkType9:
     cp $09
-    jr nz, jr_001_509e
+    jr nz, .checkType6
 
     ld d, a
     ld a, [wBallCount]
     or a
-    jr z, jr_001_509d
+    jr z, .type9Resolved
 
     dec a
-    jr z, jr_001_509d
+    jr z, .type9Resolved
 
     ld d, $00
 
-jr_001_509d:
+.type9Resolved:
     ld a, d
 
-jr_001_509e:
+.checkType6:
     cp $06
-    jr nz, jr_001_50ab
+    jr nz, .checkType17
 
     ld d, a
     ld a, [wWeaponFlag]
     or a
-    jr nz, jr_001_50aa
+    jr nz, .type6Resolved
 
     ld d, a
 
-jr_001_50aa:
+.type6Resolved:
     ld a, d
 
-jr_001_50ab:
+.checkType17:
     cp $11
-    jr nz, jr_001_50b1
+    jr nz, .storeType
 
     ld a, $06
 
-jr_001_50b1:
+.storeType:
     ld [hl+], a
     ld de, PowerupSprites
     add a
     add e
     ld e, a
-    jr nc, jr_001_50bb
+    jr nc, .noCarry
 
     inc d
 
-jr_001_50bb:
+.noCarry:
     ld a, [de]
     inc de
     ld c, a
@@ -723,42 +723,42 @@ UpdateFallingPowerups:
     ld hl, wFallingPowerups
     ld c, $08
 
-jr_001_50e4:
+.powerupLoop:
     ld a, [hl]
     or a
-    jr z, jr_001_5118
+    jr z, .skipSlot
 
     push hl
     ld e, a
     inc hl
     ld a, [hl+]
     cp $a0
-    jr c, jr_001_50f5
+    jr c, .onScreen
 
-jr_001_50f0:
+.removePowerup:
     xor a
     pop hl
     ld [hl], a
-    jr jr_001_5118
+    jr .skipSlot
 
-jr_001_50f5:
+.onScreen:
     ld d, a
     ld a, [hl+]
     ld b, a
     ld a, [hl+]
     add a
     call CheckPowerupCaught
-    jr nz, jr_001_50f0
+    jr nz, .removePowerup
 
     ld a, h
     ld hl, UpdateFallingPowerupsData_001_7706
     add l
     ld l, a
-    jr nc, jr_001_5108
+    jr nc, .noCarry
 
     inc h
 
-jr_001_5108:
+.noCarry:
     ld a, [hl+]
     ld h, [hl]
     ld l, a
@@ -771,52 +771,52 @@ jr_001_5108:
     ld [hl], d
     ld de, $000b
     add hl, de
-    jr jr_001_511c
+    jr .nextPowerup
 
-jr_001_5118:
+.skipSlot:
     ld de, $000c
     add hl, de
 
-jr_001_511c:
+.nextPowerup:
     dec c
-    jr nz, jr_001_50e4
+    jr nz, .powerupLoop
 
     ld a, [wSleepyBallActive]
     or a
-    jr z, jr_001_513c
+    jr z, .updateNinjaTimer
 
     ld a, [wBallEffectTick]
     inc a
     ld [wBallEffectTick], a
     and $01
-    jr nz, jr_001_513c
+    jr nz, .updateNinjaTimer
 
     ld a, [wBallEffectTimer]
     dec a
     ld [wBallEffectTimer], a
-    jr nz, jr_001_513c
+    jr nz, .updateNinjaTimer
 
     ld [wSleepyBallActive], a
 
-jr_001_513c:
+.updateNinjaTimer:
     ld a, [wNinjaActive]
     or a
-    jr z, jr_001_5159
+    jr z, .updateGhostTimer
 
     ld a, [wBallEffectTick]
     inc a
     ld [wBallEffectTick], a
     and $01
-    jr nz, jr_001_5159
+    jr nz, .updateGhostTimer
 
     ld a, [wBallEffectTimer]
     dec a
     ld [wBallEffectTimer], a
-    jr nz, jr_001_5159
+    jr nz, .updateGhostTimer
 
     ld [wNinjaActive], a
 
-jr_001_5159:
+.updateGhostTimer:
     ld a, [wGhostActive]
     or a
     ret z
@@ -849,27 +849,27 @@ CheckPowerupCaught:
     ld a, [wBatY]
     sub $08
     cp d
-    jr nc, jr_001_51ae
+    jr nc, .checkRightEdge
 
     add $07
     cp d
-    jr c, jr_001_51ae
+    jr c, .checkRightEdge
 
     ld a, [wBatX]
     sub $08
     cp b
-    jr nc, jr_001_51ae
+    jr nc, .checkRightEdge
 
     ld h, a
     ld a, [wBatWidth]
     add h
     cp b
-    jr c, jr_001_51ae
+    jr c, .checkRightEdge
 
-jr_001_519e:
+.caught:
     ld a, [wBatExplosionTimer]
     or a
-    jr nz, jr_001_51cf
+    jr nz, .notCaught
 
     ld h, $00
     ld de, PowerupHandlers
@@ -879,31 +879,31 @@ jr_001_519e:
     ld l, a
     jp hl
 
-jr_001_51ae:
+.checkRightEdge:
     ld a, b
     add $0f
     ld b, a
     ld a, [wBatY]
     sub $08
     cp d
-    jr nc, jr_001_51cf
+    jr nc, .notCaught
 
     add $07
     cp d
-    jr c, jr_001_51cf
+    jr c, .notCaught
 
     ld a, [wBatX]
     sub $08
     cp b
-    jr nc, jr_001_51cf
+    jr nc, .notCaught
 
     ld h, a
     ld a, [wBatWidth]
     add h
     cp b
-    jr nc, jr_001_519e
+    jr nc, .caught
 
-jr_001_51cf:
+.notCaught:
     xor a
     pop de
     pop bc
@@ -913,28 +913,28 @@ jr_001_51cf:
 Powerup_Slowball:
     ld a, [wBallCount]
     or a
-    jr z, jr_001_51e9
+    jr z, .ballsDone
 
     ld hl, wBalls + 5
     ld de, $0007
     ld b, a
 
-jr_001_51e1:
+.clearLowNibbleLoop:
     ld a, [hl]
     and $f0
     ld [hl], a
     add hl, de
     dec b
-    jr nz, jr_001_51e1
+    jr nz, .clearLowNibbleLoop
 
-jr_001_51e9:
+.ballsDone:
     ld a, [wAntigravityActive]
     or a
-    jr z, jr_001_51f2
+    jr z, .noAntigravity
 
     ld [wAntigravityCancel], a
 
-jr_001_51f2:
+.noAntigravity:
     ld a, $01
     ld [wSlowBallActive], a
     xor a
@@ -962,12 +962,12 @@ Powerup_ShotBatCommon:
 Powerup_WeaponCommon:
     ld a, [wPlasmaState]
     cp $01
-    jr nz, jr_001_522d
+    jr nz, .clearBatEffects
 
     xor a
     ld [wPlasmaState], a
 
-jr_001_522d:
+.clearBatEffects:
     xor a
     ld [wBallSticks], a
     ld [wStunActive], a
@@ -994,16 +994,16 @@ Powerup_Smiley:
     ld b, $02
     ld a, [wLevelsSincePassword]
     cp $04
-    jr nz, jr_001_526a
+    jr nz, .setGameState
 
     call NextLevelMusic
     ld a, [wEndingSeen]
     or a
-    jr nz, jr_001_526a
+    jr nz, .setGameState
 
     ld b, $09
 
-jr_001_526a:
+.setGameState:
     ld a, b
     ld [hGameState], a
     ld a, $0f
@@ -1011,13 +1011,13 @@ jr_001_526a:
     ld a, [wCurrentLevel]
     inc a
     cp $a0
-    jr nz, jr_001_5281
+    jr nz, .storeLevel
 
     ld a, $0d
     ld [hGameState], a
     xor a
 
-jr_001_5281:
+.storeLevel:
     ld [wCurrentLevel], a
     ld b, $32
     jp PowerupCollected_AddScore
@@ -1031,7 +1031,7 @@ Powerup_Plasma:
     call ShowMessageBankE
     ld a, $01
     ld [wPlasmaState], a
-    jr jr_001_522d
+    jr Powerup_WeaponCommon.clearBatEffects
 
 Powerup_Poison:
     ld a, $50
@@ -1060,18 +1060,18 @@ Powerup_Milk:
     ld a, [wBatX]
     sub $04
     cp $81
-    jr c, jr_001_52e2
+    jr c, .checkLeftLimit
 
     ld a, $81
-    jr jr_001_52e8
+    jr .storeBatX
 
-jr_001_52e2:
+.checkLeftLimit:
     cp $17
-    jr nc, jr_001_52e8
+    jr nc, .storeBatX
 
     ld a, $17
 
-jr_001_52e8:
+.storeBatX:
     ld [wBatX], a
     ld a, $28
     ld [wBatWidth], a
@@ -1088,11 +1088,11 @@ jr_001_52e8:
 Powerup_Clock:
     ld a, [wAntigravityActive]
     or a
-    jr z, jr_001_5312
+    jr z, .noAntigravity
 
     ld [wAntigravityCancel], a
 
-jr_001_5312:
+.noAntigravity:
     ld a, $a0
     ld [wBallEffectTimer], a
     ld [wSleepyBallActive], a
@@ -1140,11 +1140,11 @@ Powerup_Magnet:
 Powerup_TripleBall:
     ld a, [wAntigravityActive]
     or a
-    jr z, jr_001_5381
+    jr z, .noAntigravity
 
     ld [wAntigravityCancel], a
 
-jr_001_5381:
+.noAntigravity:
     ld a, $01
     ld [wMultiBallPending], a
     xor a
@@ -1161,12 +1161,12 @@ Powerup_ExtraLife:
     ld a, [wLives]
     inc a
     cp $0a
-    jr nz, jr_001_53ac
+    jr nz, .addLife
 
     ld b, $32
     jp PowerupCollected_AddScore
 
-jr_001_53ac:
+.addLife:
     ld [wLives], a
     call ShowMessageBankE
     jp PowerupCollected
@@ -1205,11 +1205,11 @@ Powerup_Reverse:
 Powerup_Ninja:
     ld a, [wAntigravityActive]
     or a
-    jr z, jr_001_5402
+    jr z, .noAntigravity
 
     ld [wAntigravityCancel], a
 
-jr_001_5402:
+.noAntigravity:
     ld a, $c8
     ld [wBallEffectTimer], a
     ld a, $01
@@ -1626,11 +1626,11 @@ LevelPassword_DrawBonus:
     ld b, a
     xor a
 
-jr_001_5c12:
+.tenThousandsLoop:
     ld de, $d8f0
     add hl, de
     bit 7, h
-    jr z, jr_001_5c63
+    jr z, .incTenThousands
 
     ld de, $2710
     add hl, de
@@ -1639,11 +1639,11 @@ jr_001_5c12:
     inc bc
     xor a
 
-jr_001_5c23:
+.thousandsLoop:
     ld de, $fc18
     add hl, de
     bit 7, h
-    jr z, jr_001_5c60
+    jr z, .incThousands
 
     ld de, $03e8
     add hl, de
@@ -1652,11 +1652,11 @@ jr_001_5c23:
     inc bc
     xor a
 
-jr_001_5c34:
+.hundredsLoop:
     ld de, $ff9c
     add hl, de
     bit 7, h
-    jr z, jr_001_5c5d
+    jr z, .incHundreds
 
     ld de, $0064
     add hl, de
@@ -1665,11 +1665,11 @@ jr_001_5c34:
     inc bc
     xor a
 
-jr_001_5c45:
+.tensLoop:
     ld de, $fff6
     add hl, de
     bit 7, h
-    jr z, jr_001_5c5a
+    jr z, .incTens
 
     ld de, $000a
     add hl, de
@@ -1681,21 +1681,21 @@ jr_001_5c45:
     ld [bc], a
     ret
 
-jr_001_5c5a:
+.incTens:
     inc a
-    jr jr_001_5c45
+    jr .tensLoop
 
-jr_001_5c5d:
+.incHundreds:
     inc a
-    jr jr_001_5c34
+    jr .hundredsLoop
 
-jr_001_5c60:
+.incThousands:
     inc a
-    jr jr_001_5c23
+    jr .thousandsLoop
 
-jr_001_5c63:
+.incTenThousands:
     inc a
-    jr jr_001_5c12
+    jr .tenThousandsLoop
 
 LevelPassword_Update:
     xor a
@@ -1704,28 +1704,28 @@ LevelPassword_Update:
     call UpdateTwinkles
     ld a, [wBonusDelay]
     or a
-    jr z, jr_001_5c7c
+    jr z, .bonusDelayOver
 
     dec a
     ld [wBonusDelay], a
-    jr jr_001_5c9f
+    jr .checkJoypad
 
-jr_001_5c7c:
+.bonusDelayOver:
     ld a, [wBonusCountdown]
     ld l, a
     ld a, [wBonusCountdown + 1]
     ld h, a
     or l
-    jr z, jr_001_5c9f
+    jr z, .checkJoypad
 
     ld a, [wUnk_dd4c]
     xor $01
-    jr z, jr_001_5c92
+    jr z, .drawBonus
 
     ld de, $ffce
     add hl, de
 
-jr_001_5c92:
+.drawBonus:
     push hl
     call LevelPassword_DrawBonus
     pop hl
@@ -1734,15 +1734,15 @@ jr_001_5c92:
     ld a, h
     ld [wBonusCountdown + 1], a
 
-jr_001_5c9f:
+.checkJoypad:
     ld a, [hGameState]
     cp $02
-    jr z, jr_001_5cbd
+    jr z, .done
 
     ld a, [hJoypad]
     and $f0
     or a
-    jr z, jr_001_5cbd
+    jr z, .done
 
     ld a, $02
     ld [hGameState], a
@@ -1751,7 +1751,7 @@ jr_001_5c9f:
     ld a, $1a
     call PlaySound
 
-jr_001_5cbd:
+.done:
     ret
 
 LevelPassword_VBlank:
@@ -1765,11 +1765,11 @@ LevelPassword_VBlank:
     call DrawString
     ld a, [wTwinkleWriteCount]
     or a
-    jr z, jr_001_5cf5
+    jr z, .swayLogo
 
     ld de, wTwinkleWrites
 
-jr_001_5cd6:
+.twinkleWriteLoop:
     push af
     ld a, [de]
     inc de
@@ -1793,24 +1793,24 @@ jr_001_5cd6:
     ld [hl-], a
     pop af
     dec a
-    jr nz, jr_001_5cd6
+    jr nz, .twinkleWriteLoop
 
     xor a
     ld [wTwinkleWriteCount], a
 
-jr_001_5cf5:
+.swayLogo:
     ld a, [wLogoSwayPtr]
     ld l, a
     ld a, [wLogoSwayPtr + 1]
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_5d05
+    jr nz, .applySwayStep
 
     ld hl, LogoSwaySteps
     ld a, [hl+]
 
-jr_001_5d05:
+.applySwayStep:
     ld b, a
     ld a, [wScrollSplits]
     add b
@@ -1844,7 +1844,7 @@ Firework_Launch:
     ld a, [de]
     inc de
     cp $ff
-    jr nz, jr_001_5d41
+    jr nz, .gotScriptByte
 
     ld a, [de]
     inc de
@@ -1855,7 +1855,7 @@ Firework_Launch:
     ld a, [de]
     inc de
 
-jr_001_5d41:
+.gotScriptByte:
     ld b, a
     xor a
     ld [hl+], a
@@ -1911,34 +1911,34 @@ UpdateFireworks:
     ld a, $03
     ld hl, wFireworks
 
-jr_001_5d8a:
+.nextFirework:
     push af
     push hl
     ld de, wFireworkWork
     ld c, $0f
 
-jr_001_5d91:
+.copyToWorkLoop:
     ld a, [hl+]
     ld [de], a
     inc de
     dec c
-    jr nz, jr_001_5d91
+    jr nz, .copyToWorkLoop
 
     call UpdateFirework
     pop hl
     ld de, wFireworkWork
     ld c, $0f
 
-jr_001_5da0:
+.copyBackLoop:
     ld a, [de]
     inc de
     ld [hl+], a
     dec c
-    jr nz, jr_001_5da0
+    jr nz, .copyBackLoop
 
     pop af
     dec a
-    jr nz, jr_001_5d8a
+    jr nz, .nextFirework
 
     ret
 
@@ -1954,7 +1954,7 @@ UpdateFirework:
     ld d, a
     ld a, $0a
 
-jr_001_5dbc:
+.nextSpark:
     push af
     push de
     ld a, [de]
@@ -1986,11 +1986,11 @@ jr_001_5dbc:
     ld h, a
     ld a, [hl+]
     cp $80
-    jr z, jr_001_5e2b
+    jr z, .curveEnded
 
     pop de
     cp $7f
-    jr z, jr_001_5e1f
+    jr z, .skipSpark
 
     ld b, a
     ld a, l
@@ -2018,14 +2018,14 @@ jr_001_5dbc:
     ld b, a
     ld a, [wFireworkTick]
     or a
-    jr nz, jr_001_5e0a
+    jr nz, .storeSparkFrame
 
     ld a, b
     inc a
     and $07
     ld b, a
 
-jr_001_5e0a:
+.storeSparkFrame:
     ld a, b
     ld [de], a
     inc de
@@ -2037,23 +2037,23 @@ jr_001_5e0a:
     ld [wFireworkOamPtr], a
     ld a, h
     ld [wFireworkOamPtr + 1], a
-    jr jr_001_5e26
+    jr .sparkDone
 
-jr_001_5e1f:
+.skipSpark:
     pop af
     ld hl, $0004
     add hl, de
     ld d, h
     ld e, l
 
-jr_001_5e26:
+.sparkDone:
     pop af
     dec a
-    jr nz, jr_001_5dbc
+    jr nz, .nextSpark
 
     ret
 
-jr_001_5e2b:
+.curveEnded:
     pop de
     pop hl
     pop af
@@ -2074,7 +2074,7 @@ Firework_Fly:
     add hl, de
     ld a, h
     or a
-    jr nz, jr_001_5e99
+    jr nz, .stillFlying
 
     ld hl, LevelPasswordCurves
     ld a, [wFireworkWork + 13]
@@ -2086,12 +2086,12 @@ Firework_Fly:
     ld [wFireworkWork + 12], a
     ld a, [hGameState]
     cp $02
-    jr z, jr_001_5e67
+    jr z, .initSparkLoop
 
     ld a, $1c
     call PlaySound
 
-jr_001_5e67:
+.initSparkLoop:
     xor a
     ld [de], a
     inc de
@@ -2114,26 +2114,26 @@ jr_001_5e67:
     ld [de], a
     inc de
     cp $90
-    jr nc, jr_001_5e90
+    jr nc, .storeSparkFrame
 
     ld a, [hGameState]
     cp $02
-    jr z, jr_001_5e90
+    jr z, .storeSparkFrame
 
     ld a, $1b
     call PlaySound
 
-jr_001_5e90:
+.storeSparkFrame:
     ld a, c
     and $07
     ld [de], a
     inc de
     dec c
-    jr nz, jr_001_5e67
+    jr nz, .initSparkLoop
 
     ret
 
-jr_001_5e99:
+.stillFlying:
     ld a, l
     ld [wFireworkWork + 9], a
     ld a, h
@@ -2158,10 +2158,10 @@ jr_001_5e99:
     ld h, a
     ld a, [wFireworkWork + 10]
 
-jr_001_5ebf:
+.addXStepLoop:
     add hl, bc
     dec a
-    jr nz, jr_001_5ebf
+    jr nz, .addXStepLoop
 
     ld a, l
     ld [wFireworkWork + 2], a
@@ -2173,10 +2173,10 @@ jr_001_5ebf:
     ld h, a
     ld a, [wFireworkWork + 10]
 
-jr_001_5ed6:
+.addYStepLoop:
     add hl, de
     dec a
-    jr nz, jr_001_5ed6
+    jr nz, .addYStepLoop
 
     ld a, l
     ld [wFireworkWork + 4], a
@@ -2196,7 +2196,7 @@ jr_001_5ed6:
     ld b, a
     ld a, [wFireworkTick]
     or a
-    jr nz, jr_001_5f06
+    jr nz, .storeRocketFrame
 
     ld a, b
     inc a
@@ -2204,7 +2204,7 @@ jr_001_5ed6:
     ld [wFireworkWork + 11], a
     ld b, a
 
-jr_001_5f06:
+.storeRocketFrame:
     ld a, b
     ld [hl+], a
     ld a, [wFireworkSpriteCount]
@@ -2222,12 +2222,12 @@ UpdateTwinkles:
     ld hl, wTwinkles
     ld de, wTwinkleWrites
 
-jr_001_5f20:
+.nextTwinkle:
     push af
     ld a, [hl]
     dec a
     or a
-    jr nz, jr_001_5f6d
+    jr nz, .storeTimer
 
     push hl
     inc hl
@@ -2235,7 +2235,7 @@ jr_001_5f20:
     inc a
     ld [hl+], a
     cp $30
-    jr z, jr_001_5f60
+    jr z, .restartTwinkle
 
     add a
     push hl
@@ -2275,9 +2275,9 @@ jr_001_5f20:
     pop hl
     ld bc, $0005
     add hl, bc
-    jr jr_001_5f72
+    jr .twinkleDone
 
-jr_001_5f60:
+.restartTwinkle:
     inc hl
     inc hl
     ld a, [hl]
@@ -2287,17 +2287,17 @@ jr_001_5f60:
     ld [hl+], a
     ld bc, $0003
     add hl, bc
-    jr jr_001_5f72
+    jr .twinkleDone
 
-jr_001_5f6d:
+.storeTimer:
     ld [hl+], a
     ld bc, $0004
     add hl, bc
 
-jr_001_5f72:
+.twinkleDone:
     pop af
     dec a
-    jr nz, jr_001_5f20
+    jr nz, .nextTwinkle
 
     ret
 
@@ -2609,11 +2609,11 @@ ClearBrickBreakEffects:
     ld de, $0006
     ld hl, wBrickBreakEffects
 
-jr_001_6288:
+.clearLoop:
     ld [hl], a
     add hl, de
     dec c
-    jr nz, jr_001_6288
+    jr nz, .clearLoop
 
     ret
 
@@ -2624,15 +2624,15 @@ SpawnBrickBreakEffect:
     ld hl, wBrickBreakEffects
     ld de, $0006
 
-jr_001_6297:
+.findFreeSlot:
     ld a, [hl]
     or a
-    jr z, jr_001_629e
+    jr z, .slotFound
 
     add hl, de
-    jr jr_001_6297
+    jr .findFreeSlot
 
-jr_001_629e:
+.slotFound:
     ld a, $1c
     ld [hl+], a
     xor a
@@ -2664,32 +2664,32 @@ FindFreeBrickBreakEffect:
     ld hl, wBrickBreakEffects
     ld de, $0006
 
-jr_001_62c7:
+.findFreeSlot:
     ld a, [hl]
     or a
-    jr z, jr_001_62ce
+    jr z, .slotFound
 
     add hl, de
-    jr jr_001_62c7
+    jr .findFreeSlot
 
-jr_001_62ce:
+.slotFound:
     ld a, $1c
     ld [hl+], a
     pop af
     or a
-    jr nz, jr_001_62d9
+    jr nz, .setUpwardSpeed
 
     ld [hl+], a
     ld [hl+], a
-    jr jr_001_62df
+    jr .writePosition
 
-jr_001_62d9:
+.setUpwardSpeed:
     ld a, $80
     ld [hl+], a
     ld a, $ff
     ld [hl+], a
 
-jr_001_62df:
+.writePosition:
     xor a
     ld [hl+], a
     ld a, b
@@ -2704,10 +2704,10 @@ UpdateBrickBreakEffects:
     ld hl, wBrickBreakEffects
     ld c, $0e
 
-jr_001_62ee:
+.effectLoop:
     ld a, [hl]
     or a
-    jr z, jr_001_6336
+    jr z, .skipInactive
 
     dec a
     ld [hl+], a
@@ -2759,15 +2759,15 @@ jr_001_62ee:
     ld a, [wOamUsed]
     inc a
     ld [wOamUsed], a
-    jr jr_001_633a
+    jr .nextEffect
 
-jr_001_6336:
+.skipInactive:
     ld de, $0006
     add hl, de
 
-jr_001_633a:
+.nextEffect:
     dec c
-    jr nz, jr_001_62ee
+    jr nz, .effectLoop
 
     ret
 
@@ -2777,11 +2777,11 @@ ClearPickupEffects:
     ld de, $0004
     ld hl, wPickupEffects
 
-jr_001_6347:
+.clearLoop:
     ld [hl], a
     add hl, de
     dec c
-    jr nz, jr_001_6347
+    jr nz, .clearLoop
 
     ret
 
@@ -2794,34 +2794,34 @@ SpawnPickupEffect:
     ld hl, wPickupEffects
     ld de, $0007
 
-jr_001_6357:
+.findFreeSlot:
     ld a, [hl]
     or a
-    jr z, jr_001_635e
+    jr z, .slotFound
 
     add hl, de
-    jr jr_001_6357
+    jr .findFreeSlot
 
-jr_001_635e:
+.slotFound:
     ld a, $28
     ld [hl+], a
     pop de
     ld a, e
     or a
-    jr nz, jr_001_636e
+    jr nz, .setZeroSpeed
 
     ld a, $80
     ld [hl+], a
     ld a, $ff
     ld [hl+], a
-    jr jr_001_6371
+    jr .writePosition
 
-jr_001_636e:
+.setZeroSpeed:
     xor a
     ld [hl+], a
     ld [hl+], a
 
-jr_001_6371:
+.writePosition:
     ld a, $00
     ld [hl+], a
     ld a, c
@@ -2844,16 +2844,16 @@ UpdatePickupEffects:
     ld hl, wPickupEffects
     ld c, $04
 
-jr_001_638b:
+.effectLoop:
     push bc
     ld a, [hl]
     or a
-    jr z, jr_001_63f1
+    jr z, .skipInactive
 
     dec a
     ld [hl+], a
     cp $0f
-    jr nz, jr_001_63a5
+    jr nz, .moveAndDraw
 
     push hl
     inc hl
@@ -2869,7 +2869,7 @@ jr_001_638b:
     call FindFreeBrickBreakEffect
     pop hl
 
-jr_001_63a5:
+.moveAndDraw:
     ld a, [hl+]
     ld c, a
     ld a, [hl+]
@@ -2928,16 +2928,16 @@ jr_001_63a5:
     ld a, [wOamUsed]
     add $02
     ld [wOamUsed], a
-    jr jr_001_63f5
+    jr .nextEffect
 
-jr_001_63f1:
+.skipInactive:
     ld de, $0007
     add hl, de
 
-jr_001_63f5:
+.nextEffect:
     pop bc
     dec c
-    jr nz, jr_001_638b
+    jr nz, .effectLoop
 
     ret
 
@@ -2978,32 +2978,32 @@ SweepBricks_Cell:
     ld a, [hl]
     pop hl
     cp $27
-    jr nz, jr_001_6433
+    jr nz, .checkTile29
 
     ld bc, $2625
-    jr jr_001_644c
+    jr .queueSweepTiles
 
-jr_001_6433:
+.checkTile29:
     cp $29
-    jr nz, jr_001_643c
+    jr nz, .checkTile4c
 
     ld bc, $2625
-    jr jr_001_644c
+    jr .queueSweepTiles
 
-jr_001_643c:
+.checkTile4c:
     cp $4c
-    jr nz, jr_001_6445
+    jr nz, .checkTile51
 
     ld bc, $504f
-    jr jr_001_644c
+    jr .queueSweepTiles
 
-jr_001_6445:
+.checkTile51:
     cp $51
-    jr nz, jr_001_6468
+    jr nz, .restoreRowBelow
 
     ld bc, $504f
 
-jr_001_644c:
+.queueSweepTiles:
     ld a, l
     ld [de], a
     inc de
@@ -3028,7 +3028,7 @@ jr_001_644c:
     add $02
     ld [wBrickRedrawCount], a
 
-jr_001_6468:
+.restoreRowBelow:
     push hl
     ld bc, $0020
     add hl, bc
@@ -3069,32 +3069,32 @@ jr_001_6468:
     pop bc
     ld a, c
     cp $ff
-    jr z, jr_001_64a8
+    jr z, .finalRestorePass
 
     cp $fe
-    jr z, jr_001_64ad
+    jr z, .diagonalDone
 
     dec c
     jp nz, SweepBricks_Cell
 
-jr_001_64a8:
+.finalRestorePass:
     ld c, $fe
     push bc
-    jr jr_001_6468
+    jr .restoreRowBelow
 
-jr_001_64ad:
+.diagonalDone:
     pop hl
     ld de, $fffe
     add hl, de
     ld a, l
     and $1f
     cp $1f
-    jr nz, jr_001_64bd
+    jr nz, .nextDiagonal
 
     ld de, $ffe2
     add hl, de
 
-jr_001_64bd:
+.nextDiagonal:
     pop de
     dec b
     jp nz, SweepBricks_Diagonal
@@ -3125,11 +3125,11 @@ SpawnUnbreakableHitEffect:
     ld [hl+], a
     ld a, [hl]
     cp $ff
-    jr nz, jr_001_64eb
+    jr nz, .saveSlotPtr
 
     ld hl, wUnbreakableHitEffects
 
-jr_001_64eb:
+.saveSlotPtr:
     ld a, l
     ld [wUnk_dcd3], a
     ld a, h
@@ -3142,11 +3142,11 @@ UpdateUnbreakableHitEffects:
     ld hl, wUnbreakableHitEffects
     ld a, $0a
 
-jr_001_64fe:
+.effectLoop:
     push af
     ld a, [hl]
     or a
-    jr z, jr_001_653a
+    jr z, .skipInactive
 
     dec a
     ld [hl+], a
@@ -3183,16 +3183,16 @@ jr_001_64fe:
     inc a
     ld [wOamUsed], a
     pop hl
-    jr jr_001_653e
+    jr .nextEffect
 
-jr_001_653a:
+.skipInactive:
     ld de, $0003
     add hl, de
 
-jr_001_653e:
+.nextEffect:
     pop af
     dec a
-    jr nz, jr_001_64fe
+    jr nz, .effectLoop
 
     ret
 
@@ -3344,14 +3344,14 @@ CopyPalettesToHardware:
     ldh [rOCPS], a
     ld c, $40
 
-jr_001_67fc:
+.copyLoop:
     ld a, [hl+]
     ldh [rBCPD], a
     ld a, [de]
     inc de
     ldh [rOCPD], a
     dec c
-    jr nz, jr_001_67fc
+    jr nz, .copyLoop
 
     ret
 
@@ -3362,7 +3362,7 @@ CopyPaletteBuffer:
     ld a, $02
     ldh [rSVBK], a
 
-jr_001_6813:
+.copyRowLoop:
     ld a, [hl+]
     ld [de], a
     inc de
@@ -3390,7 +3390,7 @@ jr_001_6813:
     inc de
     inc de
     dec b
-    jr nz, jr_001_6813
+    jr nz, .copyRowLoop
 
     xor a
     ldh [rSVBK], a
@@ -3413,7 +3413,7 @@ FadePalettes_Step:
     ld de, wUnk_ca9d
     ld a, [hPaletteMode]
     cp $02
-    jr nz, jr_001_685d
+    jr nz, .nextColour
 
     ld bc, $0240
     ld a, $02
@@ -3421,29 +3421,29 @@ FadePalettes_Step:
     ld hl, wUnk_d000
     ld de, wUnk_d6c0
 
-jr_001_685d:
+.nextColour:
     push bc
     ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     add b
     cp $20
-    jr c, jr_001_686a
+    jr c, .redClamped
 
     ld a, $1f
 
-jr_001_686a:
+.redClamped:
     ld c, a
     ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     add b
     cp $20
-    jr c, jr_001_6877
+    jr c, .greenClamped
 
     ld a, $1f
 
-jr_001_6877:
+.greenClamped:
     push af
     swap a
     sla a
@@ -3461,11 +3461,11 @@ jr_001_6877:
     ld a, [hl+]
     add b
     cp $20
-    jr c, jr_001_6895
+    jr c, .blueClamped
 
     ld a, $1f
 
-jr_001_6895:
+.blueClamped:
     sla a
     sla a
     or c
@@ -3475,26 +3475,26 @@ jr_001_6895:
     dec bc
     ld a, b
     or c
-    jr nz, jr_001_685d
+    jr nz, .nextColour
 
     xor a
     ldh [rSVBK], a
     ld a, [hPaletteMode]
     cp $02
-    jr z, jr_001_68bd
+    jr z, .copyViaPaletteBuffer
 
     call WaitVBlank
     ld hl, wUnk_ca9d
     ld de, wUnk_cadd
     call CopyPalettesToHardware
     call AnimatePalettes
-    jr jr_001_68c3
+    jr .stepDone
 
-jr_001_68bd:
+.copyViaPaletteBuffer:
     call WaitVBlank
     call CopyPaletteBuffer
 
-jr_001_68c3:
+.stepDone:
     pop bc
     pop af
     dec c
@@ -3512,11 +3512,11 @@ FadePalettes2:
     ld a, b
     ld b, $fc
     dec a
-    jr nz, jr_001_68dc
+    jr nz, .directionChosen
 
     ld b, $04
 
-jr_001_68dc:
+.directionChosen:
     ld a, h
 
 FadePalettes2_Step:
@@ -3530,27 +3530,27 @@ FadePalettes2_Step:
     ld hl, wUnk_d000
     ld de, wUnk_d6c0
 
-jr_001_68f0:
+.nextColour:
     push bc
     ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     sub b
-    jr nc, jr_001_68fa
+    jr nc, .redFloored
 
     xor a
 
-jr_001_68fa:
+.redFloored:
     ld c, a
     ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     sub b
-    jr nc, jr_001_6904
+    jr nc, .greenFloored
 
     xor a
 
-jr_001_6904:
+.greenFloored:
     push af
     swap a
     sla a
@@ -3567,11 +3567,11 @@ jr_001_6904:
     ld b, a
     ld a, [hl+]
     sub b
-    jr nc, jr_001_691f
+    jr nc, .blueFloored
 
     xor a
 
-jr_001_691f:
+.blueFloored:
     sla a
     sla a
     or c
@@ -3581,7 +3581,7 @@ jr_001_691f:
     dec bc
     ld a, b
     or c
-    jr nz, jr_001_68f0
+    jr nz, .nextColour
 
     call WaitVBlank
     call CopyPaletteBuffer
@@ -3722,7 +3722,7 @@ AnimatePalettes:
     ld c, $81
     ld de, wUnk_cb1d
 
-jr_001_6a35:
+.copyEntryLoop:
     ld a, [de]
     inc de
     ld [hl+], a
@@ -3745,20 +3745,20 @@ jr_001_6a35:
     ld [hl+], a
     inc a
     cp $88
-    jr nz, jr_001_6a50
+    jr nz, .checkIndex09
 
     ld a, $08
 
-jr_001_6a50:
+.checkIndex09:
     cp $09
-    jr nz, jr_001_6a56
+    jr nz, .storeNextIndex
 
     ld a, $80
 
-jr_001_6a56:
+.storeNextIndex:
     ld c, a
     dec b
-    jr nz, jr_001_6a35
+    jr nz, .copyEntryLoop
 
     ret
 
@@ -3767,17 +3767,17 @@ LanguageSelect_Update:
     ldh [rVBK], a
     ld a, [wLanguage]
     or a
-    jr nz, jr_001_6a71
+    jr nz, .checkLanguage1
 
     ld hl, $986c
     ld [hl], $04
     ld hl, $98cc
     ld [hl], $01
-    jr jr_001_6abe
+    jr .readJoypad
 
-jr_001_6a71:
+.checkLanguage1:
     cp $01
-    jr nz, jr_001_6a86
+    jr nz, .checkLanguage2
 
     ld hl, $986c
     ld [hl], $01
@@ -3785,11 +3785,11 @@ jr_001_6a71:
     ld [hl], $04
     ld hl, $992c
     ld [hl], $01
-    jr jr_001_6abe
+    jr .readJoypad
 
-jr_001_6a86:
+.checkLanguage2:
     cp $02
-    jr nz, jr_001_6a9b
+    jr nz, .checkLanguage3
 
     ld hl, $98cc
     ld [hl], $01
@@ -3797,11 +3797,11 @@ jr_001_6a86:
     ld [hl], $04
     ld hl, $998c
     ld [hl], $01
-    jr jr_001_6abe
+    jr .readJoypad
 
-jr_001_6a9b:
+.checkLanguage3:
     cp $03
-    jr nz, jr_001_6ab0
+    jr nz, .checkLanguage4
 
     ld hl, $992c
     ld [hl], $01
@@ -3809,74 +3809,74 @@ jr_001_6a9b:
     ld [hl], $04
     ld hl, $99ec
     ld [hl], $01
-    jr jr_001_6abe
+    jr .readJoypad
 
-jr_001_6ab0:
+.checkLanguage4:
     cp $04
-    jr nz, jr_001_6abe
+    jr nz, .readJoypad
 
     ld hl, $998c
     ld [hl], $01
     ld hl, $99ec
     ld [hl], $04
 
-jr_001_6abe:
+.readJoypad:
     ld a, [hJoypad]
     ld b, a
     ld a, [wUnk_defd]
     or a
-    jr nz, jr_001_6ae2
+    jr nz, .checkNextKeyReleased
 
     bit 3, b
-    jr z, jr_001_6aea
+    jr z, .checkPrevKey
 
     ld a, b
     ld [wUnk_defd], a
     ld a, [wLanguage]
     cp $04
-    jr z, jr_001_6aea
+    jr z, .checkPrevKey
 
     inc a
     ld [wLanguage], a
     ld a, $19
     call PlaySound
-    jr jr_001_6aea
+    jr .checkPrevKey
 
-jr_001_6ae2:
+.checkNextKeyReleased:
     bit 3, b
-    jr nz, jr_001_6aea
+    jr nz, .checkPrevKey
 
     xor a
     ld [wUnk_defd], a
 
-jr_001_6aea:
+.checkPrevKey:
     ld a, [wUnk_defe]
     or a
-    jr nz, jr_001_6b09
+    jr nz, .checkPrevKeyReleased
 
     bit 2, b
-    jr z, jr_001_6b11
+    jr z, .checkConfirm
 
     ld a, b
     ld [wUnk_defe], a
     ld a, [wLanguage]
     or a
-    jr z, jr_001_6b11
+    jr z, .checkConfirm
 
     dec a
     ld [wLanguage], a
     ld a, $19
     call PlaySound
-    jr jr_001_6b11
+    jr .checkConfirm
 
-jr_001_6b09:
+.checkPrevKeyReleased:
     bit 2, b
-    jr nz, jr_001_6b11
+    jr nz, .checkConfirm
 
     xor a
     ld [wUnk_defe], a
 
-jr_001_6b11:
+.checkConfirm:
     ld a, b
     and $f0
     or a
@@ -3928,11 +3928,11 @@ LanguageSelect_CopyTable:
     ld de, $001c
     ld b, $0a
 
-jr_001_6b76:
+.fillLoop:
     ld [hl], a
     add hl, de
     dec b
-    jr nz, jr_001_6b76
+    jr nz, .fillLoop
 
     ld a, $1a
     call PlaySound
@@ -4052,7 +4052,7 @@ TitleScreen_SlideLetters:
     call ClearOamEntries
     pop af
     cp $01
-    jr nz, jr_001_6d15
+    jr nz, .checkLetter2
 
     ld a, [wTitleLetterPathPtrs]
     ld l, a
@@ -4060,7 +4060,7 @@ TitleScreen_SlideLetters:
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_6cfe
+    jr nz, .moveLetter1
 
     ld a, $02
     ld [wTitleLetterSliding], a
@@ -4068,7 +4068,7 @@ TitleScreen_SlideLetters:
     ld [wTitleLetterArrived], a
     ret
 
-jr_001_6cfe:
+.moveLetter1:
     ld b, a
     ld a, l
     ld [wTitleLetterPathPtrs], a
@@ -4081,9 +4081,9 @@ jr_001_6cfe:
     ld hl, TitleLetterSprites_1
     jp TitleScreen_DrawLetterSprites
 
-jr_001_6d15:
+.checkLetter2:
     cp $02
-    jr nz, jr_001_6d47
+    jr nz, .checkLetter3
 
     ld a, [wTitleLetterPathPtrs + 2]
     ld l, a
@@ -4091,7 +4091,7 @@ jr_001_6d15:
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_6d30
+    jr nz, .moveLetter2
 
     ld a, $03
     ld [wTitleLetterSliding], a
@@ -4099,7 +4099,7 @@ jr_001_6d15:
     ld [wTitleLetterArrived], a
     ret
 
-jr_001_6d30:
+.moveLetter2:
     ld b, a
     ld a, l
     ld [wTitleLetterPathPtrs + 2], a
@@ -4112,9 +4112,9 @@ jr_001_6d30:
     ld hl, TitleLetterSprites_2
     jp TitleScreen_DrawLetterSprites
 
-jr_001_6d47:
+.checkLetter3:
     cp $03
-    jr nz, jr_001_6d79
+    jr nz, .checkLetter4
 
     ld a, [wTitleLetterPathPtrs + 4]
     ld l, a
@@ -4122,7 +4122,7 @@ jr_001_6d47:
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_6d62
+    jr nz, .moveLetter3
 
     ld a, $04
     ld [wTitleLetterSliding], a
@@ -4130,7 +4130,7 @@ jr_001_6d47:
     ld [wTitleLetterArrived], a
     ret
 
-jr_001_6d62:
+.moveLetter3:
     ld b, a
     ld a, l
     ld [wTitleLetterPathPtrs + 4], a
@@ -4143,9 +4143,9 @@ jr_001_6d62:
     ld hl, TitleLetterSprites_3
     jp TitleScreen_DrawLetterSprites
 
-jr_001_6d79:
+.checkLetter4:
     cp $04
-    jr nz, jr_001_6daa
+    jr nz, .checkLetter5
 
     ld a, [wTitleLetterPathPtrs + 6]
     ld l, a
@@ -4153,7 +4153,7 @@ jr_001_6d79:
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_6d94
+    jr nz, .moveLetter4
 
     ld a, $05
     ld [wTitleLetterSliding], a
@@ -4161,7 +4161,7 @@ jr_001_6d79:
     ld [wTitleLetterArrived], a
     ret
 
-jr_001_6d94:
+.moveLetter4:
     ld b, a
     ld a, l
     ld [wTitleLetterPathPtrs + 6], a
@@ -4174,9 +4174,9 @@ jr_001_6d94:
     ld hl, TitleLetterSprites_4
     jr TitleScreen_DrawLetterSprites
 
-jr_001_6daa:
+.checkLetter5:
     cp $05
-    jr nz, jr_001_6ddb
+    jr nz, .checkLetter6
 
     ld a, [wTitleLetterPathPtrs + 8]
     ld l, a
@@ -4184,7 +4184,7 @@ jr_001_6daa:
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_6dc5
+    jr nz, .moveLetter5
 
     ld a, $06
     ld [wTitleLetterSliding], a
@@ -4192,7 +4192,7 @@ jr_001_6daa:
     ld [wTitleLetterArrived], a
     ret
 
-jr_001_6dc5:
+.moveLetter5:
     ld b, a
     ld a, l
     ld [wTitleLetterPathPtrs + 8], a
@@ -4205,7 +4205,7 @@ jr_001_6dc5:
     ld hl, TitleLetterSprites_5
     jr TitleScreen_DrawLetterSprites
 
-jr_001_6ddb:
+.checkLetter6:
     cp $06
     jr nz, TitleScreen_DrawLetterSprites
 
@@ -4215,7 +4215,7 @@ jr_001_6ddb:
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_6df5
+    jr nz, .moveLetter6
 
     xor a
     ld [wTitleLetterSliding], a
@@ -4223,7 +4223,7 @@ jr_001_6ddb:
     ld [wTitleLetterArrived], a
     ret
 
-jr_001_6df5:
+.moveLetter6:
     ld b, a
     ld a, l
     ld [wTitleLetterPathPtrs + 10], a
@@ -4242,7 +4242,7 @@ TitleScreen_DrawLetterSprites:
     ld b, $10
     ld a, [hl+]
 
-jr_001_6e11:
+.nextSprite:
     push af
     ld a, [hl+]
     add b
@@ -4260,7 +4260,7 @@ jr_001_6e11:
     inc de
     pop af
     dec a
-    jr nz, jr_001_6e11
+    jr nz, .nextSprite
 
     ret
 
@@ -4315,11 +4315,11 @@ ClearOamEntries:
     xor a
     ld de, $0004
 
-jr_001_6e9f:
+.clearLoop:
     ld [hl], a
     add hl, de
     dec b
-    jr nz, jr_001_6e9f
+    jr nz, .clearLoop
 
     ret
 
@@ -4329,7 +4329,7 @@ InitBatSprites:
     ld de, InitBatSpritesData_001_7b0c
     ld b, $09
 
-jr_001_6ead:
+.copySpriteLoop:
     ld a, [de]
     inc de
     ld [hl+], a
@@ -4345,7 +4345,7 @@ jr_001_6ead:
     ld [hl+], a
 
     dec b
-    jr nz, jr_001_6ead
+    jr nz, .copySpriteLoop
 
     ld a, $01
     ld [wOamUsedLastFrame], a
@@ -4366,29 +4366,29 @@ DrawBatSprites:
     call ClearOamEntries
     ld a, [wBatExplosionTimer]
     or a
-    jr z, jr_001_6ee8
+    jr z, .batNotExploding
 
     ld hl, wOamBuffer
-    jr jr_001_6f66
+    jr .copyQueuedSprites
 
-jr_001_6ee8:
+.batNotExploding:
     ld hl, wOamBuffer + 4
     ld a, [wBatX]
     add $08
     ld b, a
     ld a, [hTemp2]
     or a
-    jr nz, jr_001_6efe
+    jr nz, .wideLowerRow
 
     ld de, DrawBatSpritesData_001_7b30
     ld c, $03
-    jr jr_001_6f03
+    jr .lowerRowLoop
 
-jr_001_6efe:
+.wideLowerRow:
     ld de, DrawBatSpritesData_001_7b36
     ld c, $04
 
-jr_001_6f03:
+.lowerRowLoop:
     ld a, $98
     ld [hl+], a
     ld a, b
@@ -4402,58 +4402,58 @@ jr_001_6f03:
     inc de
     ld [hl+], a
     dec c
-    jr nz, jr_001_6f03
+    jr nz, .lowerRowLoop
 
     ld de, DrawBatSpritesData_001_7b3e
     ld a, [wWeaponFlag]
     or a
-    jr z, jr_001_6f20
+    jr z, .checkStickyBat
 
     ld de, DrawBatSpritesData_001_7b46
 
-jr_001_6f20:
+.checkStickyBat:
     ld a, [wBallOnBat]
     or a
-    jr nz, jr_001_6f2f
+    jr nz, .upperRowDataChosen
 
     ld a, [wBallSticks]
     or a
-    jr z, jr_001_6f2f
+    jr z, .upperRowDataChosen
 
     ld de, DrawBatSpritesData_001_7b4e
 
-jr_001_6f2f:
+.upperRowDataChosen:
     ld a, [wBatWidth]
     cp $20
-    jr z, jr_001_6f3a
+    jr z, .normalWidth
 
     ld a, $01
-    jr jr_001_6f3b
+    jr .storeWideFlag
 
-jr_001_6f3a:
+.normalWidth:
     xor a
 
-jr_001_6f3b:
+.storeWideFlag:
     ld [hTemp2], a
     ld c, $04
     ld a, [wBatX]
     sub $08
     ld b, a
 
-jr_001_6f46:
+.upperRowLoop:
     ld a, [hTemp2]
     or a
-    jr z, jr_001_6f55
+    jr z, .writeUpperSprite
 
     ld a, c
     cp $02
-    jr nz, jr_001_6f55
+    jr nz, .writeUpperSprite
 
     ld a, b
     add $08
     ld b, a
 
-jr_001_6f55:
+.writeUpperSprite:
     ld a, $90
     ld [hl+], a
     ld a, b
@@ -4467,12 +4467,12 @@ jr_001_6f55:
     inc de
     ld [hl+], a
     dec c
-    jr nz, jr_001_6f46
+    jr nz, .upperRowLoop
 
-jr_001_6f66:
+.copyQueuedSprites:
     ld a, [wOamUsed]
     or a
-    jr z, jr_001_6f87
+    jr z, .stepNinjaFrame
 
     ld c, a
     ld de, wUnk_c2b9
@@ -4481,7 +4481,7 @@ jr_001_6f66:
     ld a, d
     ld [wOamWritePtr + 1], a
 
-jr_001_6f78:
+.queuedSpriteLoop:
     ld a, [de]
     inc de
     ld [hl+], a
@@ -4495,32 +4495,32 @@ jr_001_6f78:
     inc de
     ld [hl+], a
     dec c
-    jr nz, jr_001_6f78
+    jr nz, .queuedSpriteLoop
 
-jr_001_6f87:
+.stepNinjaFrame:
     ld a, [wNinjaActive]
     or a
-    jr z, jr_001_6f99
+    jr z, .drawBalls
 
     ld a, [wUnk_c2b8]
     inc a
     cp $03
-    jr nz, jr_001_6f96
+    jr nz, .storeNinjaFrame
 
     xor a
 
-jr_001_6f96:
+.storeNinjaFrame:
     ld [wUnk_c2b8], a
 
-jr_001_6f99:
+.drawBalls:
     ld a, [wBallCount]
     or a
-    jr z, jr_001_6fdb
+    jr z, .drawPowerups
 
     ld de, wBalls
     ld c, a
 
-jr_001_6fa3:
+.nextBall:
     inc de
     ld a, [de]
     inc de
@@ -4534,54 +4534,54 @@ jr_001_6fa3:
     inc de
     ld a, [wNinjaActive]
     or a
-    jr z, jr_001_6fd4
+    jr z, .normalBall
 
     ld a, [wUnk_c2b8]
     or a
-    jr nz, jr_001_6fbf
+    jr nz, .ninjaFrameNot0
 
     ld a, $13
     ld [hl+], a
-    jr jr_001_6fcf
+    jr .ninjaAttr
 
-jr_001_6fbf:
+.ninjaFrameNot0:
     cp $01
-    jr nz, jr_001_6fc8
+    jr nz, .ninjaFrameNot1
 
     ld a, $14
     ld [hl+], a
-    jr jr_001_6fcf
+    jr .ninjaAttr
 
-jr_001_6fc8:
+.ninjaFrameNot1:
     cp $02
-    jr nz, jr_001_6fcf
+    jr nz, .ninjaAttr
 
     ld a, $15
     ld [hl+], a
 
-jr_001_6fcf:
+.ninjaAttr:
     ld a, $0d
     ld [hl+], a
-    jr jr_001_6fd8
+    jr .ballDone
 
-jr_001_6fd4:
+.normalBall:
     ld [hl+], a
     ld a, $03
     ld [hl+], a
 
-jr_001_6fd8:
+.ballDone:
     dec c
-    jr nz, jr_001_6fa3
+    jr nz, .nextBall
 
-jr_001_6fdb:
+.drawPowerups:
     ld de, wFallingPowerups
     ld a, $08
     ld [hTemp], a
 
-jr_001_6fe3:
+.powerupLoop:
     ld a, [de]
     or a
-    jr z, jr_001_7028
+    jr z, .skipEmptySlot
 
     inc de
     ld a, [de]
@@ -4638,30 +4638,30 @@ jr_001_6fe3:
     ld a, [wUnk_db70]
     add $04
     ld [wUnk_db70], a
-    jr jr_001_702f
+    jr .nextPowerup
 
-jr_001_7028:
+.skipEmptySlot:
     ld a, e
     add $0c
     ld e, a
-    jr nc, jr_001_702f
+    jr nc, .nextPowerup
 
     inc d
 
-jr_001_702f:
+.nextPowerup:
     ld a, [hTemp]
     dec a
     ld [hTemp], a
-    jr nz, jr_001_6fe3
+    jr nz, .powerupLoop
 
     ld b, $08
     ld a, [hTemp2]
     or a
-    jr z, jr_001_7041
+    jr z, .storeOamUsed
 
     inc b
 
-jr_001_7041:
+.storeOamUsed:
     ld a, [wBallCount]
     add b
     ld b, a
@@ -4894,29 +4894,29 @@ InitMenuSparkles:
     ld de, InitMenuSparklesData_001_7592
     ld b, $0a
 
-jr_001_71f7:
+.copyPositionsLoop:
     ld a, [de]
     inc de
     ld [hl+], a
     dec b
-    jr nz, jr_001_71f7
+    jr nz, .copyPositionsLoop
 
     ld de, MenuSparkleCurveStarts
     ld hl, wUnk_daed
     ld b, $0a
 
-jr_001_7205:
+.copyCurveStartsLoop:
     ld a, [de]
     inc de
     ld [hl+], a
     dec b
-    jr nz, jr_001_7205
+    jr nz, .copyCurveStartsLoop
 
     ld hl, wUnk_daf7
     ld de, InitMenuSparklesData_001_74b4
     ld b, $0b
 
-jr_001_7213:
+.initAnimRecordLoop:
     ld a, [de]
     inc de
     ld [hl+], a
@@ -4940,7 +4940,7 @@ jr_001_7213:
     inc de
     ld [hl+], a
     dec b
-    jr nz, jr_001_7213
+    jr nz, .initAnimRecordLoop
 
     ld hl, InitMenuSparklesData_001_749b
     ld a, l
@@ -4955,7 +4955,7 @@ UpdateMenuSparkles:
     ld a, $05
     ld bc, wMenuSparkles
 
-jr_001_7243:
+.drawSparkleLoop:
     push af
     push bc
     ld a, [bc]
@@ -4967,7 +4967,7 @@ jr_001_7243:
     ld c, a
     ld a, $04
 
-jr_001_724e:
+.spriteLoop:
     push af
     ld a, [de]
     inc de
@@ -4985,20 +4985,20 @@ jr_001_724e:
     ld [hl+], a
     pop af
     dec a
-    jr nz, jr_001_724e
+    jr nz, .spriteLoop
 
     pop bc
     inc bc
     inc bc
     pop af
     dec a
-    jr nz, jr_001_7243
+    jr nz, .drawSparkleLoop
 
     ld de, wMenuSparkles
     ld hl, wUnk_daed
     ld a, $05
 
-jr_001_7270:
+.moveSparkleLoop:
     push af
     ld a, [hl+]
     ld c, a
@@ -5006,12 +5006,12 @@ jr_001_7270:
     ld b, a
     ld a, [bc]
     or a
-    jr nz, jr_001_727d
+    jr nz, .stepLoaded
 
     ld bc, UpdateMenuSparklesData_001_75af
     ld a, [bc]
 
-jr_001_727d:
+.stepLoaded:
     inc bc
     push af
     ld a, c
@@ -5027,11 +5027,11 @@ jr_001_727d:
     inc de
     pop af
     dec a
-    jr nz, jr_001_7270
+    jr nz, .moveSparkleLoop
 
     ld a, [hMenuScrollY]
     or a
-    jr z, jr_001_72ae
+    jr z, .scrollIsZero
 
     ld a, [wUnk_db4f]
     ld l, a
@@ -5048,7 +5048,7 @@ jr_001_727d:
     ld [hMenuScrollY], a
     ret
 
-jr_001_72ae:
+.scrollIsZero:
     ld a, $14
     ld hl, wUnk_c250
     call ClearOamEntries
@@ -5059,14 +5059,14 @@ jr_001_72ae:
     ld hl, wUnk_daf7
     ld de, wUnk_c250
 
-jr_001_72c5:
+.animRecordLoop:
     push af
     ld a, [hl+]
     ld c, a
     ld a, [hl+]
     ld b, a
     or c
-    jr z, jr_001_72da
+    jr z, .delayExpired
 
     dec bc
     dec hl
@@ -5077,20 +5077,20 @@ jr_001_72c5:
     ld [hl], a
     ld bc, $0007
     add hl, bc
-    jr jr_001_7341
+    jr .nextAnimRecord
 
-jr_001_72da:
+.delayExpired:
     ld b, [hl]
     ld a, [hUnk_ff8f]
     and $03
-    jr nz, jr_001_72e3
+    jr nz, .checkAnimEnd
 
     inc b
 
-jr_001_72e3:
+.checkAnimEnd:
     ld a, b
     cp $0b
-    jr nz, jr_001_7305
+    jr nz, .drawFrame
 
     ld a, $00
     ld [hl+], a
@@ -5109,9 +5109,9 @@ jr_001_72e3:
     ld bc, $0007
     add hl, bc
     pop de
-    jr jr_001_7341
+    jr .nextAnimRecord
 
-jr_001_7305:
+.drawFrame:
     ld [hl+], a
     ld [hTemp + 1], a
     ld a, [hl+]
@@ -5135,7 +5135,7 @@ jr_001_7305:
     ld a, $02
     ld [hTemp], a
 
-jr_001_7325:
+.frameSpriteLoop:
     ld a, [hl+]
     add b
     ld [de], a
@@ -5154,17 +5154,17 @@ jr_001_7325:
     ld a, [hTemp]
     dec a
     ld [hTemp], a
-    jr nz, jr_001_7325
+    jr nz, .frameSpriteLoop
 
     pop af
     pop hl
     inc hl
     inc hl
 
-jr_001_7341:
+.nextAnimRecord:
     pop af
     dec a
-    jr nz, jr_001_72c5
+    jr nz, .animRecordLoop
 
     ret
 
@@ -5319,13 +5319,13 @@ MenuSparkleCurveStarts:
 ; Jump to the init handler of game state hGameState.
 RunStateInit:
     ld hl, StateInitHandlers
-    jr jr_001_75cc
+    jr RunStateUpdate.dispatch
 
 ; Jump to the update handler of game state hGameState.
 RunStateUpdate:
     ld hl, StateUpdateHandlers
 
-jr_001_75cc:
+.dispatch:
     ld a, [hGameState]
     add a
     ld e, a
@@ -5346,7 +5346,7 @@ FrameLoop:
     call FadePalettes
     ld a, [hPaletteMode]
     cp $04
-    jr nz, jr_001_75fc
+    jr nz, .checkPaletteMode3
 
     ld a, $02
     ld [hPaletteMode], a
@@ -5358,10 +5358,10 @@ FrameLoop:
     ld a, $04
     ld [hPaletteMode], a
 
-jr_001_75fc:
+.checkPaletteMode3:
     ld a, [hPaletteMode]
     cp $03
-    jr nz, jr_001_7615
+    jr nz, .startLoop
 
     ld a, $82
     ldh [rOCPS], a
@@ -5372,10 +5372,10 @@ jr_001_75fc:
     ld a, $02
     ld [wHdmaMode], a
 
-jr_001_7615:
+.startLoop:
     call SweepBricks
 
-jr_001_7618:
+.frameLoop:
     call WaitVBlank
     call UpdateSound
     ld a, [hFrameHandler]
@@ -5385,11 +5385,11 @@ jr_001_7618:
     call CallHL
     ld a, [hStateTimer]
     or a
-    jr z, jr_001_7618
+    jr z, .frameLoop
 
     dec a
     ld [hStateTimer], a
-    jr nz, jr_001_7618
+    jr nz, .frameLoop
 
     ld e, $00
     call StartSong
@@ -5397,17 +5397,17 @@ jr_001_7618:
     call PlaySound
     ld a, $09
 
-jr_001_7640:
+.waitNineFramesLoop:
     push af
     call WaitVBlank
     call UpdateSound
     pop af
     dec a
-    jr nz, jr_001_7640
+    jr nz, .waitNineFramesLoop
 
     ld a, [hPaletteMode]
     cp $03
-    jr nz, jr_001_7665
+    jr nz, .checkPaletteMode4
 
     ld [wHdmaMode], a
     ld d, $fc
@@ -5418,10 +5418,10 @@ jr_001_7640:
     xor a
     ld [hPaletteMode], a
 
-jr_001_7665:
+.checkPaletteMode4:
     ld a, [hPaletteMode]
     cp $04
-    jr nz, jr_001_7680
+    jr nz, .finalFade
 
     ld a, $02
     ld [hPaletteMode], a
@@ -5433,7 +5433,7 @@ jr_001_7665:
     ld a, $04
     ld [hPaletteMode], a
 
-jr_001_7680:
+.finalFade:
     ld b, $01
     xor a
     call FadePalettes
@@ -5612,7 +5612,7 @@ SetUpBricks_Row:
 SetUpBricks_Cell:
     ld a, [de]
     or a
-    jr z, jr_001_783a
+    jr z, .emptyCell
 
     push af
     swap a
@@ -5623,7 +5623,7 @@ SetUpBricks_Cell:
     and $0f
     ld [de], a
     cp $0e
-    jr nz, jr_001_780f
+    jr nz, .breakableBrick
 
     xor a
     ldh [rVBK], a
@@ -5634,27 +5634,27 @@ SetUpBricks_Cell:
     dec l
     ld a, b
     cp $10
-    jr z, jr_001_7803
+    jr z, .unbreakableTopRow
 
     ld a, c
     cp $09
-    jr nz, jr_001_7809
+    jr nz, .unbreakableDrawn
 
     ld [hl], $51
-    jr jr_001_7809
+    jr .unbreakableDrawn
 
-jr_001_7803:
+.unbreakableTopRow:
     ld [hl], $51
     inc l
     ld [hl], $52
     dec l
 
-jr_001_7809:
+.unbreakableDrawn:
     ld a, $01
     ldh [rVBK], a
-    jr jr_001_787f
+    jr .nextCell
 
-jr_001_780f:
+.breakableBrick:
     ld a, [wBricksLeft]
     inc a
     ld [wBricksLeft], a
@@ -5667,27 +5667,27 @@ jr_001_780f:
     dec l
     ld a, b
     cp $10
-    jr z, jr_001_782e
+    jr z, .breakableTopRow
 
     ld a, c
     cp $09
-    jr nz, jr_001_7834
+    jr nz, .breakableDrawn
 
     ld [hl], $29
-    jr jr_001_7834
+    jr .breakableDrawn
 
-jr_001_782e:
+.breakableTopRow:
     ld [hl], $29
     inc l
     ld [hl], $2a
     dec l
 
-jr_001_7834:
+.breakableDrawn:
     ld a, $01
     ldh [rVBK], a
-    jr jr_001_787f
+    jr .nextCell
 
-jr_001_783a:
+.emptyCell:
     xor a
     ldh [rVBK], a
     push hl
@@ -5696,7 +5696,7 @@ jr_001_783a:
     ld a, [hl]
     pop hl
     cp $0f
-    jr z, jr_001_7852
+    jr z, .setLeftHalfAttr
 
     push hl
     ld hl, $ffef
@@ -5704,23 +5704,23 @@ jr_001_783a:
     ld a, [hl]
     pop hl
     or a
-    jr z, jr_001_785b
+    jr z, .checkRightHalf
 
-jr_001_7852:
+.setLeftHalfAttr:
     ld a, $01
     ldh [rVBK], a
     ld [hl], $0a
     xor a
     ldh [rVBK], a
 
-jr_001_785b:
+.checkRightHalf:
     push hl
     ld hl, $ffdf
     add hl, de
     ld a, [hl]
     pop hl
     cp $0f
-    jr z, jr_001_7870
+    jr z, .setRightHalfAttr
 
     push hl
     ld hl, $fff0
@@ -5728,9 +5728,9 @@ jr_001_785b:
     ld a, [hl]
     pop hl
     or a
-    jr z, jr_001_787b
+    jr z, .emptyCellDone
 
-jr_001_7870:
+.setRightHalfAttr:
     inc hl
     ld a, $01
     ldh [rVBK], a
@@ -5739,11 +5739,11 @@ jr_001_7870:
     xor a
     ldh [rVBK], a
 
-jr_001_787b:
+.emptyCellDone:
     ld a, $01
     ldh [rVBK], a
 
-jr_001_787f:
+.nextCell:
     inc de
     inc l
     inc l
@@ -5753,19 +5753,19 @@ jr_001_787f:
     ld a, l
     add $0e
     ld l, a
-    jr nc, jr_001_788d
+    jr nc, .noCarryTilemap
 
     inc h
 
-jr_001_788d:
+.noCarryTilemap:
     ld a, e
     add $07
     ld e, a
-    jr nc, jr_001_7894
+    jr nc, .noCarryMap
 
     inc d
 
-jr_001_7894:
+.noCarryMap:
     dec b
     jp nz, SetUpBricks_Row
 
@@ -5787,11 +5787,11 @@ HighScores_AdvanceAnim:
     ld h, a
     ld a, [hl]
     cp $01
-    jr nz, jr_001_78b7
+    jr nz, .readFrame
 
     ld hl, HighScoreAnimFrames
 
-jr_001_78b7:
+.readFrame:
     ld a, [hl+]
     ld [wHdmaSource], a
     ld a, [hl+]
@@ -5807,7 +5807,7 @@ HighScores_InitSprites:
     ld hl, wOamBuffer
     ld de, HighScoreSpritePositions
 
-jr_001_78d0:
+.nextSpritePair:
     ld a, [de]
     inc de
     ld [hl+], a
@@ -5828,26 +5828,26 @@ jr_001_78d0:
     ld [hl+], a
     ld [hl+], a
     dec b
-    jr nz, jr_001_78d0
+    jr nz, .nextSpritePair
 
     ld b, $04
     ld hl, wHighScoreSpriteFrames
     xor a
 
-jr_001_78ed:
+.nextFrameRow:
     ld c, $05
     push af
 
-jr_001_78f0:
+.nextFrameInRow:
     ld [hl+], a
     add $04
     dec c
-    jr nz, jr_001_78f0
+    jr nz, .nextFrameInRow
 
     pop af
     add $04
     dec b
-    jr nz, jr_001_78ed
+    jr nz, .nextFrameRow
 
     ret
 
@@ -5857,7 +5857,7 @@ HighScores_MoveSprites:
     ld hl, wOamBuffer + 2
     ld bc, $0004
 
-jr_001_7908:
+.nextSpritePair:
     push af
     ld a, [de]
     inc a
@@ -5884,7 +5884,7 @@ jr_001_7908:
     pop de
     pop af
     dec a
-    jr nz, jr_001_7908
+    jr nz, .nextSpritePair
 
     ret
 
@@ -5892,7 +5892,7 @@ jr_001_7908:
 HighScores_SlideSprites:
     ld a, $20
 
-jr_001_792b:
+.frameLoop:
     push af
     call WaitVBlank
     push de
@@ -5901,10 +5901,10 @@ jr_001_792b:
     ld hl, wBatX
     ld c, $04
 
-jr_001_7939:
+.nextRow:
     ld b, $0a
 
-jr_001_793b:
+.nextSpriteInRow:
     ld a, [hl]
     add d
     ld [hl+], a
@@ -5912,18 +5912,18 @@ jr_001_793b:
     inc hl
     inc hl
     dec b
-    jr nz, jr_001_793b
+    jr nz, .nextSpriteInRow
 
     ld a, d
     cpl
     inc a
     ld d, a
     dec c
-    jr nz, jr_001_7939
+    jr nz, .nextRow
 
     pop af
     dec a
-    jr nz, jr_001_792b
+    jr nz, .frameLoop
 
     ret
 
@@ -6041,12 +6041,12 @@ Credits_Update:
 
     ld [hl], $ff
     cp $ff
-    jr z, jr_001_7a6e
+    jr z, .advanceScroll
 
     dec a
     ld [wUnk_c954], a
 
-jr_001_7a6e:
+.advanceScroll:
     ld a, [wCreditsScrollY]
     inc a
     ld [wCreditsScrollY], a
@@ -6054,27 +6054,27 @@ jr_001_7a6e:
     ld hl, wUnk_c3c8
     ld b, $8f
 
-jr_001_7a7d:
+.shiftEntryLoop:
     ld a, [hl]
     ld [de], a
     ld a, l
     add $0a
     ld l, a
-    jr nc, jr_001_7a86
+    jr nc, .noCarrySource
 
     inc h
 
-jr_001_7a86:
+.noCarrySource:
     ld a, e
     add $0a
     ld e, a
-    jr nc, jr_001_7a8d
+    jr nc, .noCarryDest
 
     inc d
 
-jr_001_7a8d:
+.noCarryDest:
     dec b
-    jr nz, jr_001_7a7d
+    jr nz, .shiftEntryLoop
 
     xor a
     ld [wCreditsScrollDone], a
@@ -6085,7 +6085,7 @@ jr_001_7a8d:
     ld a, [hJoypad]
     and $f0
     or a
-    jr z, jr_001_7ab6
+    jr z, .noButton
 
     ld a, $ff
     ld [wCreditsScrollDone], a
@@ -6096,7 +6096,7 @@ jr_001_7a8d:
     ld a, $1a
     call PlaySound
 
-jr_001_7ab6:
+.noButton:
     ret
 
 GBC_Check:
@@ -6240,7 +6240,7 @@ GameOver_Update:
     ld a, [hJoypad]
     and $f0
     or a
-    jr z, jr_001_7c02
+    jr z, .noButton
 
     ld a, $07
     ld [hGameState], a
@@ -6254,7 +6254,7 @@ GameOver_Update:
     ld a, $1a
     call PlaySound
 
-jr_001_7c02:
+.noButton:
     ret
 
 Pause_Update:
@@ -6264,7 +6264,7 @@ Pause_Update:
 
     ld a, [hJoypad]
     bit 7, a
-    jr z, jr_001_7c2c
+    jr z, .startNotPressed
 
     ld a, $02
     ld [hGameState], a
@@ -6278,7 +6278,7 @@ Pause_Update:
     ld a, $1a
     call PlaySound
 
-jr_001_7c2c:
+.startNotPressed:
     ret
 
 ResetScore:
@@ -6302,16 +6302,16 @@ AddScoreBC:
     ld a, $0b
     ld hl, wScoreDigits + 5
 
-jr_001_7c41:
+.incDigit:
     inc [hl]
     cp [hl]
-    jr nz, jr_001_7c4a
+    jr nz, .noDigitCarry
 
     ld [hl], $01
     dec hl
-    jr jr_001_7c41
+    jr .incDigit
 
-jr_001_7c4a:
+.noDigitCarry:
     xor a
     ld [wScoreDigits], a
     dec bc
@@ -6326,19 +6326,19 @@ WaitVBlank:
     call ReadJoypad
     ld a, [hGameState]
     or a
-    jr z, jr_001_7c67
+    jr z, .waitForVBlank
 
     ld a, [hJoypad]
     and $f0
     cp $f0
     jp z, Boot
 
-jr_001_7c67:
+.waitForVBlank:
     halt
     nop
     ld a, [hVBlankDone]
     or a
-    jr z, jr_001_7c67
+    jr z, .waitForVBlank
 
     xor a
     ld [hVBlankDone], a
@@ -6352,7 +6352,7 @@ Ending_Update:
     ld a, [hJoypad]
     and $f0
     or a
-    jr z, jr_001_7c91
+    jr z, .noButtonPressed
 
     ld a, $02
     ld [hGameState], a
@@ -6361,19 +6361,19 @@ Ending_Update:
     ld a, $1a
     call PlaySound
 
-jr_001_7c91:
+.noButtonPressed:
     ret
 
 DeveloperLogos_Update:
     ld a, [hLogoTimer]
     or a
-    jr z, jr_001_7c9d
+    jr z, .timerExpired
 
     dec a
     ld [hLogoTimer], a
     ret
 
-jr_001_7c9d:
+.timerExpired:
     ld a, $0b
     ld [hGameState], a
     ld a, $01
@@ -6417,23 +6417,23 @@ ColorOnly_Update:
     ld hl, wLevelPasswordText + 12
     ld a, [wLanguage]
     cp $04
-    jr nz, jr_001_7d12
+    jr nz, .notLanguage4
 
     ld a, [wLevelTitleText + 18]
     ld [hl+], a
     ld a, [wLevelTitleText + 19]
     ld [hl+], a
     ld a, [wLevelTitleText + 20]
-    jr jr_001_7d1d
+    jr .storeLastDigit
 
-jr_001_7d12:
+.notLanguage4:
     ld a, [wLevelTitleText + 17]
     ld [hl+], a
     ld a, [wLevelTitleText + 18]
     ld [hl+], a
     ld a, [wLevelTitleText + 19]
 
-jr_001_7d1d:
+.storeLastDigit:
     ld [hl-], a
     dec hl
     call ParseDecimal
