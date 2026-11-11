@@ -61,7 +61,8 @@ Gfx_TitleScreen_007_5f28:
 
     INCBIN "gfx/image_007_6528.2bpp"
 
-TitleScreenData_007_6538:
+; The 20 tiles ($140 bytes) of the bottom line of the title screen in Spanish: AUTORIZADO POR NINTENDO.
+Gfx_TitleLicensedBy_Spanish:
     db $00, $00, $0e, $1c, $17, $18, $09, $12, $1f, $00
     db $10
     db $1f, $12, $1b, $00, $1b
@@ -99,12 +100,14 @@ TitleScreenData_007_6538:
     db $72, $83, $21, $42, $63, $00, $00, $63, $82, $f3, $00, $f3
     INCBIN "gfx/image_007_6628.2bpp"
 
-TitleScreenData_007_6678:
+; The 20 tiles ($140 bytes) of the bottom line of the title screen in German: LIZENZIERT VON NINTENDO.
+Gfx_TitleLicensedBy_German:
     INCBIN "gfx/image_007_6678.2bpp"
 
     INCBIN "gfx/image_007_6778.2bpp"
 
-TitleScreenData_007_67b8:
+; The 20 tiles ($140 bytes) of the bottom line of the title screen in French: SOUS LICENCE DE NINTENDO.
+Gfx_TitleLicensedBy_French:
     INCBIN "gfx/image_007_67b8.2bpp"
 
     INCBIN "gfx/image_007_68b8.2bpp"

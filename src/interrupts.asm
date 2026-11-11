@@ -24,7 +24,7 @@ RST_08::
 RST_10::
     xor a
     ld [wLevelTitleBlink], a
-    ld [wUnk_d75e], a
+    ld [wMessageUnused], a
     dec a
 
 RST_18::
@@ -122,7 +122,7 @@ LoadPalettes:
     jr nz, jr_000_0076
 
     ld b, $90
-    ld hl, wUnk_d000
+    ld hl, wRasterPaletteBuffer
     ld a, $02
     ldh [rSVBK], a
 
@@ -175,9 +175,9 @@ jr_000_009e:
 StateInit_ColorOnly:
     ld hl, VBlank
     ld a, l
-    ld [hUnk_ff96], a
+    ld [hVBlankHandler], a
     ld a, h
-    ld [hUnk_ff97], a
+    ld [hVBlankHandler + 1], a
     ld a, $01
     ld [hPaletteMode], a
     ld [hLycStart], a
