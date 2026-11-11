@@ -401,11 +401,197 @@ Runs of labels with the same prefix are shown as one row.
 
 | Address | Bytes | Kind | Labels |
 |---|---|---|---|
-| `$4000` | 1926 | code | `Call_006_4000` to `Call_006_473f` (2 labels) |
-| `$4786` | 147 | code | `InitWaveRAM` |
-| `$4819` | 368 | code | `Call_006_4819` |
-| `$4989` | 7273 | data | `BGM_Module_00` to `BGM_Module_01` (2 labels) |
-| `$65F2` | 6670 | data | `WaveRAMPiss` |
+| `$4000` | 221 | code | `UpdateSoundDriver` |
+| `$40DD` | 168 | code | `Channel1Effects` |
+| `$4185` | 297 | code | `UpdateChannel2` |
+| `$42AE` | 168 | code | `Channel2Effects` |
+| `$4356` | 213 | code | `UpdateChannel3` |
+| `$442B` | 194 | code | `Channel3Effects` |
+| `$44ED` | 269 | code | `UpdateChannel4` |
+| `$45FA` | 87 | code | `Channel4Effects` |
+| `$4651` | 163 | code | `UpdateMutedChannel` |
+| `$46F4` | 75 | code | `UpdateWaveAnim` |
+| `$473F` | 218 | code | `PlaySong` |
+| `$4819` | 98 | code | `PlaySfx` |
+| `$487B` | 5 | data | `WaveVolume_Silent` |
+| `$4880` | 1 | data | `Pattern_Empty` |
+| `$4881` | 144 | data | `NoteFrequencies` |
+| `$4911` | 120 | data | `SfxTable` |
+| `$4989` | 130 | data | `SongHeader_Silence` to `SongHeader_Credits` (10 labels) |
+| `$4A0B` | 256 | data | `PatternPointers` |
+| `$4B0B` | 122 | data | `InstrumentPointers` |
+| `$4B85` | 44 | data | `NoiseInstrumentPointers` |
+| `$4BB1` | 242 | data | `Song_Title_Ch1` to `Song_Title_Ch4` (4 labels) |
+| `$4CA3` | 772 | data | `Song_Level1_Ch1` to `Song_Level3_Ch4` (12 labels) |
+| `$4FA7` | 98 | data | `Song_MainMenu_Ch1` to `Song_MainMenu_Ch4` (4 labels) |
+| `$5009` | 32 | data | `Song_HighScores_Ch2` |
+| `$5029` | 10 | data | `Song_GameOver_Ch1` to `Song_GameOver_Ch4` (4 labels) |
+| `$5033` | 72 | data | `Song_Ending_Ch1` to `Song_Ending_Ch3` (3 labels) |
+| `$507B` | 2 | data | `Order_Unused_507b` |
+| `$507D` | 96 | data | `Song_Credits_Ch1` to `Song_Credits_Ch3` (3 labels) |
+| `$50DD` | 2 | data | `Order_Silence` |
+| `$50DF` | 8 | data | `Song_Silence_Ch1` to `Song_Silence_Ch4` (4 labels) |
+| `$50E7` | 3071 | data | `Pattern_00` to `Pattern_7F` (128 labels) |
+| `$5CE6` | 8 | data | `Sfx_Unused_5ce6` |
+| `$5CEE` | 270 | data | `Sfx_01` to `Sfx_29` (30 labels) |
+| `$5DFC` | 5 | data | `Pattern_Unused_5dfc` |
+| `$5E01` | 22 | data | `PitchMode_00` to `PitchMode_03` (4 labels) |
+| `$5E17` | 5 | data | `Arpeggio_00` |
+| `$5E1C` | 6 | data | `PitchSlide_00` |
+| `$5E22` | 5 | data | `Table_00` |
+| `$5E27` | 81 | data | `PitchSlide_01` to `PitchSlide_05` (5 labels) |
+| `$5E78` | 9 | data | `Instrument_00` |
+| `$5E81` | 7 | data | `NoiseInstrument_02` |
+| `$5E88` | 5 | data | `NoiseShape_00` |
+| `$5E8D` | 14 | data | `NoiseInstrument_04` to `NoiseInstrument_03` (2 labels) |
+| `$5E9B` | 5 | data | `NoiseShape_01` |
+| `$5EA0` | 7 | data | `NoiseInstrument_01` |
+| `$5EA7` | 5 | data | `NoiseShape_02` |
+| `$5EAC` | 10 | data | `Instrument_02` |
+| `$5EB6` | 7 | data | `WaveVolume_00` |
+| `$5EBD` | 20 | data | `Instrument_0E` to `Instrument_1F` (2 labels) |
+| `$5ED1` | 7 | data | `Arpeggio_01` |
+| `$5ED8` | 20 | data | `Instrument_1B` to `Instrument_26` (2 labels) |
+| `$5EEC` | 78 | data | `PitchSlide_06` |
+| `$5F3A` | 10 | data | `Instrument_1A` |
+| `$5F44` | 9 | data | `WaveVolume_01` |
+| `$5F4D` | 12 | data | `PitchSlide_07` |
+| `$5F59` | 10 | data | `Instrument_17` |
+| `$5F63` | 16 | data | `WaveVolume_02` to `WaveVolume_03` (2 labels) |
+| `$5F73` | 10 | data | `Instrument_Unused_5f73` |
+| `$5F7D` | 28 | data | `WaveVolume_04` to `WaveVolume_07` (4 labels) |
+| `$5F99` | 10 | data | `Instrument_27` |
+| `$5FA3` | 16 | data | `WaveVolume_08` to `WaveVolume_09` (2 labels) |
+| `$5FB3` | 15 | data | `Arpeggio_02` |
+| `$5FC2` | 80 | data | `Instrument_07` to `Instrument_12` (8 labels) |
+| `$6012` | 60 | data | `Arpeggio_03` to `Arpeggio_10` (8 labels) |
+| `$604E` | 9 | data | `Instrument_1C` |
+| `$6057` | 41 | data | `Table_01` |
+| `$6080` | 9 | data | `PitchSlide_08` |
+| `$6089` | 9 | data | `Instrument_04` |
+| `$6092` | 22 | data | `Arpeggio_11` to `Arpeggio_12` (2 labels) |
+| `$60A8` | 9 | data | `Instrument_28` |
+| `$60B1` | 15 | data | `Arpeggio_13` |
+| `$60C0` | 9 | data | `Instrument_20` |
+| `$60C9` | 9 | data | `Arpeggio_14` |
+| `$60D2` | 9 | data | `Instrument_23` |
+| `$60DB` | 9 | data | `PitchSlide_09` |
+| `$60E4` | 9 | data | `Instrument_22` |
+| `$60ED` | 9 | data | `Instrument_Unused_60ed` |
+| `$60F6` | 9 | data | `Instrument_25` |
+| `$60FF` | 21 | data | `PitchSlide_10` |
+| `$6114` | 9 | data | `Instrument_05` |
+| `$611D` | 9 | data | `PitchSlide_11` |
+| `$6126` | 9 | data | `Arpeggio_15` |
+| `$612F` | 9 | data | `Instrument_1E` |
+| `$6138` | 12 | data | `PitchSlide_12` |
+| `$6144` | 9 | data | `Instrument_06` |
+| `$614D` | 7 | data | `Arpeggio_16` |
+| `$6154` | 9 | data | `PitchSlide_13` |
+| `$615D` | 9 | data | `Instrument_01` |
+| `$6166` | 9 | data | `Arpeggio_17` |
+| `$616F` | 9 | data | `Instrument_0F` |
+| `$6178` | 12 | data | `PitchSlide_14` to `PitchSlide_15` (2 labels) |
+| `$6184` | 7 | data | `PitchMode_04` |
+| `$618B` | 9 | data | `Instrument_18` |
+| `$6194` | 7 | data | `Arpeggio_18` |
+| `$619B` | 9 | data | `Instrument_19` |
+| `$61A4` | 7 | data | `Arpeggio_19` |
+| `$61AB` | 9 | data | `Instrument_03` |
+| `$61B4` | 13 | data | `Arpeggio_20` |
+| `$61C1` | 9 | data | `Instrument_Unused_61c1` |
+| `$61CA` | 7 | data | `Arpeggio_21` |
+| `$61D1` | 48 | data | `PitchSlide_16` |
+| `$6201` | 23 | data | `WaveVolume_10` to `WaveVolume_12` (3 labels) |
+| `$6218` | 9 | data | `Instrument_14` |
+| `$6221` | 7 | data | `Arpeggio_22` |
+| `$6228` | 19 | data | `Instrument_1D` to `Instrument_15` (2 labels) |
+| `$623B` | 7 | data | `WaveVolume_13` |
+| `$6242` | 15 | data | `PitchSlide_17` |
+| `$6251` | 9 | data | `Instrument_16` |
+| `$625A` | 24 | data | `PitchSlide_18` |
+| `$6272` | 9 | data | `Instrument_13` |
+| `$627B` | 7 | data | `Arpeggio_23` |
+| `$6282` | 8 | data | `PitchSlide_19` |
+| `$628A` | 9 | data | `Instrument_21` |
+| `$6293` | 21 | data | `PitchSlide_20` to `PitchSlide_21` (2 labels) |
+| `$62A8` | 9 | data | `Instrument_3C` |
+| `$62B1` | 11 | data | `Arpeggio_24` |
+| `$62BC` | 9 | data | `Instrument_3B` |
+| `$62C5` | 11 | data | `Arpeggio_25` |
+| `$62D0` | 12 | data | `PitchSlide_22` |
+| `$62DC` | 9 | data | `Instrument_2A` |
+| `$62E5` | 9 | data | `PitchSlide_23` |
+| `$62EE` | 9 | data | `Arpeggio_26` |
+| `$62F7` | 18 | data | `Instrument_2B` to `Instrument_2C` (2 labels) |
+| `$6309` | 9 | data | `Arpeggio_27` |
+| `$6312` | 9 | data | `PitchSlide_24` |
+| `$631B` | 9 | data | `Instrument_2D` |
+| `$6324` | 7 | data | `Arpeggio_28` |
+| `$632B` | 9 | data | `Instrument_31` |
+| `$6334` | 13 | data | `Arpeggio_29` |
+| `$6341` | 6 | data | `PitchSlide_25` |
+| `$6347` | 9 | data | `Instrument_36` |
+| `$6350` | 45 | data | `Arpeggio_30` |
+| `$637D` | 12 | data | `PitchSlide_26` |
+| `$6389` | 9 | data | `Instrument_37` |
+| `$6392` | 9 | data | `PitchSlide_27` |
+| `$639B` | 9 | data | `Instrument_38` |
+| `$63A4` | 7 | data | `Arpeggio_31` |
+| `$63AB` | 24 | data | `PitchSlide_28` |
+| `$63C3` | 7 | data | `NoiseInstrument_12` |
+| `$63CA` | 7 | data | `NoiseShape_03` |
+| `$63D1` | 9 | data | `Instrument_39` |
+| `$63DA` | 7 | data | `Arpeggio_32` |
+| `$63E1` | 9 | data | `PitchSlide_29` |
+| `$63EA` | 9 | data | `Instrument_3A` |
+| `$63F3` | 9 | data | `PitchSlide_30` |
+| `$63FC` | 9 | data | `Instrument_34` |
+| `$6405` | 9 | data | `PitchSlide_31` |
+| `$640E` | 9 | data | `Instrument_35` |
+| `$6417` | 7 | data | `Arpeggio_33` |
+| `$641E` | 9 | data | `Instrument_32` |
+| `$6427` | 6 | data | `PitchSlide_32` |
+| `$642D` | 7 | data | `Arpeggio_34` |
+| `$6434` | 9 | data | `Instrument_33` |
+| `$643D` | 9 | data | `Arpeggio_35` |
+| `$6446` | 6 | data | `PitchSlide_33` |
+| `$644C` | 9 | data | `Instrument_2E` |
+| `$6455` | 13 | data | `Arpeggio_36` |
+| `$6462` | 9 | data | `Instrument_2F` |
+| `$646B` | 15 | data | `Arpeggio_37` |
+| `$647A` | 9 | data | `Instrument_30` |
+| `$6483` | 9 | data | `PitchSlide_34` |
+| `$648C` | 7 | data | `NoiseInstrument_0A` |
+| `$6493` | 11 | data | `NoiseShape_04` |
+| `$649E` | 7 | data | `NoiseInstrument_14` |
+| `$64A5` | 25 | data | `NoiseShape_05` |
+| `$64BE` | 7 | data | `NoiseInstrument_0E` |
+| `$64C5` | 35 | data | `NoiseShape_06` |
+| `$64E8` | 7 | data | `NoiseInstrument_0B` |
+| `$64EF` | 9 | data | `NoiseShape_07` |
+| `$64F8` | 7 | data | `NoiseInstrument_11` |
+| `$64FF` | 61 | data | `NoiseShape_08` |
+| `$653C` | 7 | data | `NoiseInstrument_0F` |
+| `$6543` | 33 | data | `NoiseShape_09` |
+| `$6564` | 7 | data | `NoiseInstrument_13` |
+| `$656B` | 9 | data | `NoiseShape_10` |
+| `$6574` | 7 | data | `NoiseInstrument_15` |
+| `$657B` | 5 | data | `NoiseShape_11` |
+| `$6580` | 7 | data | `NoiseInstrument_0C` |
+| `$6587` | 29 | data | `NoiseShape_12` |
+| `$65A4` | 7 | data | `NoiseInstrument_0D` |
+| `$65AB` | 11 | data | `NoiseShape_13` |
+| `$65B6` | 7 | data | `NoiseInstrument_10` |
+| `$65BD` | 27 | data | `NoiseShape_14` |
+| `$65D8` | 9 | data | `Instrument_10` |
+| `$65E1` | 7 | data | `NoiseInstrument_00` |
+| `$65E8` | 10 | data | `Instrument_11` |
+| `$65F2` | 80 | data | `Waveform_0` to `Waveform_4` (5 labels) |
+| `$6642` | 105 | data | `WaveAnim_00` to `WaveAnim_01` (2 labels) |
+| `$66AB` | 32 | data | `Waveform_5` to `Waveform_6` (2 labels) |
+| `$66CB` | 264 | data | `WaveAnim_02` to `WaveAnim_04` (3 labels) |
+| `$67D3` | 6189 | data | `LeftoverData_006_67d3` |
 
 ## Bank $07
 

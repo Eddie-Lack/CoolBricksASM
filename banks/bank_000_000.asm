@@ -10140,7 +10140,7 @@ PlayMusic:
 StartSong:
     ld a, $06               ; Load ROM Bank 06
     ld [ROM_BANK], a
-    call Call_006_473f
+    call PlaySong
     ld a, $01
     ld [ROM_BANK], a
     ret
@@ -10157,7 +10157,7 @@ PlaySound:
 
     ld a, $06
     ld [ROM_BANK], a
-    call Call_006_4819
+    call PlaySfx
     ld a, $01
     ld [ROM_BANK], a
 
@@ -10172,7 +10172,7 @@ jr_000_3e7b:
 UpdateSound:
     ld a, $06
     ld [ROM_BANK], a
-    call Call_006_4000
+    call UpdateSoundDriver
     ld a, $01
     ld [ROM_BANK], a
     ret
