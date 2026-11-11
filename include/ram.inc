@@ -177,6 +177,7 @@ DEF wUfoTick               EQU $dc2b ; Counts frames on UFO levels
 DEF wUfoTickMask           EQU $dc2c ; The UFO wait timer only counts down on frames where wUfoTick AND this is 0
 DEF wUfoPassIndex          EQU $dc2e ; Which UFO pass comes next (index into UfoPassTable)
 DEF hLogoTimer             EQU $ff91 ; Counts down while a logo screen is shown
+DEF wBrickShinePtr         EQU $dab3 ; Position in BrickShineAnimation (bank 9), the shine that sweeps over the bricks
 
 ; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
 DEF wLanguage              EQU $defc
@@ -341,8 +342,6 @@ DEF wUnk_daaf EQU $daaf
 DEF wUnk_dab0 EQU $dab0
 DEF wUnk_dab1 EQU $dab1
 DEF wUnk_dab2 EQU $dab2
-DEF wUnk_dab3 EQU $dab3
-DEF wUnk_dab4 EQU $dab4
 DEF wUnk_dab8 EQU $dab8
 DEF wUnk_dab9 EQU $dab9
 DEF wUnk_dac3 EQU $dac3

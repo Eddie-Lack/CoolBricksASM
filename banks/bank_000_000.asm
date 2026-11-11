@@ -4975,9 +4975,9 @@ jr_000_1d93:
 jr_000_1dae:
     ld a, $09
     ld [ROM_BANK], a
-    ld a, [wUnk_dab3]
+    ld a, [wBrickShinePtr]
     ld l, a
-    ld a, [wUnk_dab4]
+    ld a, [wBrickShinePtr + 1]
     ld h, a
     ld b, $0c
 
@@ -4986,7 +4986,7 @@ jr_000_1dbd:
     cp $ff
     jr nz, jr_000_1dc6
 
-    ld hl, BrickRedrawData_009_4000
+    ld hl, BrickShineAnimation
     ld a, [hl+]
 
 jr_000_1dc6:
@@ -5002,9 +5002,9 @@ jr_000_1dc6:
     jr nz, jr_000_1dbd
 
     ld a, l
-    ld [wUnk_dab3], a
+    ld [wBrickShinePtr], a
     ld a, h
-    ld [wUnk_dab4], a
+    ld [wBrickShinePtr + 1], a
     ld a, $01
     ld [ROM_BANK], a
     ld a, [wBrickRedrawCount]
@@ -5047,11 +5047,11 @@ jr_000_1e0c:
     dec c
     jr nz, jr_000_1dfa
 
-    ld hl, $4000                ; not a known label: stored in wUnk_dab3 and used later
+    ld hl, BrickShineAnimation
     ld a, l
-    ld [wUnk_dab3], a
+    ld [wBrickShinePtr], a
     ld a, h
-    ld [wUnk_dab4], a
+    ld [wBrickShinePtr + 1], a
     ret
 
 ; Redraw hit bricks, remove destroyed ones and release power-ups.
