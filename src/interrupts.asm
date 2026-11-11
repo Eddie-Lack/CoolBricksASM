@@ -202,19 +202,19 @@ Jump_000_00c3:
     ldh [rSCX], a
     ld a, $0d
     call ChangeROMBank
-    ld hl, $4000
+    ld hl, Data_00d_4000
     ld de, $9000
     ld bc, $0800
 
 Jump_000_00d3:
     call DataTransfer
-    ld hl, $4800
+    ld hl, Data_00d_4800
     ld de, $8800
     ld bc, $0050
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, $4850
+    ld hl, Data_00d_4850
     ld b, $14
     ld c, $12
     call CopyTilemapRect

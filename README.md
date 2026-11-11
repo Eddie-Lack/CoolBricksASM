@@ -6,20 +6,18 @@ This is a fork of [RoddyDev/CoolBricksASM](https://github.com/RoddyDev/CoolBrick
 
 ## Building
 
-With [RGBDS](https://rgbds.gbdev.io) 0.8.0:
+With [RGBDS](https://rgbds.gbdev.io) 0.8.0 and GNU make:
 
 ```sh
-rgbasm -o game.o game.asm
-rgblink -n game.sym -m game.map -o game.gbc game.o
-rgbfix -v -p 255 game.gbc
+make
 ```
 
-The `Makefile` does the same but uses Windows commands.
+This builds `game.gbc` and compares its MD5 with the original ROM. `Makefile.windows` is the original Windows cmd version (`make -f Makefile.windows`).
 
 Without RGBDS, the checking assembler builds the ROM and compares its MD5:
 
 ```sh
-python tools/gbasm.py game.asm game.gbc 5a7673f1e61cd707bdc880ff76396a3d
+make check
 ```
 
 `tools/gbasm.py` supports only the syntax these sources use. It has no macros. The changes below were checked with it, not with RGBDS.
@@ -40,13 +38,13 @@ python tools/gbasm.py game.asm game.gbc 5a7673f1e61cd707bdc880ff76396a3d
    - Bank 1 has `PowerupHandlers`, `PowerupSprites`, `StateInitHandlers`, `StateUpdateHandlers` and `BrickRedrawHandlers`.
    - Calls from bank 0 into banks 1, 6 and `$0F` use labels where the bank is known.
 5. **Level data is structured.** Brick layouts and power-up maps are written as (count, value) pairs, one labelled block per level.
-6. **Text is readable.** The five language tables in bank 1 (`LanguageTable_English` and so on) point to labelled strings. 106 strings and the 75 power-up messages are written as text.
+6. **Text is readable.** The five language tables in bank 1 (`LanguageTable_English` and so on) point to labelled strings. 106 strings and the 75 power-up messages are written as text. The credits lists in bank `$0F` are text too.
 
 ## What is left
 
 - Most routines still have automatic names (`Call_000_xxxx`). The per-frame gameplay update, the ball movement and the ball collision are labelled by section. The inside of the six shot handlers, the projectile update and the menus are not traced yet.
-- Most data is still unlabelled `db`: palettes, tile maps, background pictures, music, and the text that the language tables do not point to (credits, high-score names).
-- Pointers inside code (`ld hl, $4630`) and inside unstructured data are still numbers. The ROM cannot be rearranged safely until they are labels.
+- Most data is still unstructured `db` with automatic `Data_bbb_xxxx` labels: palettes, tile maps, background pictures and music.
+- Most pointers loaded in code (`ld hl, ...`) are labels now. 39 are still numbers: 15 were never reached in the emulator run that identified the bank, and 24 point into the middle of an image or a string. Pointers inside unstructured data are still numbers. The ROM cannot be rearranged safely until those are labels too.
 - Banks `$0B` and `$10`–`$13` hold the graphics of the five languages. The bank number comes from the language table (`wLangGraphicsBank`). Their contents are still unlabelled.
 - Banks `$14`–`$1F` are 12 copies of one bank, bank `$20` is a copy of bank `$13`, and banks `$21`–`$3F` are empty.
 - A few fragments at the end of bank 1 (`$7CAA` onwards) are unreachable leftovers of bank 0 code.
