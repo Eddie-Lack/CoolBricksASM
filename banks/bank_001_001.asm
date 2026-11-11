@@ -5,7 +5,7 @@
 
 SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
 
-Palettes_Level:
+Palettes_MainMenu:
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $4a, $29, $73, $4e, $bd, $77
     db $00, $00, $00, $41, $6f, $6e, $f9, $7f, $00, $00, $40, $01, $08, $16, $6f, $37
     db $00, $00, $d1, $00, $1b, $02, $9e, $17, $00, $00, $0f, $54, $b9, $71, $3d, $77
@@ -3248,7 +3248,7 @@ jr_001_683a:
     push bc
     ld [hTemp], a
     ld bc, $0040
-    ld hl, wUnk_c9dd
+    ld hl, wPaletteBuffer
     ld de, wUnk_ca9d
     ld a, [hPaletteMode]
     cp $02
@@ -6139,12 +6139,12 @@ jr_001_7c91:
     ret
 
 DeveloperLogos_Update:
-    ld a, [hUnk_ff91]
+    ld a, [hLogoTimer]
     or a
     jr z, jr_001_7c9d
 
     dec a
-    ld [hUnk_ff91], a
+    ld [hLogoTimer], a
     ret
 
 jr_001_7c9d:
