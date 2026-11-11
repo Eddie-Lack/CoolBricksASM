@@ -281,7 +281,8 @@ BrickPalette_49b0:
     db $00, $00, $40, $01, $60, $01, $06, $01, $00, $00, $80, $00, $a0, $00
     db $83, $00
 
-UpdateProjectileData_001_49c0:
+; Four sprite frames (small to large) for a ball thrown by the blob, at byte offsets $00, $0d, $22 and $3b as stored in the throw arc tables.
+BallProjectileFrames:
     db $fe, $fe, $06, $0a, $06, $06, $06, $0a, $01, $00, $00, $39, $0b, $fe
     db $fe, $06, $0a, $06, $06, $06, $0a, $03, $ff, $ff, $36, $0b, $ff, $07, $37, $0b
     db $07, $ff, $38, $0b, $fe, $fe, $06, $0a, $06, $06, $06, $0a, $04
@@ -302,7 +303,8 @@ UpdateProjectileData_001_49c0:
     db $fc
     db $30, $0b, $04, $04, $31, $0b
 
-UpdateProjectileData_001_4a14:
+; Four sprite frames (small to large) for a flying grenade, in the same layout and at the same offsets ($00, $0d, $22, $3b) as BallProjectileFrames.
+GrenadeProjectileFrames:
     db $fe, $fe, $06, $0a, $06, $06, $06, $0a, $01, $00
     db $00, $41, $0f, $fe, $fe, $06, $0a, $06, $06, $06, $0a, $03, $ff, $ff, $3e, $0f
     db $ff, $07, $3f, $0f, $07, $ff, $40, $0f, $fe, $fe, $06, $0a, $06, $06, $06, $0a
@@ -322,7 +324,8 @@ UpdateProjectileData_001_4a14:
     db $fc
     db $5b, $0f, $04, $04, $5c, $0f
 
-UpdateProjectilesData_001_4a68:
+; Thirteen sprite frames of the grenade explosion, each a sprite count followed by 4 bytes (Y offset, X offset, tile, attribute) per sprite.
+GrenadeExplosionFrames:
     db $01, $00, $00, $42, $0c, $04
     db $fc
     db $fc
@@ -354,7 +357,8 @@ UpdateProjectilesData_001_4a68:
     db $0c, $f9, $04, $4a, $0c, $04, $f9, $4b, $0c, $02, $f9, $f9, $4a, $0c, $f9, $04
     db $4b, $0c, $01, $f9, $f9, $4b, $0c
 
-UpdateProjectilesData_001_4b21:
+; For each value of the grenade explosion timer (51 down to 1), the byte offset of the frame to draw in GrenadeExplosionFrames.
+GrenadeExplosionSequence:
     db $b4
     db $b4, $b4, $b4, $ab, $ab, $ab, $ab, $9e, $9e, $9e, $9e, $8d, $8d, $8d, $8d, $7c
     db $7c, $7c, $7c, $6b, $6b, $6b, $6b, $5a, $5a, $5a, $5a, $49, $49, $49, $49, $38
@@ -446,38 +450,46 @@ ThrowPath_4e4d:
     db $3b, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00
     db $00
 
-UpdateBlobData_001_4e6e:
+; Flight path of $24 frames, one byte per frame: used for the blob's throw to the right and as the longest bounce path after a projectile hits a brick.
+ThrowPath_4e6e:
     db $00
     db $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $3b
     db $3b, $3b, $3b, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d
     db $00, $00, $00
 
-ProjectileData_4e92:
+; Arc table for a projectile that came down on a brick with Y from $6d to $71 and flies on for 32 more frames: one byte per remaining frame giving the frame offset ($00, $0d or $22) into BallProjectileFrames or GrenadeProjectileFrames.
+ProjectileBounceArc_1:
     db $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22
     db $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00, $00
 
-ProjectileData_4eb2:
+; Arc table for a projectile that came down on a brick with Y from $72 to $76 and flies on for 28 more frames: one frame offset into the projectile sprite frames per remaining frame.
+ProjectileBounceArc_2:
     db $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $22
     db $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $00, $00, $00
 
-ProjectileData_4ece:
+; Arc table for a projectile that came down on a brick with Y from $77 to $7b and flies on for 24 more frames: one frame offset into the projectile sprite frames per remaining frame.
+ProjectileBounceArc_3:
     db $00, $00, $00, $0d
     db $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d
     db $0d, $00, $00, $00
 
-ProjectileData_4ee6:
+; Arc table for a projectile that came down on a brick with Y from $7c to $80 and flies on for 20 more frames: one frame offset into the projectile sprite frames per remaining frame.
+ProjectileBounceArc_4:
     db $00, $00, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22
     db $22, $22, $0d, $0d, $0d, $0d, $00, $00
 
-ProjectileData_4efa:
+; Arc table for a projectile that came down on a brick with Y from $81 to $85 and flies on for 16 more frames: one frame offset into the projectile sprite frames per remaining frame.
+ProjectileBounceArc_5:
     db $00, $00, $0d, $0d, $0d, $22, $22, $22
     db $22, $22, $22, $0d, $0d, $0d, $00, $00
 
-ProjectileData_4f0a:
+; Arc table for a projectile that came down on a brick with Y from $86 to $8a and flies on for 12 more frames: one frame offset into the projectile sprite frames per remaining frame.
+ProjectileBounceArc_6:
     db $00, $0d, $0d, $22, $22, $22, $22, $22
     db $22, $0d, $0d, $00
 
-ProjectileData_4f16:
+; Arc table for a projectile that came down on a brick with Y of $8b or more and flies on for 8 more frames: one frame offset into the projectile sprite frames per remaining frame.
+ProjectileBounceArc_7:
     db $00, $0d, $22, $22, $22, $22, $0d, $00
 
 BlobThrowDirections_Left:
@@ -502,22 +514,25 @@ BlobThrowDirections_Right:
 
     db $0b
 
-BlobPathData_4f2e:
+; Segment list of the blob's first move (BlobPath entry 0): pairs of (frame count, direction index into BallVelocityTable, moved at half speed) ending with 0.
+BlobPathSegments_1:
     db $78, $08, $00
 
-BlobPathData_4f31:
+; Segment list of one of the blob's two looping moves: six pairs of (frame count, direction index into BallVelocityTable) ending with 0.
+BlobPathSegments_2:
     db $8c, $08, $46, $0d, $46, $13, $8c, $18, $46, $1d, $46, $03, $00
 
-BlobPathData_4f3e:
+; Segment list of the blob's other looping move, the same as BlobPathSegments_2 with the diagonal directions swapped: six pairs of (frame count, direction index) ending with 0.
+BlobPathSegments_3:
     db $8c, $08, $46, $13, $46, $0d, $8c, $18, $46, $03, $46, $1d, $00
 
 BlobPath:
     db $01, $01
-    dw BlobPathData_4f2e
+    dw BlobPathSegments_1
     db $02, $02
-    dw BlobPathData_4f31
+    dw BlobPathSegments_2
     db $01, $01
-    dw BlobPathData_4f3e
+    dw BlobPathSegments_3
 
 BlobSprites:
     db $00, $00, $5f, $00, $00, $08, $60, $00, $08, $00, $67, $00, $08, $08, $68, $00
@@ -558,12 +573,12 @@ ClearFallingPowerups:
     ld c, $08
     xor a
 
-jr_001_502b:
+.clearSlotLoop:
     ld [hl], a
     ld de, $000c
     add hl, de
     dec c
-    jr nz, jr_001_502b
+    jr nz, .clearSlotLoop
 
     ret
 
@@ -584,15 +599,15 @@ SpawnPowerup:
     ld hl, wFallingPowerups
     ld de, $000c
 
-jr_001_5046:
+.findFreeSlot:
     ld a, [hl]
     or a
-    jr z, jr_001_504d
+    jr z, .slotFound
 
     add hl, de
-    jr jr_001_5046
+    jr .findFreeSlot
 
-jr_001_504d:
+.slotFound:
     inc a
     ld [hl+], a
     dec c
@@ -620,70 +635,70 @@ jr_001_504d:
     ld a, [wHitPowerupId]
     dec a
     cp $10
-    jr nz, jr_001_508d
+    jr nz, .checkType9
 
     ld a, [hFrameCounter]
     and $0f
     push af
     ld a, [wLevelType]
     bit 1, a
-    jr z, jr_001_5089
+    jr z, .subtractOffset
 
     ld d, $03
 
-jr_001_5089:
+.subtractOffset:
     pop af
     sub d
     and $0f
 
-jr_001_508d:
+.checkType9:
     cp $09
-    jr nz, jr_001_509e
+    jr nz, .checkType6
 
     ld d, a
     ld a, [wBallCount]
     or a
-    jr z, jr_001_509d
+    jr z, .type9Resolved
 
     dec a
-    jr z, jr_001_509d
+    jr z, .type9Resolved
 
     ld d, $00
 
-jr_001_509d:
+.type9Resolved:
     ld a, d
 
-jr_001_509e:
+.checkType6:
     cp $06
-    jr nz, jr_001_50ab
+    jr nz, .checkType17
 
     ld d, a
     ld a, [wWeaponFlag]
     or a
-    jr nz, jr_001_50aa
+    jr nz, .type6Resolved
 
     ld d, a
 
-jr_001_50aa:
+.type6Resolved:
     ld a, d
 
-jr_001_50ab:
+.checkType17:
     cp $11
-    jr nz, jr_001_50b1
+    jr nz, .storeType
 
     ld a, $06
 
-jr_001_50b1:
+.storeType:
     ld [hl+], a
     ld de, PowerupSprites
     add a
     add e
     ld e, a
-    jr nc, jr_001_50bb
+    jr nc, .noCarry
 
     inc d
 
-jr_001_50bb:
+.noCarry:
     ld a, [de]
     inc de
     ld c, a
@@ -723,42 +738,42 @@ UpdateFallingPowerups:
     ld hl, wFallingPowerups
     ld c, $08
 
-jr_001_50e4:
+.powerupLoop:
     ld a, [hl]
     or a
-    jr z, jr_001_5118
+    jr z, .skipSlot
 
     push hl
     ld e, a
     inc hl
     ld a, [hl+]
     cp $a0
-    jr c, jr_001_50f5
+    jr c, .onScreen
 
-jr_001_50f0:
+.removePowerup:
     xor a
     pop hl
     ld [hl], a
-    jr jr_001_5118
+    jr .skipSlot
 
-jr_001_50f5:
+.onScreen:
     ld d, a
     ld a, [hl+]
     ld b, a
     ld a, [hl+]
     add a
     call CheckPowerupCaught
-    jr nz, jr_001_50f0
+    jr nz, .removePowerup
 
     ld a, h
-    ld hl, UpdateFallingPowerupsData_001_7706
+    ld hl, PowerupFallSpeeds
     add l
     ld l, a
-    jr nc, jr_001_5108
+    jr nc, .noCarry
 
     inc h
 
-jr_001_5108:
+.noCarry:
     ld a, [hl+]
     ld h, [hl]
     ld l, a
@@ -771,59 +786,59 @@ jr_001_5108:
     ld [hl], d
     ld de, $000b
     add hl, de
-    jr jr_001_511c
+    jr .nextPowerup
 
-jr_001_5118:
+.skipSlot:
     ld de, $000c
     add hl, de
 
-jr_001_511c:
+.nextPowerup:
     dec c
-    jr nz, jr_001_50e4
+    jr nz, .powerupLoop
 
     ld a, [wSleepyBallActive]
     or a
-    jr z, jr_001_513c
+    jr z, .updateNinjaTimer
 
     ld a, [wBallEffectTick]
     inc a
     ld [wBallEffectTick], a
     and $01
-    jr nz, jr_001_513c
+    jr nz, .updateNinjaTimer
 
     ld a, [wBallEffectTimer]
     dec a
     ld [wBallEffectTimer], a
-    jr nz, jr_001_513c
+    jr nz, .updateNinjaTimer
 
     ld [wSleepyBallActive], a
 
-jr_001_513c:
+.updateNinjaTimer:
     ld a, [wNinjaActive]
     or a
-    jr z, jr_001_5159
+    jr z, .updateGhostTimer
 
     ld a, [wBallEffectTick]
     inc a
     ld [wBallEffectTick], a
     and $01
-    jr nz, jr_001_5159
+    jr nz, .updateGhostTimer
 
     ld a, [wBallEffectTimer]
     dec a
     ld [wBallEffectTimer], a
-    jr nz, jr_001_5159
+    jr nz, .updateGhostTimer
 
     ld [wNinjaActive], a
 
-jr_001_5159:
+.updateGhostTimer:
     ld a, [wGhostActive]
     or a
     ret z
 
-    ld a, [wUnk_dc22]
+    ld a, [wGhostTick]
     inc a
-    ld [wUnk_dc22], a
+    ld [wGhostTick], a
     and $07
     ret nz
 
@@ -849,27 +864,27 @@ CheckPowerupCaught:
     ld a, [wBatY]
     sub $08
     cp d
-    jr nc, jr_001_51ae
+    jr nc, .checkRightEdge
 
     add $07
     cp d
-    jr c, jr_001_51ae
+    jr c, .checkRightEdge
 
     ld a, [wBatX]
     sub $08
     cp b
-    jr nc, jr_001_51ae
+    jr nc, .checkRightEdge
 
     ld h, a
     ld a, [wBatWidth]
     add h
     cp b
-    jr c, jr_001_51ae
+    jr c, .checkRightEdge
 
-jr_001_519e:
+.caught:
     ld a, [wBatExplosionTimer]
     or a
-    jr nz, jr_001_51cf
+    jr nz, .notCaught
 
     ld h, $00
     ld de, PowerupHandlers
@@ -879,31 +894,31 @@ jr_001_519e:
     ld l, a
     jp hl
 
-jr_001_51ae:
+.checkRightEdge:
     ld a, b
     add $0f
     ld b, a
     ld a, [wBatY]
     sub $08
     cp d
-    jr nc, jr_001_51cf
+    jr nc, .notCaught
 
     add $07
     cp d
-    jr c, jr_001_51cf
+    jr c, .notCaught
 
     ld a, [wBatX]
     sub $08
     cp b
-    jr nc, jr_001_51cf
+    jr nc, .notCaught
 
     ld h, a
     ld a, [wBatWidth]
     add h
     cp b
-    jr nc, jr_001_519e
+    jr nc, .caught
 
-jr_001_51cf:
+.notCaught:
     xor a
     pop de
     pop bc
@@ -913,28 +928,28 @@ jr_001_51cf:
 Powerup_Slowball:
     ld a, [wBallCount]
     or a
-    jr z, jr_001_51e9
+    jr z, .ballsDone
 
     ld hl, wBalls + 5
     ld de, $0007
     ld b, a
 
-jr_001_51e1:
+.clearLowNibbleLoop:
     ld a, [hl]
     and $f0
     ld [hl], a
     add hl, de
     dec b
-    jr nz, jr_001_51e1
+    jr nz, .clearLowNibbleLoop
 
-jr_001_51e9:
+.ballsDone:
     ld a, [wAntigravityActive]
     or a
-    jr z, jr_001_51f2
+    jr z, .noAntigravity
 
     ld [wAntigravityCancel], a
 
-jr_001_51f2:
+.noAntigravity:
     ld a, $01
     ld [wSlowBallActive], a
     xor a
@@ -962,12 +977,12 @@ Powerup_ShotBatCommon:
 Powerup_WeaponCommon:
     ld a, [wPlasmaState]
     cp $01
-    jr nz, jr_001_522d
+    jr nz, .clearBatEffects
 
     xor a
     ld [wPlasmaState], a
 
-jr_001_522d:
+.clearBatEffects:
     xor a
     ld [wBallSticks], a
     ld [wStunActive], a
@@ -994,16 +1009,16 @@ Powerup_Smiley:
     ld b, $02
     ld a, [wLevelsSincePassword]
     cp $04
-    jr nz, jr_001_526a
+    jr nz, .setGameState
 
     call NextLevelMusic
     ld a, [wEndingSeen]
     or a
-    jr nz, jr_001_526a
+    jr nz, .setGameState
 
     ld b, $09
 
-jr_001_526a:
+.setGameState:
     ld a, b
     ld [hGameState], a
     ld a, $0f
@@ -1011,13 +1026,13 @@ jr_001_526a:
     ld a, [wCurrentLevel]
     inc a
     cp $a0
-    jr nz, jr_001_5281
+    jr nz, .storeLevel
 
     ld a, $0d
     ld [hGameState], a
     xor a
 
-jr_001_5281:
+.storeLevel:
     ld [wCurrentLevel], a
     ld b, $32
     jp PowerupCollected_AddScore
@@ -1031,7 +1046,7 @@ Powerup_Plasma:
     call ShowMessageBankE
     ld a, $01
     ld [wPlasmaState], a
-    jr jr_001_522d
+    jr Powerup_WeaponCommon.clearBatEffects
 
 Powerup_Poison:
     ld a, $50
@@ -1060,18 +1075,18 @@ Powerup_Milk:
     ld a, [wBatX]
     sub $04
     cp $81
-    jr c, jr_001_52e2
+    jr c, .checkLeftLimit
 
     ld a, $81
-    jr jr_001_52e8
+    jr .storeBatX
 
-jr_001_52e2:
+.checkLeftLimit:
     cp $17
-    jr nc, jr_001_52e8
+    jr nc, .storeBatX
 
     ld a, $17
 
-jr_001_52e8:
+.storeBatX:
     ld [wBatX], a
     ld a, $28
     ld [wBatWidth], a
@@ -1088,11 +1103,11 @@ jr_001_52e8:
 Powerup_Clock:
     ld a, [wAntigravityActive]
     or a
-    jr z, jr_001_5312
+    jr z, .noAntigravity
 
     ld [wAntigravityCancel], a
 
-jr_001_5312:
+.noAntigravity:
     ld a, $a0
     ld [wBallEffectTimer], a
     ld [wSleepyBallActive], a
@@ -1140,11 +1155,11 @@ Powerup_Magnet:
 Powerup_TripleBall:
     ld a, [wAntigravityActive]
     or a
-    jr z, jr_001_5381
+    jr z, .noAntigravity
 
     ld [wAntigravityCancel], a
 
-jr_001_5381:
+.noAntigravity:
     ld a, $01
     ld [wMultiBallPending], a
     xor a
@@ -1161,12 +1176,12 @@ Powerup_ExtraLife:
     ld a, [wLives]
     inc a
     cp $0a
-    jr nz, jr_001_53ac
+    jr nz, .addLife
 
     ld b, $32
     jp PowerupCollected_AddScore
 
-jr_001_53ac:
+.addLife:
     ld [wLives], a
     call ShowMessageBankE
     jp PowerupCollected
@@ -1205,11 +1220,11 @@ Powerup_Reverse:
 Powerup_Ninja:
     ld a, [wAntigravityActive]
     or a
-    jr z, jr_001_5402
+    jr z, .noAntigravity
 
     ld [wAntigravityCancel], a
 
-jr_001_5402:
+.noAntigravity:
     ld a, $c8
     ld [wBallEffectTimer], a
     ld a, $01
@@ -1620,17 +1635,17 @@ TitleLetterTiles_5c00:
     db $04, $04, $04, $04, $04, $04, $04, $04, $04
 
 LevelPassword_DrawBonus:
-    ld a, [wUnk_df37]
+    ld a, [wLangTable + $36]
     ld c, a
-    ld a, [wUnk_df38]
+    ld a, [wLangTable + $37]
     ld b, a
     xor a
 
-jr_001_5c12:
+.tenThousandsLoop:
     ld de, $d8f0
     add hl, de
     bit 7, h
-    jr z, jr_001_5c63
+    jr z, .incTenThousands
 
     ld de, $2710
     add hl, de
@@ -1639,11 +1654,11 @@ jr_001_5c12:
     inc bc
     xor a
 
-jr_001_5c23:
+.thousandsLoop:
     ld de, $fc18
     add hl, de
     bit 7, h
-    jr z, jr_001_5c60
+    jr z, .incThousands
 
     ld de, $03e8
     add hl, de
@@ -1652,11 +1667,11 @@ jr_001_5c23:
     inc bc
     xor a
 
-jr_001_5c34:
+.hundredsLoop:
     ld de, $ff9c
     add hl, de
     bit 7, h
-    jr z, jr_001_5c5d
+    jr z, .incHundreds
 
     ld de, $0064
     add hl, de
@@ -1665,11 +1680,11 @@ jr_001_5c34:
     inc bc
     xor a
 
-jr_001_5c45:
+.tensLoop:
     ld de, $fff6
     add hl, de
     bit 7, h
-    jr z, jr_001_5c5a
+    jr z, .incTens
 
     ld de, $000a
     add hl, de
@@ -1681,21 +1696,21 @@ jr_001_5c45:
     ld [bc], a
     ret
 
-jr_001_5c5a:
+.incTens:
     inc a
-    jr jr_001_5c45
+    jr .tensLoop
 
-jr_001_5c5d:
+.incHundreds:
     inc a
-    jr jr_001_5c34
+    jr .hundredsLoop
 
-jr_001_5c60:
+.incThousands:
     inc a
-    jr jr_001_5c23
+    jr .thousandsLoop
 
-jr_001_5c63:
+.incTenThousands:
     inc a
-    jr jr_001_5c12
+    jr .tenThousandsLoop
 
 LevelPassword_Update:
     xor a
@@ -1704,28 +1719,28 @@ LevelPassword_Update:
     call UpdateTwinkles
     ld a, [wBonusDelay]
     or a
-    jr z, jr_001_5c7c
+    jr z, .bonusDelayOver
 
     dec a
     ld [wBonusDelay], a
-    jr jr_001_5c9f
+    jr .checkJoypad
 
-jr_001_5c7c:
+.bonusDelayOver:
     ld a, [wBonusCountdown]
     ld l, a
     ld a, [wBonusCountdown + 1]
     ld h, a
     or l
-    jr z, jr_001_5c9f
+    jr z, .checkJoypad
 
-    ld a, [wUnk_dd4c]
+    ld a, [wBonusCountdownPaused]
     xor $01
-    jr z, jr_001_5c92
+    jr z, .drawBonus
 
     ld de, $ffce
     add hl, de
 
-jr_001_5c92:
+.drawBonus:
     push hl
     call LevelPassword_DrawBonus
     pop hl
@@ -1734,15 +1749,15 @@ jr_001_5c92:
     ld a, h
     ld [wBonusCountdown + 1], a
 
-jr_001_5c9f:
+.checkJoypad:
     ld a, [hGameState]
     cp $02
-    jr z, jr_001_5cbd
+    jr z, .done
 
     ld a, [hJoypad]
     and $f0
     or a
-    jr z, jr_001_5cbd
+    jr z, .done
 
     ld a, $02
     ld [hGameState], a
@@ -1751,7 +1766,7 @@ jr_001_5c9f:
     ld a, $1a
     call PlaySound
 
-jr_001_5cbd:
+.done:
     ret
 
 LevelPassword_VBlank:
@@ -1765,11 +1780,11 @@ LevelPassword_VBlank:
     call DrawString
     ld a, [wTwinkleWriteCount]
     or a
-    jr z, jr_001_5cf5
+    jr z, .swayLogo
 
     ld de, wTwinkleWrites
 
-jr_001_5cd6:
+.twinkleWriteLoop:
     push af
     ld a, [de]
     inc de
@@ -1793,24 +1808,24 @@ jr_001_5cd6:
     ld [hl-], a
     pop af
     dec a
-    jr nz, jr_001_5cd6
+    jr nz, .twinkleWriteLoop
 
     xor a
     ld [wTwinkleWriteCount], a
 
-jr_001_5cf5:
+.swayLogo:
     ld a, [wLogoSwayPtr]
     ld l, a
     ld a, [wLogoSwayPtr + 1]
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_5d05
+    jr nz, .applySwayStep
 
     ld hl, LogoSwaySteps
     ld a, [hl+]
 
-jr_001_5d05:
+.applySwayStep:
     ld b, a
     ld a, [wScrollSplits]
     add b
@@ -1844,7 +1859,7 @@ Firework_Launch:
     ld a, [de]
     inc de
     cp $ff
-    jr nz, jr_001_5d41
+    jr nz, .gotScriptByte
 
     ld a, [de]
     inc de
@@ -1855,7 +1870,7 @@ Firework_Launch:
     ld a, [de]
     inc de
 
-jr_001_5d41:
+.gotScriptByte:
     ld b, a
     xor a
     ld [hl+], a
@@ -1911,34 +1926,34 @@ UpdateFireworks:
     ld a, $03
     ld hl, wFireworks
 
-jr_001_5d8a:
+.nextFirework:
     push af
     push hl
     ld de, wFireworkWork
     ld c, $0f
 
-jr_001_5d91:
+.copyToWorkLoop:
     ld a, [hl+]
     ld [de], a
     inc de
     dec c
-    jr nz, jr_001_5d91
+    jr nz, .copyToWorkLoop
 
     call UpdateFirework
     pop hl
     ld de, wFireworkWork
     ld c, $0f
 
-jr_001_5da0:
+.copyBackLoop:
     ld a, [de]
     inc de
     ld [hl+], a
     dec c
-    jr nz, jr_001_5da0
+    jr nz, .copyBackLoop
 
     pop af
     dec a
-    jr nz, jr_001_5d8a
+    jr nz, .nextFirework
 
     ret
 
@@ -1954,7 +1969,7 @@ UpdateFirework:
     ld d, a
     ld a, $0a
 
-jr_001_5dbc:
+.nextSpark:
     push af
     push de
     ld a, [de]
@@ -1986,11 +2001,11 @@ jr_001_5dbc:
     ld h, a
     ld a, [hl+]
     cp $80
-    jr z, jr_001_5e2b
+    jr z, .curveEnded
 
     pop de
     cp $7f
-    jr z, jr_001_5e1f
+    jr z, .skipSpark
 
     ld b, a
     ld a, l
@@ -2018,14 +2033,14 @@ jr_001_5dbc:
     ld b, a
     ld a, [wFireworkTick]
     or a
-    jr nz, jr_001_5e0a
+    jr nz, .storeSparkFrame
 
     ld a, b
     inc a
     and $07
     ld b, a
 
-jr_001_5e0a:
+.storeSparkFrame:
     ld a, b
     ld [de], a
     inc de
@@ -2037,23 +2052,23 @@ jr_001_5e0a:
     ld [wFireworkOamPtr], a
     ld a, h
     ld [wFireworkOamPtr + 1], a
-    jr jr_001_5e26
+    jr .sparkDone
 
-jr_001_5e1f:
+.skipSpark:
     pop af
     ld hl, $0004
     add hl, de
     ld d, h
     ld e, l
 
-jr_001_5e26:
+.sparkDone:
     pop af
     dec a
-    jr nz, jr_001_5dbc
+    jr nz, .nextSpark
 
     ret
 
-jr_001_5e2b:
+.curveEnded:
     pop de
     pop hl
     pop af
@@ -2074,7 +2089,7 @@ Firework_Fly:
     add hl, de
     ld a, h
     or a
-    jr nz, jr_001_5e99
+    jr nz, .stillFlying
 
     ld hl, LevelPasswordCurves
     ld a, [wFireworkWork + 13]
@@ -2086,12 +2101,12 @@ Firework_Fly:
     ld [wFireworkWork + 12], a
     ld a, [hGameState]
     cp $02
-    jr z, jr_001_5e67
+    jr z, .initSparkLoop
 
     ld a, $1c
     call PlaySound
 
-jr_001_5e67:
+.initSparkLoop:
     xor a
     ld [de], a
     inc de
@@ -2114,26 +2129,26 @@ jr_001_5e67:
     ld [de], a
     inc de
     cp $90
-    jr nc, jr_001_5e90
+    jr nc, .storeSparkFrame
 
     ld a, [hGameState]
     cp $02
-    jr z, jr_001_5e90
+    jr z, .storeSparkFrame
 
     ld a, $1b
     call PlaySound
 
-jr_001_5e90:
+.storeSparkFrame:
     ld a, c
     and $07
     ld [de], a
     inc de
     dec c
-    jr nz, jr_001_5e67
+    jr nz, .initSparkLoop
 
     ret
 
-jr_001_5e99:
+.stillFlying:
     ld a, l
     ld [wFireworkWork + 9], a
     ld a, h
@@ -2158,10 +2173,10 @@ jr_001_5e99:
     ld h, a
     ld a, [wFireworkWork + 10]
 
-jr_001_5ebf:
+.addXStepLoop:
     add hl, bc
     dec a
-    jr nz, jr_001_5ebf
+    jr nz, .addXStepLoop
 
     ld a, l
     ld [wFireworkWork + 2], a
@@ -2173,10 +2188,10 @@ jr_001_5ebf:
     ld h, a
     ld a, [wFireworkWork + 10]
 
-jr_001_5ed6:
+.addYStepLoop:
     add hl, de
     dec a
-    jr nz, jr_001_5ed6
+    jr nz, .addYStepLoop
 
     ld a, l
     ld [wFireworkWork + 4], a
@@ -2196,7 +2211,7 @@ jr_001_5ed6:
     ld b, a
     ld a, [wFireworkTick]
     or a
-    jr nz, jr_001_5f06
+    jr nz, .storeRocketFrame
 
     ld a, b
     inc a
@@ -2204,7 +2219,7 @@ jr_001_5ed6:
     ld [wFireworkWork + 11], a
     ld b, a
 
-jr_001_5f06:
+.storeRocketFrame:
     ld a, b
     ld [hl+], a
     ld a, [wFireworkSpriteCount]
@@ -2222,12 +2237,12 @@ UpdateTwinkles:
     ld hl, wTwinkles
     ld de, wTwinkleWrites
 
-jr_001_5f20:
+.nextTwinkle:
     push af
     ld a, [hl]
     dec a
     or a
-    jr nz, jr_001_5f6d
+    jr nz, .storeTimer
 
     push hl
     inc hl
@@ -2235,7 +2250,7 @@ jr_001_5f20:
     inc a
     ld [hl+], a
     cp $30
-    jr z, jr_001_5f60
+    jr z, .restartTwinkle
 
     add a
     push hl
@@ -2275,9 +2290,9 @@ jr_001_5f20:
     pop hl
     ld bc, $0005
     add hl, bc
-    jr jr_001_5f72
+    jr .twinkleDone
 
-jr_001_5f60:
+.restartTwinkle:
     inc hl
     inc hl
     ld a, [hl]
@@ -2287,17 +2302,17 @@ jr_001_5f60:
     ld [hl+], a
     ld bc, $0003
     add hl, bc
-    jr jr_001_5f72
+    jr .twinkleDone
 
-jr_001_5f6d:
+.storeTimer:
     ld [hl+], a
     ld bc, $0004
     add hl, bc
 
-jr_001_5f72:
+.twinkleDone:
     pop af
     dec a
-    jr nz, jr_001_5f20
+    jr nz, .nextTwinkle
 
     ret
 
@@ -2609,11 +2624,11 @@ ClearBrickBreakEffects:
     ld de, $0006
     ld hl, wBrickBreakEffects
 
-jr_001_6288:
+.clearLoop:
     ld [hl], a
     add hl, de
     dec c
-    jr nz, jr_001_6288
+    jr nz, .clearLoop
 
     ret
 
@@ -2624,15 +2639,15 @@ SpawnBrickBreakEffect:
     ld hl, wBrickBreakEffects
     ld de, $0006
 
-jr_001_6297:
+.findFreeSlot:
     ld a, [hl]
     or a
-    jr z, jr_001_629e
+    jr z, .slotFound
 
     add hl, de
-    jr jr_001_6297
+    jr .findFreeSlot
 
-jr_001_629e:
+.slotFound:
     ld a, $1c
     ld [hl+], a
     xor a
@@ -2664,32 +2679,32 @@ FindFreeBrickBreakEffect:
     ld hl, wBrickBreakEffects
     ld de, $0006
 
-jr_001_62c7:
+.findFreeSlot:
     ld a, [hl]
     or a
-    jr z, jr_001_62ce
+    jr z, .slotFound
 
     add hl, de
-    jr jr_001_62c7
+    jr .findFreeSlot
 
-jr_001_62ce:
+.slotFound:
     ld a, $1c
     ld [hl+], a
     pop af
     or a
-    jr nz, jr_001_62d9
+    jr nz, .setUpwardSpeed
 
     ld [hl+], a
     ld [hl+], a
-    jr jr_001_62df
+    jr .writePosition
 
-jr_001_62d9:
+.setUpwardSpeed:
     ld a, $80
     ld [hl+], a
     ld a, $ff
     ld [hl+], a
 
-jr_001_62df:
+.writePosition:
     xor a
     ld [hl+], a
     ld a, b
@@ -2704,10 +2719,10 @@ UpdateBrickBreakEffects:
     ld hl, wBrickBreakEffects
     ld c, $0e
 
-jr_001_62ee:
+.effectLoop:
     ld a, [hl]
     or a
-    jr z, jr_001_6336
+    jr z, .skipInactive
 
     dec a
     ld [hl+], a
@@ -2759,15 +2774,15 @@ jr_001_62ee:
     ld a, [wOamUsed]
     inc a
     ld [wOamUsed], a
-    jr jr_001_633a
+    jr .nextEffect
 
-jr_001_6336:
+.skipInactive:
     ld de, $0006
     add hl, de
 
-jr_001_633a:
+.nextEffect:
     dec c
-    jr nz, jr_001_62ee
+    jr nz, .effectLoop
 
     ret
 
@@ -2777,11 +2792,11 @@ ClearPickupEffects:
     ld de, $0004
     ld hl, wPickupEffects
 
-jr_001_6347:
+.clearLoop:
     ld [hl], a
     add hl, de
     dec c
-    jr nz, jr_001_6347
+    jr nz, .clearLoop
 
     ret
 
@@ -2794,34 +2809,34 @@ SpawnPickupEffect:
     ld hl, wPickupEffects
     ld de, $0007
 
-jr_001_6357:
+.findFreeSlot:
     ld a, [hl]
     or a
-    jr z, jr_001_635e
+    jr z, .slotFound
 
     add hl, de
-    jr jr_001_6357
+    jr .findFreeSlot
 
-jr_001_635e:
+.slotFound:
     ld a, $28
     ld [hl+], a
     pop de
     ld a, e
     or a
-    jr nz, jr_001_636e
+    jr nz, .setZeroSpeed
 
     ld a, $80
     ld [hl+], a
     ld a, $ff
     ld [hl+], a
-    jr jr_001_6371
+    jr .writePosition
 
-jr_001_636e:
+.setZeroSpeed:
     xor a
     ld [hl+], a
     ld [hl+], a
 
-jr_001_6371:
+.writePosition:
     ld a, $00
     ld [hl+], a
     ld a, c
@@ -2844,16 +2859,16 @@ UpdatePickupEffects:
     ld hl, wPickupEffects
     ld c, $04
 
-jr_001_638b:
+.effectLoop:
     push bc
     ld a, [hl]
     or a
-    jr z, jr_001_63f1
+    jr z, .skipInactive
 
     dec a
     ld [hl+], a
     cp $0f
-    jr nz, jr_001_63a5
+    jr nz, .moveAndDraw
 
     push hl
     inc hl
@@ -2869,7 +2884,7 @@ jr_001_638b:
     call FindFreeBrickBreakEffect
     pop hl
 
-jr_001_63a5:
+.moveAndDraw:
     ld a, [hl+]
     ld c, a
     ld a, [hl+]
@@ -2928,16 +2943,16 @@ jr_001_63a5:
     ld a, [wOamUsed]
     add $02
     ld [wOamUsed], a
-    jr jr_001_63f5
+    jr .nextEffect
 
-jr_001_63f1:
+.skipInactive:
     ld de, $0007
     add hl, de
 
-jr_001_63f5:
+.nextEffect:
     pop bc
     dec c
-    jr nz, jr_001_638b
+    jr nz, .effectLoop
 
     ret
 
@@ -2978,32 +2993,32 @@ SweepBricks_Cell:
     ld a, [hl]
     pop hl
     cp $27
-    jr nz, jr_001_6433
+    jr nz, .checkTile29
 
     ld bc, $2625
-    jr jr_001_644c
+    jr .queueSweepTiles
 
-jr_001_6433:
+.checkTile29:
     cp $29
-    jr nz, jr_001_643c
+    jr nz, .checkTile4c
 
     ld bc, $2625
-    jr jr_001_644c
+    jr .queueSweepTiles
 
-jr_001_643c:
+.checkTile4c:
     cp $4c
-    jr nz, jr_001_6445
+    jr nz, .checkTile51
 
     ld bc, $504f
-    jr jr_001_644c
+    jr .queueSweepTiles
 
-jr_001_6445:
+.checkTile51:
     cp $51
-    jr nz, jr_001_6468
+    jr nz, .restoreRowBelow
 
     ld bc, $504f
 
-jr_001_644c:
+.queueSweepTiles:
     ld a, l
     ld [de], a
     inc de
@@ -3028,7 +3043,7 @@ jr_001_644c:
     add $02
     ld [wBrickRedrawCount], a
 
-jr_001_6468:
+.restoreRowBelow:
     push hl
     ld bc, $0020
     add hl, bc
@@ -3069,32 +3084,32 @@ jr_001_6468:
     pop bc
     ld a, c
     cp $ff
-    jr z, jr_001_64a8
+    jr z, .finalRestorePass
 
     cp $fe
-    jr z, jr_001_64ad
+    jr z, .diagonalDone
 
     dec c
     jp nz, SweepBricks_Cell
 
-jr_001_64a8:
+.finalRestorePass:
     ld c, $fe
     push bc
-    jr jr_001_6468
+    jr .restoreRowBelow
 
-jr_001_64ad:
+.diagonalDone:
     pop hl
     ld de, $fffe
     add hl, de
     ld a, l
     and $1f
     cp $1f
-    jr nz, jr_001_64bd
+    jr nz, .nextDiagonal
 
     ld de, $ffe2
     add hl, de
 
-jr_001_64bd:
+.nextDiagonal:
     pop de
     dec b
     jp nz, SweepBricks_Diagonal
@@ -3103,19 +3118,19 @@ jr_001_64bd:
 
 ClearUnbreakableHitEffects:
     ld a, $ff
-    ld [wUnk_dcf3], a
+    ld [wUnbreakableHitEffectsEnd], a
     ld hl, wUnbreakableHitEffects
     ld a, l
-    ld [wUnk_dcd3], a
+    ld [wUnbreakableHitEffectPtr], a
     ld a, h
-    ld [wUnk_dcd4], a
+    ld [wUnbreakableHitEffectPtr + 1], a
     ret
 
 ; Start the effect shown when the ball hits an unbreakable brick.
 SpawnUnbreakableHitEffect:
-    ld a, [wUnk_dcd3]
+    ld a, [wUnbreakableHitEffectPtr]
     ld l, a
-    ld a, [wUnk_dcd4]
+    ld a, [wUnbreakableHitEffectPtr + 1]
     ld h, a
     ld [hl], $12
     inc hl
@@ -3125,28 +3140,28 @@ SpawnUnbreakableHitEffect:
     ld [hl+], a
     ld a, [hl]
     cp $ff
-    jr nz, jr_001_64eb
+    jr nz, .saveSlotPtr
 
     ld hl, wUnbreakableHitEffects
 
-jr_001_64eb:
+.saveSlotPtr:
     ld a, l
-    ld [wUnk_dcd3], a
+    ld [wUnbreakableHitEffectPtr], a
     ld a, h
-    ld [wUnk_dcd4], a
+    ld [wUnbreakableHitEffectPtr + 1], a
     ld a, $01
-    ld [wUnk_d8ab], a
+    ld [wUnbreakableHitSpawned], a
     ret
 
 UpdateUnbreakableHitEffects:
     ld hl, wUnbreakableHitEffects
     ld a, $0a
 
-jr_001_64fe:
+.effectLoop:
     push af
     ld a, [hl]
     or a
-    jr z, jr_001_653a
+    jr z, .skipInactive
 
     dec a
     ld [hl+], a
@@ -3183,16 +3198,16 @@ jr_001_64fe:
     inc a
     ld [wOamUsed], a
     pop hl
-    jr jr_001_653e
+    jr .nextEffect
 
-jr_001_653a:
+.skipInactive:
     ld de, $0003
     add hl, de
 
-jr_001_653e:
+.nextEffect:
     pop af
     dec a
-    jr nz, jr_001_64fe
+    jr nz, .effectLoop
 
     ret
 
@@ -3344,25 +3359,25 @@ CopyPalettesToHardware:
     ldh [rOCPS], a
     ld c, $40
 
-jr_001_67fc:
+.copyLoop:
     ld a, [hl+]
     ldh [rBCPD], a
     ld a, [de]
     inc de
     ldh [rOCPD], a
     dec c
-    jr nz, jr_001_67fc
+    jr nz, .copyLoop
 
     ret
 
 CopyPaletteBuffer:
     ld de, wRasterTable
-    ld hl, wUnk_d6c0
+    ld hl, wRasterPalettesFaded
     ld b, $90
     ld a, $02
     ldh [rSVBK], a
 
-jr_001_6813:
+.copyRowLoop:
     ld a, [hl+]
     ld [de], a
     inc de
@@ -3390,7 +3405,7 @@ jr_001_6813:
     inc de
     inc de
     dec b
-    jr nz, jr_001_6813
+    jr nz, .copyRowLoop
 
     xor a
     ldh [rSVBK], a
@@ -3410,40 +3425,40 @@ FadePalettes_Step:
     ld [hTemp], a
     ld bc, $0040
     ld hl, wPaletteBuffer
-    ld de, wUnk_ca9d
+    ld de, wFadedPalettes
     ld a, [hPaletteMode]
     cp $02
-    jr nz, jr_001_685d
+    jr nz, .nextColour
 
     ld bc, $0240
     ld a, $02
     ldh [rSVBK], a
-    ld hl, wUnk_d000
-    ld de, wUnk_d6c0
+    ld hl, wRasterPaletteBuffer
+    ld de, wRasterPalettesFaded
 
-jr_001_685d:
+.nextColour:
     push bc
     ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     add b
     cp $20
-    jr c, jr_001_686a
+    jr c, .redClamped
 
     ld a, $1f
 
-jr_001_686a:
+.redClamped:
     ld c, a
     ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     add b
     cp $20
-    jr c, jr_001_6877
+    jr c, .greenClamped
 
     ld a, $1f
 
-jr_001_6877:
+.greenClamped:
     push af
     swap a
     sla a
@@ -3461,11 +3476,11 @@ jr_001_6877:
     ld a, [hl+]
     add b
     cp $20
-    jr c, jr_001_6895
+    jr c, .blueClamped
 
     ld a, $1f
 
-jr_001_6895:
+.blueClamped:
     sla a
     sla a
     or c
@@ -3475,26 +3490,26 @@ jr_001_6895:
     dec bc
     ld a, b
     or c
-    jr nz, jr_001_685d
+    jr nz, .nextColour
 
     xor a
     ldh [rSVBK], a
     ld a, [hPaletteMode]
     cp $02
-    jr z, jr_001_68bd
+    jr z, .copyViaPaletteBuffer
 
     call WaitVBlank
-    ld hl, wUnk_ca9d
-    ld de, wUnk_cadd
+    ld hl, wFadedPalettes
+    ld de, wFadedObjPalettes
     call CopyPalettesToHardware
     call AnimatePalettes
-    jr jr_001_68c3
+    jr .stepDone
 
-jr_001_68bd:
+.copyViaPaletteBuffer:
     call WaitVBlank
     call CopyPaletteBuffer
 
-jr_001_68c3:
+.stepDone:
     pop bc
     pop af
     dec c
@@ -3512,11 +3527,11 @@ FadePalettes2:
     ld a, b
     ld b, $fc
     dec a
-    jr nz, jr_001_68dc
+    jr nz, .directionChosen
 
     ld b, $04
 
-jr_001_68dc:
+.directionChosen:
     ld a, h
 
 FadePalettes2_Step:
@@ -3527,30 +3542,30 @@ FadePalettes2_Step:
     ld bc, $0240
     ld a, $02
     ldh [rSVBK], a
-    ld hl, wUnk_d000
-    ld de, wUnk_d6c0
+    ld hl, wRasterPaletteBuffer
+    ld de, wRasterPalettesFaded
 
-jr_001_68f0:
+.nextColour:
     push bc
     ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     sub b
-    jr nc, jr_001_68fa
+    jr nc, .redFloored
 
     xor a
 
-jr_001_68fa:
+.redFloored:
     ld c, a
     ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     sub b
-    jr nc, jr_001_6904
+    jr nc, .greenFloored
 
     xor a
 
-jr_001_6904:
+.greenFloored:
     push af
     swap a
     sla a
@@ -3567,11 +3582,11 @@ jr_001_6904:
     ld b, a
     ld a, [hl+]
     sub b
-    jr nc, jr_001_691f
+    jr nc, .blueFloored
 
     xor a
 
-jr_001_691f:
+.blueFloored:
     sla a
     sla a
     or c
@@ -3581,7 +3596,7 @@ jr_001_691f:
     dec bc
     ld a, b
     or c
-    jr nz, jr_001_68f0
+    jr nz, .nextColour
 
     call WaitVBlank
     call CopyPaletteBuffer
@@ -3604,125 +3619,125 @@ AnimatePalettes:
     cp $04
     ret z
 
-    ld a, [wUnk_c958]
+    ld a, [wRasterObjPaletteIndex]
     ldh [rOCPS], a
     ld a, $9e
     ldh [rBCPS], a
-    ld hl, wUnk_cb1d
-    ld a, [wUnk_caf7]
+    ld hl, wRasterColours
+    ld a, [wFadedObjPalettes + $1a]
     ld [hl+], a
-    ld a, [wUnk_caf8]
+    ld a, [wFadedObjPalettes + $1b]
     ld [hl+], a
-    ld a, [wUnk_cafb]
+    ld a, [wFadedObjPalettes + $1e]
     ld [hl+], a
-    ld a, [wUnk_cafc]
+    ld a, [wFadedObjPalettes + $1f]
     ld [hl+], a
-    ld a, [wUnk_cab5]
+    ld a, [wFadedPalettes + $18]
     ld [hl+], a
-    ld a, [wUnk_cab6]
+    ld a, [wFadedPalettes + $19]
     ld [hl+], a
-    ld a, [wUnk_caf7]
+    ld a, [wFadedObjPalettes + $1a]
     ld [hl+], a
-    ld a, [wUnk_caf8]
+    ld a, [wFadedObjPalettes + $1b]
     ld [hl+], a
-    ld a, [wUnk_cafb]
+    ld a, [wFadedObjPalettes + $1e]
     ld [hl+], a
-    ld a, [wUnk_cafc]
+    ld a, [wFadedObjPalettes + $1f]
     ld [hl+], a
-    ld a, [wUnk_cafb]
+    ld a, [wFadedObjPalettes + $1e]
     ld [hl+], a
-    ld a, [wUnk_cafc]
+    ld a, [wFadedObjPalettes + $1f]
     ld [hl+], a
-    ld a, [wUnk_caf7]
+    ld a, [wFadedObjPalettes + $1a]
     ld [hl+], a
-    ld a, [wUnk_caf8]
+    ld a, [wFadedObjPalettes + $1b]
     ld [hl+], a
-    ld a, [wUnk_caf9]
+    ld a, [wFadedObjPalettes + $1c]
     ld [hl+], a
-    ld a, [wUnk_cafa]
+    ld a, [wFadedObjPalettes + $1d]
     ld [hl+], a
-    ld a, [wUnk_caf9]
+    ld a, [wFadedObjPalettes + $1c]
     ld [hl+], a
-    ld a, [wUnk_cafa]
+    ld a, [wFadedObjPalettes + $1d]
     ld [hl+], a
-    ld a, [wUnk_caf7]
+    ld a, [wFadedObjPalettes + $1a]
     ld [hl+], a
-    ld a, [wUnk_caf8]
+    ld a, [wFadedObjPalettes + $1b]
     ld [hl+], a
-    ld a, [wUnk_caf9]
+    ld a, [wFadedObjPalettes + $1c]
     ld [hl+], a
-    ld a, [wUnk_cafa]
+    ld a, [wFadedObjPalettes + $1d]
     ld [hl+], a
-    ld a, [wUnk_caf7]
+    ld a, [wFadedObjPalettes + $1a]
     ld [hl+], a
-    ld a, [wUnk_caf8]
+    ld a, [wFadedObjPalettes + $1b]
     ld [hl+], a
-    ld a, [wUnk_caf1]
+    ld a, [wFadedObjPalettes + $14]
     ld [hl+], a
-    ld a, [wUnk_caf2]
+    ld a, [wFadedObjPalettes + $15]
     ld [hl+], a
-    ld a, [wUnk_caf3]
+    ld a, [wFadedObjPalettes + $16]
     ld [hl+], a
-    ld a, [wUnk_caf4]
+    ld a, [wFadedObjPalettes + $17]
     ld [hl+], a
-    ld a, [wUnk_caed]
+    ld a, [wFadedObjPalettes + $10]
     ld [hl+], a
-    ld a, [wUnk_caee]
+    ld a, [wFadedObjPalettes + $11]
     ld [hl+], a
-    ld a, [wUnk_caf1]
+    ld a, [wFadedObjPalettes + $14]
     ld [hl+], a
-    ld a, [wUnk_caf2]
+    ld a, [wFadedObjPalettes + $15]
     ld [hl+], a
-    ld a, [wUnk_caf3]
+    ld a, [wFadedObjPalettes + $16]
     ld [hl+], a
-    ld a, [wUnk_caf4]
+    ld a, [wFadedObjPalettes + $17]
     ld [hl+], a
-    ld a, [wUnk_caf1]
+    ld a, [wFadedObjPalettes + $14]
     ld [hl+], a
-    ld a, [wUnk_caf2]
+    ld a, [wFadedObjPalettes + $15]
     ld [hl+], a
-    ld a, [wUnk_caf1]
+    ld a, [wFadedObjPalettes + $14]
     ld [hl+], a
-    ld a, [wUnk_caf2]
+    ld a, [wFadedObjPalettes + $15]
     ld [hl+], a
-    ld a, [wUnk_caf3]
+    ld a, [wFadedObjPalettes + $16]
     ld [hl+], a
-    ld a, [wUnk_caf4]
+    ld a, [wFadedObjPalettes + $17]
     ld [hl+], a
-    ld a, [wUnk_caf3]
+    ld a, [wFadedObjPalettes + $16]
     ld [hl+], a
-    ld a, [wUnk_caf4]
+    ld a, [wFadedObjPalettes + $17]
     ld [hl+], a
-    ld a, [wUnk_caf1]
+    ld a, [wFadedObjPalettes + $14]
     ld [hl+], a
-    ld a, [wUnk_caf2]
+    ld a, [wFadedObjPalettes + $15]
     ld [hl+], a
-    ld a, [wUnk_caf3]
+    ld a, [wFadedObjPalettes + $16]
     ld [hl+], a
-    ld a, [wUnk_caf4]
+    ld a, [wFadedObjPalettes + $17]
     ld [hl+], a
-    ld a, [wUnk_cab5]
+    ld a, [wFadedPalettes + $18]
     ld [hl+], a
-    ld a, [wUnk_cab6]
+    ld a, [wFadedPalettes + $19]
     ld [hl+], a
-    ld a, [wUnk_caf1]
+    ld a, [wFadedObjPalettes + $14]
     ld [hl+], a
-    ld a, [wUnk_caf2]
+    ld a, [wFadedObjPalettes + $15]
     ld [hl+], a
-    ld a, [wUnk_caf3]
+    ld a, [wFadedObjPalettes + $16]
     ld [hl+], a
-    ld a, [wUnk_caf4]
+    ld a, [wFadedObjPalettes + $17]
     ld [hl+], a
-    ld a, [wUnk_cabb]
+    ld a, [wFadedPalettes + $1e]
     ld [hl+], a
-    ld a, [wUnk_cabc]
+    ld a, [wFadedPalettes + $1f]
     ld [hl+], a
     ld hl, wRasterTable
     ld b, $09
     ld c, $81
-    ld de, wUnk_cb1d
+    ld de, wRasterColours
 
-jr_001_6a35:
+.copyEntryLoop:
     ld a, [de]
     inc de
     ld [hl+], a
@@ -3745,20 +3760,20 @@ jr_001_6a35:
     ld [hl+], a
     inc a
     cp $88
-    jr nz, jr_001_6a50
+    jr nz, .checkIndex09
 
     ld a, $08
 
-jr_001_6a50:
+.checkIndex09:
     cp $09
-    jr nz, jr_001_6a56
+    jr nz, .storeNextIndex
 
     ld a, $80
 
-jr_001_6a56:
+.storeNextIndex:
     ld c, a
     dec b
-    jr nz, jr_001_6a35
+    jr nz, .copyEntryLoop
 
     ret
 
@@ -3767,17 +3782,17 @@ LanguageSelect_Update:
     ldh [rVBK], a
     ld a, [wLanguage]
     or a
-    jr nz, jr_001_6a71
+    jr nz, .checkLanguage1
 
     ld hl, $986c
     ld [hl], $04
     ld hl, $98cc
     ld [hl], $01
-    jr jr_001_6abe
+    jr .readJoypad
 
-jr_001_6a71:
+.checkLanguage1:
     cp $01
-    jr nz, jr_001_6a86
+    jr nz, .checkLanguage2
 
     ld hl, $986c
     ld [hl], $01
@@ -3785,11 +3800,11 @@ jr_001_6a71:
     ld [hl], $04
     ld hl, $992c
     ld [hl], $01
-    jr jr_001_6abe
+    jr .readJoypad
 
-jr_001_6a86:
+.checkLanguage2:
     cp $02
-    jr nz, jr_001_6a9b
+    jr nz, .checkLanguage3
 
     ld hl, $98cc
     ld [hl], $01
@@ -3797,11 +3812,11 @@ jr_001_6a86:
     ld [hl], $04
     ld hl, $998c
     ld [hl], $01
-    jr jr_001_6abe
+    jr .readJoypad
 
-jr_001_6a9b:
+.checkLanguage3:
     cp $03
-    jr nz, jr_001_6ab0
+    jr nz, .checkLanguage4
 
     ld hl, $992c
     ld [hl], $01
@@ -3809,74 +3824,74 @@ jr_001_6a9b:
     ld [hl], $04
     ld hl, $99ec
     ld [hl], $01
-    jr jr_001_6abe
+    jr .readJoypad
 
-jr_001_6ab0:
+.checkLanguage4:
     cp $04
-    jr nz, jr_001_6abe
+    jr nz, .readJoypad
 
     ld hl, $998c
     ld [hl], $01
     ld hl, $99ec
     ld [hl], $04
 
-jr_001_6abe:
+.readJoypad:
     ld a, [hJoypad]
     ld b, a
-    ld a, [wUnk_defd]
+    ld a, [wLanguageDownHeld]
     or a
-    jr nz, jr_001_6ae2
+    jr nz, .checkNextKeyReleased
 
     bit 3, b
-    jr z, jr_001_6aea
+    jr z, .checkPrevKey
 
     ld a, b
-    ld [wUnk_defd], a
+    ld [wLanguageDownHeld], a
     ld a, [wLanguage]
     cp $04
-    jr z, jr_001_6aea
+    jr z, .checkPrevKey
 
     inc a
     ld [wLanguage], a
     ld a, $19
     call PlaySound
-    jr jr_001_6aea
+    jr .checkPrevKey
 
-jr_001_6ae2:
+.checkNextKeyReleased:
     bit 3, b
-    jr nz, jr_001_6aea
+    jr nz, .checkPrevKey
 
     xor a
-    ld [wUnk_defd], a
+    ld [wLanguageDownHeld], a
 
-jr_001_6aea:
-    ld a, [wUnk_defe]
+.checkPrevKey:
+    ld a, [wLanguageUpHeld]
     or a
-    jr nz, jr_001_6b09
+    jr nz, .checkPrevKeyReleased
 
     bit 2, b
-    jr z, jr_001_6b11
+    jr z, .checkConfirm
 
     ld a, b
-    ld [wUnk_defe], a
+    ld [wLanguageUpHeld], a
     ld a, [wLanguage]
     or a
-    jr z, jr_001_6b11
+    jr z, .checkConfirm
 
     dec a
     ld [wLanguage], a
     ld a, $19
     call PlaySound
-    jr jr_001_6b11
+    jr .checkConfirm
 
-jr_001_6b09:
+.checkPrevKeyReleased:
     bit 2, b
-    jr nz, jr_001_6b11
+    jr nz, .checkConfirm
 
     xor a
-    ld [wUnk_defe], a
+    ld [wLanguageUpHeld], a
 
-jr_001_6b11:
+.checkConfirm:
     ld a, b
     and $f0
     or a
@@ -3913,26 +3928,26 @@ LanguageSelect_CopyTable:
     ld l, a
     ld a, [wLangTextHighScorePassword + 1]
     ld h, a
-    ld de, wUnk_cb69
+    ld de, wHighScoreTable + $10
     ld bc, $0018
     call DataTransfer
     ld a, [wLangTextLatestScore]
     ld l, a
     ld a, [wLangTextLatestScore + 1]
     ld h, a
-    ld de, wUnk_cc99
+    ld de, wLatestScoreText
     ld bc, $001b
     call DataTransfer
-    ld a, [wUnk_df43]
-    ld hl, wUnk_cb96
+    ld a, [wLangLevelLetter]
+    ld hl, wHighScoreTable + $3d
     ld de, $001c
     ld b, $0a
 
-jr_001_6b76:
+.fillLoop:
     ld [hl], a
     add hl, de
     dec b
-    jr nz, jr_001_6b76
+    jr nz, .fillLoop
 
     ld a, $1a
     call PlaySound
@@ -4052,7 +4067,7 @@ TitleScreen_SlideLetters:
     call ClearOamEntries
     pop af
     cp $01
-    jr nz, jr_001_6d15
+    jr nz, .checkLetter2
 
     ld a, [wTitleLetterPathPtrs]
     ld l, a
@@ -4060,7 +4075,7 @@ TitleScreen_SlideLetters:
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_6cfe
+    jr nz, .moveLetter1
 
     ld a, $02
     ld [wTitleLetterSliding], a
@@ -4068,7 +4083,7 @@ TitleScreen_SlideLetters:
     ld [wTitleLetterArrived], a
     ret
 
-jr_001_6cfe:
+.moveLetter1:
     ld b, a
     ld a, l
     ld [wTitleLetterPathPtrs], a
@@ -4081,9 +4096,9 @@ jr_001_6cfe:
     ld hl, TitleLetterSprites_1
     jp TitleScreen_DrawLetterSprites
 
-jr_001_6d15:
+.checkLetter2:
     cp $02
-    jr nz, jr_001_6d47
+    jr nz, .checkLetter3
 
     ld a, [wTitleLetterPathPtrs + 2]
     ld l, a
@@ -4091,7 +4106,7 @@ jr_001_6d15:
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_6d30
+    jr nz, .moveLetter2
 
     ld a, $03
     ld [wTitleLetterSliding], a
@@ -4099,7 +4114,7 @@ jr_001_6d15:
     ld [wTitleLetterArrived], a
     ret
 
-jr_001_6d30:
+.moveLetter2:
     ld b, a
     ld a, l
     ld [wTitleLetterPathPtrs + 2], a
@@ -4112,9 +4127,9 @@ jr_001_6d30:
     ld hl, TitleLetterSprites_2
     jp TitleScreen_DrawLetterSprites
 
-jr_001_6d47:
+.checkLetter3:
     cp $03
-    jr nz, jr_001_6d79
+    jr nz, .checkLetter4
 
     ld a, [wTitleLetterPathPtrs + 4]
     ld l, a
@@ -4122,7 +4137,7 @@ jr_001_6d47:
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_6d62
+    jr nz, .moveLetter3
 
     ld a, $04
     ld [wTitleLetterSliding], a
@@ -4130,7 +4145,7 @@ jr_001_6d47:
     ld [wTitleLetterArrived], a
     ret
 
-jr_001_6d62:
+.moveLetter3:
     ld b, a
     ld a, l
     ld [wTitleLetterPathPtrs + 4], a
@@ -4143,9 +4158,9 @@ jr_001_6d62:
     ld hl, TitleLetterSprites_3
     jp TitleScreen_DrawLetterSprites
 
-jr_001_6d79:
+.checkLetter4:
     cp $04
-    jr nz, jr_001_6daa
+    jr nz, .checkLetter5
 
     ld a, [wTitleLetterPathPtrs + 6]
     ld l, a
@@ -4153,7 +4168,7 @@ jr_001_6d79:
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_6d94
+    jr nz, .moveLetter4
 
     ld a, $05
     ld [wTitleLetterSliding], a
@@ -4161,7 +4176,7 @@ jr_001_6d79:
     ld [wTitleLetterArrived], a
     ret
 
-jr_001_6d94:
+.moveLetter4:
     ld b, a
     ld a, l
     ld [wTitleLetterPathPtrs + 6], a
@@ -4174,9 +4189,9 @@ jr_001_6d94:
     ld hl, TitleLetterSprites_4
     jr TitleScreen_DrawLetterSprites
 
-jr_001_6daa:
+.checkLetter5:
     cp $05
-    jr nz, jr_001_6ddb
+    jr nz, .checkLetter6
 
     ld a, [wTitleLetterPathPtrs + 8]
     ld l, a
@@ -4184,7 +4199,7 @@ jr_001_6daa:
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_6dc5
+    jr nz, .moveLetter5
 
     ld a, $06
     ld [wTitleLetterSliding], a
@@ -4192,7 +4207,7 @@ jr_001_6daa:
     ld [wTitleLetterArrived], a
     ret
 
-jr_001_6dc5:
+.moveLetter5:
     ld b, a
     ld a, l
     ld [wTitleLetterPathPtrs + 8], a
@@ -4205,7 +4220,7 @@ jr_001_6dc5:
     ld hl, TitleLetterSprites_5
     jr TitleScreen_DrawLetterSprites
 
-jr_001_6ddb:
+.checkLetter6:
     cp $06
     jr nz, TitleScreen_DrawLetterSprites
 
@@ -4215,7 +4230,7 @@ jr_001_6ddb:
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_6df5
+    jr nz, .moveLetter6
 
     xor a
     ld [wTitleLetterSliding], a
@@ -4223,7 +4238,7 @@ jr_001_6ddb:
     ld [wTitleLetterArrived], a
     ret
 
-jr_001_6df5:
+.moveLetter6:
     ld b, a
     ld a, l
     ld [wTitleLetterPathPtrs + 10], a
@@ -4242,7 +4257,7 @@ TitleScreen_DrawLetterSprites:
     ld b, $10
     ld a, [hl+]
 
-jr_001_6e11:
+.nextSprite:
     push af
     ld a, [hl+]
     add b
@@ -4260,7 +4275,7 @@ jr_001_6e11:
     inc de
     pop af
     dec a
-    jr nz, jr_001_6e11
+    jr nz, .nextSprite
 
     ret
 
@@ -4315,21 +4330,21 @@ ClearOamEntries:
     xor a
     ld de, $0004
 
-jr_001_6e9f:
+.clearLoop:
     ld [hl], a
     add hl, de
     dec b
-    jr nz, jr_001_6e9f
+    jr nz, .clearLoop
 
     ret
 
 ; Copy the 9 sprites of the bat and ball to the OAM buffer.
 InitBatSprites:
     ld hl, wOamBuffer
-    ld de, InitBatSpritesData_001_7b0c
+    ld de, BatAndBallStartSprites
     ld b, $09
 
-jr_001_6ead:
+.copySpriteLoop:
     ld a, [de]
     inc de
     ld [hl+], a
@@ -4345,14 +4360,14 @@ jr_001_6ead:
     ld [hl+], a
 
     dec b
-    jr nz, jr_001_6ead
+    jr nz, .copySpriteLoop
 
     ld a, $01
     ld [wOamUsedLastFrame], a
     dec a
     ld [wOamUsed], a
-    ld [wUnk_db70], a
-    ld de, wUnk_c2b9
+    ld [wPowerupSpritesUsed], a
+    ld de, wExtraSprites
     ld a, e
     ld [wOamWritePtr], a
 
@@ -4366,29 +4381,29 @@ DrawBatSprites:
     call ClearOamEntries
     ld a, [wBatExplosionTimer]
     or a
-    jr z, jr_001_6ee8
+    jr z, .batNotExploding
 
     ld hl, wOamBuffer
-    jr jr_001_6f66
+    jr .copyQueuedSprites
 
-jr_001_6ee8:
+.batNotExploding:
     ld hl, wOamBuffer + 4
     ld a, [wBatX]
     add $08
     ld b, a
     ld a, [hTemp2]
     or a
-    jr nz, jr_001_6efe
+    jr nz, .wideLowerRow
 
-    ld de, DrawBatSpritesData_001_7b30
+    ld de, BatShadowTiles_Normal
     ld c, $03
-    jr jr_001_6f03
+    jr .lowerRowLoop
 
-jr_001_6efe:
-    ld de, DrawBatSpritesData_001_7b36
+.wideLowerRow:
+    ld de, BatShadowTiles_Wide
     ld c, $04
 
-jr_001_6f03:
+.lowerRowLoop:
     ld a, $98
     ld [hl+], a
     ld a, b
@@ -4402,58 +4417,58 @@ jr_001_6f03:
     inc de
     ld [hl+], a
     dec c
-    jr nz, jr_001_6f03
+    jr nz, .lowerRowLoop
 
-    ld de, DrawBatSpritesData_001_7b3e
+    ld de, BatTiles_Normal
     ld a, [wWeaponFlag]
     or a
-    jr z, jr_001_6f20
+    jr z, .checkStickyBat
 
-    ld de, DrawBatSpritesData_001_7b46
+    ld de, BatTiles_Weapon
 
-jr_001_6f20:
+.checkStickyBat:
     ld a, [wBallOnBat]
     or a
-    jr nz, jr_001_6f2f
+    jr nz, .upperRowDataChosen
 
     ld a, [wBallSticks]
     or a
-    jr z, jr_001_6f2f
+    jr z, .upperRowDataChosen
 
-    ld de, DrawBatSpritesData_001_7b4e
+    ld de, BatTiles_Sticky
 
-jr_001_6f2f:
+.upperRowDataChosen:
     ld a, [wBatWidth]
     cp $20
-    jr z, jr_001_6f3a
+    jr z, .normalWidth
 
     ld a, $01
-    jr jr_001_6f3b
+    jr .storeWideFlag
 
-jr_001_6f3a:
+.normalWidth:
     xor a
 
-jr_001_6f3b:
+.storeWideFlag:
     ld [hTemp2], a
     ld c, $04
     ld a, [wBatX]
     sub $08
     ld b, a
 
-jr_001_6f46:
+.upperRowLoop:
     ld a, [hTemp2]
     or a
-    jr z, jr_001_6f55
+    jr z, .writeUpperSprite
 
     ld a, c
     cp $02
-    jr nz, jr_001_6f55
+    jr nz, .writeUpperSprite
 
     ld a, b
     add $08
     ld b, a
 
-jr_001_6f55:
+.writeUpperSprite:
     ld a, $90
     ld [hl+], a
     ld a, b
@@ -4467,21 +4482,21 @@ jr_001_6f55:
     inc de
     ld [hl+], a
     dec c
-    jr nz, jr_001_6f46
+    jr nz, .upperRowLoop
 
-jr_001_6f66:
+.copyQueuedSprites:
     ld a, [wOamUsed]
     or a
-    jr z, jr_001_6f87
+    jr z, .stepNinjaFrame
 
     ld c, a
-    ld de, wUnk_c2b9
+    ld de, wExtraSprites
     ld a, e
     ld [wOamWritePtr], a
     ld a, d
     ld [wOamWritePtr + 1], a
 
-jr_001_6f78:
+.queuedSpriteLoop:
     ld a, [de]
     inc de
     ld [hl+], a
@@ -4495,32 +4510,32 @@ jr_001_6f78:
     inc de
     ld [hl+], a
     dec c
-    jr nz, jr_001_6f78
+    jr nz, .queuedSpriteLoop
 
-jr_001_6f87:
+.stepNinjaFrame:
     ld a, [wNinjaActive]
     or a
-    jr z, jr_001_6f99
+    jr z, .drawBalls
 
-    ld a, [wUnk_c2b8]
+    ld a, [wNinjaBallFrame]
     inc a
     cp $03
-    jr nz, jr_001_6f96
+    jr nz, .storeNinjaFrame
 
     xor a
 
-jr_001_6f96:
-    ld [wUnk_c2b8], a
+.storeNinjaFrame:
+    ld [wNinjaBallFrame], a
 
-jr_001_6f99:
+.drawBalls:
     ld a, [wBallCount]
     or a
-    jr z, jr_001_6fdb
+    jr z, .drawPowerups
 
     ld de, wBalls
     ld c, a
 
-jr_001_6fa3:
+.nextBall:
     inc de
     ld a, [de]
     inc de
@@ -4534,54 +4549,54 @@ jr_001_6fa3:
     inc de
     ld a, [wNinjaActive]
     or a
-    jr z, jr_001_6fd4
+    jr z, .normalBall
 
-    ld a, [wUnk_c2b8]
+    ld a, [wNinjaBallFrame]
     or a
-    jr nz, jr_001_6fbf
+    jr nz, .ninjaFrameNot0
 
     ld a, $13
     ld [hl+], a
-    jr jr_001_6fcf
+    jr .ninjaAttr
 
-jr_001_6fbf:
+.ninjaFrameNot0:
     cp $01
-    jr nz, jr_001_6fc8
+    jr nz, .ninjaFrameNot1
 
     ld a, $14
     ld [hl+], a
-    jr jr_001_6fcf
+    jr .ninjaAttr
 
-jr_001_6fc8:
+.ninjaFrameNot1:
     cp $02
-    jr nz, jr_001_6fcf
+    jr nz, .ninjaAttr
 
     ld a, $15
     ld [hl+], a
 
-jr_001_6fcf:
+.ninjaAttr:
     ld a, $0d
     ld [hl+], a
-    jr jr_001_6fd8
+    jr .ballDone
 
-jr_001_6fd4:
+.normalBall:
     ld [hl+], a
     ld a, $03
     ld [hl+], a
 
-jr_001_6fd8:
+.ballDone:
     dec c
-    jr nz, jr_001_6fa3
+    jr nz, .nextBall
 
-jr_001_6fdb:
+.drawPowerups:
     ld de, wFallingPowerups
     ld a, $08
     ld [hTemp], a
 
-jr_001_6fe3:
+.powerupLoop:
     ld a, [de]
     or a
-    jr z, jr_001_7028
+    jr z, .skipEmptySlot
 
     inc de
     ld a, [de]
@@ -4635,37 +4650,37 @@ jr_001_6fe3:
     ld a, [de]
     inc de
     ld [hl+], a
-    ld a, [wUnk_db70]
+    ld a, [wPowerupSpritesUsed]
     add $04
-    ld [wUnk_db70], a
-    jr jr_001_702f
+    ld [wPowerupSpritesUsed], a
+    jr .nextPowerup
 
-jr_001_7028:
+.skipEmptySlot:
     ld a, e
     add $0c
     ld e, a
-    jr nc, jr_001_702f
+    jr nc, .nextPowerup
 
     inc d
 
-jr_001_702f:
+.nextPowerup:
     ld a, [hTemp]
     dec a
     ld [hTemp], a
-    jr nz, jr_001_6fe3
+    jr nz, .powerupLoop
 
     ld b, $08
     ld a, [hTemp2]
     or a
-    jr z, jr_001_7041
+    jr z, .storeOamUsed
 
     inc b
 
-jr_001_7041:
+.storeOamUsed:
     ld a, [wBallCount]
     add b
     ld b, a
-    ld a, [wUnk_db70]
+    ld a, [wPowerupSpritesUsed]
     add b
     ld b, a
     ld a, [wOamUsed]
@@ -4673,7 +4688,7 @@ jr_001_7041:
     ld [wOamUsedLastFrame], a
     xor a
     ld [wOamUsed], a
-    ld [wUnk_db70], a
+    ld [wPowerupSpritesUsed], a
     ret
 
 ; Language tables, $51 bytes each. The table of the chosen language is copied to wLangTable.
@@ -4891,32 +4906,32 @@ LanguageTable_German:
 
 InitMenuSparkles:
     ld hl, wMenuSparkles
-    ld de, InitMenuSparklesData_001_7592
+    ld de, BoingLetterStartPositions
     ld b, $0a
 
-jr_001_71f7:
+.copyPositionsLoop:
     ld a, [de]
     inc de
     ld [hl+], a
     dec b
-    jr nz, jr_001_71f7
+    jr nz, .copyPositionsLoop
 
     ld de, MenuSparkleCurveStarts
-    ld hl, wUnk_daed
+    ld hl, wMenuSparkleCurvePtrs
     ld b, $0a
 
-jr_001_7205:
+.copyCurveStartsLoop:
     ld a, [de]
     inc de
     ld [hl+], a
     dec b
-    jr nz, jr_001_7205
+    jr nz, .copyCurveStartsLoop
 
-    ld hl, wUnk_daf7
-    ld de, InitMenuSparklesData_001_74b4
+    ld hl, wMenuTwinkles
+    ld de, MenuSparkleStartData
     ld b, $0b
 
-jr_001_7213:
+.initAnimRecordLoop:
     ld a, [de]
     inc de
     ld [hl+], a
@@ -4940,22 +4955,22 @@ jr_001_7213:
     inc de
     ld [hl+], a
     dec b
-    jr nz, jr_001_7213
+    jr nz, .initAnimRecordLoop
 
-    ld hl, InitMenuSparklesData_001_749b
+    ld hl, MenuSlideInSteps
     ld a, l
-    ld [wUnk_db4f], a
+    ld [wMenuScrollStepPtr], a
     ld a, h
-    ld [wUnk_db50], a
+    ld [wMenuScrollStepPtr + 1], a
     ret
 
 UpdateMenuSparkles:
     ld hl, wOamBuffer
-    ld de, UpdateMenuSparklesData_001_7542
+    ld de, BoingLetterSprites
     ld a, $05
     ld bc, wMenuSparkles
 
-jr_001_7243:
+.drawSparkleLoop:
     push af
     push bc
     ld a, [bc]
@@ -4967,7 +4982,7 @@ jr_001_7243:
     ld c, a
     ld a, $04
 
-jr_001_724e:
+.spriteLoop:
     push af
     ld a, [de]
     inc de
@@ -4985,20 +5000,20 @@ jr_001_724e:
     ld [hl+], a
     pop af
     dec a
-    jr nz, jr_001_724e
+    jr nz, .spriteLoop
 
     pop bc
     inc bc
     inc bc
     pop af
     dec a
-    jr nz, jr_001_7243
+    jr nz, .drawSparkleLoop
 
     ld de, wMenuSparkles
-    ld hl, wUnk_daed
+    ld hl, wMenuSparkleCurvePtrs
     ld a, $05
 
-jr_001_7270:
+.moveSparkleLoop:
     push af
     ld a, [hl+]
     ld c, a
@@ -5006,12 +5021,12 @@ jr_001_7270:
     ld b, a
     ld a, [bc]
     or a
-    jr nz, jr_001_727d
+    jr nz, .stepLoaded
 
-    ld bc, UpdateMenuSparklesData_001_75af
+    ld bc, BoingLetterBobSteps
     ld a, [bc]
 
-jr_001_727d:
+.stepLoaded:
     inc bc
     push af
     ld a, c
@@ -5027,46 +5042,46 @@ jr_001_727d:
     inc de
     pop af
     dec a
-    jr nz, jr_001_7270
+    jr nz, .moveSparkleLoop
 
     ld a, [hMenuScrollY]
     or a
-    jr z, jr_001_72ae
+    jr z, .scrollIsZero
 
-    ld a, [wUnk_db4f]
+    ld a, [wMenuScrollStepPtr]
     ld l, a
-    ld a, [wUnk_db50]
+    ld a, [wMenuScrollStepPtr + 1]
     ld h, a
     ld a, [hl+]
     ld b, a
     ld a, l
-    ld [wUnk_db4f], a
+    ld [wMenuScrollStepPtr], a
     ld a, h
-    ld [wUnk_db50], a
+    ld [wMenuScrollStepPtr + 1], a
     ld a, [hMenuScrollY]
     add b
     ld [hMenuScrollY], a
     ret
 
-jr_001_72ae:
+.scrollIsZero:
     ld a, $14
-    ld hl, wUnk_c250
+    ld hl, wOamBuffer + $50
     call ClearOamEntries
-    ld a, [hUnk_ff8f]
+    ld a, [hMenuSparkleTick]
     inc a
-    ld [hUnk_ff8f], a
+    ld [hMenuSparkleTick], a
     ld a, $0b
-    ld hl, wUnk_daf7
-    ld de, wUnk_c250
+    ld hl, wMenuTwinkles
+    ld de, wOamBuffer + $50
 
-jr_001_72c5:
+.animRecordLoop:
     push af
     ld a, [hl+]
     ld c, a
     ld a, [hl+]
     ld b, a
     or c
-    jr z, jr_001_72da
+    jr z, .delayExpired
 
     dec bc
     dec hl
@@ -5077,20 +5092,20 @@ jr_001_72c5:
     ld [hl], a
     ld bc, $0007
     add hl, bc
-    jr jr_001_7341
+    jr .nextAnimRecord
 
-jr_001_72da:
+.delayExpired:
     ld b, [hl]
-    ld a, [hUnk_ff8f]
+    ld a, [hMenuSparkleTick]
     and $03
-    jr nz, jr_001_72e3
+    jr nz, .checkAnimEnd
 
     inc b
 
-jr_001_72e3:
+.checkAnimEnd:
     ld a, b
     cp $0b
-    jr nz, jr_001_7305
+    jr nz, .drawFrame
 
     ld a, $00
     ld [hl+], a
@@ -5109,9 +5124,9 @@ jr_001_72e3:
     ld bc, $0007
     add hl, bc
     pop de
-    jr jr_001_7341
+    jr .nextAnimRecord
 
-jr_001_7305:
+.drawFrame:
     ld [hl+], a
     ld [hTemp + 1], a
     ld a, [hl+]
@@ -5135,7 +5150,7 @@ jr_001_7305:
     ld a, $02
     ld [hTemp], a
 
-jr_001_7325:
+.frameSpriteLoop:
     ld a, [hl+]
     add b
     ld [de], a
@@ -5154,17 +5169,17 @@ jr_001_7325:
     ld a, [hTemp]
     dec a
     ld [hTemp], a
-    jr nz, jr_001_7325
+    jr nz, .frameSpriteLoop
 
     pop af
     pop hl
     inc hl
     inc hl
 
-jr_001_7341:
+.nextAnimRecord:
     pop af
     dec a
-    jr nz, jr_001_72c5
+    jr nz, .animRecordLoop
 
     ret
 
@@ -5208,7 +5223,8 @@ Text_Italian_LevelTitle:
     dw $9801
     db $00, $04, "    LEVELLO ", $00, $01, "000   ", $ff
 
-VBlank_InGameData_001_745e:
+; A DrawString record that writes 20 spaces over the top tile row at $9800, drawn in the off phase of the blinking level title.
+Text_LevelTitleBlank:
     dw $9800
     db $00, $04, "                    ", $ff
 
@@ -5233,13 +5249,15 @@ Tilemap_Level_001_748b:
     db $2f
     db $30
 
-InitMenuSparklesData_001_749b:
+; Value added to hMenuScrollY each frame while the main menu slides in: -8 seventeen times, then -7, +4, +4, -3, -3, -2, -1 for a small bounce, followed by a 0.
+MenuSlideInSteps:
     db $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8
     db $f8, $f9, $04, $04, $fd, $fd, $fe, $ff
 
     db $00
 
-InitMenuSparklesData_001_74b4:
+; Start values of the 11 menu sparkles, 6 bytes each: dw frames until the first twinkle, db x, db y, dw delay reloaded after each twinkle.
+MenuSparkleStartData:
     db $01, $00, $82, $79, $c8, $00, $0a, $00, $51, $81, $c9, $00, $14, $00, $70, $38
     db $cb, $00, $1e, $00, $18, $50, $cc, $00, $64, $00, $0a, $3a, $cd, $00, $6e, $00
     db $8e, $35, $ce, $00, $78, $00, $51, $40, $cf, $00, $b4, $00, $40, $57, $d0, $00
@@ -5288,7 +5306,8 @@ MenuSparkleFrames:
     dw MenuSparkleFrame_74fc
     dw MenuSparkleFrame_74f6
 
-UpdateMenuSparklesData_001_7542:
+; Sprite layout of the five 16x32 letter objects B, O, I, N, G: 4 sprites each of (y offset, x offset, tile, attribute), top tiles $00-$12 with palette 1 and bottom tiles $14-$26 with palette 0.
+BoingLetterSprites:
     db $00, $00
     db $00, $01, $00, $08, $02, $01, $10, $00, $14, $00, $10, $08, $16, $00, $00, $00
     db $04, $01, $00, $08, $06, $01, $10, $00, $18, $00, $10, $08, $1a, $00, $00, $00
@@ -5296,7 +5315,8 @@ UpdateMenuSparklesData_001_7542:
     db $0c, $01, $00, $08, $0e, $01, $10, $00, $20, $00, $10, $08, $22, $00, $00, $00
     db $10, $01, $00, $08, $12, $01, $10, $00, $24, $00, $10, $08, $26, $00
 
-InitMenuSparklesData_001_7592:
+; Start position (x, y) of the five 16x32 letter objects B, O, I, N, G drawn by UpdateMenuSparkles: x $90, y $a4 each, which is below the visible screen.
+BoingLetterStartPositions:
     db $90, $a4
     db $90, $a4, $90, $a4, $90, $a4, $90, $a4
 
@@ -5305,7 +5325,8 @@ MenuSparkleCurve:
     db $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
 
-UpdateMenuSparklesData_001_75af:
+; Looping y steps of the menu letter objects: -2, -2, -2, -1, -1, +1, +1, +2, +2, +2, then a 0 that restarts the list here.
+BoingLetterBobSteps:
     db $fe, $fe, $fe, $ff, $ff
     db $01, $01, $02, $02, $02, $00
 
@@ -5319,13 +5340,13 @@ MenuSparkleCurveStarts:
 ; Jump to the init handler of game state hGameState.
 RunStateInit:
     ld hl, StateInitHandlers
-    jr jr_001_75cc
+    jr RunStateUpdate.dispatch
 
 ; Jump to the update handler of game state hGameState.
 RunStateUpdate:
     ld hl, StateUpdateHandlers
 
-jr_001_75cc:
+.dispatch:
     ld a, [hGameState]
     add a
     ld e, a
@@ -5346,7 +5367,7 @@ FrameLoop:
     call FadePalettes
     ld a, [hPaletteMode]
     cp $04
-    jr nz, jr_001_75fc
+    jr nz, .checkPaletteMode3
 
     ld a, $02
     ld [hPaletteMode], a
@@ -5358,10 +5379,10 @@ FrameLoop:
     ld a, $04
     ld [hPaletteMode], a
 
-jr_001_75fc:
+.checkPaletteMode3:
     ld a, [hPaletteMode]
     cp $03
-    jr nz, jr_001_7615
+    jr nz, .startLoop
 
     ld a, $82
     ldh [rOCPS], a
@@ -5372,10 +5393,10 @@ jr_001_75fc:
     ld a, $02
     ld [wHdmaMode], a
 
-jr_001_7615:
+.startLoop:
     call SweepBricks
 
-jr_001_7618:
+.frameLoop:
     call WaitVBlank
     call UpdateSound
     ld a, [hFrameHandler]
@@ -5385,11 +5406,11 @@ jr_001_7618:
     call CallHL
     ld a, [hStateTimer]
     or a
-    jr z, jr_001_7618
+    jr z, .frameLoop
 
     dec a
     ld [hStateTimer], a
-    jr nz, jr_001_7618
+    jr nz, .frameLoop
 
     ld e, $00
     call StartSong
@@ -5397,17 +5418,17 @@ jr_001_7618:
     call PlaySound
     ld a, $09
 
-jr_001_7640:
+.waitNineFramesLoop:
     push af
     call WaitVBlank
     call UpdateSound
     pop af
     dec a
-    jr nz, jr_001_7640
+    jr nz, .waitNineFramesLoop
 
     ld a, [hPaletteMode]
     cp $03
-    jr nz, jr_001_7665
+    jr nz, .checkPaletteMode4
 
     ld [wHdmaMode], a
     ld d, $fc
@@ -5418,10 +5439,10 @@ jr_001_7640:
     xor a
     ld [hPaletteMode], a
 
-jr_001_7665:
+.checkPaletteMode4:
     ld a, [hPaletteMode]
     cp $04
-    jr nz, jr_001_7680
+    jr nz, .finalFade
 
     ld a, $02
     ld [hPaletteMode], a
@@ -5433,7 +5454,7 @@ jr_001_7665:
     ld a, $04
     ld [hPaletteMode], a
 
-jr_001_7680:
+.finalFade:
     ld b, $01
     xor a
     call FadePalettes
@@ -5522,7 +5543,8 @@ PowerupHandlers:
     dw Powerup_Ghost
     dw Powerup_Grenade
 
-UpdateFallingPowerupsData_001_7706:
+; Fall speed of each of the 16 power-up types, a word added to the power-up's 16-bit y (low byte = fraction) each frame; all are $0080, half a pixel per frame.
+PowerupFallSpeeds:
     db $80, $00
 
     db $80, $00
@@ -5603,7 +5625,7 @@ SetUpBricks:
     ld a, $01
     ldh [rVBK], a
     ld hl, $9841
-    ld de, wUnk_ccfb
+    ld de, wBrickMap + $11
     ld b, $10
 
 SetUpBricks_Row:
@@ -5612,7 +5634,7 @@ SetUpBricks_Row:
 SetUpBricks_Cell:
     ld a, [de]
     or a
-    jr z, jr_001_783a
+    jr z, .emptyCell
 
     push af
     swap a
@@ -5623,7 +5645,7 @@ SetUpBricks_Cell:
     and $0f
     ld [de], a
     cp $0e
-    jr nz, jr_001_780f
+    jr nz, .breakableBrick
 
     xor a
     ldh [rVBK], a
@@ -5634,27 +5656,27 @@ SetUpBricks_Cell:
     dec l
     ld a, b
     cp $10
-    jr z, jr_001_7803
+    jr z, .unbreakableTopRow
 
     ld a, c
     cp $09
-    jr nz, jr_001_7809
+    jr nz, .unbreakableDrawn
 
     ld [hl], $51
-    jr jr_001_7809
+    jr .unbreakableDrawn
 
-jr_001_7803:
+.unbreakableTopRow:
     ld [hl], $51
     inc l
     ld [hl], $52
     dec l
 
-jr_001_7809:
+.unbreakableDrawn:
     ld a, $01
     ldh [rVBK], a
-    jr jr_001_787f
+    jr .nextCell
 
-jr_001_780f:
+.breakableBrick:
     ld a, [wBricksLeft]
     inc a
     ld [wBricksLeft], a
@@ -5667,27 +5689,27 @@ jr_001_780f:
     dec l
     ld a, b
     cp $10
-    jr z, jr_001_782e
+    jr z, .breakableTopRow
 
     ld a, c
     cp $09
-    jr nz, jr_001_7834
+    jr nz, .breakableDrawn
 
     ld [hl], $29
-    jr jr_001_7834
+    jr .breakableDrawn
 
-jr_001_782e:
+.breakableTopRow:
     ld [hl], $29
     inc l
     ld [hl], $2a
     dec l
 
-jr_001_7834:
+.breakableDrawn:
     ld a, $01
     ldh [rVBK], a
-    jr jr_001_787f
+    jr .nextCell
 
-jr_001_783a:
+.emptyCell:
     xor a
     ldh [rVBK], a
     push hl
@@ -5696,7 +5718,7 @@ jr_001_783a:
     ld a, [hl]
     pop hl
     cp $0f
-    jr z, jr_001_7852
+    jr z, .setLeftHalfAttr
 
     push hl
     ld hl, $ffef
@@ -5704,23 +5726,23 @@ jr_001_783a:
     ld a, [hl]
     pop hl
     or a
-    jr z, jr_001_785b
+    jr z, .checkRightHalf
 
-jr_001_7852:
+.setLeftHalfAttr:
     ld a, $01
     ldh [rVBK], a
     ld [hl], $0a
     xor a
     ldh [rVBK], a
 
-jr_001_785b:
+.checkRightHalf:
     push hl
     ld hl, $ffdf
     add hl, de
     ld a, [hl]
     pop hl
     cp $0f
-    jr z, jr_001_7870
+    jr z, .setRightHalfAttr
 
     push hl
     ld hl, $fff0
@@ -5728,9 +5750,9 @@ jr_001_785b:
     ld a, [hl]
     pop hl
     or a
-    jr z, jr_001_787b
+    jr z, .emptyCellDone
 
-jr_001_7870:
+.setRightHalfAttr:
     inc hl
     ld a, $01
     ldh [rVBK], a
@@ -5739,11 +5761,11 @@ jr_001_7870:
     xor a
     ldh [rVBK], a
 
-jr_001_787b:
+.emptyCellDone:
     ld a, $01
     ldh [rVBK], a
 
-jr_001_787f:
+.nextCell:
     inc de
     inc l
     inc l
@@ -5753,19 +5775,19 @@ jr_001_787f:
     ld a, l
     add $0e
     ld l, a
-    jr nc, jr_001_788d
+    jr nc, .noCarryTilemap
 
     inc h
 
-jr_001_788d:
+.noCarryTilemap:
     ld a, e
     add $07
     ld e, a
-    jr nc, jr_001_7894
+    jr nc, .noCarryMap
 
     inc d
 
-jr_001_7894:
+.noCarryMap:
     dec b
     jp nz, SetUpBricks_Row
 
@@ -5787,11 +5809,11 @@ HighScores_AdvanceAnim:
     ld h, a
     ld a, [hl]
     cp $01
-    jr nz, jr_001_78b7
+    jr nz, .readFrame
 
     ld hl, HighScoreAnimFrames
 
-jr_001_78b7:
+.readFrame:
     ld a, [hl+]
     ld [wHdmaSource], a
     ld a, [hl+]
@@ -5807,7 +5829,7 @@ HighScores_InitSprites:
     ld hl, wOamBuffer
     ld de, HighScoreSpritePositions
 
-jr_001_78d0:
+.nextSpritePair:
     ld a, [de]
     inc de
     ld [hl+], a
@@ -5828,26 +5850,26 @@ jr_001_78d0:
     ld [hl+], a
     ld [hl+], a
     dec b
-    jr nz, jr_001_78d0
+    jr nz, .nextSpritePair
 
     ld b, $04
     ld hl, wHighScoreSpriteFrames
     xor a
 
-jr_001_78ed:
+.nextFrameRow:
     ld c, $05
     push af
 
-jr_001_78f0:
+.nextFrameInRow:
     ld [hl+], a
     add $04
     dec c
-    jr nz, jr_001_78f0
+    jr nz, .nextFrameInRow
 
     pop af
     add $04
     dec b
-    jr nz, jr_001_78ed
+    jr nz, .nextFrameRow
 
     ret
 
@@ -5857,7 +5879,7 @@ HighScores_MoveSprites:
     ld hl, wOamBuffer + 2
     ld bc, $0004
 
-jr_001_7908:
+.nextSpritePair:
     push af
     ld a, [de]
     inc a
@@ -5884,7 +5906,7 @@ jr_001_7908:
     pop de
     pop af
     dec a
-    jr nz, jr_001_7908
+    jr nz, .nextSpritePair
 
     ret
 
@@ -5892,7 +5914,7 @@ jr_001_7908:
 HighScores_SlideSprites:
     ld a, $20
 
-jr_001_792b:
+.frameLoop:
     push af
     call WaitVBlank
     push de
@@ -5901,10 +5923,10 @@ jr_001_792b:
     ld hl, wBatX
     ld c, $04
 
-jr_001_7939:
+.nextRow:
     ld b, $0a
 
-jr_001_793b:
+.nextSpriteInRow:
     ld a, [hl]
     add d
     ld [hl+], a
@@ -5912,18 +5934,18 @@ jr_001_793b:
     inc hl
     inc hl
     dec b
-    jr nz, jr_001_793b
+    jr nz, .nextSpriteInRow
 
     ld a, d
     cpl
     inc a
     ld d, a
     dec c
-    jr nz, jr_001_7939
+    jr nz, .nextRow
 
     pop af
     dec a
-    jr nz, jr_001_792b
+    jr nz, .frameLoop
 
     ret
 
@@ -6041,40 +6063,40 @@ Credits_Update:
 
     ld [hl], $ff
     cp $ff
-    jr z, jr_001_7a6e
+    jr z, .advanceScroll
 
     dec a
-    ld [wUnk_c954], a
+    ld [wRasterTable + 143 * 10 + 8], a
 
-jr_001_7a6e:
+.advanceScroll:
     ld a, [wCreditsScrollY]
     inc a
     ld [wCreditsScrollY], a
-    ld de, wUnk_c3be
-    ld hl, wUnk_c3c8
+    ld de, wRasterTable + 8
+    ld hl, wRasterTable + 18
     ld b, $8f
 
-jr_001_7a7d:
+.shiftEntryLoop:
     ld a, [hl]
     ld [de], a
     ld a, l
     add $0a
     ld l, a
-    jr nc, jr_001_7a86
+    jr nc, .noCarrySource
 
     inc h
 
-jr_001_7a86:
+.noCarrySource:
     ld a, e
     add $0a
     ld e, a
-    jr nc, jr_001_7a8d
+    jr nc, .noCarryDest
 
     inc d
 
-jr_001_7a8d:
+.noCarryDest:
     dec b
-    jr nz, jr_001_7a7d
+    jr nz, .shiftEntryLoop
 
     xor a
     ld [wCreditsScrollDone], a
@@ -6085,7 +6107,7 @@ jr_001_7a8d:
     ld a, [hJoypad]
     and $f0
     or a
-    jr z, jr_001_7ab6
+    jr z, .noButton
 
     ld a, $ff
     ld [wCreditsScrollDone], a
@@ -6096,7 +6118,7 @@ jr_001_7a8d:
     ld a, $1a
     call PlaySound
 
-jr_001_7ab6:
+.noButton:
     ret
 
 GBC_Check:
@@ -6104,13 +6126,13 @@ GBC_Check:
     xor a                       ; switch WRAM1 to Bank 0
     ldh [rSVBK], a
     xor a                       ; store 0 to first byte of WRAM1
-    ld [wUnk_d000], a
+    ld [wRasterPaletteBuffer], a
     ld a, $02                   ; switch WRAM to Bank 2
     ldh [rSVBK], a
-    ld [wUnk_d000], a               ; Store value $02 to the first byte of WRAM1 Bank 2
+    ld [wRasterPaletteBuffer], a               ; Store value $02 to the first byte of WRAM1 Bank 2
     xor a                       ; switch WRAM1 back to Bank 0
     ldh [rSVBK], a
-    ld a, [wUnk_d000]               ; Read value from first byte of WRAM1
+    ld a, [wRasterPaletteBuffer]               ; Read value from first byte of WRAM1
     or a                        ; Bitwise OR with itself, Zero flag should be set. LD instruction doesn't change register flags in Z80...
     jr z, .RAMCheckPass         ; RAM check passed, WRAM bank switching works so this is a GBC with a MBC
 
@@ -6142,7 +6164,7 @@ GBC_Check:
 
     ; Clear part of start of WRAM0
     ld bc, $0068
-    ld hl, wUnk_c000
+    ld hl, wSoundState
     call ClearRAM
 
     ; Clear HRAM
@@ -6155,25 +6177,31 @@ GBC_Check:
     ld [hGameState], a               ; Store to RAM
     ret                         ; return
 
-InitBatSpritesData_001_7b0c:
+; Start values of the first 9 OAM entries: 4 bat shadow sprites at y $98 (tiles $1e-$21), the 4 bat sprites at y $90 (tiles $56, $57) and the ball (tile 0, palette 3) at y $89, x $54.
+BatAndBallStartSprites:
     db $98, $50, $1e, $02, $98, $58, $1f, $02, $98, $60, $20, $02, $98, $68, $21, $02
     db $90, $48, $56, $02, $90, $50, $57, $02, $90, $58, $57, $22, $90, $60, $56, $22
     db $89, $54, $00, $03
 
-DrawBatSpritesData_001_7b30:
+; Tile and attribute of shadow sprites 1 to 3 of the bat (dither tiles $1f, $20, $21, palette 2), drawn at y $98 when hTemp2 is 0 on entry.
+BatShadowTiles_Normal:
     db $1f, $02, $20, $02, $21, $02
 
-DrawBatSpritesData_001_7b36:
+; Four-sprite version of the bat shadow row ($1f, $20, $20, $21), used when hTemp2 is not 0 on entry; hTemp2 is left at 1 by the previous call when wBatWidth is not $20.
+BatShadowTiles_Wide:
     db $1f, $02, $20, $02, $20, $02
     db $21, $02
 
-DrawBatSpritesData_001_7b3e:
+; Tile and attribute of the 4 sprites of the bat itself (y $90, from x = wBatX - 8): $56, $57, $57 flipped, $56 flipped, palette 2.
+BatTiles_Normal:
     db $56, $02, $57, $02, $57, $22, $56, $22
 
-DrawBatSpritesData_001_7b46:
+; Bat sprites while wWeaponFlag is set: the two middle sprites become tile $08 (palette 1), the weapon bat.
+BatTiles_Weapon:
     db $56, $02, $08, $01, $08, $21, $56, $22
 
-DrawBatSpritesData_001_7b4e:
+; Bat sprites while wBallSticks is set and no ball is on the bat: the two middle sprites become tile $07 (palette 1).
+BatTiles_Sticky:
     db $56, $02, $07, $01, $07, $21, $56, $22
 
 UnbreakableHitEffectFrames:
@@ -6240,21 +6268,21 @@ GameOver_Update:
     ld a, [hJoypad]
     and $f0
     or a
-    jr z, jr_001_7c02
+    jr z, .noButton
 
     ld a, $07
     ld [hGameState], a
     ld a, $28
     ld [hStateTimer], a
     ld a, $05
-    ld [wUnk_ccb6], a
+    ld [wHighScoresNextState], a
     ld a, $ff
     ld [wMenuIdleTimer], a
     call BuildScoreText
     ld a, $1a
     call PlaySound
 
-jr_001_7c02:
+.noButton:
     ret
 
 Pause_Update:
@@ -6264,7 +6292,7 @@ Pause_Update:
 
     ld a, [hJoypad]
     bit 7, a
-    jr z, jr_001_7c2c
+    jr z, .startNotPressed
 
     ld a, $02
     ld [hGameState], a
@@ -6278,7 +6306,7 @@ Pause_Update:
     ld a, $1a
     call PlaySound
 
-jr_001_7c2c:
+.startNotPressed:
     ret
 
 ResetScore:
@@ -6302,16 +6330,16 @@ AddScoreBC:
     ld a, $0b
     ld hl, wScoreDigits + 5
 
-jr_001_7c41:
+.incDigit:
     inc [hl]
     cp [hl]
-    jr nz, jr_001_7c4a
+    jr nz, .noDigitCarry
 
     ld [hl], $01
     dec hl
-    jr jr_001_7c41
+    jr .incDigit
 
-jr_001_7c4a:
+.noDigitCarry:
     xor a
     ld [wScoreDigits], a
     dec bc
@@ -6326,19 +6354,19 @@ WaitVBlank:
     call ReadJoypad
     ld a, [hGameState]
     or a
-    jr z, jr_001_7c67
+    jr z, .waitForVBlank
 
     ld a, [hJoypad]
     and $f0
     cp $f0
     jp z, Boot
 
-jr_001_7c67:
+.waitForVBlank:
     halt
     nop
     ld a, [hVBlankDone]
     or a
-    jr z, jr_001_7c67
+    jr z, .waitForVBlank
 
     xor a
     ld [hVBlankDone], a
@@ -6352,7 +6380,7 @@ Ending_Update:
     ld a, [hJoypad]
     and $f0
     or a
-    jr z, jr_001_7c91
+    jr z, .noButtonPressed
 
     ld a, $02
     ld [hGameState], a
@@ -6361,19 +6389,19 @@ Ending_Update:
     ld a, $1a
     call PlaySound
 
-jr_001_7c91:
+.noButtonPressed:
     ret
 
 DeveloperLogos_Update:
     ld a, [hLogoTimer]
     or a
-    jr z, jr_001_7c9d
+    jr z, .timerExpired
 
     dec a
     ld [hLogoTimer], a
     ret
 
-jr_001_7c9d:
+.timerExpired:
     ld a, $0b
     ld [hGameState], a
     ld a, $01
@@ -6383,182 +6411,60 @@ jr_001_7c9d:
 ColorOnly_Update:
     jr ColorOnly_Update
 
-    ld bc, $0090
-    call DataTransfer
-    ld hl, GrenadeText_French_2 + $13
-    ld de, $8000
-    ld bc, $0010
-    call DataTransfer
-    ld a, $26
-    ld de, $9800
-    ld hl, GrenadeText_Spanish_3 + $b
-    ld b, $14
-    ld c, $12
-    call CopyTilemapRect
-    ld hl, ColorOnlyData_001_4ca8
-    ld de, wScrollSplits
-    ld bc, $0006
-    call DataTransfer
-    ld a, [wLangTextLevelPassword]
-    ld l, a
-    ld a, [wLangTextLevelPassword + 1]
-    ld h, a
-    ld de, wLevelPasswordText
-    ld bc, $003e
-    call DataTransfer
-    ld a, $01
-    call ChangeROMBank
-    ld hl, LogoSwaySteps
-    ld a, l
-    ld [wLogoSwayPtr], a
-    ld a, h
-    ld [wLogoSwayPtr + 1], a
-    call BuildLevelTitle
-    ld hl, wLevelPasswordText + 12
-    ld a, [wLanguage]
-    cp $04
-    jr nz, jr_001_7d12
-
-    ld a, [wLevelTitleText + 18]
-    ld [hl+], a
-    ld a, [wLevelTitleText + 19]
-    ld [hl+], a
-    ld a, [wLevelTitleText + 20]
-    jr jr_001_7d1d
-
-jr_001_7d12:
-    ld a, [wLevelTitleText + 17]
-    ld [hl+], a
-    ld a, [wLevelTitleText + 18]
-    ld [hl+], a
-    ld a, [wLevelTitleText + 19]
-
-jr_001_7d1d:
-    ld [hl-], a
-    dec hl
-    call ParseDecimal
-    ld a, [wUnk_df35]
-    ld l, a
-    ld a, [wUnk_df36]
-    ld h, a
-    ld de, wLevelPasswordChars
-    ld a, [wPasswordChars]
-    ld [hl+], a
-    ld [de], a
-    inc de
-    ld a, [wPasswordChars + 1]
-    ld [hl+], a
-    ld [de], a
-    inc de
-    ld a, [wPasswordChars + 2]
-    ld [hl+], a
-    ld [de], a
-    inc de
-    ld a, [wPasswordChars + 3]
-    ld [hl+], a
-    ld [de], a
-    ld a, [wLevelBonus]
-    ld l, a
-    ld a, [wLevelBonus + 1]
-    ld h, a
-    ld de, $01f4
-    add hl, de
-    ld a, l
-    ld [wLevelBonus], a
-    ld a, h
-    ld [wLevelBonus + 1], a
-    ld a, l
-    ld [wBonusCountdown], a
-    ld a, h
-    ld [wBonusCountdown + 1], a
-    call LevelPassword_DrawBonus
-    ld a, [wLevelBonusUnits]
-    ld l, a
-    ld a, [wLevelBonusUnits + 1]
-    ld h, a
-    ld de, $0032
-    add hl, de
-    ld a, l
-    ld [wLevelBonusUnits], a
-    ld a, h
-    ld [wLevelBonusUnits + 1], a
-    ld b, h
-    ld c, l
-    call AddScoreBC
-    ld hl, wLevelPasswordText
-    call DrawString
-    call DrawString
-    call DrawString
-    ld a, $2d
-    ld [wBonusDelay], a
-    ld hl, FireworkScript_0
-    ld a, l
-    ld [wFireworks], a
-    ld a, h
-    ld [wFireworks + 1], a
-    ld hl, FireworkScript_1
-    ld a, l
-    ld [wFireworks + 15], a
-    ld a, h
-    ld [wFireworks + 16], a
-    ld hl, FireworkScript_2
-    ld a, l
-    ld [wFireworks + 30], a
-    ld a, h
-    ld [wFireworks + 31], a
-    ld hl, wFireworks
-    call Firework_Launch
-    ld hl, wFireworks + 15
-    call Firework_Launch
-    ld hl, wFireworks + 30
-    call Firework_Launch
-    ld hl, wFireworkSparks
-    ld a, l
-    ld [wFireworks + 13], a
-    ld a, h
-    ld [wFireworks + 14], a
-    ld hl, wFireworkSparks + 80
-    ld a, l
-    ld [wFireworks + 28], a
-    ld a, h
-    ld [wFireworks + 29], a
-    ld hl, wFireworkSparks + 160
-    ld a, l
-    ld [wFireworks + 43], a
-    ld a, h
-    ld [wFireworks + 44], a
-    ld hl, TwinkleInitData
-    ld de, wTwinkles
-    ld bc, $0037
-    call DataTransfer
-    ret
-
-    db $21, $b3, $02, $7d, $ea, $96, $ff, $7c, $ea, $97, $ff, $3e, $01, $ea, $9c, $ff
-    db $ea, $9b, $ff, $3e, $01, $ea, $9a, $ff, $af, $e0, $43, $11, $b0, $43, $cd, $61
-    db $00, $3e, $0d, $cd, $06, $02, $3e, $01, $e0, $4f, $af, $11, $00, $98, $21, $50
-    db $51, $06, $14, $0e, $12, $cd, $d4, $01, $af, $ea, $fc, $de, $ea, $fd, $de, $ea
-    db $fe, $de, $e0, $4f, $21, $b8, $49, $11, $00, $90, $01, $30, $06, $cd, $b0, $01
-    db $11, $00, $98, $21, $e8, $4f, $06, $14, $0e, $12, $cd, $d4, $01, $3e, $01, $cd
-    db $06, $02, $c9, $fa, $bb, $da, $b7, $c0, $3e, $06, $ea, $00, $21, $cd, $3f, $47
-    db $3e, $01, $ea, $00, $21, $c9, $d5, $e5, $c5, $5f, $fa, $bc, $da, $b7, $20, $0d
-    db $3e, $06, $ea, $00, $21, $cd, $19, $48, $3e, $01, $ea, $00, $21
-    db $c1, $e1, $d1, $c9, $3e, $06, $ea, $00, $21, $cd, $00, $40, $3e, $01, $ea, $00
-    db $21, $c9, $3e, $46, $ea, $91, $ff, $21, $b3, $02, $7d, $ea, $96, $ff, $7c, $ea
-    db $97, $ff, $3e, $01, $ea, $9c, $ff, $ea, $9b, $ff, $3e, $01, $ea, $9a, $ff, $af
-    db $e0, $43, $11, $30, $45, $cd, $61, $00, $3e, $03, $cd, $06, $02, $3e, $01, $e0
-    db $4f, $af, $11, $00, $98, $21, $98, $5e, $06, $14, $0e, $12, $cd, $d4, $01, $af
-    db $e0, $4f, $21, $80, $55, $11, $00, $90, $01, $b0, $07, $cd, $b0, $01, $af, $11
-    db $00, $98, $21, $30, $5d, $06, $14, $0e, $12, $cd, $d4, $01, $3e, $01, $cd, $06
-    db $02, $c9, $fa, $91, $ff, $b7, $28, $05, $3d, $ea, $91, $ff, $c9
-    db $3e, $0c, $ea, $9f, $ff, $3e, $01, $ea, $a0, $ff, $c9, $1e, $08, $cd, $51, $3e
-    db $af, $e0, $43, $21, $b3, $02, $7d, $ea, $96, $ff, $7c, $ea, $97, $ff, $af, $ea
-    db $9c, $ff, $ea, $fe, $dc, $3e, $01, $ea, $9a, $ff, $11, $b0, $44, $cd, $61, $00
-    db $3e, $0e, $ea, $ff, $dc, $cd, $06, $02, $3e, $01, $e0, $4f, $21, $4f, $67, $11
-    db $00, $90, $01, $00, $08, $cd, $b0, $01, $21, $4f, $6f, $11, $00, $88, $01, $90
-    db $07, $cd, $b0, $01, $af, $11, $00, $98, $21, $87, $7e, $06, $14, $0e, $12, $cd
-    db $d4, $01, $af, $e0, $4f, $21, $cf, $73, $11, $00, $90, $01, $00, $08, $cd, $b0
-    db $01, $21, $cf, $7b, $11, $00, $88, $01, $50, $01, $cd, $b0, $01, $3e, $09, $11
-    db $00, $98, $21, $1f, $7d, $06, $14, $0e, $09, $cd, $d4, $01, $af, $11, $20, $99
-    db $06, $14, $0e, $09, $cd, $d4, $01, $fa, $0d, $df, $6f, $fa, $0e, $df, $67, $cd
-    db $84, $0e, $cd, $84, $0e, $cd, $84, $0e, $cd, $84, $0e, $cd, $84, $0e, $cd, $84
-    db $0e, $3e, $01, $ea, $ac, $d8, $cd, $06, $02, $c9
+; Filler. The rest of the bank is a stale copy of the last 854 bytes of bank 0 ($3CAA-$3FFF).
+; Nothing runs or reads it.
+BankFiller_001:
+    db $01, $90, $00, $cd, $b0, $01, $21, $74, $55, $11, $00, $80, $01, $10, $00, $cd
+    db $b0, $01, $3e, $26, $11, $00, $98, $21, $14, $56, $06, $14, $0e, $12, $cd, $d4
+    db $01, $21, $a8, $4c, $11, $03, $dd, $01, $06, $00, $cd, $b0, $01, $fa, $33, $df
+    db $6f, $fa, $34, $df, $67, $11, $0b, $dd, $01, $3e, $00, $cd, $b0, $01, $3e, $01
+    db $cd, $06, $02, $21, $84, $67, $7d, $ea, $09, $dd, $7c, $ea, $0a, $dd, $cd, $de
+    db $0d, $21, $17, $dd, $fa, $fc, $de, $fe, $04, $20, $0d, $fa, $3c, $d7, $22, $fa
+    db $3d, $d7, $22, $fa, $3e, $d7, $18, $0b, $fa, $3b, $d7, $22, $fa, $3c, $d7, $22
+    db $fa, $3d, $d7, $32, $2b, $cd, $74, $09, $fa, $35, $df, $6f, $fa, $36, $df, $67
+    db $11, $e3, $cc, $fa, $7c, $cb, $22, $12, $13, $fa, $7d, $cb, $22, $12, $13, $fa
+    db $7e, $cb, $22, $12, $13, $fa, $7f, $cb, $22, $12, $fa, $4d, $dd, $6f, $fa, $4e
+    db $dd, $67, $11, $f4, $01, $19, $7d, $ea, $4d, $dd, $7c, $ea, $4e, $dd, $7d, $ea
+    db $49, $dd, $7c, $ea, $4a, $dd, $cd, $09, $5c, $fa, $4f, $dd, $6f, $fa, $50, $dd
+    db $67, $11, $32, $00, $19, $7d, $ea, $4f, $dd, $7c, $ea, $50, $dd, $44, $4d, $cd
+    db $3c, $7c, $21, $0b, $dd, $cd, $54, $0e, $cd, $54, $0e, $cd, $54, $0e, $3e, $2d
+    db $ea, $4b, $dd, $21, $ad, $67, $7d, $ea, $60, $dd, $7c, $ea, $61, $dd, $21, $bc
+    db $67, $7d, $ea, $6f, $dd, $7c, $ea, $70, $dd, $21, $cb, $67, $7d, $ea, $7e, $dd
+    db $7c, $ea, $7f, $dd, $21, $60, $dd, $cd, $2e, $5d, $21, $6f, $dd, $cd, $2e, $5d
+    db $21, $7e, $dd, $cd, $2e, $5d, $21, $8d, $dd, $7d, $ea, $6d, $dd, $7c, $ea, $6e
+    db $dd, $21, $dd, $dd, $7d, $ea, $7c, $dd, $7c, $ea, $7d, $dd, $21, $2d, $de, $7d
+    db $ea, $8b, $dd, $7c, $ea, $8c, $dd, $21, $43, $65, $11, $81, $de, $01, $37, $00
+    db $cd, $b0, $01, $c9, $21, $b3, $02, $7d, $ea, $96, $ff, $7c, $ea, $97, $ff, $3e
+    db $01, $ea, $9c, $ff, $ea, $9b, $ff, $3e, $01, $ea, $9a, $ff, $af, $e0, $43, $11
+    db $b0, $43, $cd, $61, $00, $3e, $0d, $cd, $06, $02, $3e, $01, $e0, $4f, $af, $11
+    db $00, $98, $21, $50, $51, $06, $14, $0e, $12, $cd, $d4, $01, $af, $ea, $fc, $de
+    db $ea, $fd, $de, $ea, $fe, $de, $e0, $4f, $21, $b8, $49, $11, $00, $90, $01, $30
+    db $06, $cd, $b0, $01, $11, $00, $98, $21, $e8, $4f, $06, $14, $0e, $12, $cd, $d4
+    db $01, $3e, $01, $cd, $06, $02, $c9, $fa, $bb, $da, $b7, $c0, $3e, $06, $ea, $00
+    db $21, $cd, $3f, $47, $3e, $01, $ea, $00, $21, $c9, $d5, $e5, $c5, $5f, $fa, $bc
+    db $da, $b7, $20, $0d, $3e, $06, $ea, $00, $21, $cd, $19, $48, $3e, $01, $ea, $00
+    db $21, $c1, $e1, $d1, $c9, $3e, $06, $ea, $00, $21, $cd, $00, $40, $3e, $01, $ea
+    db $00, $21, $c9, $3e, $46, $ea, $91, $ff, $21, $b3, $02, $7d, $ea, $96, $ff, $7c
+    db $ea, $97, $ff, $3e, $01, $ea, $9c, $ff, $ea, $9b, $ff, $3e, $01, $ea, $9a, $ff
+    db $af, $e0, $43, $11, $30, $45, $cd, $61, $00, $3e, $03, $cd, $06, $02, $3e, $01
+    db $e0, $4f, $af, $11, $00, $98, $21, $98, $5e, $06, $14, $0e, $12, $cd, $d4, $01
+    db $af, $e0, $4f, $21, $80, $55, $11, $00, $90, $01, $b0, $07, $cd, $b0, $01, $af
+    db $11, $00, $98, $21, $30, $5d, $06, $14, $0e, $12, $cd, $d4, $01, $3e, $01, $cd
+    db $06, $02, $c9, $fa, $91, $ff, $b7, $28, $05, $3d, $ea, $91, $ff, $c9, $3e, $0c
+    db $ea, $9f, $ff, $3e, $01, $ea, $a0, $ff, $c9, $1e, $08, $cd, $51, $3e, $af, $e0
+    db $43, $21, $b3, $02, $7d, $ea, $96, $ff, $7c, $ea, $97, $ff, $af, $ea, $9c, $ff
+    db $ea, $fe, $dc, $3e, $01, $ea, $9a, $ff, $11, $b0, $44, $cd, $61, $00, $3e, $0e
+    db $ea, $ff, $dc, $cd, $06, $02, $3e, $01, $e0, $4f, $21, $4f, $67, $11, $00, $90
+    db $01, $00, $08, $cd, $b0, $01, $21, $4f, $6f, $11, $00, $88, $01, $90, $07, $cd
+    db $b0, $01, $af, $11, $00, $98, $21, $87, $7e, $06, $14, $0e, $12, $cd, $d4, $01
+    db $af, $e0, $4f, $21, $cf, $73, $11, $00, $90, $01, $00, $08, $cd, $b0, $01, $21
+    db $cf, $7b, $11, $00, $88, $01, $50, $01, $cd, $b0, $01, $3e, $09, $11, $00, $98
+    db $21, $1f, $7d, $06, $14, $0e, $09, $cd, $d4, $01, $af, $11, $20, $99, $06, $14
+    db $0e, $09, $cd, $d4, $01, $fa, $0d, $df, $6f, $fa, $0e, $df, $67, $cd, $84, $0e
+    db $cd, $84, $0e, $cd, $84, $0e, $cd, $84, $0e, $cd, $84, $0e, $cd, $84, $0e, $3e
+    db $01, $ea, $ac, $d8, $cd, $06, $02, $c9, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00

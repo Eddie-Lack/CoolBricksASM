@@ -29,7 +29,7 @@ DEF wHitBrickValue         EQU $db6f ; Its hit points after the hit
 DEF wFallingPowerups       EQU $db71 ; 8 falling power-ups, 12 bytes each: active, y, x, type, 4 x (tile, attribute)
 DEF wUfoHeight             EQU $dc27 ; UFO flight height
 DEF wLevelType             EQU $dc35 ; 1 = UFO level, 2 = blob level
-DEF wLevelFlagsHigh        EQU $dc36 ; High nibble of the level type byte
+DEF wBlobPalette          EQU $dc36 ; High nibble of the level type byte: the sprite palette added to the blob's sprites
 DEF wWeaponFlag            EQU $dc3d ; 1 after Rocket, Plasma, Laser or Grenade. A Clock brick drops a Clock only while this is 1
 DEF wShotReloadDelay       EQU $dc45 ; Cooldown set after a shot: 30 frames for a rocket, 8 for a laser
 DEF wPlasmaState           EQU $dc47 ; 1 = plasma bat, 2 = plasma shot in flight
@@ -136,6 +136,83 @@ DEF wUfoHits               EQU $dc34 ; Times the ball has hit the UFO in this le
 ; Music
 DEF wLevelMusicIndex       EQU $db55 ; 0-2: which of the three level songs plays. Steps when the password screen appears
 
+; Sound driver (bank 6). Channels 1 and 2 are the pulse channels, 3 is the wave channel, 4 is the noise channel.
+; Pointers are 2 bytes. The instrument tables are described in docs/RESEARCH.md.
+DEF wSoundState            EQU $c000 ; Start of the sound driver variables. The first $68 bytes are cleared at reset
+DEF wCh1Tick               EQU $c000 ; Frames left in the current row step. Starts again from wSongTempo
+DEF wCh1Rows               EQU $c001 ; Row steps left before the next row is read
+DEF wCh1PatternPtr         EQU $c002 ; Next row in the pattern data
+DEF wCh1Transpose          EQU $c004 ; Semitones added to every note of the pattern
+DEF wCh1OrderPtr           EQU $c005 ; Next entry in the order list
+DEF wCh1Envelope           EQU $c007 ; Volume envelope written to NR12 when a note starts
+DEF wCh1ReleaseEnvelope    EQU $c008 ; Volume envelope written to NR12 when a note is released
+DEF wCh1Trigger            EQU $c009 ; Not 0: restart the note on the next frame
+DEF wCh1Duty               EQU $c00a ; Duty and length, written to NR11 every frame
+DEF wCh1SlideCount         EQU $c00b ; Frames left in the current pitch slide step
+DEF wCh1SlidePtr           EQU $c00c ; Current pitch slide step
+DEF wCh1PitchOffset        EQU $c00e ; Sum of the pitch slide so far, added to the frequency (2 bytes)
+DEF wCh1ArpCount           EQU $c010 ; Frames left in the current arpeggio step
+DEF wCh1ArpPtr             EQU $c011 ; Current arpeggio step
+DEF wCh1ModeCount          EQU $c013 ; Frames left in the current pitch mode step
+DEF wCh1ModePtr            EQU $c014 ; Current pitch mode step
+DEF wCh1Note               EQU $c016 ; Note that plays: transpose + note number
+DEF wCh2Tick               EQU $c017 ; Frames left in the current row step. Starts again from wSongTempo
+DEF wCh2Rows               EQU $c018 ; Same as wCh1Rows, for channel 2
+DEF wCh2PatternPtr         EQU $c019 ; Same as wCh1PatternPtr, for channel 2
+DEF wCh2Transpose          EQU $c01b ; Same as wCh1Transpose, for channel 2
+DEF wCh2OrderPtr           EQU $c01c ; Same as wCh1OrderPtr, for channel 2
+DEF wCh2Envelope           EQU $c01e ; Same as wCh1Envelope, for channel 2
+DEF wCh2ReleaseEnvelope    EQU $c01f ; Same as wCh1ReleaseEnvelope, for channel 2
+DEF wCh2Trigger            EQU $c020 ; Same as wCh1Trigger, for channel 2
+DEF wCh2Duty               EQU $c021 ; Same as wCh1Duty, for channel 2
+DEF wCh2SlideCount         EQU $c022 ; Same as wCh1SlideCount, for channel 2
+DEF wCh2SlidePtr           EQU $c023 ; Same as wCh1SlidePtr, for channel 2
+DEF wCh2PitchOffset        EQU $c025 ; Same as wCh1PitchOffset, for channel 2
+DEF wCh2ArpCount           EQU $c027 ; Same as wCh1ArpCount, for channel 2
+DEF wCh2ArpPtr             EQU $c028 ; Same as wCh1ArpPtr, for channel 2
+DEF wCh2ModeCount          EQU $c02a ; Same as wCh1ModeCount, for channel 2
+DEF wCh2ModePtr            EQU $c02b ; Same as wCh1ModePtr, for channel 2
+DEF wCh2Note               EQU $c02d ; Same as wCh1Note, for channel 2
+DEF wCh3Tick               EQU $c02e ; Frames left in the current row step. Starts again from wSongTempo
+DEF wCh3Rows               EQU $c02f ; Same as wCh1Rows, for channel 3
+DEF wCh3PatternPtr         EQU $c030 ; Same as wCh1PatternPtr, for channel 3
+DEF wCh3Transpose          EQU $c032 ; Same as wCh1Transpose, for channel 3
+DEF wCh3OrderPtr           EQU $c033 ; Same as wCh1OrderPtr, for channel 3
+DEF wCh3VolumeCount        EQU $c035 ; Frames left in the current volume step
+DEF wCh3VolumePtr          EQU $c036 ; Current volume step, written to NR32
+DEF wCh3ReleaseVolumePtr   EQU $c038 ; Volume table used after a release
+DEF wCh3SlideCount         EQU $c03a ; Same as wCh1SlideCount, for channel 3
+DEF wCh3SlidePtr           EQU $c03b ; Same as wCh1SlidePtr, for channel 3
+DEF wCh3PitchOffset        EQU $c03d ; Same as wCh1PitchOffset, for channel 3
+DEF wCh3ArpCount           EQU $c03f ; Same as wCh1ArpCount, for channel 3
+DEF wCh3ArpPtr             EQU $c040 ; Same as wCh1ArpPtr, for channel 3
+DEF wCh3ModeCount          EQU $c042 ; Same as wCh1ModeCount, for channel 3
+DEF wCh3ModePtr            EQU $c043 ; Same as wCh1ModePtr, for channel 3
+DEF wCh3Note               EQU $c045 ; Same as wCh1Note, for channel 3
+DEF wCh4Tick               EQU $c046 ; Frames left in the current row step. Starts again from wSongTempo
+DEF wCh4Rows               EQU $c047 ; Same as wCh1Rows, for channel 4
+DEF wCh4PatternPtr         EQU $c048 ; Same as wCh1PatternPtr, for channel 4
+DEF wCh4Transpose          EQU $c04a ; Same as wCh1Transpose, for channel 4. Has no effect on noise
+DEF wCh4OrderPtr           EQU $c04b ; Same as wCh1OrderPtr, for channel 4
+DEF wCh4Envelope           EQU $c04d ; Volume envelope written to NR42 when a note starts
+DEF wCh4ReleaseEnvelope    EQU $c04e ; Volume envelope written to NR42 when a note is released
+DEF wCh4Trigger            EQU $c04f ; Same as wCh1Trigger, for channel 4
+DEF wCh4ShapeCount         EQU $c050 ; Frames left in the current NR43 step
+DEF wCh4ShapePtr           EQU $c051 ; Current NR43 step
+DEF wCh4ControlCount       EQU $c053 ; Frames left in the current NR44 step
+DEF wCh4ControlPtr         EQU $c054 ; Current NR44 step
+DEF wSfxTick               EQU $c056 ; Frames left in the current row step of the sound effect. One row step is 4 frames
+DEF wSfxRows               EQU $c057 ; Row steps left before the next sound effect row is read
+DEF wSfxPtr                EQU $c058 ; Next row in the sound effect data
+DEF wSfxChannel            EQU $c05f ; Address of the channel the sound effect uses: wCh2Tick or wCh4Tick. Low byte $ff = no sound effect
+DEF wSfxDone               EQU $c061 ; $ff when the sound effect has ended
+DEF wSongTempo             EQU $c062 ; Frames per row step of the song
+DEF wSfxPriority           EQU $c063 ; Priority of the sound effect that plays
+DEF wWaveAnimCount         EQU $c064 ; Frames left in the current wave animation step
+DEF wWaveAnimPtr           EQU $c065 ; Current wave animation step
+DEF wCh3FreqLow            EQU $c067 ; Last value written to NR33
+DEF wCh3FreqHigh           EQU $c068 ; Last value written to NR34
+
 ; Sprites
 DEF wOamUsedLastFrame      EQU $c2b4 ; Extra sprites drawn in the previous frame
 DEF wOamUsed               EQU $c2b5 ; Extra sprites drawn so far this frame
@@ -241,6 +318,63 @@ DEF wBlinkTimer           EQU $c95c ; Frames until the name entry row blinks aga
 DEF wPasswordChars        EQU $cb7c ; The four letters of the password being checked or built
 DEF wLevelPasswordChars   EQU $cce3 ; The four letters of the latest level password
 DEF wEnemyPathWork        EQU $dbd1 ; Working copy of the enemy path record being updated (15 bytes)
+DEF wStackTop                 EQU $c1fe ; Initial stack pointer; the stack grows down from here
+DEF wNinjaBallFrame           EQU $c2b8 ; Ball animation frame while Ninja is active: 0, 1, 2 select tiles $13, $14, $15
+DEF wExtraSprites             EQU $c2b9 ; List of extra sprites (y, x, tile, attribute) built during the frame through wOamWritePtr, then copied into wOamBuffer after the bat sprites
+DEF wRasterObjPaletteIndex    EQU $c958 ; Value AnimatePalettes writes to rOCPS each frame before the raster handler runs: $94 in a level, $80 on the title screen and credits
+DEF wHighScoresVBlankFlag     EQU $c959 ; Not 0 on the high score screen: VBlankMenus then jumps to VBlankMenus_BlinkRow instead of scrolling the menu. Cleared by the main menu
+DEF wCreditsFrameToggle       EQU $c95a ; Flips between 0 and 1 every VBlank on the credits; UpdateCreditsScroll runs when it becomes 0, so every second frame
+DEF wFadedPalettes            EQU $ca9d ; Palettes after fading, 2 bytes per colour: 8 background palettes here and 8 sprite palettes at + $40
+DEF wFadedObjPalettes         EQU $cadd ; Sprite palettes after the fade step, 64 bytes of packed 15-bit colours that CopyPalettesToHardware writes to rOCPD
+DEF wRasterColours            EQU $cb1d ; Nine records of three 16-bit colours (54 bytes) that AnimatePalettes gathers from the faded palettes and then copies into wRasterTable, adding a seventh byte to each record
+DEF wLatestScoreText          EQU $cc99 ; Last string of the high score table: the latest score line in the current language, with the score digits at $ccad
+DEF wScoreText                EQU $ccad ; The score as five characters '0' to '9' (wScoreDigits + 1 onwards, each plus $2f), built by BuildScoreText to compare with the high score table and copy into it
+DEF wHighScoresNextState      EQU $ccb6 ; hGameState value to go to when the high score screen is left: 1 = main menu when shown from the idle menu, 5 = title picture when shown after game over
+DEF wNameEntryColours         EQU $ccc2 ; Tile attribute byte for each of the seven name entry letters: $81 for the letter under the cursor, $84 for the others
+DEF wNameEntryUpHeld          EQU $ccc9 ; 1 while up is held during name entry, so one press moves the letter forward only once; 0 when up is released
+DEF wNameEntryDownHeld        EQU $ccca ; 1 while down is held during name entry, so one press moves the letter back only once; 0 when down is released
+DEF wNameEntryButtonHeld      EQU $cccb ; 1 while left, right, A, B, Select or Start is held during name entry, so one press moves the cursor only once; 0 when all are released
+DEF wNameEntryDone            EQU $cccd ; Set to 1 when the high score screen is left; the VBlank handler then clears wNameEntryAddress and resets the 7 name cells' attributes to $84 instead of drawing the name
+DEF wHighScoresIdleTick       EQU $ccce ; Frame counter 0-3 on the high score screen; wMenuIdleTimer is decremented each time it wraps to 0
+DEF wRasterPaletteBuffer      EQU $d000 ; WRAM bank 2: the $90 palettes unpacked by LoadPalettes when hPaletteMode is 2, 3 bytes per colour ($6c0 bytes)
+DEF wRasterPalettesFaded      EQU $d6c0 ; WRAM bank 2: the $90 palettes of wRasterPaletteBuffer after the fade step, as 2-byte GBC colours ($480 bytes)
+DEF wMessageUnused            EQU $d75e ; Set to 0 by ShowMessage together with wLevelTitleBlink; never read
+DEF wUnbreakableHitSpawned    EQU $d8ab ; Cleared before each CollideBall call and set to 1 by SpawnUnbreakableHitEffect, so one ball step starts at most one unbreakable-brick hit effect
+DEF wHitEffectX               EQU $d8ba ; Last byte of the wBrickHitQueue entry being built: the X of the brick break effect to start when the brick is destroyed (the plasma shot's X), or 0 for no effect
+DEF wPlasmaShotX              EQU $d8bb ; X of the plasma shot in flight, copied from the shot's x each frame by UpdateShot0 and UpdateShot1; HitBrickWithShot passes it on as wHitEffectX
+DEF wBatTilesColumn           EQU $dab1 ; Tilemap column, (wBatX - 8) / 8, where UpdateBatTiles last drew the background tiles under the wide bat
+DEF wBatTilesDrawn            EQU $dab2 ; Not 0 (it holds wBatWidth) while UpdateBatTiles has tiles drawn under the wide bat at wBatTilesColumn; cleared when they are restored and at level set-up
+DEF wMenuRightHeld            EQU $dab8 ; 1 until right is released on the music and sound effects menu items, so holding right toggles the setting only once
+DEF wMenuLeftHeld             EQU $dab9 ; 1 while Left is held on the main menu, so that one press toggles the music or SFX setting only once; 0 when released
+DEF wStartLevelLine           EQU $dac3 ; RAM copy of the "START Lnnn" menu string of the chosen language (20 bytes), drawn with DrawString; wStartLevelText is its three digits
+DEF wMenuSparkleCurvePtrs     EQU $daed ; Address of the next step in MenuSparkleCurve for each of the 5 menu sparkles (5 words); the step is added to the sparkle's second position byte
+DEF wMenuTwinkles             EQU $daf7 ; 11 small animated menu sprites (2 OAM entries each), 8 bytes per entry: delay countdown (word), animation frame 0-10, x, y, sprite attribute, delay to reload after the animation (word)
+DEF wMenuScrollStepPtr        EQU $db4f ; Address (word) of the next signed step that is added to hMenuScrollY each frame while the main menu slides in
+DEF wPasswordSlotTiles        EQU $db56 ; The 4 menu tiles at $9968-$996B that the password letters overwrite, saved when the menu is drawn and written back every VBlank while no password is being typed
+DEF wPowerupSpritesUsed       EQU $db70 ; Number of sprites written for falling power-ups this frame (4 per power-up); added into wOamUsedLastFrame and then cleared
+DEF wGrenadeBlastTimer        EQU $dbea ; Grenade explosion timer: set to $34 when a grenade lands, counts down each frame and picks the explosion sprite frame
+DEF wGrenadeBlastX            EQU $dbeb ; X position of the grenade explosion being drawn (copied from the grenade's X when it lands)
+DEF wGrenadeBlastY            EQU $dbec ; Y position of the grenade explosion being drawn (copied from the grenade's Y when it lands)
+DEF wGhostTick                EQU $dc22 ; Frame counter for Ghost: wGhostTimer counts down once every 8 frames
+DEF wUfoBombStartY            EQU $dc32 ; Y position where the UFO bomb was released (UFO height + 16); the release sprite is drawn here for the first frames of the drop
+DEF wProjectileBouncedX       EQU $dc37 ; 1 when the projectile hit a brick on its left or right side in this step; its X position is then put back to the old value
+DEF wProjectileBouncedY       EQU $dc38 ; 1 when the projectile hit a brick above or below in this step; its Y position is then put back to the old value
+DEF wProjectileOldXSub        EQU $dc39 ; Projectile X position before the move, fraction byte
+DEF wProjectileOldX           EQU $dc3a ; Projectile X position before the move, used to undo the move after a side bounce
+DEF wProjectileOldYSub        EQU $dc3b ; Projectile Y position before the move, fraction byte
+DEF wProjectileOldY           EQU $dc3c ; Projectile Y position before the move, used to undo the move after a top or bottom bounce
+DEF wUnbreakableHitEffectPtr  EQU $dcd3 ; Address of the slot in wUnbreakableHitEffects that the next effect will use; goes back to the first slot at the $ff end marker
+DEF wUnbreakableHitEffectsEnd EQU $dcf3 ; $ff end marker right after the 10 three-byte slots of wUnbreakableHitEffects; the spawn pointer wraps to the first slot when it reaches it
+DEF wBonusCountdownPaused     EQU $dd4c ; When 1, the bonus countdown on the level password screen is not reduced; no code that writes it was found
+DEF wLevelPasswordUnused      EQU $defb ; Set to 0 when the level password screen is set up; no code that reads it was found
+DEF wLanguageDownHeld         EQU $defd ; Not 0 while Down is held on the language selection screen, so one press moves the choice one step
+DEF wLanguageUpHeld           EQU $defe ; Not 0 while Up is held on the language selection screen, so one press moves the choice one step
+DEF wLangOnTiles              EQU $df3d ; The three tile numbers of the word ON drawn on the music and sound effects rows of the main menu (English "ON ")
+DEF wLangOffTiles             EQU $df40 ; The three tile numbers of the word OFF drawn on the music and sound effects rows of the main menu (English "OFF")
+DEF wLangLevelLetter          EQU $df43 ; The letter put in front of level numbers in this language: L in English, Italian and German, N in Spanish, E in French
+DEF wLangLatestBlinkWidth     EQU $df45 ; Number of tile attributes, starting at $9a01, that blink on the high score screen; it covers this language's LATEST label
+DEF wLangStartLevelDigitsAddress EQU $df48 ; Tile map address of the three level digits of the START Lnnn row of the main menu ($98eb in English)
+DEF hMenuSparkleTick          EQU $ff8f ; Goes up by 1 on each call of UpdateMenuSparkles once the menu has slid in; sparkles move to their next animation frame only when its low two bits are 0
 DEF wBrickRedrawQueue      EQU $d91c ; Brick tile changes waiting to be drawn, 4 bytes each
 DEF wStartLevelText        EQU $dad3 ; The three digits of "START nnn" on the menu
 DEF wMenuSparkles          EQU $dae3 ; The sparkles on the menu screens
@@ -303,111 +437,3 @@ DEF STATE_PUBLISHER_LOGO     EQU 12 ; SCi logo
 DEF STATE_ENDING             EQU 13 ; Ending text after level 160
 
 ; Variables whose purpose is not known yet
-DEF wUnk_c000 EQU $c000
-DEF wUnk_c1fe EQU $c1fe
-DEF wUnk_c250 EQU $c250
-DEF wUnk_c2b8 EQU $c2b8
-DEF wUnk_c2b9 EQU $c2b9
-DEF wUnk_c3be EQU $c3be
-DEF wUnk_c3c8 EQU $c3c8
-DEF wUnk_c954 EQU $c954
-DEF wUnk_c958 EQU $c958
-DEF wUnk_c959 EQU $c959
-DEF wUnk_c95a EQU $c95a
-DEF wUnk_ca9d EQU $ca9d
-DEF wUnk_cab5 EQU $cab5
-DEF wUnk_cab6 EQU $cab6
-DEF wUnk_cabb EQU $cabb
-DEF wUnk_cabc EQU $cabc
-DEF wUnk_cadd EQU $cadd
-DEF wUnk_caed EQU $caed
-DEF wUnk_caee EQU $caee
-DEF wUnk_caf1 EQU $caf1
-DEF wUnk_caf2 EQU $caf2
-DEF wUnk_caf3 EQU $caf3
-DEF wUnk_caf4 EQU $caf4
-DEF wUnk_caf7 EQU $caf7
-DEF wUnk_caf8 EQU $caf8
-DEF wUnk_caf9 EQU $caf9
-DEF wUnk_cafa EQU $cafa
-DEF wUnk_cafb EQU $cafb
-DEF wUnk_cafc EQU $cafc
-DEF wUnk_cb1d EQU $cb1d
-DEF wUnk_cb69 EQU $cb69
-DEF wUnk_cb85 EQU $cb85
-DEF wUnk_cb96 EQU $cb96
-DEF wUnk_cc7c EQU $cc7c
-DEF wUnk_cc98 EQU $cc98
-DEF wUnk_cc99 EQU $cc99
-DEF wUnk_ccad EQU $ccad
-DEF wUnk_ccb6 EQU $ccb6
-DEF wUnk_ccc2 EQU $ccc2
-DEF wUnk_ccc3 EQU $ccc3
-DEF wUnk_ccc4 EQU $ccc4
-DEF wUnk_ccc5 EQU $ccc5
-DEF wUnk_ccc6 EQU $ccc6
-DEF wUnk_ccc7 EQU $ccc7
-DEF wUnk_ccc8 EQU $ccc8
-DEF wUnk_ccc9 EQU $ccc9
-DEF wUnk_ccca EQU $ccca
-DEF wUnk_cccb EQU $cccb
-DEF wUnk_cccd EQU $cccd
-DEF wUnk_ccce EQU $ccce
-DEF wUnk_ccfb EQU $ccfb
-DEF wUnk_d000 EQU $d000
-DEF wUnk_d6c0 EQU $d6c0
-DEF wUnk_d75e EQU $d75e
-DEF wUnk_d8ab EQU $d8ab
-DEF wUnk_d8ba EQU $d8ba
-DEF wUnk_d8bb EQU $d8bb
-DEF wUnk_dab1 EQU $dab1
-DEF wUnk_dab2 EQU $dab2
-DEF wUnk_dab8 EQU $dab8
-DEF wUnk_dab9 EQU $dab9
-DEF wUnk_dac3 EQU $dac3
-DEF wUnk_dad2 EQU $dad2
-DEF wUnk_daed EQU $daed
-DEF wUnk_daf7 EQU $daf7
-DEF wUnk_db4f EQU $db4f
-DEF wUnk_db50 EQU $db50
-DEF wUnk_db56 EQU $db56
-DEF wUnk_db70 EQU $db70
-DEF wUnk_dbea EQU $dbea
-DEF wUnk_dbeb EQU $dbeb
-DEF wUnk_dbec EQU $dbec
-DEF wUnk_dc1e EQU $dc1e
-DEF wUnk_dc1f EQU $dc1f
-DEF wUnk_dc22 EQU $dc22
-DEF wUnk_dc32 EQU $dc32
-DEF wUnk_dc37 EQU $dc37
-DEF wUnk_dc38 EQU $dc38
-DEF wUnk_dc39 EQU $dc39
-DEF wUnk_dc3a EQU $dc3a
-DEF wUnk_dc3b EQU $dc3b
-DEF wUnk_dc3c EQU $dc3c
-DEF wUnk_dcd3 EQU $dcd3
-DEF wUnk_dcd4 EQU $dcd4
-DEF wUnk_dcf3 EQU $dcf3
-DEF wUnk_dd4c EQU $dd4c
-DEF wUnk_defb EQU $defb
-DEF wUnk_defd EQU $defd
-DEF wUnk_defe EQU $defe
-DEF wUnk_df35 EQU $df35
-DEF wUnk_df36 EQU $df36
-DEF wUnk_df37 EQU $df37
-DEF wUnk_df38 EQU $df38
-DEF wUnk_df39 EQU $df39
-DEF wUnk_df3a EQU $df3a
-DEF wUnk_df3b EQU $df3b
-DEF wUnk_df3c EQU $df3c
-DEF wUnk_df3d EQU $df3d
-DEF wUnk_df40 EQU $df40
-DEF wUnk_df43 EQU $df43
-DEF wUnk_df45 EQU $df45
-DEF wUnk_df48 EQU $df48
-DEF wUnk_df49 EQU $df49
-DEF wUnk_df4c EQU $df4c
-DEF wUnk_df4d EQU $df4d
-DEF hUnk_ff8f EQU $ff8f
-DEF hUnk_ff96 EQU $ff96
-DEF hUnk_ff97 EQU $ff97
