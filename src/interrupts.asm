@@ -118,7 +118,8 @@ SerialTransferCompleteInterrupt::
 JoypadTransitionInterrupt::
     reti
 
-Call_000_0061:
+; Unpack the colour palettes at DE into the palette buffer.
+LoadPalettes:
     ld hl, $c9dd
     ld b, $10
     ld a, [$ff9c]
