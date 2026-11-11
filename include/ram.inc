@@ -83,6 +83,29 @@ DEF wGrenadePower          EQU $dc49 ; Throw power, grows while A is held
 DEF wGrenadeDelay          EQU $dc4b ; Delay after a throw
 DEF wLaserBat              EQU $dc4c ; 1 = Laser bat, 0 = Rocket bat
 
+; Gameplay: ball movement, enemies and projectiles
+DEF wBallBounced           EQU $d76f ; Set when the ball bounced this frame
+DEF wBallSecondStep        EQU $d770 ; Set when a second movement step is pending
+DEF wBallOldYSub           EQU $d771 ; Ball position before the move
+DEF wBallOldY              EQU $d772
+DEF wBallOldXSub           EQU $d773
+DEF wBallOldX              EQU $d774
+DEF wBlobThrowCount        EQU $dbe0 ; Goes up when the blob starts a throw. While it is not 0, losing the last ball does not cost a life
+DEF wProjectiles           EQU $dbed ; 4 projectiles, 9 bytes each (grenades and blob throws)
+DEF wBlob                  EQU $dc11 ; The blob, a 15-byte enemy object
+DEF wBlobY                 EQU $dc12
+DEF wBlobX                 EQU $dc14
+DEF wBlobThrowing          EQU $dc24 ; Not 0 while the blob plays its throw animation
+DEF wUfoXSub               EQU $dc25 ; UFO X position, fraction
+DEF wUfoX                  EQU $dc26 ; UFO X position
+DEF wUfoSpeed              EQU $dc28 ; UFO speed, +$80 or -$80 fractions per frame
+DEF wUfoWaitTimer          EQU $dc2a ; Time until the next UFO pass
+DEF wUfoFlying             EQU $dc2d ; Not 0 while the UFO crosses the screen
+DEF wUfoBombActive         EQU $dc2f ; Not 0 while a UFO bomb falls
+DEF wUfoBombX              EQU $dc30
+DEF wUfoBombY              EQU $dc31
+DEF wUfoDropX              EQU $dc33 ; X position where the UFO drops its bomb, taken from the frame counter
+
 ; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
 DEF wLanguage              EQU $defc
 

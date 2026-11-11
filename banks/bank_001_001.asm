@@ -446,7 +446,11 @@ BrickPalette_49b0:
     db $00, $00, $4e, $02, $00, $08, $4f, $01, $00
     db $10
     db $50, $05, $f8, $04, $52, $02, $f8, $0c, $53, $05, $01, $0a, $02, $0f, $03, $14
-    db $04, $19, $05, $32, $f5, $00
+    db $04, $19, $05, $32
+
+; UFO passes: wait time and side for each of 8 passes.
+UfoPassTable:
+    db $f5, $00
     db $80, $00
 
     db $c8, $01, $32, $00, $e6, $01, $0a, $00, $be, $01, $64, $01
@@ -1945,7 +1949,7 @@ jr_001_5e99:
     ld h, $00
     add hl, hl
     add hl, hl
-    ld de, $617f
+    ld de, BallVelocityTable
     add hl, de
     ld a, [hl+]
     ld c, a
@@ -2238,6 +2242,8 @@ BatSpeedTable:
     db $55, $55, $55, $44, $44, $44, $44, $33, $33, $33, $33, $22, $22, $22, $22, $11
     db $11, $11, $11, $00, $00, $00, $00
 
+; X and Y velocity (two words) for each of the 32 ball directions.
+BallVelocityTable:
     db $00, $00, $00, $ff
     db $30, $00, $08, $ff, $60, $00, $12, $ff, $8d, $00, $2d, $ff, $b5, $00, $4b, $ff
     db $d3, $00, $73, $ff
@@ -2274,7 +2280,7 @@ BatSpeedTable:
     db $73, $ff, $2d, $ff
     db $a0, $ff, $12, $ff, $d0, $ff, $08, $ff
 
-BallReflectY2Table:
+BallReflectBottomTable:
     db $00
     db $01
 
@@ -2304,7 +2310,7 @@ BallReflectY2Table:
 
     db $1f
 
-BallReflectY1Table:
+BallReflectTopTable:
     db $10
 
     db $0f, $0e, $0d, $0c, $0b
@@ -2335,7 +2341,7 @@ BallReflectY1Table:
     db $13
     db $12, $11
 
-BallReflectX2Table:
+BallReflectRightTable:
     db $00
     db $1f
 
@@ -2366,7 +2372,7 @@ BallReflectX2Table:
 
     db $1f
 
-BallReflectX1Table:
+BallReflectLeftTable:
     db $00
     db $01
 
