@@ -691,7 +691,8 @@ PowerupMap_Level123:
     db $11, $00,  $11, $00,  $01, $0a,  $43, $00,  $01, $05,  $1a, $00,  $01, $05,  $8f, $00
     db $00
 
-LevelPasswordData_00c_4ca8:
+; Start values of wScrollSplits.
+LevelPasswordScrollSplits:
     db $00, $1c
     db $fc
     db $78, $00, $1c

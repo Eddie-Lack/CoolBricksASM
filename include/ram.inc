@@ -207,6 +207,40 @@ DEF wFireworkSpriteCount  EQU $de7d ; Sprites written by UpdateFireworks this fr
 DEF wFireworkOamPtr       EQU $de7e ; Next free sprite in wOamBuffer
 DEF wFireworkTick         EQU $de80 ; Counts 0 to 3; sparks change colour when it is 0
 DEF wTwinkles             EQU $de81 ; The 11 twinkling stars on the level password screen
+DEF wTitleLetterArrived   EQU $db5a ; Number (1 to 6) of the title letter that just finished sliding in
+DEF wTitleLetterX         EQU $db5b ; X offset of each of the six sliding title letters
+DEF wTitleLetterPathPtrs  EQU $db61 ; Address of the next path step of each title letter (6 words)
+DEF wTitleLetterSliding   EQU $db6d ; Number (1 to 6) of the title letter that is sliding in; 0 = none
+DEF hInterruptEnable      EQU $ff9a ; Value for rIE on this screen: 1 = VBlank, 3 = VBlank and LCD STAT
+DEF hLycStart             EQU $ff9b ; First value of rLYC on this screen
+DEF hLevelScrollX         EQU $ff9d ; rSCX while a level is played
+DEF hMenuScrollY          EQU $ff9e ; rSCY of the main menu. The menu slides in from $90 and takes input at 0
+DEF wCreditsRowColour     EQU $dcf4 ; Colour code that follows the credits row just drawn. $fe = no new row, $ff = handled
+DEF wCreditsScrollDone    EQU $dcf5 ; 0 = VBlank must scroll the credits one pixel, $ff = done
+DEF wCreditsScrollY       EQU $dcf7 ; rSCY of the credits
+DEF wCreditsTextStart     EQU $dcf8 ; Address of the credits text for the chosen language
+DEF wCreditsTextPtr       EQU $dcfa ; Address of the next credits row
+DEF wCreditsRowAddress    EQU $dcfc ; Tilemap address where the next credits row is drawn
+DEF wLevelPasswordReady   EQU $dd00 ; 1 = the level password screen is set up and its VBlank handler may run
+DEF wScrollSplitPtr       EQU $dd01 ; Address of the next entry of wScrollSplits for the LCD STAT handler
+DEF wScrollSplits         EQU $dd03 ; Three pairs of rSCX and the screen line where the next pair starts
+DEF wLogoSwayPtr          EQU $dd09 ; Address of the next step in LogoSwaySteps
+DEF wLevelPasswordText    EQU $dd0b ; The text of the level password screen, copied from the language table (62 bytes)
+DEF wTwinkleWrites        EQU $deb8 ; Tile changes of the twinkling stars for VBlank, 6 bytes each
+DEF wTwinkleWriteCount    EQU $defa ; Number of entries in wTwinkleWrites
+DEF wHitTileWriteCount    EQU $d9bc ; Tile changes that ProcessBrickHitQueue added to wVBlankTileWrites this frame
+DEF wEndingSeen           EQU $dcff ; Non-zero after the ending. The level password screens are then skipped
+DEF wBallLoopCount        EQU $d8a4 ; Number of balls at the start of this frame's ball loop
+DEF wLevelTitleTimer      EQU $d745 ; Counts down while the top row shows the level title instead of the score. $ff = clear the row first
+DEF wLevelTitleBlink      EQU $d746 ; Blink phase of the level title
+DEF wNameEntry            EQU $ccbb ; The name being entered on the high score screen. $5b is an empty position
+DEF wNameEntryCursor      EQU $cccc ; Position of the letter being chosen in wNameEntry
+DEF wNameEntryAddress     EQU $ccb4 ; Tilemap address where wNameEntry is drawn. 0 = no name entry
+DEF wBlinkPhase           EQU $c95b ; Blink phase of the name entry row
+DEF wBlinkTimer           EQU $c95c ; Frames until the name entry row blinks again
+DEF wPasswordChars        EQU $cb7c ; The four letters of the password being checked or built
+DEF wLevelPasswordChars   EQU $cce3 ; The four letters of the latest level password
+DEF wEnemyPathWork        EQU $dbd1 ; Working copy of the enemy path record being updated (15 bytes)
 DEF wBrickRedrawQueue      EQU $d91c ; Brick tile changes waiting to be drawn, 4 bytes each
 DEF wStartLevelText        EQU $dad3 ; The three digits of "START nnn" on the menu
 DEF wMenuSparkles          EQU $dae3 ; The sparkles on the menu screens
@@ -280,8 +314,6 @@ DEF wUnk_c954 EQU $c954
 DEF wUnk_c958 EQU $c958
 DEF wUnk_c959 EQU $c959
 DEF wUnk_c95a EQU $c95a
-DEF wUnk_c95b EQU $c95b
-DEF wUnk_c95c EQU $c95c
 DEF wUnk_ca9d EQU $ca9d
 DEF wUnk_cab5 EQU $cab5
 DEF wUnk_cab6 EQU $cab6
@@ -302,26 +334,13 @@ DEF wUnk_cafb EQU $cafb
 DEF wUnk_cafc EQU $cafc
 DEF wUnk_cb1d EQU $cb1d
 DEF wUnk_cb69 EQU $cb69
-DEF wUnk_cb7c EQU $cb7c
-DEF wUnk_cb7d EQU $cb7d
-DEF wUnk_cb7e EQU $cb7e
-DEF wUnk_cb7f EQU $cb7f
 DEF wUnk_cb85 EQU $cb85
 DEF wUnk_cb96 EQU $cb96
 DEF wUnk_cc7c EQU $cc7c
 DEF wUnk_cc98 EQU $cc98
 DEF wUnk_cc99 EQU $cc99
 DEF wUnk_ccad EQU $ccad
-DEF wUnk_ccb4 EQU $ccb4
-DEF wUnk_ccb5 EQU $ccb5
 DEF wUnk_ccb6 EQU $ccb6
-DEF wUnk_ccbb EQU $ccbb
-DEF wUnk_ccbc EQU $ccbc
-DEF wUnk_ccbd EQU $ccbd
-DEF wUnk_ccbe EQU $ccbe
-DEF wUnk_ccbf EQU $ccbf
-DEF wUnk_ccc0 EQU $ccc0
-DEF wUnk_ccc1 EQU $ccc1
 DEF wUnk_ccc2 EQU $ccc2
 DEF wUnk_ccc3 EQU $ccc3
 DEF wUnk_ccc4 EQU $ccc4
@@ -332,21 +351,15 @@ DEF wUnk_ccc8 EQU $ccc8
 DEF wUnk_ccc9 EQU $ccc9
 DEF wUnk_ccca EQU $ccca
 DEF wUnk_cccb EQU $cccb
-DEF wUnk_cccc EQU $cccc
 DEF wUnk_cccd EQU $cccd
 DEF wUnk_ccce EQU $ccce
-DEF wUnk_cce3 EQU $cce3
 DEF wUnk_ccfb EQU $ccfb
 DEF wUnk_d000 EQU $d000
 DEF wUnk_d6c0 EQU $d6c0
-DEF wUnk_d745 EQU $d745
-DEF wUnk_d746 EQU $d746
 DEF wUnk_d75e EQU $d75e
-DEF wUnk_d8a4 EQU $d8a4
 DEF wUnk_d8ab EQU $d8ab
 DEF wUnk_d8ba EQU $d8ba
 DEF wUnk_d8bb EQU $d8bb
-DEF wUnk_d9bc EQU $d9bc
 DEF wUnk_dab1 EQU $dab1
 DEF wUnk_dab2 EQU $dab2
 DEF wUnk_dab8 EQU $dab8
@@ -358,40 +371,7 @@ DEF wUnk_daf7 EQU $daf7
 DEF wUnk_db4f EQU $db4f
 DEF wUnk_db50 EQU $db50
 DEF wUnk_db56 EQU $db56
-DEF wUnk_db5a EQU $db5a
-DEF wUnk_db5b EQU $db5b
-DEF wUnk_db5c EQU $db5c
-DEF wUnk_db5d EQU $db5d
-DEF wUnk_db5e EQU $db5e
-DEF wUnk_db5f EQU $db5f
-DEF wUnk_db60 EQU $db60
-DEF wUnk_db61 EQU $db61
-DEF wUnk_db62 EQU $db62
-DEF wUnk_db63 EQU $db63
-DEF wUnk_db64 EQU $db64
-DEF wUnk_db65 EQU $db65
-DEF wUnk_db66 EQU $db66
-DEF wUnk_db67 EQU $db67
-DEF wUnk_db68 EQU $db68
-DEF wUnk_db69 EQU $db69
-DEF wUnk_db6a EQU $db6a
-DEF wUnk_db6b EQU $db6b
-DEF wUnk_db6c EQU $db6c
-DEF wUnk_db6d EQU $db6d
 DEF wUnk_db70 EQU $db70
-DEF wUnk_dbd1 EQU $dbd1
-DEF wUnk_dbd2 EQU $dbd2
-DEF wUnk_dbd3 EQU $dbd3
-DEF wUnk_dbd4 EQU $dbd4
-DEF wUnk_dbd5 EQU $dbd5
-DEF wUnk_dbd6 EQU $dbd6
-DEF wUnk_dbd9 EQU $dbd9
-DEF wUnk_dbda EQU $dbda
-DEF wUnk_dbdb EQU $dbdb
-DEF wUnk_dbdc EQU $dbdc
-DEF wUnk_dbdd EQU $dbdd
-DEF wUnk_dbde EQU $dbde
-DEF wUnk_dbdf EQU $dbdf
 DEF wUnk_dbea EQU $dbea
 DEF wUnk_dbeb EQU $dbeb
 DEF wUnk_dbec EQU $dbec
@@ -408,29 +388,7 @@ DEF wUnk_dc3c EQU $dc3c
 DEF wUnk_dcd3 EQU $dcd3
 DEF wUnk_dcd4 EQU $dcd4
 DEF wUnk_dcf3 EQU $dcf3
-DEF wUnk_dcf4 EQU $dcf4
-DEF wUnk_dcf5 EQU $dcf5
-DEF wUnk_dcf7 EQU $dcf7
-DEF wUnk_dcf8 EQU $dcf8
-DEF wUnk_dcf9 EQU $dcf9
-DEF wUnk_dcfa EQU $dcfa
-DEF wUnk_dcfb EQU $dcfb
-DEF wUnk_dcfc EQU $dcfc
-DEF wUnk_dcfd EQU $dcfd
-DEF wUnk_dcff EQU $dcff
-DEF wUnk_dd00 EQU $dd00
-DEF wUnk_dd01 EQU $dd01
-DEF wUnk_dd02 EQU $dd02
-DEF wUnk_dd03 EQU $dd03
-DEF wUnk_dd07 EQU $dd07
-DEF wUnk_dd09 EQU $dd09
-DEF wUnk_dd0a EQU $dd0a
-DEF wUnk_dd0b EQU $dd0b
-DEF wUnk_dd17 EQU $dd17
-DEF wUnk_dd32 EQU $dd32
 DEF wUnk_dd4c EQU $dd4c
-DEF wUnk_deb8 EQU $deb8
-DEF wUnk_defa EQU $defa
 DEF wUnk_defb EQU $defb
 DEF wUnk_defd EQU $defd
 DEF wUnk_defe EQU $defe
@@ -453,7 +411,3 @@ DEF wUnk_df4d EQU $df4d
 DEF hUnk_ff8f EQU $ff8f
 DEF hUnk_ff96 EQU $ff96
 DEF hUnk_ff97 EQU $ff97
-DEF hUnk_ff9a EQU $ff9a
-DEF hUnk_ff9b EQU $ff9b
-DEF hUnk_ff9d EQU $ff9d
-DEF hUnk_ff9e EQU $ff9e

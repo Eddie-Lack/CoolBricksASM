@@ -997,7 +997,7 @@ Powerup_Smiley:
     jr nz, jr_001_526a
 
     call NextLevelMusic
-    ld a, [wUnk_dcff]
+    ld a, [wEndingSeen]
     or a
     jr nz, jr_001_526a
 
@@ -1458,33 +1458,36 @@ GrenadeThrowTable:
     dw $0068, ThrowPath_4bc5
     dw $0070, ThrowPath_4b55
 
-TitleScreenData_001_583e:
+; X step per frame for each sliding letter, ending with 0. All six paths share one list:
+; each later letter starts 3 bytes further in, so it travels a shorter distance.
+TitleLetterPath_1:
     db $f8, $f8, $f8
 
-TitleScreenData_001_5841:
+TitleLetterPath_2:
     db $f8, $f8, $f8
 
-TitleScreenData_001_5844:
+TitleLetterPath_3:
     db $f8, $f8, $f8
 
-TitleScreenData_001_5847:
+TitleLetterPath_4:
     db $f8, $f8, $f8
 
-TitleScreenData_001_584a:
+TitleLetterPath_5:
     db $f8, $f8, $f8
 
-TitleScreenData_001_584d:
+TitleLetterPath_6:
     db $f8
     db $f8, $f8, $fd, $fe, $fe, $ff, $00
 
-TitleScreenData_001_5855:
+; Sprite lists of the six sliding letters.
+TitleLetterSprites_1:
     db $12, $00, $00, $00, $01, $00, $08, $00, $01
     db $00, $10, $00, $01, $08, $00, $00, $01, $08, $08, $00, $01, $08, $10, $00, $01
     db $10, $00, $00, $01, $10, $08, $00, $01, $10, $10, $00, $01, $18, $00, $20, $01
     db $18, $08, $21, $01, $18, $10, $22, $01, $20, $00, $32, $01, $20, $08, $33, $01
     db $20, $10, $34, $01, $28, $00, $42, $01, $28, $08, $43, $01, $28, $10, $44, $01
 
-TitleScreenData_001_589e:
+TitleLetterSprites_2:
     db $24, $00, $00, $01, $00, $00, $08, $02, $00, $00, $10, $03, $00, $08, $00, $0b
     db $00, $08, $08, $0c, $00, $08, $10, $0d, $00, $10, $00, $14, $00, $10, $08, $15
     db $00, $10, $10, $16, $00, $18, $00, $23, $01, $18, $08, $24, $01, $18, $10, $25
@@ -1496,7 +1499,7 @@ TitleScreenData_001_589e:
     db $00, $20, $10, $00, $00, $28, $00, $00, $00, $28, $08, $00, $00, $28, $10, $00
     db $00
 
-TitleScreenData_001_592f:
+TitleLetterSprites_3:
     db $24, $00, $00, $04, $00, $00, $08, $05, $00, $00, $10, $06, $00, $08, $00
     db $0e, $00, $08, $08, $0f, $00, $08, $10, $10, $00, $10, $00, $17, $00, $10, $08
     db $18, $00, $10, $10, $19, $00, $18, $00, $26, $01, $18, $08, $27, $01, $18, $10
@@ -1508,7 +1511,7 @@ TitleScreenData_001_592f:
     db $00, $00, $20, $10, $00, $00, $28, $00, $00, $00, $28, $08, $00, $00, $28, $10
     db $00, $00
 
-TitleScreenData_001_59c0:
+TitleLetterSprites_4:
     db $24, $00, $00, $07, $00, $00, $08, $08, $00, $00, $10, $09, $00, $08
     db $00, $11, $00, $08, $08, $0f, $00, $08, $10, $12, $00, $10, $00, $1a, $00, $10
     db $08, $1b, $00, $10, $10, $1c, $00, $18, $00, $29, $01, $18, $08, $2a, $01, $18
@@ -1520,7 +1523,7 @@ TitleScreenData_001_59c0:
     db $08, $00, $00, $20, $10, $00, $00, $28, $00, $00, $00, $28, $08, $00, $00, $28
     db $10, $00, $00
 
-TitleScreenData_001_5a51:
+TitleLetterSprites_5:
     db $24, $00, $00, $0a, $00, $00, $08, $00, $00, $00, $10, $00, $00
     db $08, $00, $13, $00, $08, $08, $00, $00, $08, $10, $00, $00, $10, $00, $1d, $00
     db $10, $08, $1e, $00, $10, $10, $1f, $00, $18, $00, $2c, $01, $18, $08, $2d, $01
@@ -1532,14 +1535,14 @@ TitleScreenData_001_5a51:
     db $20, $08, $00, $00, $20, $10, $00, $00, $28, $00, $00, $00, $28, $08, $00, $00
     db $28, $10, $00, $00
 
-TitleScreenData_001_5ae2:
+TitleLetterSprites_6:
     db $12, $00, $00, $00, $01, $00, $08, $00, $01, $00, $10, $00
     db $01, $08, $00, $00, $01, $08, $08, $00, $01, $08, $10, $00, $01, $10, $00, $00
     db $01, $10, $08, $00, $01, $10, $10, $00, $01, $18, $00, $2f, $01, $18, $08, $30
     db $01, $18, $10, $31, $01, $20, $00, $3f, $01, $20, $08, $40, $01, $20, $10, $41
     db $01, $28, $00, $51, $01, $28, $08, $52
 
-TitleLetterTable_5b26:
+TitleLetterTileTable:
     db $01, $28, $10, $53, $01
     dw $9801
     db $03
@@ -1557,7 +1560,7 @@ TitleLetterTable_5b26:
     db $03
     dw TitleLetterTiles_5b79
 
-TitleLetterTable_5b44:
+TitleLetterAttrTable:
     dw $9810
     db $03
     dw TitleLetterTiles_5b67
@@ -1752,19 +1755,19 @@ jr_001_5cbd:
     ret
 
 LevelPassword_VBlank:
-    ld a, [wUnk_dd00]
+    ld a, [wLevelPasswordReady]
     or a
     ret z
 
     ld a, $03
     ldh [rIE], a
-    ld hl, wUnk_dd32
+    ld hl, wLevelPasswordText + 39
     call DrawString
-    ld a, [wUnk_defa]
+    ld a, [wTwinkleWriteCount]
     or a
     jr z, jr_001_5cf5
 
-    ld de, wUnk_deb8
+    ld de, wTwinkleWrites
 
 jr_001_5cd6:
     push af
@@ -1793,41 +1796,41 @@ jr_001_5cd6:
     jr nz, jr_001_5cd6
 
     xor a
-    ld [wUnk_defa], a
+    ld [wTwinkleWriteCount], a
 
 jr_001_5cf5:
-    ld a, [wUnk_dd09]
+    ld a, [wLogoSwayPtr]
     ld l, a
-    ld a, [wUnk_dd0a]
+    ld a, [wLogoSwayPtr + 1]
     ld h, a
     ld a, [hl+]
     or a
     jr nz, jr_001_5d05
 
-    ld hl, LevelPasswordData_001_6784
+    ld hl, LogoSwaySteps
     ld a, [hl+]
 
 jr_001_5d05:
     ld b, a
-    ld a, [wUnk_dd03]
+    ld a, [wScrollSplits]
     add b
-    ld [wUnk_dd03], a
-    ld a, [wUnk_dd07]
+    ld [wScrollSplits], a
+    ld a, [wScrollSplits + 4]
     sub b
-    ld [wUnk_dd07], a
+    ld [wScrollSplits + 4], a
     ld a, l
-    ld [wUnk_dd09], a
+    ld [wLogoSwayPtr], a
     ld a, h
-    ld [wUnk_dd0a], a
-    ld hl, wUnk_dd03
+    ld [wLogoSwayPtr + 1], a
+    ld hl, wScrollSplits
     ld a, [hl+]
     ldh [rSCX], a
     ld a, [hl+]
     ldh [rLYC], a
     ld a, l
-    ld [wUnk_dd01], a
+    ld [wScrollSplitPtr], a
     ld a, h
-    ld [wUnk_dd02], a
+    ld [wScrollSplitPtr + 1], a
     ret
 
 ; Start the next firework. HL = a firework record; its first two bytes point into the launch script.
@@ -2217,7 +2220,7 @@ jr_001_5f06:
 UpdateTwinkles:
     ld a, $0b
     ld hl, wTwinkles
-    ld de, wUnk_deb8
+    ld de, wTwinkleWrites
 
 jr_001_5f20:
     push af
@@ -2266,9 +2269,9 @@ jr_001_5f20:
     inc bc
     ld [de], a
     inc de
-    ld a, [wUnk_defa]
+    ld a, [wTwinkleWriteCount]
     inc a
-    ld [wUnk_defa], a
+    ld [wTwinkleWriteCount], a
     pop hl
     ld bc, $0005
     add hl, bc
@@ -3193,7 +3196,8 @@ jr_001_653e:
 
     ret
 
-LevelPasswordData_001_6543:
+; Start values of wTwinkles: 11 stars of 5 bytes (delay, frame, tilemap address, first tile).
+TwinkleInitData:
     db $01, $00, $2e, $99, $64, $0a, $00, $26, $99, $69, $14, $00, $d2, $98, $64, $1e
     db $00, $92, $99, $69, $28, $00, $90, $98, $64, $32, $00, $ad, $99, $69, $3c, $00
     db $87, $99, $64, $46, $00, $82, $99, $69, $50, $00, $20, $99, $64, $64, $00, $c1
@@ -3306,7 +3310,8 @@ LevelPasswordCurve_674d:
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $7f
 
-LevelPasswordData_001_6784:
+; Scroll steps that sway the logo on the level password screen, ending with 0.
+LogoSwaySteps:
     db $03, $03, $03, $03, $03, $03, $03, $03, $02, $01
     db $ff, $fe, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd
     db $fd, $fd, $fe, $ff, $01, $02, $03, $03, $03, $03, $03, $03, $03, $03, $00
@@ -3980,7 +3985,7 @@ Text_German_LatestScore:
     db $00, $84, "       LETZTE ", $00, $81, "000000", $ff
 
 TitleScreen_VBlank:
-    ld a, [wUnk_db5a]
+    ld a, [wTitleLetterArrived]
     or a
     ret z
 
@@ -3990,7 +3995,7 @@ TitleScreen_VBlank:
     add a
     ld l, a
     ld h, b
-    ld de, TitleLetterTable_5b44
+    ld de, TitleLetterAttrTable
     add hl, de
     add hl, bc
     ld a, [hl+]
@@ -4007,14 +4012,14 @@ TitleScreen_VBlank:
     xor a
     ld c, $06
     call CopyTilemapRect
-    ld a, [wUnk_db5a]
+    ld a, [wTitleLetterArrived]
     ld c, a
     ld b, $00
     add a
     add a
     ld l, a
     ld h, b
-    ld de, TitleLetterTable_5b26
+    ld de, TitleLetterTileTable
     add hl, de
     add hl, bc
     ld a, [hl+]
@@ -4028,14 +4033,16 @@ TitleScreen_VBlank:
     ld l, a
     xor a
     ldh [rVBK], a
-    ld [wUnk_db5a], a
+    ld [wTitleLetterArrived], a
     ld a, $ad
     ld c, $06
     call CopyTilemapRect
     ret
 
-TitleScreen_Sub6cd4:
-    ld a, [wUnk_db6d]
+; Slide the six title letters in from the right, one after the other, as sprites.
+; When a letter reaches the end of its path, wTitleLetterArrived tells the caller to draw it on the background.
+TitleScreen_SlideLetters:
+    ld a, [wTitleLetterSliding]
     or a
     ret z
 
@@ -4047,189 +4054,190 @@ TitleScreen_Sub6cd4:
     cp $01
     jr nz, jr_001_6d15
 
-    ld a, [wUnk_db61]
+    ld a, [wTitleLetterPathPtrs]
     ld l, a
-    ld a, [wUnk_db62]
+    ld a, [wTitleLetterPathPtrs + 1]
     ld h, a
     ld a, [hl+]
     or a
     jr nz, jr_001_6cfe
 
     ld a, $02
-    ld [wUnk_db6d], a
+    ld [wTitleLetterSliding], a
     ld a, $01
-    ld [wUnk_db5a], a
+    ld [wTitleLetterArrived], a
     ret
 
 jr_001_6cfe:
     ld b, a
     ld a, l
-    ld [wUnk_db61], a
+    ld [wTitleLetterPathPtrs], a
     ld a, h
-    ld [wUnk_db62], a
-    ld a, [wUnk_db5b]
+    ld [wTitleLetterPathPtrs + 1], a
+    ld a, [wTitleLetterX]
     add b
-    ld [wUnk_db5b], a
+    ld [wTitleLetterX], a
     ld c, a
-    ld hl, TitleScreenData_001_5855
-    jp TitleScreen_WriteOam
+    ld hl, TitleLetterSprites_1
+    jp TitleScreen_DrawLetterSprites
 
 jr_001_6d15:
     cp $02
     jr nz, jr_001_6d47
 
-    ld a, [wUnk_db63]
+    ld a, [wTitleLetterPathPtrs + 2]
     ld l, a
-    ld a, [wUnk_db64]
+    ld a, [wTitleLetterPathPtrs + 3]
     ld h, a
     ld a, [hl+]
     or a
     jr nz, jr_001_6d30
 
     ld a, $03
-    ld [wUnk_db6d], a
+    ld [wTitleLetterSliding], a
     ld a, $02
-    ld [wUnk_db5a], a
+    ld [wTitleLetterArrived], a
     ret
 
 jr_001_6d30:
     ld b, a
     ld a, l
-    ld [wUnk_db63], a
+    ld [wTitleLetterPathPtrs + 2], a
     ld a, h
-    ld [wUnk_db64], a
-    ld a, [wUnk_db5c]
+    ld [wTitleLetterPathPtrs + 3], a
+    ld a, [wTitleLetterX + 1]
     add b
-    ld [wUnk_db5c], a
+    ld [wTitleLetterX + 1], a
     ld c, a
-    ld hl, TitleScreenData_001_589e
-    jp TitleScreen_WriteOam
+    ld hl, TitleLetterSprites_2
+    jp TitleScreen_DrawLetterSprites
 
 jr_001_6d47:
     cp $03
     jr nz, jr_001_6d79
 
-    ld a, [wUnk_db65]
+    ld a, [wTitleLetterPathPtrs + 4]
     ld l, a
-    ld a, [wUnk_db66]
+    ld a, [wTitleLetterPathPtrs + 5]
     ld h, a
     ld a, [hl+]
     or a
     jr nz, jr_001_6d62
 
     ld a, $04
-    ld [wUnk_db6d], a
+    ld [wTitleLetterSliding], a
     ld a, $03
-    ld [wUnk_db5a], a
+    ld [wTitleLetterArrived], a
     ret
 
 jr_001_6d62:
     ld b, a
     ld a, l
-    ld [wUnk_db65], a
+    ld [wTitleLetterPathPtrs + 4], a
     ld a, h
-    ld [wUnk_db66], a
-    ld a, [wUnk_db5d]
+    ld [wTitleLetterPathPtrs + 5], a
+    ld a, [wTitleLetterX + 2]
     add b
-    ld [wUnk_db5d], a
+    ld [wTitleLetterX + 2], a
     ld c, a
-    ld hl, TitleScreenData_001_592f
-    jp TitleScreen_WriteOam
+    ld hl, TitleLetterSprites_3
+    jp TitleScreen_DrawLetterSprites
 
 jr_001_6d79:
     cp $04
     jr nz, jr_001_6daa
 
-    ld a, [wUnk_db67]
+    ld a, [wTitleLetterPathPtrs + 6]
     ld l, a
-    ld a, [wUnk_db68]
+    ld a, [wTitleLetterPathPtrs + 7]
     ld h, a
     ld a, [hl+]
     or a
     jr nz, jr_001_6d94
 
     ld a, $05
-    ld [wUnk_db6d], a
+    ld [wTitleLetterSliding], a
     ld a, $04
-    ld [wUnk_db5a], a
+    ld [wTitleLetterArrived], a
     ret
 
 jr_001_6d94:
     ld b, a
     ld a, l
-    ld [wUnk_db67], a
+    ld [wTitleLetterPathPtrs + 6], a
     ld a, h
-    ld [wUnk_db68], a
-    ld a, [wUnk_db5e]
+    ld [wTitleLetterPathPtrs + 7], a
+    ld a, [wTitleLetterX + 3]
     add b
-    ld [wUnk_db5e], a
+    ld [wTitleLetterX + 3], a
     ld c, a
-    ld hl, TitleScreenData_001_59c0
-    jr TitleScreen_WriteOam
+    ld hl, TitleLetterSprites_4
+    jr TitleScreen_DrawLetterSprites
 
 jr_001_6daa:
     cp $05
     jr nz, jr_001_6ddb
 
-    ld a, [wUnk_db69]
+    ld a, [wTitleLetterPathPtrs + 8]
     ld l, a
-    ld a, [wUnk_db6a]
+    ld a, [wTitleLetterPathPtrs + 9]
     ld h, a
     ld a, [hl+]
     or a
     jr nz, jr_001_6dc5
 
     ld a, $06
-    ld [wUnk_db6d], a
+    ld [wTitleLetterSliding], a
     ld a, $05
-    ld [wUnk_db5a], a
+    ld [wTitleLetterArrived], a
     ret
 
 jr_001_6dc5:
     ld b, a
     ld a, l
-    ld [wUnk_db69], a
+    ld [wTitleLetterPathPtrs + 8], a
     ld a, h
-    ld [wUnk_db6a], a
-    ld a, [wUnk_db5f]
+    ld [wTitleLetterPathPtrs + 9], a
+    ld a, [wTitleLetterX + 4]
     add b
-    ld [wUnk_db5f], a
+    ld [wTitleLetterX + 4], a
     ld c, a
-    ld hl, TitleScreenData_001_5a51
-    jr TitleScreen_WriteOam
+    ld hl, TitleLetterSprites_5
+    jr TitleScreen_DrawLetterSprites
 
 jr_001_6ddb:
     cp $06
-    jr nz, TitleScreen_WriteOam
+    jr nz, TitleScreen_DrawLetterSprites
 
-    ld a, [wUnk_db6b]
+    ld a, [wTitleLetterPathPtrs + 10]
     ld l, a
-    ld a, [wUnk_db6c]
+    ld a, [wTitleLetterPathPtrs + 11]
     ld h, a
     ld a, [hl+]
     or a
     jr nz, jr_001_6df5
 
     xor a
-    ld [wUnk_db6d], a
+    ld [wTitleLetterSliding], a
     ld a, $06
-    ld [wUnk_db5a], a
+    ld [wTitleLetterArrived], a
     ret
 
 jr_001_6df5:
     ld b, a
     ld a, l
-    ld [wUnk_db6b], a
+    ld [wTitleLetterPathPtrs + 10], a
     ld a, h
-    ld [wUnk_db6c], a
-    ld a, [wUnk_db60]
+    ld [wTitleLetterPathPtrs + 11], a
+    ld a, [wTitleLetterX + 5]
     add b
-    ld [wUnk_db60], a
+    ld [wTitleLetterX + 5], a
     ld c, a
-    ld hl, TitleScreenData_001_5ae2
-    jr TitleScreen_WriteOam
+    ld hl, TitleLetterSprites_6
+    jr TitleScreen_DrawLetterSprites
 
-TitleScreen_WriteOam:
+; Write the sprites of one letter. HL = sprite list (count, then y, x, tile, attribute), C = x offset.
+TitleScreen_DrawLetterSprites:
     ld de, wOamBuffer
     ld b, $10
     ld a, [hl+]
@@ -4256,46 +4264,46 @@ jr_001_6e11:
 
     ret
 
-TitleScreen_Init6e25:
+TitleScreen_InitLetters:
     ld a, $a8
-    ld [wUnk_db5b], a
-    ld [wUnk_db5c], a
-    ld [wUnk_db5d], a
-    ld [wUnk_db5e], a
-    ld [wUnk_db5f], a
-    ld [wUnk_db60], a
-    ld hl, TitleScreenData_001_583e
+    ld [wTitleLetterX], a
+    ld [wTitleLetterX + 1], a
+    ld [wTitleLetterX + 2], a
+    ld [wTitleLetterX + 3], a
+    ld [wTitleLetterX + 4], a
+    ld [wTitleLetterX + 5], a
+    ld hl, TitleLetterPath_1
     ld a, l
-    ld [wUnk_db61], a
+    ld [wTitleLetterPathPtrs], a
     ld a, h
-    ld [wUnk_db62], a
-    ld hl, TitleScreenData_001_5841
+    ld [wTitleLetterPathPtrs + 1], a
+    ld hl, TitleLetterPath_2
     ld a, l
-    ld [wUnk_db63], a
+    ld [wTitleLetterPathPtrs + 2], a
     ld a, h
-    ld [wUnk_db64], a
-    ld hl, TitleScreenData_001_5844
+    ld [wTitleLetterPathPtrs + 3], a
+    ld hl, TitleLetterPath_3
     ld a, l
-    ld [wUnk_db65], a
+    ld [wTitleLetterPathPtrs + 4], a
     ld a, h
-    ld [wUnk_db66], a
-    ld hl, TitleScreenData_001_5847
+    ld [wTitleLetterPathPtrs + 5], a
+    ld hl, TitleLetterPath_4
     ld a, l
-    ld [wUnk_db67], a
+    ld [wTitleLetterPathPtrs + 6], a
     ld a, h
-    ld [wUnk_db68], a
-    ld hl, TitleScreenData_001_584a
+    ld [wTitleLetterPathPtrs + 7], a
+    ld hl, TitleLetterPath_5
     ld a, l
-    ld [wUnk_db69], a
+    ld [wTitleLetterPathPtrs + 8], a
     ld a, h
-    ld [wUnk_db6a], a
-    ld hl, TitleScreenData_001_584d
+    ld [wTitleLetterPathPtrs + 9], a
+    ld hl, TitleLetterPath_6
     ld a, l
-    ld [wUnk_db6b], a
+    ld [wTitleLetterPathPtrs + 10], a
     ld a, h
-    ld [wUnk_db6c], a
+    ld [wTitleLetterPathPtrs + 11], a
     ld a, $01
-    ld [wUnk_db6d], a
+    ld [wTitleLetterSliding], a
     ret
 
     db $40, $98, $00, $0a, $20, $20, $20, $46, $45, $4c, $49, $43, $49, $54, $41, $54
@@ -5021,7 +5029,7 @@ jr_001_727d:
     dec a
     jr nz, jr_001_7270
 
-    ld a, [hUnk_ff9e]
+    ld a, [hMenuScrollY]
     or a
     jr z, jr_001_72ae
 
@@ -5035,9 +5043,9 @@ jr_001_727d:
     ld [wUnk_db4f], a
     ld a, h
     ld [wUnk_db50], a
-    ld a, [hUnk_ff9e]
+    ld a, [hMenuScrollY]
     add b
-    ld [hUnk_ff9e], a
+    ld [hMenuScrollY], a
     ret
 
 jr_001_72ae:
@@ -6026,7 +6034,7 @@ BrickRedrawHandlers:
     dw BrickRedrawCase_Shadow
 
 Credits_Update:
-    ld hl, wUnk_dcf4
+    ld hl, wCreditsRowColour
     ld a, [hl]
     inc a
     ret z
@@ -6039,9 +6047,9 @@ Credits_Update:
     ld [wUnk_c954], a
 
 jr_001_7a6e:
-    ld a, [wUnk_dcf7]
+    ld a, [wCreditsScrollY]
     inc a
-    ld [wUnk_dcf7], a
+    ld [wCreditsScrollY], a
     ld de, wUnk_c3be
     ld hl, wUnk_c3c8
     ld b, $8f
@@ -6069,7 +6077,7 @@ jr_001_7a8d:
     jr nz, jr_001_7a7d
 
     xor a
-    ld [wUnk_dcf5], a
+    ld [wCreditsScrollDone], a
     ld a, [hGameState]
     cp $01
     ret z
@@ -6080,7 +6088,7 @@ jr_001_7a8d:
     jr z, jr_001_7ab6
 
     ld a, $ff
-    ld [wUnk_dcf5], a
+    ld [wCreditsScrollDone], a
     ld a, $01
     ld [hGameState], a
     ld a, $28
@@ -6388,25 +6396,25 @@ ColorOnly_Update:
     ld c, $12
     call CopyTilemapRect
     ld hl, ColorOnlyData_001_4ca8
-    ld de, wUnk_dd03
+    ld de, wScrollSplits
     ld bc, $0006
     call DataTransfer
     ld a, [wLangTextLevelPassword]
     ld l, a
     ld a, [wLangTextLevelPassword + 1]
     ld h, a
-    ld de, wUnk_dd0b
+    ld de, wLevelPasswordText
     ld bc, $003e
     call DataTransfer
     ld a, $01
     call ChangeROMBank
-    ld hl, LevelPasswordData_001_6784
+    ld hl, LogoSwaySteps
     ld a, l
-    ld [wUnk_dd09], a
+    ld [wLogoSwayPtr], a
     ld a, h
-    ld [wUnk_dd0a], a
+    ld [wLogoSwayPtr + 1], a
     call BuildLevelTitle
-    ld hl, wUnk_dd17
+    ld hl, wLevelPasswordText + 12
     ld a, [wLanguage]
     cp $04
     jr nz, jr_001_7d12
@@ -6433,20 +6441,20 @@ jr_001_7d1d:
     ld l, a
     ld a, [wUnk_df36]
     ld h, a
-    ld de, wUnk_cce3
-    ld a, [wUnk_cb7c]
+    ld de, wLevelPasswordChars
+    ld a, [wPasswordChars]
     ld [hl+], a
     ld [de], a
     inc de
-    ld a, [wUnk_cb7d]
+    ld a, [wPasswordChars + 1]
     ld [hl+], a
     ld [de], a
     inc de
-    ld a, [wUnk_cb7e]
+    ld a, [wPasswordChars + 2]
     ld [hl+], a
     ld [de], a
     inc de
-    ld a, [wUnk_cb7f]
+    ld a, [wPasswordChars + 3]
     ld [hl+], a
     ld [de], a
     ld a, [wLevelBonus]
@@ -6477,7 +6485,7 @@ jr_001_7d1d:
     ld b, h
     ld c, l
     call AddScoreBC
-    ld hl, wUnk_dd0b
+    ld hl, wLevelPasswordText
     call DrawString
     call DrawString
     call DrawString
@@ -6519,7 +6527,7 @@ jr_001_7d1d:
     ld [wFireworks + 43], a
     ld a, h
     ld [wFireworks + 44], a
-    ld hl, LevelPasswordData_001_6543
+    ld hl, TwinkleInitData
     ld de, wTwinkles
     ld bc, $0037
     call DataTransfer
