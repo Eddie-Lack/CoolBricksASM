@@ -314,6 +314,15 @@ Special cases, also tested in the emulator:
 - **On level 160** the skip cancels the ending. The game continues at level 2.
 - **On a level that is followed by the password screen** the skip also skips that screen.
 
+## Screen effects
+
+- **Brick shadows.** Every brick casts a shadow on the two background tiles below it. Shadow tiles use attribute `$0A` and lit tiles use `$08`. When a brick breaks, `GetBrickNeighbourMask` checks which neighbours remain. `BrickRedrawHandlers` then picks one of 16 cases that restore the background from `wBackgroundTilemap` with the correct shadows.
+- **Brick sweep.** `SweepBricks` runs once when a level appears. A sweep crosses the bricks along 22 diagonals and swaps some brick tiles for 3 frames per diagonal. `BrickSweepLengths` gives the number of cells on each diagonal.
+- **VBlank tile writes.** Gameplay code never writes to the tilemap directly. It queues changes in `wVBlankTileWrites` (tiles) and `wVBlankAttrWrites` (attributes), and the VBlank handler copies them to the screen.
+- **Raster effects.** `SetUpRasterEffect` (bank `$0F`) copies one of three LCD STAT handlers to RAM at `wStatJump`. The handler runs on every screen line. It writes that line's colours and horizontal scroll, then patches its own operands with the next record of `wRasterTable`. `hPaletteMode` selects the handler: mode 1 changes two sprite colours and one background colour per line, modes 2 and 4 change four background colours, and mode 3 changes one sprite colour.
+- **Fireworks.** The level password screen shows three fireworks (`UpdateFireworks`). Each rocket follows a launch script, flies until its fuse runs out, and bursts into 10 sparks. The sparks follow the paths in `LevelPasswordCurves`. `UpdateTwinkles` animates 11 twinkling stars on the same screen.
+- **High score screen.** `HighScores_AdvanceAnim` steps the "HIGH SCORE" animation every third frame. `HighScores_SlideSprites` slides the four rows of sprites in and out, and rows alternate direction.
+
 ## Useful RAM
 
 | Address | Meaning |
