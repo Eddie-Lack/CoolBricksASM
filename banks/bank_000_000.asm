@@ -29,13 +29,13 @@ ProgramStart:
     ; This appears to be a serious issue. Nintendo is reported to reject any games not following this rule.
 
     ld e, $00
-    call Call_000_3e56
+    call StartSong
     xor a
     call PlaySound
-    call Call_000_3e7f
-    call Call_000_3e7f
-    call Call_000_3e7f
-    call Call_000_3e7f
+    call UpdateSound
+    call UpdateSound
+    call UpdateSound
+    call UpdateSound
     ld a, [$ffa1]
     or a
     jr nz, jr_000_0184
@@ -169,8 +169,8 @@ jr_000_01eb:
 
     ret
 
-Call_000_01f1:
-jr_000_01f1:
+; Fill a rectangle of B x C tiles at HL with D.
+FillTilemapRect:
     push bc
     push hl
 
@@ -192,7 +192,7 @@ jr_000_0200:
     ld l, a
     pop bc
     dec c
-    jr nz, jr_000_01f1
+    jr nz, FillTilemapRect
 
     ret
 
@@ -491,7 +491,7 @@ VBlankMenus:
     ld [$c956], a
     ld a, h
     ld [$c957], a
-    call Call_000_0aac
+    call StartHdmaTransfer
     ld a, $01
     ldh [rVBK], a
     ld a, [$c959]
@@ -837,7 +837,7 @@ jr_000_05a1:
     ld a, [$c95a]
     xor $01
     ld [$c95a], a
-    call z, Call_000_3b8b
+    call z, UpdateCreditsScroll
     ld a, $01
     ld [$ff95], a
     pop af
@@ -1303,7 +1303,7 @@ jr_000_08d0:
     dec b
     jr nz, jr_000_08d0
 
-    call Call_000_0dde
+    call BuildLevelTitle
     xor a
     ld [$ccb4], a
     ld [$ccb5], a
@@ -1673,7 +1673,7 @@ jr_000_0aaa:
     xor a
     ret
 
-Call_000_0aac:
+StartHdmaTransfer:
     ld a, [$cb53]
     or a
     ret z
@@ -1713,8 +1713,9 @@ jr_000_0ad6:
     ld [ROM_BANK], a
     ret
 
-Call_000_0aeb:
-    ld a, [$db55]
+; Play song 2, 3 or 4 according to wLevelMusicIndex.
+PlayLevelMusic:
+    ld a, [wLevelMusicIndex]
     or a
     jr nz, jr_000_0af3
 
@@ -1738,7 +1739,7 @@ jr_000_0aff:
 
 ; Game state 2: load the graphics, brick layout and power-up map of wCurrentLevel.
 LoadLevel:
-    call Call_000_0aeb
+    call PlayLevelMusic
     ld a, $00
     ld [$c359], a
     ld hl, $02e0
@@ -1921,23 +1922,23 @@ jr_000_0c41:
     ld b, $01
     ld c, $0f
     ld d, $21
-    call Call_000_01f1
+    call FillTilemapRect
     ld hl, $9853
     ld c, $0f
     ld d, $01
-    call Call_000_01f1
+    call FillTilemapRect
     ld hl, $9a20
     ld c, $01
     ld d, $a1
-    call Call_000_01f1
+    call FillTilemapRect
     ld hl, $9a33
     ld c, $01
     ld d, $81
-    call Call_000_01f1
+    call FillTilemapRect
     ld hl, $9820
     ld c, b
     ld b, $14
-    call Call_000_01f1
+    call FillTilemapRect
 
 jr_000_0c9a:
     xor a
@@ -2046,7 +2047,7 @@ jr_000_0c9a:
     ld bc, $0014
     xor a
     call ClearRAM
-    call Call_000_0dde
+    call BuildLevelTitle
     ld hl, $d72a
     call DrawString
     xor a
@@ -2116,7 +2117,8 @@ jr_000_0dd8:
 
     jr RleOverlay
 
-Call_000_0dde:
+; Copy the "LEVEL nnn" string of the current language and write the level number into it.
+BuildLevelTitle:
     ld a, [wLangTextLevelTitle]
     ld l, a
     ld a, [wLangTextLevelTitle + 1]
@@ -2265,7 +2267,8 @@ jr_000_0e7f:
 
     ret
 
-Call_000_0e84:
+; Like DrawString, but a zero character leaves the tile as it is.
+DrawStringSkipZero:
     ld a, [hl+]
     ld e, a
     ld a, [hl+]
@@ -2398,7 +2401,7 @@ Gameplay_Update:
     cp $04
     jr nz, jr_000_0f5d
 
-    call Call_000_3c34
+    call NextLevelMusic
     ld a, [$dcff]
     or a
     jr nz, jr_000_0f5d
@@ -3060,11 +3063,11 @@ jr_000_12d4:
     xor a
     ld [hLifeLostTimer], a
     ld e, $00
-    call Call_000_3e56
+    call StartSong
     xor a
     call PlaySound
-    call Call_000_3e7f
-    call Call_000_3e7f
+    call UpdateSound
+    call UpdateSound
     call RestartAfterLifeLost
 
 Gameplay_CheckPause:
@@ -3088,7 +3091,7 @@ Gameplay_CheckPause:
 jr_000_133b:
     push af
     call WaitVBlank
-    call Call_000_3e7f
+    call UpdateSound
     pop af
     dec a
     jr nz, jr_000_133b
@@ -3136,7 +3139,7 @@ RestartAfterLifeLost:
     ld b, $ff
     ld a, $20
     call Call_001_6838
-    call Call_000_0aeb
+    call PlayLevelMusic
     ret
 
 ; Update the ball in wBallWork: sleeping, sticking to the bat, launching, splitting and moving.
@@ -4361,7 +4364,8 @@ jr_000_1a92:
     or a
     ret
 
-Call_000_1a96:
+; Work out which neighbours of a destroyed brick are present, for the redraw.
+GetBrickNeighbourMask:
     ld b, $00
     ld de, $0010
     add hl, de
@@ -4479,7 +4483,7 @@ CountBrickDestroyed:
     cp $04
     jr nz, jr_000_1b3b
 
-    call Call_000_3c34
+    call NextLevelMusic
     ld a, [$dcff]
     or a
     jr nz, jr_000_1b3b
@@ -5089,7 +5093,7 @@ Jump_000_1e2a:
     add hl, bc
     ld [hl], a
     push de
-    call Call_000_1a96
+    call GetBrickNeighbourMask
     pop de
     pop hl
     inc hl
@@ -5459,7 +5463,7 @@ jr_000_2083:
     xor a
     ld [$dae1], a
     ld [wPasswordEntryActive], a
-    ld [$db55], a
+    ld [wLevelMusicIndex], a
     call Call_001_71ef
     ld a, $90
     ld [$ff9e], a
@@ -6089,7 +6093,7 @@ jr_000_2416:
     ld e, $00
 
 jr_000_2449:
-    call Call_000_3e56
+    call StartSong
     jr jr_000_245c
 
 jr_000_244e:
@@ -6128,7 +6132,7 @@ jr_000_245c:
     ld e, $00
 
 jr_000_2485:
-    call Call_000_3e56
+    call StartSong
     jr jr_000_2498
 
 jr_000_248a:
@@ -6167,7 +6171,7 @@ jr_000_2498:
     ld e, $00
 
 jr_000_24c1:
-    call Call_000_3e56
+    call StartSong
     jr jr_000_24d4
 
 jr_000_24c6:
@@ -6412,7 +6416,7 @@ StateInit_GameOver:
     jr nz, jr_000_2692
 
     ld e, $07
-    call Call_000_3e56
+    call StartSong
 
 jr_000_2692:
     ld hl, $02b3
@@ -6467,14 +6471,14 @@ jr_000_2692:
     ld l, a
     ld a, [wLangTextGameOver + 1]
     ld h, a
-    call Call_000_0e84
+    call DrawStringSkipZero
     ld a, $01
     call ChangeROMBank
     ret
 
 ; Reset the UFO, the blob and Ghost. Runs at level start and after a lost life.
 ResetEnemies:
-    call Call_000_294b
+    call ClearProjectiles
     xor a
     ld [wBlobActive], a
     ld [wUfoFlying], a
@@ -6498,7 +6502,7 @@ ResetEnemies:
     ld [$dc1f], a
     ld hl, BlobPath
     ld de, wBlob
-    call Call_000_2869
+    call InitEnemyObject
     xor a
     ld [wBlobThrowing], a
     inc a
@@ -6677,7 +6681,7 @@ jr_000_2831:
     call UpdateEnemyPath
     ret
 
-Call_000_2869:
+InitEnemyObject:
     xor a
     ld [de], a
     inc de
@@ -6843,7 +6847,7 @@ jr_000_2944:
 
     ret
 
-Call_000_294b:
+ClearProjectiles:
     ld hl, wProjectiles
     ld de, $0009
     ld b, $04
@@ -6930,7 +6934,7 @@ jr_000_2989:
     ld [$dbe7], a
     push bc
     push de
-    call Call_000_2abf
+    call UpdateProjectile
     pop de
     pop bc
     pop hl
@@ -7120,7 +7124,7 @@ jr_000_2ab3:
     ld [$dbe7], a
     ret
 
-Call_000_2abf:
+UpdateProjectile:
     ld a, [$dbe1]
     dec a
     ld [$dbe1], a
@@ -7129,21 +7133,21 @@ Call_000_2abf:
     ld a, [$dbe3]
     ld c, a
     ld a, [$dbe5]
-    call Call_000_2d28
+    call Projectile_CheckBrick
     jp nz, Jump_000_2a4b
 
     ld a, [$dbe3]
     add $07
     ld c, a
     ld a, [$dbe5]
-    call Call_000_2d28
+    call Projectile_CheckBrick
     jp nz, Jump_000_2a4b
 
     ld a, [$dbe3]
     ld c, a
     ld a, [$dbe5]
     add $07
-    call Call_000_2d28
+    call Projectile_CheckBrick
     jp nz, Jump_000_2a4b
 
     ld a, [$dbe3]
@@ -7151,7 +7155,7 @@ Call_000_2abf:
     ld c, a
     ld a, [$dbe5]
     add $07
-    call Call_000_2d28
+    call Projectile_CheckBrick
     jp nz, Jump_000_2a4b
 
     ld a, [$dbe9]
@@ -7165,23 +7169,23 @@ Call_000_2abf:
     ld c, a
     ld a, [$dbe5]
     ld [$dbec], a
-    call Call_000_2d4d
+    call Projectile_HitBrick
     ld a, [$dbe3]
     add $07
     ld c, a
     ld a, [$dbe5]
-    call Call_000_2d4d
+    call Projectile_HitBrick
     ld a, [$dbe3]
     ld c, a
     ld a, [$dbe5]
     add $07
-    call Call_000_2d4d
+    call Projectile_HitBrick
     ld a, [$dbe3]
     add $07
     ld c, a
     ld a, [$dbe5]
     add $07
-    call Call_000_2d4d
+    call Projectile_HitBrick
     ret
 
 jr_000_2b48:
@@ -7301,7 +7305,7 @@ jr_000_2b9b:
     ld a, [de]
     inc de
     add b
-    call Call_000_2d01
+    call Projectile_CheckBrickKeepDE
     jr z, jr_000_2c20
 
     ld a, [$dbe8]
@@ -7326,7 +7330,7 @@ jr_000_2c20:
     ld a, [de]
     inc de
     add b
-    call Call_000_2d01
+    call Projectile_CheckBrickKeepDE
     jr z, jr_000_2c47
 
     ld a, [$dbe8]
@@ -7348,7 +7352,7 @@ jr_000_2c47:
     add c
     ld c, a
     ld a, [$dbe5]
-    call Call_000_2d01
+    call Projectile_CheckBrickKeepDE
     jr z, jr_000_2c6a
 
     ld a, [$dbe8]
@@ -7373,7 +7377,7 @@ jr_000_2c6a:
     ld a, [de]
     inc de
     add b
-    call Call_000_2d01
+    call Projectile_CheckBrickKeepDE
     jr z, jr_000_2c91
 
     ld a, [$dbe8]
@@ -7457,7 +7461,7 @@ jr_000_2ce1:
     ld [$c2b7], a
     ret
 
-Call_000_2d01:
+Projectile_CheckBrickKeepDE:
     push de
     and $f8
     ld l, a
@@ -7489,7 +7493,7 @@ jr_000_2d1f:
     or a
     ret
 
-Call_000_2d28:
+Projectile_CheckBrick:
     and $f8
     ld l, a
     ld h, $00
@@ -7519,7 +7523,8 @@ jr_000_2d44:
     or a
     ret
 
-Call_000_2d4d:
+; Hit the brick at A = y, C = x, if there is one.
+Projectile_HitBrick:
     and $f8
     ld l, a
     ld h, $00
@@ -9734,7 +9739,7 @@ jr_000_3b6e:
     ld [$dcfc], a
     ret
 
-Call_000_3b8b:
+UpdateCreditsScroll:
     ld a, [$dcf5]
     inc a
     ret z
@@ -9853,8 +9858,9 @@ jr_000_3c28:
     ld [$dcf4], a
     jp Jump_000_3bdd
 
-Call_000_3c34:
-    ld a, [$db55]
+; Step wLevelMusicIndex (0, 1, 2, 0, ...) and restart the count of levels since the last password.
+NextLevelMusic:
+    ld a, [wLevelMusicIndex]
     inc a
     cp $03
     jr nz, jr_000_3c3d
@@ -9862,7 +9868,7 @@ Call_000_3c34:
     xor a
 
 jr_000_3c3d:
-    ld [$db55], a
+    ld [wLevelMusicIndex], a
     xor a
     ld [wLevelsSincePassword], a
     ret
@@ -9941,7 +9947,7 @@ StateInit_LevelPassword:
     ld [$dd09], a
     ld a, h
     ld [$dd0a], a
-    call Call_000_0dde
+    call BuildLevelTitle
     ld hl, $dd17
     ld a, [wLanguage]
     cp $04
@@ -10111,7 +10117,8 @@ PlayMusic:
     or a
     ret nz
 
-Call_000_3e56:
+; Start song E, even when music is turned off.
+StartSong:
     ld a, $06               ; Load ROM Bank 06
     ld [ROM_BANK], a
     call Call_006_473f
@@ -10142,7 +10149,8 @@ jr_000_3e7b:
     pop de
     ret
 
-Call_000_3e7f:
+; Run the sound driver in bank 6 for one frame.
+UpdateSound:
     ld a, $06
     ld [ROM_BANK], a
     call Call_006_4000
@@ -10270,12 +10278,12 @@ StateInit_Ending:
     ld l, a
     ld a, [wLangTextEnding + 1]
     ld h, a
-    call Call_000_0e84
-    call Call_000_0e84
-    call Call_000_0e84
-    call Call_000_0e84
-    call Call_000_0e84
-    call Call_000_0e84
+    call DrawStringSkipZero
+    call DrawStringSkipZero
+    call DrawStringSkipZero
+    call DrawStringSkipZero
+    call DrawStringSkipZero
+    call DrawStringSkipZero
     ld a, $01
     ld [wLives], a
     call ChangeROMBank
