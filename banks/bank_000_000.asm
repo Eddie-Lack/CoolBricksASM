@@ -276,9 +276,9 @@ InstallInterruptHandlers:
     ld [ROM_BANK], a
     ld a, $40
     ldh [rSTAT], a
-    ld a, [hUnk_ff9b]
+    ld a, [hLycStart]
     ldh [rLYC], a
-    ld a, [hUnk_ff9a]
+    ld a, [hInterruptEnable]
     ldh [rIE], a
     ld hl, wRasterTable
     ld a, l
@@ -290,18 +290,18 @@ InstallInterruptHandlers:
 Stat_Default:
     push af
     push hl
-    ld a, [wUnk_dd01]
+    ld a, [wScrollSplitPtr]
     ld l, a
-    ld a, [wUnk_dd02]
+    ld a, [wScrollSplitPtr + 1]
     ld h, a
     ld a, [hl+]
     ldh [rSCX], a
     ld a, [hl+]
     ldh [rLYC], a
     ld a, l
-    ld [wUnk_dd01], a
+    ld [wScrollSplitPtr], a
     ld a, h
-    ld [wUnk_dd02], a
+    ld [wScrollSplitPtr + 1], a
     pop hl
     pop af
     reti
@@ -344,7 +344,7 @@ VBlank_InGame:
     call hOamDmaRoutine
     xor a
     ldh [rVBK], a
-    ld a, [wUnk_d745]
+    ld a, [wLevelTitleTimer]
     or a
     jr z, jr_000_0346
 
@@ -352,7 +352,7 @@ VBlank_InGame:
     jr nz, jr_000_0304
 
     dec a
-    ld [wUnk_d745], a
+    ld [wLevelTitleTimer], a
     ld hl, $9800
     ld bc, $0014
     xor a
@@ -362,7 +362,7 @@ VBlank_InGame:
 
 jr_000_0304:
     dec a
-    ld [wUnk_d745], a
+    ld [wLevelTitleTimer], a
     jr nz, jr_000_0317
 
     ld a, [wLangTextHud]
@@ -374,7 +374,7 @@ jr_000_0304:
 
 jr_000_0317:
     ld b, a
-    ld a, [wUnk_d746]
+    ld a, [wLevelTitleBlink]
     and $01
     jr z, jr_000_0330
 
@@ -382,7 +382,7 @@ jr_000_0317:
     and $0f
     jr nz, jr_000_0328
 
-    ld hl, wUnk_d746
+    ld hl, wLevelTitleBlink
     inc [hl]
 
 jr_000_0328:
@@ -395,13 +395,13 @@ jr_000_0330:
     and $3f
     jr nz, jr_000_0339
 
-    ld hl, wUnk_d746
+    ld hl, wLevelTitleBlink
     inc [hl]
 
 jr_000_0339:
     ld hl, wLevelTitleText
     call DrawString
-    ld a, [hUnk_ff9d]
+    ld a, [hLevelScrollX]
     ldh [rSCX], a
     jr jr_000_0361
 
@@ -500,7 +500,7 @@ VBlankMenus:
     or a
     jp nz, VBlankMenus_BlinkRow
 
-    ld a, [hUnk_ff9e]
+    ld a, [hMenuScrollY]
     ldh [rSCY], a
     cp $88
     jr z, jr_000_0410
@@ -694,28 +694,28 @@ VBlankMenus_Done:
     reti
 
 VBlankMenus_BlinkRow:
-    ld a, [wUnk_c95c]
+    ld a, [wBlinkTimer]
     dec a
-    ld [wUnk_c95c], a
+    ld [wBlinkTimer], a
     jr nz, jr_000_0536
 
     ld a, [wUnk_df45]
     ld b, a
-    ld a, [wUnk_c95b]
+    ld a, [wBlinkPhase]
     or a
     jr z, jr_000_0525
 
     xor a
-    ld [wUnk_c95b], a
+    ld [wBlinkPhase], a
     ld a, $28
-    ld [wUnk_c95c], a
+    ld [wBlinkTimer], a
     ld a, $04
     jr jr_000_052f
 
 jr_000_0525:
     ld a, $0f
-    ld [wUnk_c95c], a
-    ld [wUnk_c95b], a
+    ld [wBlinkTimer], a
+    ld [wBlinkPhase], a
     ld a, $02
 
 jr_000_052f:
@@ -727,14 +727,14 @@ jr_000_0532:
     jr nz, jr_000_0532
 
 jr_000_0536:
-    ld a, [wUnk_ccb4]
+    ld a, [wNameEntryAddress]
     ld l, a
-    ld a, [wUnk_ccb5]
+    ld a, [wNameEntryAddress + 1]
     ld h, a
     or l
     jr z, VBlankMenus_Done
 
-    ld de, wUnk_ccbb
+    ld de, wNameEntry
     ld b, $07
 
 jr_000_0546:
@@ -774,7 +774,7 @@ jr_000_0567:
     pop hl
     xor a
     ldh [rVBK], a
-    ld de, wUnk_ccbb
+    ld de, wNameEntry
     ld b, $07
 
 jr_000_0576:
@@ -789,8 +789,8 @@ jr_000_0576:
 
 jr_000_0581:
     xor a
-    ld [wUnk_ccb4], a
-    ld [wUnk_ccb5], a
+    ld [wNameEntryAddress], a
+    ld [wNameEntryAddress + 1], a
     ld a, $84
     ld b, $07
 
@@ -802,7 +802,7 @@ jr_000_058c:
     pop hl
     xor a
     ldh [rVBK], a
-    ld de, wUnk_ccbb
+    ld de, wNameEntry
     ld b, $07
 
 jr_000_0599:
@@ -863,9 +863,9 @@ StateInit_HighScores:
     ld a, $03
     ld [hPaletteMode], a
     xor a
-    ld [hUnk_ff9b], a
+    ld [hLycStart], a
     ld a, $01
-    ld [hUnk_ff9a], a
+    ld [hInterruptEnable], a
     ld a, $fc
     ldh [rSCX], a
     ld de, Palettes_HighScores
@@ -923,16 +923,16 @@ StateInit_HighScores:
     xor a
     ld [wLevelSweepPending], a
     ld [wUnk_cccd], a
-    ld [wUnk_cccc], a
+    ld [wNameEntryCursor], a
     ld a, $41
-    ld [wUnk_ccbb], a
+    ld [wNameEntry], a
     ld a, $5b
-    ld [wUnk_ccbc], a
-    ld [wUnk_ccbd], a
-    ld [wUnk_ccbe], a
-    ld [wUnk_ccbf], a
-    ld [wUnk_ccc0], a
-    ld [wUnk_ccc1], a
+    ld [wNameEntry + 1], a
+    ld [wNameEntry + 2], a
+    ld [wNameEntry + 3], a
+    ld [wNameEntry + 4], a
+    ld [wNameEntry + 5], a
+    ld [wNameEntry + 6], a
     ld a, $84
     ld [wUnk_ccc3], a
     ld [wUnk_ccc4], a
@@ -953,9 +953,9 @@ StateInit_HighScores:
     ld a, h
     ld [wHighScoreAnimPtr + 1], a
     xor a
-    ld [wUnk_c95b], a
+    ld [wBlinkPhase], a
     ld a, $04
-    ld [wUnk_c95c], a
+    ld [wBlinkTimer], a
     ret
 
 HighScores_Update:
@@ -979,9 +979,9 @@ HighScores_Update:
     jr jr_000_0708
 
 jr_000_06fd:
-    ld a, [wUnk_ccb4]
+    ld a, [wNameEntryAddress]
     ld l, a
-    ld a, [wUnk_ccb5]
+    ld a, [wNameEntryAddress + 1]
     ld h, a
     or l
     jr nz, jr_000_072c
@@ -1012,53 +1012,53 @@ jr_000_072b:
 jr_000_072c:
     ld a, [hJoypad]
     ld b, a
-    ld a, [wUnk_cccc]
+    ld a, [wNameEntryCursor]
     or a
     jr nz, jr_000_073b
 
-    ld hl, wUnk_ccbb
+    ld hl, wNameEntry
     jr jr_000_076f
 
 jr_000_073b:
     cp $01
     jr nz, jr_000_0744
 
-    ld hl, wUnk_ccbc
+    ld hl, wNameEntry + 1
     jr jr_000_076f
 
 jr_000_0744:
     cp $02
     jr nz, jr_000_074d
 
-    ld hl, wUnk_ccbd
+    ld hl, wNameEntry + 2
     jr jr_000_076f
 
 jr_000_074d:
     cp $03
     jr nz, jr_000_0756
 
-    ld hl, wUnk_ccbe
+    ld hl, wNameEntry + 3
     jr jr_000_076f
 
 jr_000_0756:
     cp $04
     jr nz, jr_000_075f
 
-    ld hl, wUnk_ccbf
+    ld hl, wNameEntry + 4
     jr jr_000_076f
 
 jr_000_075f:
     cp $05
     jr nz, jr_000_0768
 
-    ld hl, wUnk_ccc0
+    ld hl, wNameEntry + 5
     jr jr_000_076f
 
 jr_000_0768:
     cp $06
     jr nz, jr_000_076f
 
-    ld hl, wUnk_ccc1
+    ld hl, wNameEntry + 6
 
 jr_000_076f:
     bit 3, b
@@ -1132,7 +1132,7 @@ jr_000_07b7:
     call PlaySound
     ld a, $01
     ld [wUnk_cccb], a
-    ld a, [wUnk_cccc]
+    ld a, [wNameEntryCursor]
     bit 4, b
     jr z, jr_000_07d5
 
@@ -1178,7 +1178,7 @@ jr_000_07ef:
     dec a
 
 jr_000_07f7:
-    ld [wUnk_cccc], a
+    ld [wNameEntryCursor], a
     or a
     jr nz, jr_000_0808
 
@@ -1309,8 +1309,8 @@ jr_000_08d0:
 
     call BuildLevelTitle
     xor a
-    ld [wUnk_ccb4], a
-    ld [wUnk_ccb5], a
+    ld [wNameEntryAddress], a
+    ld [wNameEntryAddress + 1], a
     ld hl, wUnk_cb85
     ld b, $0a
 
@@ -1385,9 +1385,9 @@ jr_000_0921:
     inc hl
     inc hl
     ld a, l
-    ld [wUnk_ccb4], a
+    ld [wNameEntryAddress], a
     ld a, h
-    ld [wUnk_ccb5], a
+    ld [wNameEntryAddress + 1], a
     ld a, $41
     ld [hl+], a
     ld a, $5b
@@ -1427,8 +1427,8 @@ jr_000_095b:
     cp $09
     ret nz
 
-    ld de, wUnk_cb7c
-    ld hl, wUnk_cce3
+    ld de, wPasswordChars
+    ld hl, wLevelPasswordChars
     ld bc, $0004
     call DataTransfer
     ret
@@ -1483,7 +1483,7 @@ jr_000_0995:
     xor $aa
     rrca
     ld [wPasswordByteY], a
-    ld de, wUnk_cb7c
+    ld de, wPasswordChars
     ld a, [wPasswordByteX]
     swap a
     and $0f
@@ -1521,7 +1521,7 @@ jr_000_0995:
     add hl, bc
     ld a, [hl]
     ld [de], a
-    ld de, wUnk_cb7c
+    ld de, wPasswordChars
     call CheckPassword
     ld a, $01
     call ChangeROMBank
@@ -1755,9 +1755,9 @@ LoadLevel:
     ld a, $01
     ld [hPaletteMode], a
     ld a, $08
-    ld [hUnk_ff9b], a
+    ld [hLycStart], a
     ld a, $03
-    ld [hUnk_ff9a], a
+    ld [hInterruptEnable], a
     ld a, $94
     ld [wUnk_c958], a
     ld a, [wCurrentLevel]
@@ -1882,7 +1882,7 @@ jr_000_0b81:
     ld a, $01
     call ChangeROMBank
     xor a
-    ld [wUnk_dd00], a
+    ld [wLevelPasswordReady], a
     ld a, [wLevelsSincePassword]
     inc a
     ld [wLevelsSincePassword], a
@@ -2056,11 +2056,11 @@ jr_000_0c9a:
     ld hl, wLevelTitleText
     call DrawString
     xor a
-    ld [wUnk_d746], a
+    ld [wLevelTitleBlink], a
     dec a
-    ld [wUnk_d745], a
+    ld [wLevelTitleTimer], a
     ld a, $04
-    ld [hUnk_ff9d], a
+    ld [hLevelScrollX], a
     call SetUpBricks
     xor a
     ldh [rVBK], a
@@ -2375,7 +2375,7 @@ InitBall:
     ld [wLaunchDirection], a
     ld [wAntigravityActive], a
     ld [wSlowBallActive], a
-    ld [wUnk_d8a4], a
+    ld [wBallLoopCount], a
     ld [wNinjaActive], a
     ld [wRemoveBall], a
     inc a
@@ -2407,7 +2407,7 @@ Gameplay_Update:
     jr nz, jr_000_0f5d
 
     call NextLevelMusic
-    ld a, [wUnk_dcff]
+    ld a, [wEndingSeen]
     or a
     jr nz, jr_000_0f5d
 
@@ -2806,7 +2806,7 @@ Gameplay_UpdateBalls:
     or a
     jp z, Gameplay_AfterBalls
 
-    ld [wUnk_d8a4], a
+    ld [wBallLoopCount], a
     ld b, a
     ld hl, wBalls
     ld de, wRemovedBallPtrs
@@ -2961,7 +2961,7 @@ jr_000_126c:
     dec b
     jp nz, Gameplay_BallLoop
 
-    ld a, [wUnk_d8a4]
+    ld a, [wBallLoopCount]
     or a
     jr nz, jr_000_127a
 
@@ -3120,7 +3120,7 @@ RestartAfterLifeLost:
     ld [wVBlankAttrWriteCount], a
     ld [wBrickRedrawCount], a
     inc a
-    ld [wUnk_d745], a
+    ld [wLevelTitleTimer], a
     call MarkBrickHitQueue
     call UpdateBatTiles
     call ProcessBrickHitQueue
@@ -3315,7 +3315,7 @@ UpdateBall_Split:
 
     xor a
     ld [wMultiBallPending], a
-    ld a, [wUnk_d8a4]
+    ld a, [wBallLoopCount]
     ld b, a
     ld hl, wBalls
     ld de, $0007
@@ -3325,7 +3325,7 @@ jr_000_14b9:
     dec a
     jr nz, jr_000_14b9
 
-    ld [wUnk_d8a4], a
+    ld [wBallLoopCount], a
     ld a, b
     add $02
     ld [wBallCount], a
@@ -4489,7 +4489,7 @@ CountBrickDestroyed:
     jr nz, jr_000_1b3b
 
     call NextLevelMusic
-    ld a, [wUnk_dcff]
+    ld a, [wEndingSeen]
     or a
     jr nz, jr_000_1b3b
 
@@ -5032,7 +5032,7 @@ jr_000_1dc6:
     ld a, [wBrickRedrawCount]
     ld [wVBlankAttrWriteCount], a
     ld b, a
-    ld a, [wUnk_d9bc]
+    ld a, [wHitTileWriteCount]
     add b
     add $0c
     ld [wBrickRedrawCount], a
@@ -5081,7 +5081,7 @@ ProcessBrickHitQueue:
     ld hl, wBrickHitQueue
     ld de, wVBlankTileWrites
     xor a
-    ld [wUnk_d9bc], a
+    ld [wHitTileWriteCount], a
     ld a, $0c
     ld [hTemp2], a
 
@@ -5214,9 +5214,9 @@ jr_000_1eb3:
     ld a, [wBrickTileRight]
     ld [de], a
     inc de
-    ld a, [wUnk_d9bc]
+    ld a, [wHitTileWriteCount]
     add $02
-    ld [wUnk_d9bc], a
+    ld [wHitTileWriteCount], a
     inc hl
     jp ProcessBrickHitQueue_Next
 
@@ -5317,9 +5317,9 @@ jr_000_1f35:
     ld a, [wBrickTileRight]
     ld [de], a
     inc de
-    ld a, [wUnk_d9bc]
+    ld a, [wHitTileWriteCount]
     add $02
-    ld [wUnk_d9bc], a
+    ld [wHitTileWriteCount], a
     call SpawnPowerup
     inc hl
     ld a, $02
@@ -5359,7 +5359,7 @@ StateInit_MainMenu:
     ld a, $01
     ld [hPaletteMode], a
     ld a, $01
-    ld [hUnk_ff9a], a
+    ld [hInterruptEnable], a
     xor a
     ld [wHdmaMode], a
     ldh [rSCX], a
@@ -5486,7 +5486,7 @@ jr_000_2083:
     ld [wLevelMusicIndex], a
     call InitMenuSparkles
     ld a, $90
-    ld [hUnk_ff9e], a
+    ld [hMenuScrollY], a
     ret
 
 ; Write wStartLevel + 1 as 3 decimal digits.
@@ -5553,7 +5553,7 @@ jr_000_20f9:
 
 MainMenu_Update:
     call UpdateMenuSparkles
-    ld a, [hUnk_ff9e]
+    ld a, [hMenuScrollY]
     or a
     ret nz
 
@@ -5804,7 +5804,7 @@ SubmitPassword:
     pop af
     jr z, jr_000_225e
 
-    ld hl, wUnk_cce3
+    ld hl, wLevelPasswordChars
     ld a, [wPasswordEntry]
     ld [hl+], a
     ld a, [wPasswordEntry + 1]
@@ -6253,7 +6253,7 @@ StartGame:
     call ResetScore
     xor a
     ld [wLevelsSincePassword], a
-    ld [wUnk_dcff], a
+    ld [wEndingSeen], a
     ld a, $05
     ld [wLives], a
     ld a, b
@@ -6293,11 +6293,11 @@ StateInit_TitleScreen:
     ld a, $04
     ld [hPaletteMode], a
     xor a
-    ld [hUnk_ff9b], a
+    ld [hLycStart], a
     ld a, $80
     ld [wUnk_c958], a
     ld a, $01
-    ld [hUnk_ff9a], a
+    ld [hInterruptEnable], a
     xor a
     ldh [rSCX], a
     ld de, Palettes_TitleScreen
@@ -6405,7 +6405,7 @@ jr_000_2640:
     ld [wMenuItemColours + 1], a
 
 jr_000_2661:
-    call TitleScreen_Init6e25
+    call TitleScreen_InitLetters
     ret
 
 TitleScreen_Update:
@@ -6426,7 +6426,7 @@ TitleScreen_Update:
     call PlaySound
 
 jr_000_2683:
-    call TitleScreen_Sub6cd4
+    call TitleScreen_SlideLetters
     ret
 
 StateInit_GameOver:
@@ -6446,7 +6446,7 @@ jr_000_2692:
     xor a
     ld [hPaletteMode], a
     ld a, $01
-    ld [hUnk_ff9a], a
+    ld [hInterruptEnable], a
     xor a
     ld [wLevelSweepPending], a
     ldh [rSCX], a
@@ -6747,7 +6747,7 @@ InitEnemyObject:
 UpdateEnemyPath:
     push hl
     push bc
-    ld de, wUnk_dbd1
+    ld de, wEnemyPathWork
     ld c, $0f
 
 jr_000_2899:
@@ -6758,66 +6758,66 @@ jr_000_2899:
     jr nz, jr_000_2899
 
     pop bc
-    ld a, [wUnk_dbdc]
+    ld a, [wEnemyPathWork + 11]
     dec a
-    ld [wUnk_dbdc], a
+    ld [wEnemyPathWork + 11], a
     jr nz, jr_000_2901
 
     ld h, a
-    ld a, [wUnk_dbd9]
+    ld a, [wEnemyPathWork + 8]
     inc a
-    ld [wUnk_dbd9], a
+    ld [wEnemyPathWork + 8], a
     ld l, a
     add hl, hl
-    ld a, [wUnk_dbda]
+    ld a, [wEnemyPathWork + 9]
     ld e, a
-    ld a, [wUnk_dbdb]
+    ld a, [wEnemyPathWork + 10]
     ld d, a
     add hl, de
     ld a, [hl+]
     or a
     jr nz, jr_000_28fa
 
-    ld a, [wUnk_dbd5]
+    ld a, [wEnemyPathWork + 4]
     dec a
-    ld [wUnk_dbd5], a
+    ld [wEnemyPathWork + 4], a
     jr nz, jr_000_28ed
 
     ld h, a
-    ld a, [wUnk_dbd6]
+    ld a, [wEnemyPathWork + 5]
     ld l, a
     add hl, hl
     add hl, hl
     add hl, bc
     ld a, [hl+]
-    ld [wUnk_dbd5], a
+    ld [wEnemyPathWork + 4], a
     ld a, [hl+]
-    ld [wUnk_dbd6], a
+    ld [wEnemyPathWork + 5], a
     ld a, [hl+]
-    ld [wUnk_dbda], a
+    ld [wEnemyPathWork + 9], a
     ld a, [hl+]
-    ld [wUnk_dbdb], a
-    ld a, [wUnk_dbdf]
-    ld [wUnk_dbd4], a
-    ld a, [wUnk_dbde]
-    ld [wUnk_dbd2], a
+    ld [wEnemyPathWork + 10], a
+    ld a, [wEnemyPathWork + 14]
+    ld [wEnemyPathWork + 3], a
+    ld a, [wEnemyPathWork + 13]
+    ld [wEnemyPathWork + 1], a
 
 jr_000_28ed:
-    ld a, [wUnk_dbda]
+    ld a, [wEnemyPathWork + 9]
     ld l, a
-    ld a, [wUnk_dbdb]
+    ld a, [wEnemyPathWork + 10]
     ld h, a
     xor a
-    ld [wUnk_dbd9], a
+    ld [wEnemyPathWork + 8], a
     ld a, [hl+]
 
 jr_000_28fa:
-    ld [wUnk_dbdc], a
+    ld [wEnemyPathWork + 11], a
     ld a, [hl]
-    ld [wUnk_dbdd], a
+    ld [wEnemyPathWork + 12], a
 
 jr_000_2901:
-    ld a, [wUnk_dbdd]
+    ld a, [wEnemyPathWork + 12]
     ld h, $00
     ld l, a
     add hl, hl
@@ -6831,30 +6831,30 @@ jr_000_2901:
     ld a, [hl+]
     ld e, a
     ld d, [hl]
-    ld a, [wUnk_dbd3]
+    ld a, [wEnemyPathWork + 2]
     ld l, a
-    ld a, [wUnk_dbd4]
+    ld a, [wEnemyPathWork + 3]
     ld h, a
     sra b
     rr c
     add hl, bc
     ld a, l
-    ld [wUnk_dbd3], a
+    ld [wEnemyPathWork + 2], a
     ld a, h
-    ld [wUnk_dbd4], a
-    ld a, [wUnk_dbd1]
+    ld [wEnemyPathWork + 3], a
+    ld a, [wEnemyPathWork]
     ld l, a
-    ld a, [wUnk_dbd2]
+    ld a, [wEnemyPathWork + 1]
     ld h, a
     sra d
     rr e
     add hl, de
     ld a, l
-    ld [wUnk_dbd1], a
+    ld [wEnemyPathWork], a
     ld a, h
-    ld [wUnk_dbd2], a
+    ld [wEnemyPathWork + 1], a
     pop hl
-    ld de, wUnk_dbd1
+    ld de, wEnemyPathWork
     ld c, $0f
 
 jr_000_2944:
@@ -9502,7 +9502,7 @@ StateInit_Pause:
     xor a
     ld [hPaletteMode], a
     ld a, $01
-    ld [hUnk_ff9a], a
+    ld [hInterruptEnable], a
     xor a
     ld [wLevelSweepPending], a
     ldh [rSCX], a
@@ -9570,7 +9570,7 @@ StateInit_DeveloperLogos:
     xor a
     ld [hPaletteMode], a
     ld a, $01
-    ld [hUnk_ff9a], a
+    ld [hInterruptEnable], a
     xor a
     ldh [rSCX], a
     ld de, Palettes_DeveloperLogos
@@ -9626,9 +9626,9 @@ StateInit_PublisherLogo:
     ld [hVBlankHandler + 1], a
     ld a, $01
     ld [hPaletteMode], a
-    ld [hUnk_ff9b], a
+    ld [hLycStart], a
     ld a, $01
-    ld [hUnk_ff9a], a
+    ld [hInterruptEnable], a
     xor a
     ldh [rSCX], a
     ld de, Palettes_PublisherLogo
@@ -9688,9 +9688,9 @@ StateInit_Credits:
     ld a, h
     ld [hVBlankHandler + 1], a
     xor a
-    ld [hUnk_ff9b], a
+    ld [hLycStart], a
     ld a, $03
-    ld [hUnk_ff9a], a
+    ld [hInterruptEnable], a
     ld a, $80
     ld [wUnk_c958], a
     xor a
@@ -9717,9 +9717,9 @@ StateInit_Credits:
     ld a, $01
     call ChangeROMBank
     xor a
-    ld [wUnk_dcf4], a
+    ld [wCreditsRowColour], a
     dec a
-    ld [wUnk_dcf5], a
+    ld [wCreditsScrollDone], a
     ret
 
 ; Point the credits scroller at the list for the chosen language.
@@ -9745,40 +9745,40 @@ SelectCreditsText:
 
 jr_000_3b6e:
     ld a, l
-    ld [wUnk_dcfa], a
-    ld [wUnk_dcf8], a
+    ld [wCreditsTextPtr], a
+    ld [wCreditsTextStart], a
     ld a, h
-    ld [wUnk_dcfb], a
-    ld [wUnk_dcf9], a
+    ld [wCreditsTextPtr + 1], a
+    ld [wCreditsTextStart + 1], a
     xor a
-    ld [wUnk_dcf7], a
+    ld [wCreditsScrollY], a
     ld a, $9a
-    ld [wUnk_dcfd], a
+    ld [wCreditsRowAddress + 1], a
     ld a, $60
-    ld [wUnk_dcfc], a
+    ld [wCreditsRowAddress], a
     ret
 
 UpdateCreditsScroll:
-    ld a, [wUnk_dcf5]
+    ld a, [wCreditsScrollDone]
     inc a
     ret z
 
     ld a, $ff
-    ld [wUnk_dcf5], a
-    ld a, [wUnk_dcf7]
+    ld [wCreditsScrollDone], a
+    ld a, [wCreditsScrollY]
     ldh [rSCY], a
     and $07
     jr nz, jr_000_3bfe
 
-    ld a, [wUnk_dcfc]
+    ld a, [wCreditsRowAddress]
     ld e, a
-    ld a, [wUnk_dcfd]
+    ld a, [wCreditsRowAddress + 1]
     ld d, a
     ld a, $0f
     ld [ROM_BANK], a
-    ld a, [wUnk_dcfa]
+    ld a, [wCreditsTextPtr]
     ld l, a
-    ld a, [wUnk_dcfb]
+    ld a, [wCreditsTextPtr + 1]
     ld h, a
     ld a, [hl+]
     or a
@@ -9809,19 +9809,19 @@ jr_000_3bcc:
     dec b
     jr nz, jr_000_3bbe
 
-    ld [wUnk_dcf4], a
+    ld [wCreditsRowColour], a
     ld a, l
-    ld [wUnk_dcfa], a
+    ld [wCreditsTextPtr], a
     ld a, h
-    ld [wUnk_dcfb], a
+    ld [wCreditsTextPtr + 1], a
 
 UpdateCreditsScroll_AdvanceRow:
-    ld a, [wUnk_dcfc]
+    ld a, [wCreditsRowAddress]
     add $20
-    ld [wUnk_dcfc], a
+    ld [wCreditsRowAddress], a
     jr nc, jr_000_3bf4
 
-    ld a, [wUnk_dcfd]
+    ld a, [wCreditsRowAddress + 1]
     inc a
     cp $9c
     jr nz, jr_000_3bf1
@@ -9829,7 +9829,7 @@ UpdateCreditsScroll_AdvanceRow:
     ld a, $98
 
 jr_000_3bf1:
-    ld [wUnk_dcfd], a
+    ld [wCreditsRowAddress + 1], a
 
 jr_000_3bf4:
     ld a, $01
@@ -9843,7 +9843,7 @@ jr_000_3bfa:
 jr_000_3bfe:
     ld a, $fe
 
-    ld [wUnk_dcf4], a
+    ld [wCreditsRowColour], a
     ret
 
 jr_000_3c04:
@@ -9853,16 +9853,16 @@ jr_000_3c04:
     ld [hStateTimer], a
     ld a, $1a
     call PlaySound
-    ld a, [wUnk_dcf8]
+    ld a, [wCreditsTextStart]
     ld l, a
-    ld a, [wUnk_dcf9]
+    ld a, [wCreditsTextStart + 1]
     ld h, a
 
 UpdateCreditsScroll_BlankRow:
     ld a, l
-    ld [wUnk_dcfa], a
+    ld [wCreditsTextPtr], a
     ld a, h
-    ld [wUnk_dcfb], a
+    ld [wCreditsTextPtr + 1], a
     ld h, d
     ld l, e
     ld b, $14
@@ -9874,7 +9874,7 @@ jr_000_3c28:
     jr nz, jr_000_3c28
 
     ld a, $fe
-    ld [wUnk_dcf4], a
+    ld [wCreditsRowColour], a
     jp UpdateCreditsScroll_AdvanceRow
 
 ; Step wLevelMusicIndex (0, 1, 2, 0, ...) and restart the count of levels since the last password.
@@ -9906,11 +9906,11 @@ StateInit_LevelPassword:
     ld a, h
     ld [hStatHandler + 1], a
     ld a, $1c
-    ld [hUnk_ff9b], a
+    ld [hLycStart], a
     xor a
     ld [hPaletteMode], a
     ld a, $01
-    ld [hUnk_ff9a], a
+    ld [hInterruptEnable], a
     ld de, Palettes_LevelPassword
     call LoadPalettes
     ld a, $0c
@@ -9918,7 +9918,7 @@ StateInit_LevelPassword:
     xor a
     ld [wUnk_defb], a
     ld a, $01
-    ld [wUnk_dd00], a
+    ld [wLevelPasswordReady], a
     ldh [rVBK], a
     xor a
     ld de, $9800
@@ -9947,8 +9947,8 @@ StateInit_LevelPassword:
     ld b, $14
     ld c, $12
     call CopyTilemapRect
-    ld hl, LevelPasswordData_00c_4ca8
-    ld de, wUnk_dd03
+    ld hl, LevelPasswordScrollSplits
+    ld de, wScrollSplits
     ld bc, $0006
     call DataTransfer
     ld a, [wLangTextLevelPassword]
@@ -9956,18 +9956,18 @@ StateInit_LevelPassword:
     ld l, a
     ld a, [wLangTextLevelPassword + 1]
     ld h, a
-    ld de, wUnk_dd0b
+    ld de, wLevelPasswordText
     ld bc, $003e
     call DataTransfer
     ld a, $01
     call ChangeROMBank
-    ld hl, LevelPasswordData_001_6784
+    ld hl, LogoSwaySteps
     ld a, l
-    ld [wUnk_dd09], a
+    ld [wLogoSwayPtr], a
     ld a, h
-    ld [wUnk_dd0a], a
+    ld [wLogoSwayPtr + 1], a
     call BuildLevelTitle
-    ld hl, wUnk_dd17
+    ld hl, wLevelPasswordText + 12
     ld a, [wLanguage]
     cp $04
     jr nz, jr_000_3d12
@@ -9994,20 +9994,20 @@ jr_000_3d1d:
     ld l, a
     ld a, [wUnk_df36]
     ld h, a
-    ld de, wUnk_cce3
-    ld a, [wUnk_cb7c]
+    ld de, wLevelPasswordChars
+    ld a, [wPasswordChars]
     ld [hl+], a
     ld [de], a
     inc de
-    ld a, [wUnk_cb7d]
+    ld a, [wPasswordChars + 1]
     ld [hl+], a
     ld [de], a
     inc de
-    ld a, [wUnk_cb7e]
+    ld a, [wPasswordChars + 2]
     ld [hl+], a
     ld [de], a
     inc de
-    ld a, [wUnk_cb7f]
+    ld a, [wPasswordChars + 3]
     ld [hl+], a
     ld [de], a
     ld a, [wLevelBonus]
@@ -10038,7 +10038,7 @@ jr_000_3d1d:
     ld b, h
     ld c, l
     call AddScoreBC
-    ld hl, wUnk_dd0b
+    ld hl, wLevelPasswordText
     call DrawString
     call DrawString
     call DrawString
@@ -10080,7 +10080,7 @@ jr_000_3d1d:
     ld [wFireworks + 43], a
     ld a, h
     ld [wFireworks + 44], a
-    ld hl, LevelPasswordData_001_6543
+    ld hl, TwinkleInitData
     ld de, wTwinkles
     ld bc, $0037
     call DataTransfer
@@ -10094,9 +10094,9 @@ StateInit_LanguageSelect:
     ld [hVBlankHandler + 1], a
     ld a, $01
     ld [hPaletteMode], a
-    ld [hUnk_ff9b], a
+    ld [hLycStart], a
     ld a, $01
-    ld [hUnk_ff9a], a
+    ld [hInterruptEnable], a
     xor a
     ldh [rSCX], a
     ld de, Palettes_LanguageSelect
@@ -10187,9 +10187,9 @@ StateInit_Copyright:
     ld [hVBlankHandler + 1], a
     ld a, $01
     ld [hPaletteMode], a
-    ld [hUnk_ff9b], a
+    ld [hLycStart], a
     ld a, $01
-    ld [hUnk_ff9a], a
+    ld [hInterruptEnable], a
     xor a
     ldh [rSCX], a
     ld de, Palettes_Copyright
@@ -10250,11 +10250,11 @@ StateInit_Ending:
     ld [hPaletteMode], a
     ld [wLevelsSincePassword], a
     ld a, $01
-    ld [hUnk_ff9a], a
+    ld [hInterruptEnable], a
     ld de, Palettes_Ending
     call LoadPalettes
     ld a, $0e
-    ld [wUnk_dcff], a
+    ld [wEndingSeen], a
     call ChangeROMBank
     ld a, $01
     ldh [rVBK], a

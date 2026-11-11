@@ -321,6 +321,9 @@ Special cases, also tested in the emulator:
 - **VBlank tile writes.** Gameplay code never writes to the tilemap directly. It queues changes in `wVBlankTileWrites` (tiles) and `wVBlankAttrWrites` (attributes), and the VBlank handler copies them to the screen.
 - **Raster effects.** `SetUpRasterEffect` (bank `$0F`) copies one of three LCD STAT handlers to RAM at `wStatJump`. The handler runs on every screen line. It writes that line's colours and horizontal scroll, then patches its own operands with the next record of `wRasterTable`. `hPaletteMode` selects the handler: mode 1 changes two sprite colours and one background colour per line, modes 2 and 4 change four background colours, and mode 3 changes one sprite colour.
 - **Fireworks.** The level password screen shows three fireworks (`UpdateFireworks`). Each rocket follows a launch script, flies until its fuse runs out, and bursts into 10 sparks. The sparks follow the paths in `LevelPasswordCurves`. `UpdateTwinkles` animates 11 twinkling stars on the same screen.
+- **Title letters.** `TitleScreen_SlideLetters` slides the six title letters in from the right as sprites, one after the other. When a letter arrives, `TitleScreen_VBlank` draws it on the background. All six letters share one list of steps (`TitleLetterPath_1`); each later letter starts 3 bytes further in.
+- **Logo sway.** On the level password screen the LCD STAT handler changes the horizontal scroll at three screen lines (`wScrollSplits`). `LogoSwaySteps` moves the first and third part in opposite directions.
+- **Level title.** When a level starts, the top row shows the level title and blinks. `wLevelTitleTimer` counts down, and then the row shows the score again.
 - **High score screen.** `HighScores_AdvanceAnim` steps the "HIGH SCORE" animation every third frame. `HighScores_SlideSprites` slides the four rows of sprites in and out, and rows alternate direction.
 
 ## Useful RAM
@@ -340,6 +343,7 @@ Special cases, also tested in the emulator:
 - Level 160 spells "GG" in bricks.
 - The ending text says "Congratulations, you have mastered Cool Bricks. Now try with just one life" (bank `$0E`, around `0E:6465`).
 - The default high-score names are CLIVE, ANDY, MARCUS, RACHEL and VICKY (`02:4045`).
+- The ending sets `wEndingSeen`. While it is set, no level password screen appears. `StartGame` clears it.
 - Level 33 has two unbreakable bricks with the power-up id `$29`. They can never drop anything.
 
 ## Check against the community savestates

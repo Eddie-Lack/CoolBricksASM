@@ -226,8 +226,10 @@ Runs of labels with the same prefix are shown as one row.
 | `$57AD` | 21 | data | `GrenadeText_Spanish_7` |
 | `$57C2` | 80 | data | `GrenadeTexts_English` to `GrenadeTexts_Italian` (5 labels) |
 | `$5812` | 44 | data | `GrenadeThrowTable` |
-| `$583E` | 744 | data | `TitleScreenData_001_583e` to `TitleScreenData_001_5ae2` (12 labels) |
-| `$5B26` | 65 | data | `TitleLetterTable_5b26` to `TitleLetterTable_5b44` (2 labels) |
+| `$583E` | 23 | data | `TitleLetterPath_1` to `TitleLetterPath_6` (6 labels) |
+| `$5855` | 721 | data | `TitleLetterSprites_1` to `TitleLetterSprites_6` (6 labels) |
+| `$5B26` | 30 | data | `TitleLetterTileTable` |
+| `$5B44` | 35 | data | `TitleLetterAttrTable` |
 | `$5B67` | 162 | data | `TitleLetterTiles_5b67` to `TitleLetterTiles_5c00` (18 labels) |
 | `$5C09` | 293 | code | `LevelPassword_DrawBonus` to `LevelPassword_VBlank` (3 labels) |
 | `$5D2E` | 53 | code | `Firework_Launch` |
@@ -256,12 +258,12 @@ Runs of labels with the same prefix are shown as one row.
 | `$64C3` | 17 | code | `ClearUnbreakableHitEffects` |
 | `$64D4` | 37 | code | `SpawnUnbreakableHitEffect` |
 | `$64F9` | 74 | code | `UpdateUnbreakableHitEffects` |
-| `$6543` | 55 | data | `LevelPasswordData_001_6543` |
+| `$6543` | 55 | data | `TwinkleInitData` |
 | `$657A` | 46 | data | `LevelPasswordFrame_657a` to `LevelPasswordFrame_65a6` (12 labels) |
 | `$65A8` | 98 | data | `LevelPasswordFrames` |
 | `$660A` | 40 | data | `LevelPasswordCurves` |
 | `$6632` | 338 | data | `LevelPasswordCurve_6632` to `LevelPasswordCurve_674d` (6 labels) |
-| `$6784` | 41 | data | `LevelPasswordData_001_6784` |
+| `$6784` | 41 | data | `LogoSwaySteps` |
 | `$67AD` | 71 | data | `FireworkScript_0` to `FireworkScript_2` (3 labels) |
 | `$67F4` | 19 | code | `CopyPalettesToHardware` |
 | `$6807` | 49 | code | `CopyPaletteBuffer` |
@@ -280,7 +282,7 @@ Runs of labels with the same prefix are shown as one row.
 | `$6C39` | 27 | data | `Text_Spanish_LatestScore` |
 | `$6C54` | 27 | data | `Text_Italian_LatestScore` |
 | `$6C6F` | 27 | data | `Text_German_LatestScore` |
-| `$6C8A` | 528 | code | `TitleScreen_VBlank` to `TitleScreen_Init6e25` (4 labels) |
+| `$6C8A` | 528 | code | `TitleScreen_VBlank` to `TitleScreen_InitLetters` (4 labels) |
 | `$6E9A` | 11 | code | `ClearOamEntries` |
 | `$6EA5` | 47 | code | `InitBatSprites` |
 | `$6ED4` | 390 | code | `DrawBatSprites` |
@@ -448,7 +450,7 @@ Runs of labels with the same prefix are shown as one row.
 |---|---|---|---|
 | `$4000` | 864 | data | (no label) |
 | `$4360` | 2376 | data | `PowerupMap_Level050` to `PowerupMap_Level123` (160 labels) |
-| `$4CA8` | 6 | data | `LevelPasswordData_00c_4ca8` |
+| `$4CA8` | 6 | data | `LevelPasswordScrollSplits` |
 | `$4CAE` | 62 | data | `Text_English_LevelPassword` |
 | `$4CEC` | 62 | data | `Text_French_LevelPassword` |
 | `$4D2A` | 62 | data | `Text_Spanish_LevelPassword` |
