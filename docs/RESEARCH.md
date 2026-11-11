@@ -258,6 +258,16 @@ Three small effect lists are updated every frame in bank 1:
 
 `hJoypad` bits: 0 = right, 1 = left, 2 = up, 3 = down, 4 = A, 5 = B, 6 = Select, 7 = Start.
 
+## Ball power-ups replace each other
+
+Slowball, Clock, Pepper, Ninja and Triple ball are "ball" power-ups. The pick-up handler of each one clears the flags of the other four (`wSlowBallActive`, `wSleepyBallActive`, `wAntigravityActive` and `wNinjaActive`), so only one of these effects is active at a time.
+
+- Picking up any of the five ends Ninja, unless it is Ninja itself.
+- Picking up Clock, Pepper, Ninja or Triple ball ends Slowball.
+- Slowball clears the low nibble of every ball's speed at once, which removes the second movement step. While `wSlowBallActive` is set, bat hits use the slower half of `BatBounceTable`.
+
+Bat power-ups (Rocket, Plasma, Laser, Grenade, Poison, Milk, Magnet, Reverse) do not touch these flags.
+
 ## Useful RAM
 
 | Address | Meaning |
