@@ -941,6 +941,10 @@ jr_001_522d:
     ld [wBatWidth], a
     jp PowerupCollected
 
+; Smiley ends the level: it sets the next game state and adds 1 to wCurrentLevel.
+; Unlike CountBrickDestroyed, it does not check hStateTimer first. If the last brick has
+; just been destroyed, the level number has already gone up and this adds 1 again.
+; This is the "brick skip". See docs/RESEARCH.md.
 Powerup_Smiley:
     ld b, $02
     ld a, [wLevelsSincePassword]
