@@ -1882,7 +1882,7 @@ jr_000_0b81:
     ld [wLevelsSincePassword], a
     call InitBat
     call InitBall
-    call Call_000_271b
+    call ResetEnemies
     call ResetShots
     call ClearFallingPowerups
     call ClearBrickBreakEffects
@@ -2055,7 +2055,7 @@ jr_000_0c9a:
     ld [$d745], a
     ld a, $04
     ld [$ff9d], a
-    call Call_001_77c6
+    call SetUpBricks
     xor a
     ldh [rVBK], a
     ld hl, $9800
@@ -3118,7 +3118,7 @@ RestartAfterLifeLost:
     call ProcessBrickHitQueue
     call Call_000_1d7c
     call ResetShots
-    call Call_000_271b
+    call ResetEnemies
     call ClearFallingPowerups
     call ClearBrickBreakEffects
     call ClearPickupEffects
@@ -3907,7 +3907,7 @@ jr_000_1815:
 ; Test one point of the ball. A ball moving down is tested against the bat first; otherwise the point is tested against the bricks.
 CollideBallPoint:
     ld b, a
-    call Call_000_316c
+    call CheckUfoHit
     ret nz
 
     call CheckBlobCatch
@@ -6472,7 +6472,8 @@ jr_000_2692:
     call ChangeROMBank
     ret
 
-Call_000_271b:
+; Reset the UFO, the blob and Ghost. Runs at level start and after a lost life.
+ResetEnemies:
     call Call_000_294b
     xor a
     ld [wBlobActive], a
@@ -6480,7 +6481,7 @@ Call_000_271b:
     ld [wGhostActive], a
     ld [wBlobThrowCount], a
     ld [$dbea], a
-    ld [$dc34], a
+    ld [wUfoHits], a
     ld [$dc2e], a
     ld [$dc2b], a
     ld [wUfoBombActive], a
@@ -7541,7 +7542,7 @@ UpdateUfo:
     ld a, [wUfoBombActive]
     or a
     call nz, UpdateUfoBomb
-    ld a, [$dc34]
+    ld a, [wUfoHits]
     cp $05
     ret z
 
@@ -7755,7 +7756,7 @@ jr_000_2e3a:
 jr_000_2eb6:
     ld a, $15
     call PlaySound
-    call Call_000_306f
+    call UfoHit
 
 jr_000_2ebe:
     ld a, [wShotActive + 1]
@@ -7816,7 +7817,7 @@ jr_000_2ebe:
 jr_000_2f13:
     ld a, $15
     call PlaySound
-    call Call_000_306f
+    call UfoHit
 
 jr_000_2f1b:
     ld a, [wShotActive + 2]
@@ -7872,7 +7873,7 @@ jr_000_2f1b:
 jr_000_2f69:
     ld a, $15
     call PlaySound
-    call Call_000_306f
+    call UfoHit
 
 jr_000_2f71:
     ld a, [wShotActive + 3]
@@ -7928,7 +7929,7 @@ jr_000_2f71:
 jr_000_2fbf:
     ld a, $15
     call PlaySound
-    call Call_000_306f
+    call UfoHit
 
 jr_000_2fc7:
     ld a, [wShotActive + 4]
@@ -7984,7 +7985,7 @@ jr_000_2fc7:
 jr_000_3015:
     ld a, $15
     call PlaySound
-    call Call_000_306f
+    call UfoHit
 
 jr_000_301d:
     ld a, [wShotActive + 5]
@@ -8042,14 +8043,15 @@ jr_000_301d:
 jr_000_3066:
     ld a, $15
     call PlaySound
-    call Call_000_306f
+    call UfoHit
     ret
 
-Call_000_306f:
-    ld hl, $5009
-    ld a, [$dc34]
+; The ball hit the UFO: count the hit, show the score effect and add the score from UfoHitScores.
+UfoHit:
+    ld hl, UfoHitScores
+    ld a, [wUfoHits]
     inc a
-    ld [$dc34], a
+    ld [wUfoHits], a
     add a
     ld b, $00
     ld c, a
@@ -8206,7 +8208,8 @@ jr_000_3166:
     ld [hLifeLostTimer], a
     ret
 
-Call_000_316c:
+; Test a ball point against the UFO. The UFO disappears after 5 hits.
+CheckUfoHit:
     ld a, [wUfoFlying]
     or a
     ret z
@@ -8230,7 +8233,7 @@ Call_000_316c:
     xor a
     ld [wUfoFlying], a
     push bc
-    call Call_000_306f
+    call UfoHit
     pop bc
     ld a, $15
     call PlaySound
