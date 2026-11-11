@@ -6,20 +6,18 @@ This is a fork of [RoddyDev/CoolBricksASM](https://github.com/RoddyDev/CoolBrick
 
 ## Building
 
-With [RGBDS](https://rgbds.gbdev.io) 0.8.0:
+With [RGBDS](https://rgbds.gbdev.io) 0.8.0 and GNU make:
 
 ```sh
-rgbasm -o game.o game.asm
-rgblink -n game.sym -m game.map -o game.gbc game.o
-rgbfix -v -p 255 game.gbc
+make
 ```
 
-The `Makefile` does the same but uses Windows commands.
+This builds `game.gbc` and compares its MD5 with the original ROM. `Makefile.windows` is the original Windows cmd version (`make -f Makefile.windows`).
 
 Without RGBDS, the checking assembler builds the ROM and compares its MD5:
 
 ```sh
-python tools/gbasm.py game.asm game.gbc 5a7673f1e61cd707bdc880ff76396a3d
+make check
 ```
 
 `tools/gbasm.py` supports only the syntax these sources use. It has no macros. The changes below were checked with it, not with RGBDS.
