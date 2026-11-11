@@ -122,70 +122,142 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     db $00, $00, $00, $00, $d2, $2c, $5e, $3e, $00, $00, $c4, $38, $2c, $26, $ff, $7f
     db $00, $00, $17, $00, $19, $02, $9e, $03, $00, $00, $00, $00, $84, $7c, $60, $7e
     db $00, $00, $00, $00, $17, $00, $ff, $7f, $00, $00, $c0, $00, $80, $02, $f3, $4f
+
+LevelPalette_4670:
     db $00, $00, $0e, $00, $15, $01, $7f, $02, $00, $00, $08, $21, $31, $46, $5a, $6b
     db $00, $00, $06, $00, $8b, $00, $13, $01, $00, $00, $c0, $00, $a6, $0d, $33, $43
     db $00, $00, $ad, $00, $d7, $01, $9e, $17, $00, $00, $15, $54, $bf, $7d, $1f, $7f
     db $00, $00, $00, $60, $ef, $7d, $f5, $7f, $00, $00, $17, $00, $1b, $21, $7f, $4e
+
+LevelPalette_46b0:
     db $80, $01, $00, $00, $ff, $7f, $f4, $03, $00, $00, $08, $21, $31, $46, $5a, $6b
     db $f4, $03, $f4, $03, $f4, $03, $f4, $03, $00, $00, $c0, $00, $a6, $0d, $33, $43
     db $00, $00, $ad, $00, $d7, $01, $9e, $17, $00, $00, $17, $00, $fa, $1c, $7f, $4e
     db $00, $00, $65, $49, $8e, $62, $50, $7b, $00, $00, $87, $00, $ed, $00, $72, $01
+
+LevelPalette_46f0:
     db $a0, $01, $60, $14, $ff, $7f, $f4, $03, $00, $00, $08, $21, $31, $46, $5a, $6b
     db $f4, $03, $f4, $03, $f4, $03, $f4, $03, $00, $00, $c0, $00, $a6, $0d, $33, $43
     db $00, $00, $ad, $00, $d7, $01, $9e, $17, $00, $00, $00, $3c, $22, $41, $26, $46
     db $00, $00, $00, $60, $ef, $7d, $f5, $7f, $00, $00, $46, $00, $ad, $00, $94, $01
+
+LevelPalette_4730:
     db $a0, $01, $60, $14, $ff, $7f, $f4, $03, $00, $00, $08, $21, $31, $46, $5a, $6b
     db $f4, $03, $f4, $03, $f4, $03, $f4, $03, $00, $00, $17, $00, $fa, $1c, $7f, $4e
     db $00, $00, $45, $01, $4e, $02, $d3, $3f, $00, $00, $a8, $21, $92, $4b, $97, $5f
     db $00, $00, $46, $11, $8d, $26, $f4, $3f, $00, $00, $ac, $25, $2e, $32, $d2, $3e
+
+LevelPalette_4770:
     db $a0, $01, $60, $14, $ff, $7f, $f4, $03, $00, $00, $08, $21, $31, $46, $5a, $6b
     db $f4, $03, $f4, $03, $f4, $03, $f4, $03, $00, $00, $57, $61, $be, $7e, $bf, $73
     db $00, $00, $e0, $3c, $c1, $69, $a5, $7e, $00, $00, $80, $18, $40, $35, $e0, $55
     db $00, $00, $00, $60, $ef, $7d, $f5, $7f, $00, $00, $17, $00, $1b, $21, $7f, $4e
+
+LevelPalette_47b0:
     db $80, $01, $00, $00, $ff, $7f, $f4, $03, $00, $00, $08, $21, $31, $46, $5a, $6b
     db $f4, $03, $f4, $03, $f4, $03, $f4, $03, $00, $00, $cf, $00, $bf, $09, $bf, $3a
     db $00, $00, $ad, $00, $d7, $01, $9e, $17, $00, $00, $15, $54, $9d, $79, $1f, $7f
     db $00, $00, $00, $60, $ef, $7d, $f5, $7f, $00, $00, $17, $00, $1b, $21, $7f, $4e
+
+LevelPalette_47f0:
     db $a0, $01, $60, $14, $ff, $7f, $f4, $03, $00, $00, $08, $21, $31, $46, $5a, $6b
     db $f4, $03, $f4, $03, $f4, $03, $f4, $03, $00, $00, $e0, $3c, $c1, $69, $a5, $7e
     db $00, $00, $ad, $00, $d7, $01, $9e, $17, $00, $00, $80, $18, $40, $35, $e0, $55
     db $00, $00, $00, $60, $ef, $7d, $f5, $7f, $00, $00, $17, $00, $1b, $21, $7f, $4e
 
+BrickPalette_4830:
     db $00, $00, $ef
     db $10
     db $5a, $3e, $5d, $67, $00, $00, $cc, $0c, $d5, $31, $75, $4a
+
+BrickPalette_4840:
     db $00, $00, $13, $00, $38, $01, $1f, $03, $00, $00, $0d, $00, $f1, $00, $57, $02
+
+BrickPalette_4850:
     db $00, $00, $c0, $01, $11, $03, $ff, $03, $00, $00, $e0, $00, $e8, $01, $f3, $02
+
+BrickPalette_4860:
     db $00, $00, $0e, $38, $78, $61, $df, $7e, $00, $00, $0a, $28, $0f, $3d, $f7, $5d
 
     db $00, $00, $4b, $25, $36, $3a, $9f, $67, $00, $00, $c8, $18, $4e, $25, $77, $4a
+
+BrickPalette_4880:
     db $00, $00, $4b, $01, $36, $02, $9f, $03, $00, $00, $c8, $00, $4e, $01, $77, $02
+
+BrickPalette_4890:
     db $00, $00, $40, $25, $20, $3a, $80, $67, $00, $00, $c0, $18, $40, $25, $60, $4a
+
+BrickPalette_48a0:
     db $00, $00, $00, $58, $20, $61, $a0, $7e, $00, $00, $00, $34, $e0, $44, $c0, $5d
+
+BrickPalette_48b0:
     db $00, $00, $8b, $08, $75, $19, $df, $3a, $00, $00, $28, $00, $d0, $0c, $b5, $15
+
+BrickPalette_48c0:
     db $00, $00, $04, $10, $0a, $28, $0f, $3c, $00, $00, $02, $08, $05, $14, $07, $1c
 
+BrickPalette_48d0:
     db $00, $00, $00, $10, $00, $28, $00, $3c, $00, $00, $00, $08, $00, $14, $00, $1c
 
+BrickPalette_48e0:
     db $00, $00, $00, $0c, $00, $18, $00
-    db $2c, $00, $00, $00, $04, $00, $10, $00, $1c, $00, $00, $84
+    db $2c, $00, $00, $00, $04, $00, $10, $00, $1c
+
+BrickPalette_48f0:
+    db $00, $00, $84
     db $10
-    db $4a, $29, $ef, $3d, $00, $00, $42, $08, $a5, $14, $e7, $1c, $00, $00, $00, $0c
+    db $4a, $29, $ef, $3d, $00, $00, $42, $08, $a5, $14, $e7, $1c
+
+BrickPalette_4900:
+    db $00, $00, $00, $0c
     db $00, $18, $00
-    db $2c, $00, $00, $00, $04, $00, $10, $00, $1c, $00, $00, $07, $00, $0d, $00, $12
-    db $00, $00, $00, $05, $00, $08, $00, $0b, $00, $00, $00, $03, $0d, $06, $1a, $2a
-    db $2b, $00, $00, $61, $04, $e2, $08, $64, $11, $00, $00, $0a, $01, $14, $02, $3f
-    db $03, $00, $00, $64, $00, $0a, $01, $8f, $01, $00, $00, $e0, $00, $0d, $01, $d2
-    db $01, $00, $00, $80, $00, $a8, $00, $2b, $01, $00, $00, $c0, $1c, $05, $35, $a8
+    db $2c, $00, $00, $00, $04, $00, $10, $00, $1c
+
+BrickPalette_4910:
+    db $00, $00, $07, $00, $0d, $00, $12
+    db $00, $00, $00, $05, $00, $08, $00, $0b, $00
+
+BrickPalette_4920:
+    db $00, $00, $03, $0d, $06, $1a, $2a
+    db $2b, $00, $00, $61, $04, $e2, $08, $64, $11
+
+BrickPalette_4930:
+    db $00, $00, $0a, $01, $14, $02, $3f
+    db $03, $00, $00, $64, $00, $0a, $01, $8f, $01
+
+BrickPalette_4940:
+    db $00, $00, $e0, $00, $0d, $01, $d2
+    db $01, $00, $00, $80, $00, $a8, $00, $2b, $01
+
+BrickPalette_4950:
+    db $00, $00, $c0, $1c, $05, $35, $a8
     db $49, $00, $00, $60
     db $10
-    db $a2, $24, $25, $35, $00, $00, $c0, $0c, $05, $11, $ac, $21, $00, $00, $60, $08
-    db $a2, $08, $26, $19, $00, $00, $0b, $15, $6b, $29, $74, $46, $00, $00, $66, $08
-    db $e7, $14, $cf, $31, $00, $00, $ab, $14, $4e, $00, $34, $15, $00, $00, $06, $00
+    db $a2, $24, $25, $35
+
+BrickPalette_4960:
+    db $00, $00, $c0, $0c, $05, $11, $ac, $21, $00, $00, $60, $08
+    db $a2, $08, $26, $19
+
+BrickPalette_4970:
+    db $00, $00, $0b, $15, $6b, $29, $74, $46, $00, $00, $66, $08
+    db $e7, $14, $cf, $31
+
+BrickPalette_4980:
+    db $00, $00, $ab, $14, $4e, $00, $34, $15, $00, $00, $06, $00
     db $28, $00
-    db $ad, $04, $00, $00, $48, $20, $6c, $24, $31, $39, $00, $00, $45, $14, $07, $14
-    db $cb, $28, $00, $00, $c9, $00, $0a, $01, $56, $22, $00, $00, $67, $00, $a7, $00
-    db $4d, $11, $00, $00, $40, $01, $60, $01, $06, $01, $00, $00, $80, $00, $a0, $00
+    db $ad, $04
+
+BrickPalette_4990:
+    db $00, $00, $48, $20, $6c, $24, $31, $39, $00, $00, $45, $14, $07, $14
+    db $cb, $28
+
+BrickPalette_49a0:
+    db $00, $00, $c9, $00, $0a, $01, $56, $22, $00, $00, $67, $00, $a7, $00
+    db $4d, $11
+
+BrickPalette_49b0:
+    db $00, $00, $40, $01, $60, $01, $06, $01, $00, $00, $80, $00, $a0, $00
     db $83, $00, $fe, $fe, $06, $0a, $06, $06, $06, $0a, $01, $00, $00, $39, $0b, $fe
     db $fe, $06, $0a, $06, $06, $06, $0a, $03, $ff, $ff, $36, $0b, $ff, $07, $37, $0b
     db $07, $ff, $38, $0b, $fe, $fe, $06, $0a, $06, $06, $06, $0a, $04
@@ -378,7 +450,9 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     db $80, $00
 
     db $c8, $01, $32, $00, $e6, $01, $0a, $00, $be, $01, $64, $01
-    ld hl, $db71
+
+ClearFallingPowerups:
+    ld hl, wFallingPowerups
     ld c, $08
     xor a
 
@@ -391,17 +465,21 @@ jr_001_502b:
 
     ret
 
-    ld a, [$db6e]
+; Release the power-up of the brick that was just hit.
+; Only runs when the power-up id (wHitPowerupId) is not 0 and the brick now has exactly 1 hit point.
+; Random, Triple ball and Clock ids can change type here; see RESEARCH.md.
+SpawnPowerup:
+    ld a, [wHitPowerupId]
     or a
     ret z
 
-    ld a, [$db6f]
+    ld a, [wHitBrickValue]
     dec a
     ret nz
 
     push hl
     push de
-    ld hl, $db71
+    ld hl, wFallingPowerups
     ld de, $000c
 
 jr_001_5046:
@@ -437,15 +515,15 @@ jr_001_504d:
     sla a
     add $08
     ld [hl+], a
-    ld a, [$db6e]
+    ld a, [wHitPowerupId]
     dec a
     cp $10
     jr nz, jr_001_508d
 
-    ld a, [$ff8c]
+    ld a, [hFrameCounter]
     and $0f
     push af
-    ld a, [$dc35]
+    ld a, [wLevelType]
     bit 1, a
     jr z, jr_001_5089
 
@@ -461,7 +539,7 @@ jr_001_508d:
     jr nz, jr_001_509e
 
     ld d, a
-    ld a, [$d77c]
+    ld a, [wBallCount]
     or a
     jr z, jr_001_509d
 
@@ -478,7 +556,7 @@ jr_001_509e:
     jr nz, jr_001_50ab
 
     ld d, a
-    ld a, [$dc3d]
+    ld a, [wWeaponFlag]
     or a
     jr nz, jr_001_50aa
 
@@ -533,12 +611,14 @@ jr_001_50bb:
     ld a, [bc]
     ld [hl+], a
     ld a, $05
-    call Call_000_3e64
+    call PlaySound
     pop de
     pop hl
     ret
 
-    ld hl, $db71
+; Move the falling power-ups and run their pick-up handlers.
+UpdateFallingPowerups:
+    ld hl, wFallingPowerups
     ld c, $08
 
 jr_001_50e4:
@@ -565,7 +645,7 @@ jr_001_50f5:
     ld b, a
     ld a, [hl+]
     add a
-    call Call_001_5179
+    call CheckPowerupCaught
     jr nz, jr_001_50f0
 
     ld a, h
@@ -617,7 +697,7 @@ jr_001_511c:
     ld [$d8a5], a
 
 jr_001_513c:
-    ld a, [$d76e]
+    ld a, [wNinjaActive]
     or a
     jr z, jr_001_5159
 
@@ -632,7 +712,7 @@ jr_001_513c:
     ld [$d8a6], a
     jr nz, jr_001_5159
 
-    ld [$d76e], a
+    ld [wNinjaActive], a
 
 jr_001_5159:
     ld a, [$dc20]
@@ -652,10 +732,11 @@ jr_001_5159:
 
     ld [$dc20], a
     ld a, $18
-    call Call_000_3e64
+    call PlaySound
     ret
 
-Call_001_5179:
+; Test a falling power-up against the bat and jump to its handler.
+CheckPowerupCaught:
     push af
     push bc
     push de
@@ -663,7 +744,7 @@ Call_001_5179:
     ld a, d
     add $0c
     ld d, a
-    ld a, [$c200]
+    ld a, [wBatY]
     sub $08
     cp d
     jr nc, jr_001_51ae
@@ -672,13 +753,13 @@ Call_001_5179:
     cp d
     jr c, jr_001_51ae
 
-    ld a, [$c201]
+    ld a, [wBatX]
     sub $08
     cp b
     jr nc, jr_001_51ae
 
     ld h, a
-    ld a, [$d764]
+    ld a, [wBatWidth]
     add h
     cp b
     jr c, jr_001_51ae
@@ -700,7 +781,7 @@ jr_001_51ae:
     ld a, b
     add $0f
     ld b, a
-    ld a, [$c200]
+    ld a, [wBatY]
     sub $08
     cp d
     jr nc, jr_001_51cf
@@ -709,13 +790,13 @@ jr_001_51ae:
     cp d
     jr c, jr_001_51cf
 
-    ld a, [$c201]
+    ld a, [wBatX]
     sub $08
     cp b
     jr nc, jr_001_51cf
 
     ld h, a
-    ld a, [$d764]
+    ld a, [wBatWidth]
     add h
     cp b
     jr nc, jr_001_519e
@@ -727,7 +808,8 @@ jr_001_51cf:
     pop hl
     ret
 
-    ld a, [$d77c]
+Powerup_Slowball:
+    ld a, [wBallCount]
     or a
     jr z, jr_001_51e9
 
@@ -756,13 +838,14 @@ jr_001_51f2:
     xor a
     ld [$d8a5], a
     ld [$d8a2], a
-    ld [$d76e], a
+    ld [wNinjaActive], a
     ld hl, $df11
     call Call_000_0001
-    jp Jump_001_544e
+    jp PowerupCollected
 
+Powerup_Rocket:
     ld a, $1e
-    ld [$dc45], a
+    ld [wShotReloadDelay], a
     xor a
     ld [$dc4c], a
     ld hl, $df17
@@ -772,35 +855,36 @@ Jump_001_5219:
     ld a, $01
     ld [$dc46], a
     xor a
-    ld [$dc48], a
+    ld [wGrenadeCount], a
 
 Jump_001_5222:
-    ld a, [$dc47]
+    ld a, [wPlasmaState]
     cp $01
     jr nz, jr_001_522d
 
     xor a
-    ld [$dc47], a
+    ld [wPlasmaState], a
 
 jr_001_522d:
     xor a
-    ld [$d763], a
+    ld [wBallSticks], a
     ld [$d765], a
     ld [$d766], a
     ld [$d76a], a
     inc a
-    ld [$dc3d], a
-    ld a, [$d764]
+    ld [wWeaponFlag], a
+    ld a, [wBatWidth]
     cp $28
-    jp nz, Jump_001_544e
+    jp nz, PowerupCollected
 
-    ld a, [$c201]
+    ld a, [wBatX]
     add $04
-    ld [$c201], a
+    ld [wBatX], a
     ld a, $20
-    ld [$d764], a
-    jp Jump_001_544e
+    ld [wBatWidth], a
+    jp PowerupCollected
 
+Powerup_Smiley:
     ld b, $02
     ld a, [$dcfe]
     cp $04
@@ -815,56 +899,59 @@ jr_001_522d:
 
 jr_001_526a:
     ld a, b
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $0f
     ld [$ffa0], a
-    ld a, [$cce8]
+    ld a, [wCurrentLevel]
     inc a
     cp $a0
     jr nz, jr_001_5281
 
     ld a, $0d
-    ld [$ff9f], a
+    ld [hGameState], a
     xor a
 
 jr_001_5281:
-    ld [$cce8], a
+    ld [wCurrentLevel], a
     ld b, $32
     jp Jump_001_5450
 
+Powerup_Plasma:
     xor a
     ld [$dc46], a
     ld [$dc4c], a
-    ld [$dc48], a
+    ld [wGrenadeCount], a
     ld hl, $df19
     call Call_000_0001
     ld a, $01
-    ld [$dc47], a
+    ld [wPlasmaState], a
     jr jr_001_522d
 
+Powerup_Poison:
     ld a, $50
     ld [$d768], a
     ld a, $03
     ld [$d765], a
     ld [$d766], a
     xor a
-    ld [$d763], a
-    ld [$dc3d], a
+    ld [wBallSticks], a
+    ld [wWeaponFlag], a
     ld [$d76a], a
     ld hl, $df1d
     call Call_000_0001
-    ld a, [$d764]
+    ld a, [wBatWidth]
     cp $28
-    jp nz, Jump_001_544e
+    jp nz, PowerupCollected
 
-    ld a, [$c201]
+    ld a, [wBatX]
     add $04
-    ld [$c201], a
+    ld [wBatX], a
     ld a, $20
-    ld [$d764], a
-    jp Jump_001_544e
+    ld [wBatWidth], a
+    jp PowerupCollected
 
-    ld a, [$c201]
+Powerup_Milk:
+    ld a, [wBatX]
     sub $04
     cp $81
     jr c, jr_001_52e2
@@ -879,19 +966,20 @@ jr_001_52e2:
     ld a, $17
 
 jr_001_52e8:
-    ld [$c201], a
+    ld [wBatX], a
     ld a, $28
-    ld [$d764], a
+    ld [wBatWidth], a
     xor a
-    ld [$d763], a
-    ld [$dc3d], a
+    ld [wBallSticks], a
+    ld [wWeaponFlag], a
     ld [$d765], a
     ld [$d766], a
     ld [$d76a], a
     ld hl, $df1b
     call Call_000_0001
-    jp Jump_001_544e
+    jp PowerupCollected
 
+Powerup_Clock:
     ld a, [$d8a2]
     or a
     jr z, jr_001_5312
@@ -905,42 +993,45 @@ jr_001_5312:
     xor a
     ld [$d8a2], a
     ld [$d8a3], a
-    ld [$d76e], a
+    ld [wNinjaActive], a
     ld hl, $df15
     call Call_000_0001
-    jp Jump_001_544e
+    jp PowerupCollected
 
+Powerup_Pepper:
     ld a, $a0
     ld [$d8a6], a
     ld [$d8a2], a
     xor a
     ld [$d8a5], a
     ld [$d8a3], a
-    ld [$d76e], a
+    ld [wNinjaActive], a
     ld hl, $df13
     call Call_000_0001
-    jp Jump_001_544e
+    jp PowerupCollected
 
+Powerup_Magnet:
     ld a, $01
-    ld [$d763], a
+    ld [wBallSticks], a
     xor a
     ld [$d765], a
     ld [$d766], a
-    ld [$dc3d], a
+    ld [wWeaponFlag], a
     ld [$d76a], a
     ld hl, $df1f
     call Call_000_0001
-    ld a, [$d764]
+    ld a, [wBatWidth]
     cp $28
-    jp nz, Jump_001_544e
+    jp nz, PowerupCollected
 
-    ld a, [$c201]
+    ld a, [wBatX]
     add $04
-    ld [$c201], a
+    ld [wBatX], a
     ld a, $20
-    ld [$d764], a
-    jp Jump_001_544e
+    ld [wBatWidth], a
+    jp PowerupCollected
 
+Powerup_TripleBall:
     ld a, [$d8a2]
     or a
     jr z, jr_001_5381
@@ -954,13 +1045,14 @@ jr_001_5381:
     ld [$d8a5], a
     ld [$d8a2], a
     ld [$d8a3], a
-    ld [$d76e], a
+    ld [wNinjaActive], a
     ld hl, $df0f
     call Call_000_0001
-    jp Jump_001_544e
+    jp PowerupCollected
 
+Powerup_ExtraLife:
     ld hl, $df21
-    ld a, [$d8ac]
+    ld a, [wLives]
     inc a
     cp $0a
     jr nz, jr_001_53ac
@@ -969,39 +1061,42 @@ jr_001_5381:
     jp Jump_001_5450
 
 jr_001_53ac:
-    ld [$d8ac], a
+    ld [wLives], a
     call Call_000_0001
-    jp Jump_001_544e
+    jp PowerupCollected
 
+Powerup_Laser:
     ld a, $08
-    ld [$dc45], a
+    ld [wShotReloadDelay], a
     ld a, $01
     ld [$dc4c], a
     ld hl, $df23
     call Call_000_0001
     jp Jump_001_5219
 
+Powerup_Reverse:
     ld a, $50
     ld [$d768], a
     ld [$d76a], a
     xor a
     ld [$d765], a
     ld [$d766], a
-    ld [$dc3d], a
-    ld [$d763], a
+    ld [wWeaponFlag], a
+    ld [wBallSticks], a
     ld hl, $df25
     call Call_000_0001
-    ld a, [$d764]
+    ld a, [wBatWidth]
     cp $28
-    jr nz, jr_001_544e
+    jr nz, PowerupCollected
 
-    ld a, [$c201]
+    ld a, [wBatX]
     add $04
-    ld [$c201], a
+    ld [wBatX], a
     ld a, $20
-    ld [$d764], a
-    jr jr_001_544e
+    ld [wBatWidth], a
+    jr PowerupCollected
 
+Powerup_Ninja:
     ld a, [$d8a2]
     or a
     jr z, jr_001_5402
@@ -1012,7 +1107,7 @@ jr_001_5402:
     ld a, $c8
     ld [$d8a6], a
     ld a, $01
-    ld [$d76e], a
+    ld [wNinjaActive], a
     ld a, $04
     ld [$d8a0], a
     xor a
@@ -1021,29 +1116,31 @@ jr_001_5402:
     ld [$d8a5], a
     ld hl, $df2b
     call Call_000_0001
-    jr jr_001_544e
+    jr PowerupCollected
 
+Powerup_Ghost:
     ld a, $01
     ld [$dc20], a
     ld a, $ff
     ld [$dc21], a
     ld hl, $df27
     call Call_000_0001
-    jr jr_001_544e
+    jr PowerupCollected
 
+Powerup_Grenade:
     xor a
     ld [$dc4c], a
     ld [$dc46], a
     ld hl, $df29
     call Call_000_0001
     ld b, $04
-    ld a, [$dc48]
+    ld a, [wGrenadeCount]
     add b
-    ld [$dc48], a
+    ld [wGrenadeCount], a
     jp Jump_001_5222
 
-Jump_001_544e:
-jr_001_544e:
+; Common end of the pick-up handlers.
+PowerupCollected:
     ld b, $0a
 
 Jump_001_5450:
@@ -1056,7 +1153,7 @@ Jump_001_5450:
     call Call_001_634d
     pop de
     ld a, $08
-    call Call_000_3e64
+    call PlaySound
     ld a, $01
     or a
     pop hl
@@ -1514,25 +1611,26 @@ jr_001_5c92:
     ld [$dd4a], a
 
 jr_001_5c9f:
-    ld a, [$ff9f]
+    ld a, [hGameState]
     cp $02
     jr z, jr_001_5cbd
 
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     and $f0
     or a
     jr z, jr_001_5cbd
 
     ld a, $02
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $28
     ld [$ffa0], a
     ld a, $1a
-    call Call_000_3e64
+    call PlaySound
 
 jr_001_5cbd:
     ret
 
+Call_001_5cbe:
     ld a, [$dd00]
     or a
     ret z
@@ -1540,7 +1638,7 @@ jr_001_5cbd:
     ld a, $03
     ldh [rIE], a
     ld hl, $dd32
-    call Call_000_0e54
+    call DrawString
     ld a, [$defa]
     or a
     jr z, jr_001_5cf5
@@ -1672,13 +1770,13 @@ Call_001_5d63:
     inc a
     and $03
     ld [$de80], a
-    ld hl, $c200
+    ld hl, wBatY
     ld a, [$de7d]
     inc a
     call Call_001_6e9a
     xor a
     ld [$de7d], a
-    ld hl, $c200
+    ld hl, wBatY
     ld a, l
     ld [$de7e], a
     ld a, h
@@ -1857,12 +1955,12 @@ Jump_001_5e35:
     ld c, $0a
     ld a, c
     ld [$dd5d], a
-    ld a, [$ff9f]
+    ld a, [hGameState]
     cp $02
     jr z, jr_001_5e67
 
     ld a, $1c
-    call Call_000_3e64
+    call PlaySound
 
 jr_001_5e67:
     xor a
@@ -1889,12 +1987,12 @@ jr_001_5e67:
     cp $90
     jr nc, jr_001_5e90
 
-    ld a, [$ff9f]
+    ld a, [hGameState]
     cp $02
     jr z, jr_001_5e90
 
     ld a, $1b
-    call Call_000_3e64
+    call PlaySound
 
 jr_001_5e90:
     ld a, c
@@ -2359,6 +2457,7 @@ jr_001_5f72:
 
     db $01
 
+Call_001_627f:
     ld c, $0e
     xor a
     ld de, $0006
@@ -2372,6 +2471,7 @@ jr_001_6288:
 
     ret
 
+Call_001_628e:
     push hl
     push de
     push af
@@ -2454,6 +2554,7 @@ jr_001_62df:
     pop hl
     ret
 
+Call_001_62e9:
     ld hl, $dc63
     ld c, $0e
 
@@ -2524,6 +2625,7 @@ jr_001_633a:
 
     ret
 
+Call_001_633e:
     ld c, $04
     xor a
     ld de, $0004
@@ -2591,6 +2693,7 @@ jr_001_6371:
     pop bc
     ret
 
+Call_001_6386:
     ld hl, $dcb7
     ld c, $04
 
@@ -2702,9 +2805,9 @@ Call_001_63fa:
 
 Jump_001_6407:
     push de
-    call Call_001_7c54
-    call Call_001_7c54
-    call Call_001_7c54
+    call WaitVBlank
+    call WaitVBlank
+    call WaitVBlank
     pop de
     xor a
     ld [$d9bd], a
@@ -2848,6 +2951,7 @@ jr_001_64bd:
 
     ret
 
+Call_001_64c3:
     ld a, $ff
     ld [$dcf3], a
     ld hl, $dcd5
@@ -2857,6 +2961,7 @@ jr_001_64bd:
     ld [$dcd4], a
     ret
 
+Call_001_64d4:
     ld a, [$dcd3]
     ld l, a
     ld a, [$dcd4]
@@ -2882,6 +2987,7 @@ jr_001_64eb:
     ld [$d8ab], a
     ret
 
+Call_001_64f9:
     ld hl, $dcd5
     ld a, $0a
 
@@ -3139,7 +3245,7 @@ jr_001_6895:
     cp $02
     jr z, jr_001_68bd
 
-    call Call_001_7c54
+    call WaitVBlank
     ld hl, $ca9d
     ld de, $cadd
     call Call_001_67f4
@@ -3147,7 +3253,7 @@ jr_001_6895:
     jr jr_001_68c3
 
 jr_001_68bd:
-    call Call_001_7c54
+    call WaitVBlank
     call Call_001_6807
 
 jr_001_68c3:
@@ -3156,7 +3262,7 @@ jr_001_68c3:
     dec c
     jp nz, Jump_001_683a
 
-    call Call_001_7c54
+    call WaitVBlank
     ret
 
     ld c, $10
@@ -3240,14 +3346,14 @@ jr_001_691f:
     or c
     jr nz, jr_001_68f0
 
-    call Call_001_7c54
+    call WaitVBlank
     call Call_001_6807
     pop bc
     pop af
     dec c
     jp nz, Jump_001_68dd
 
-    call Call_001_7c54
+    call WaitVBlank
     ret
 
 Call_001_693c:
@@ -3477,7 +3583,7 @@ jr_001_6ab0:
     ld [hl], $04
 
 jr_001_6abe:
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     ld b, a
     ld a, [$defd]
     or a
@@ -3495,7 +3601,7 @@ jr_001_6abe:
     inc a
     ld [$defc], a
     ld a, $19
-    call Call_000_3e64
+    call PlaySound
     jr jr_001_6aea
 
 jr_001_6ae2:
@@ -3522,7 +3628,7 @@ jr_001_6aea:
     dec a
     ld [$defc], a
     ld a, $19
-    call Call_000_3e64
+    call PlaySound
     jr jr_001_6b11
 
 jr_001_6b09:
@@ -3538,7 +3644,7 @@ jr_001_6b11:
     or a
     jp z, Jump_001_6b8a
 
-    ld a, [$ff9f]
+    ld a, [hGameState]
     cp $05
     ret z
 
@@ -3591,9 +3697,9 @@ jr_001_6b76:
     jr nz, jr_001_6b76
 
     ld a, $1a
-    call Call_000_3e64
+    call PlaySound
     ld a, $05
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $28
     ld [$ffa0], a
 
@@ -3630,6 +3736,7 @@ Jump_001_6b8a:
     db $fc, $99, $00, $84, $20, $20, $20, $20, $20, $20, $20, $4c, $45, $54, $5a, $54
     db $45, $20, $00, $81, $30, $30, $30, $30, $30, $30, $ff
 
+Call_001_6c8a:
     ld a, [$db5a]
     or a
     ret z
@@ -3684,13 +3791,14 @@ Jump_001_6b8a:
     call Call_000_01d4
     ret
 
+Call_001_6cd4:
     ld a, [$db6d]
     or a
     ret z
 
     push af
     ld a, $28
-    ld hl, $c200
+    ld hl, wBatY
     call Call_001_6e9a
     pop af
     cp $01
@@ -3880,7 +3988,7 @@ jr_001_6df5:
 
 Jump_001_6e0b:
 jr_001_6e0b:
-    ld de, $c200
+    ld de, wBatY
     ld b, $10
     ld a, [hl+]
 
@@ -3906,6 +4014,7 @@ jr_001_6e11:
 
     ret
 
+Call_001_6e25:
     ld a, $a8
     ld [$db5b], a
     ld [$db5c], a
@@ -3962,7 +4071,8 @@ jr_001_6e9f:
 
     ret
 
-    ld hl, $c200
+Call_001_6ea5:
+    ld hl, wBatY
     ld de, $7b0c
     ld b, $09
 
@@ -3997,6 +4107,7 @@ jr_001_6ead:
     ld [$c2b7], a
     ret
 
+Call_001_6ed4:
     ld hl, $c204
     ld a, [$c2b4]
     call Call_001_6e9a
@@ -4004,12 +4115,12 @@ jr_001_6ead:
     or a
     jr z, jr_001_6ee8
 
-    ld hl, $c200
+    ld hl, wBatY
     jr jr_001_6f66
 
 jr_001_6ee8:
     ld hl, $c204
-    ld a, [$c201]
+    ld a, [wBatX]
     add $08
     ld b, a
     ld a, [$ff90]
@@ -4041,7 +4152,7 @@ jr_001_6f03:
     jr nz, jr_001_6f03
 
     ld de, $7b3e
-    ld a, [$dc3d]
+    ld a, [wWeaponFlag]
     or a
     jr z, jr_001_6f20
 
@@ -4052,14 +4163,14 @@ jr_001_6f20:
     or a
     jr nz, jr_001_6f2f
 
-    ld a, [$d763]
+    ld a, [wBallSticks]
     or a
     jr z, jr_001_6f2f
 
     ld de, $7b4e
 
 jr_001_6f2f:
-    ld a, [$d764]
+    ld a, [wBatWidth]
     cp $20
     jr z, jr_001_6f3a
 
@@ -4072,7 +4183,7 @@ jr_001_6f3a:
 jr_001_6f3b:
     ld [$ff90], a
     ld c, $04
-    ld a, [$c201]
+    ld a, [wBatX]
     sub $08
     ld b, a
 
@@ -4134,7 +4245,7 @@ jr_001_6f78:
     jr nz, jr_001_6f78
 
 jr_001_6f87:
-    ld a, [$d76e]
+    ld a, [wNinjaActive]
     or a
     jr z, jr_001_6f99
 
@@ -4149,7 +4260,7 @@ jr_001_6f96:
     ld [$c2b8], a
 
 jr_001_6f99:
-    ld a, [$d77c]
+    ld a, [wBallCount]
     or a
     jr z, jr_001_6fdb
 
@@ -4168,7 +4279,7 @@ jr_001_6fa3:
     inc de
     inc de
     inc de
-    ld a, [$d76e]
+    ld a, [wNinjaActive]
     or a
     jr z, jr_001_6fd4
 
@@ -4210,7 +4321,7 @@ jr_001_6fd8:
     jr nz, jr_001_6fa3
 
 jr_001_6fdb:
-    ld de, $db71
+    ld de, wFallingPowerups
     ld a, $08
     ld [$ff8d], a
 
@@ -4298,7 +4409,7 @@ jr_001_702f:
     inc b
 
 jr_001_7041:
-    ld a, [$d77c]
+    ld a, [wBallCount]
     add b
     ld b, a
     ld a, [$db70]
@@ -4347,6 +4458,7 @@ jr_001_7041:
     db $1f, $1d, $4c, $13, $08, $85, $41, $ed, $98, $bb, $6b, $ad, $48, $3a, $49, $6f
     db $6c
 
+Call_001_71ef:
     ld hl, $dae3
     ld de, $7592
     ld b, $0a
@@ -4406,7 +4518,8 @@ jr_001_7213:
     ld [$db50], a
     ret
 
-    ld hl, $c200
+Call_001_7238:
+    ld hl, wBatY
     ld de, $7542
     ld a, $05
     ld bc, $dae3
@@ -4552,7 +4665,7 @@ jr_001_72e3:
     ld [hl+], a
     ld bc, $0002
     add hl, bc
-    ld a, [$ff8c]
+    ld a, [hFrameCounter]
     and $07
     ld [hl+], a
     push de
@@ -4681,13 +4794,17 @@ jr_001_7341:
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $fe, $fe, $fe, $ff, $ff
     db $01, $01, $02, $02, $02, $00, $a4, $75, $a2, $75, $a0, $75, $9e, $75, $9c, $75
 
+; Jump to the init handler of game state hGameState.
+RunStateInit:
     ld hl, $7ba0
     jr jr_001_75cc
 
+; Jump to the update handler of game state hGameState.
+RunStateUpdate:
     ld hl, $7bbc
 
 jr_001_75cc:
-    ld a, [$ff9f]
+    ld a, [hGameState]
     add a
     ld e, a
     ld d, $00
@@ -4736,7 +4853,7 @@ jr_001_7615:
     call Call_001_63fa
 
 jr_001_7618:
-    call Call_001_7c54
+    call WaitVBlank
     call Call_000_3e7f
     ld a, [$ffa3]
     ld l, a
@@ -4754,12 +4871,12 @@ jr_001_7618:
     ld e, $00
     call Call_000_3e56
     xor a
-    call Call_000_3e64
+    call PlaySound
     ld a, $09
 
 jr_001_7640:
     push af
-    call Call_001_7c54
+    call WaitVBlank
     call Call_000_3e7f
     pop af
     dec a
@@ -4772,7 +4889,7 @@ jr_001_7640:
     ld [$cb53], a
     ld d, $fc
     call Call_001_7929
-    call Call_001_7c54
+    call WaitVBlank
     ld a, $01
     ldh [rIE], a
     xor a
@@ -4806,67 +4923,80 @@ Jump_001_7687:
     ld [$ffa4], a
     jp Jump_001_75d9
 
+Jump_001_7692:
     ld hl, $0f30
     jp Jump_001_7687
 
+Jump_001_7698:
     ld hl, $2665
     jp Jump_001_7687
 
+Jump_001_769e:
     ld hl, $7bd8
     jp Jump_001_7687
 
+Jump_001_76a4:
     ld hl, $7c03
     jp Jump_001_7687
 
+Jump_001_76aa:
     ld hl, $7c92
     jp Jump_001_7687
 
+Jump_001_76b0:
     ld hl, $3ad8
     jp Jump_001_7687
 
+Jump_001_76b6:
     ld hl, $06da
     jp Jump_001_7687
 
+Jump_001_76bc:
     ld hl, $20fa
     jp Jump_001_7687
 
+Jump_001_76c2:
     ld hl, $7a5e
     jp Jump_001_7687
 
+Jump_001_76c8:
     ld hl, $5c66
     jp Jump_001_7687
 
+Jump_001_76ce:
     ld hl, $7ca8
     jp Jump_001_7687
 
+Jump_001_76d4:
     ld hl, $6a5b
     jp Jump_001_7687
 
+Jump_001_76da:
     ld hl, $3eed
     jp Jump_001_7687
 
+Jump_001_76e0:
     ld hl, $7c74
     jp Jump_001_7687
 
-    db $d4, $51
-
-    db $0a, $52
-
-    db $56, $52
-    db $89, $52
-
-    db $a0, $52, $d5, $52
-    db $09, $53
-
-    db $2d, $53
-
-    db $48, $53, $78, $53, $9c, $53
-    db $b5, $53
-
-    db $c8, $53
-    db $f9, $53, $23, $54
-
-    db $35, $54
+; Pick-up handler for each power-up type.
+PowerupHandlers:
+    dw Powerup_Slowball
+    dw Powerup_Rocket
+    dw Powerup_Smiley
+    dw Powerup_Plasma
+    dw Powerup_Poison
+    dw Powerup_Milk
+    dw Powerup_Clock
+    dw Powerup_Pepper
+    dw Powerup_Magnet
+    dw Powerup_TripleBall
+    dw Powerup_ExtraLife
+    dw Powerup_Laser
+    dw Powerup_Reverse
+    dw Powerup_Ninja
+    dw Powerup_Ghost
+    dw Powerup_Grenade
     db $80, $00
 
     db $80, $00
@@ -4886,49 +5016,62 @@ Jump_001_7687:
     db $80, $00, $80, $00
 
     db $80, $00
-    db $46, $77
 
-    db $4e, $77
-
-    db $56, $77
-    db $5e, $77
-
-    db $66, $77, $6e, $77
-    db $76, $77
-
-    db $7e, $77
-
-    db $86, $77, $8e, $77, $96, $77
-    db $9e, $77
-
-    db $a6, $77
-    db $ae, $77, $b6, $77
-
-    db $be, $77
+; Sprite of each power-up type: 4 x (tile, attribute), in the order
+; top-left, top-right, bottom-right, bottom-left.
+PowerupSprites:
+    dw PowerupSprite_Slowball
+    dw PowerupSprite_Rocket
+    dw PowerupSprite_Smiley
+    dw PowerupSprite_Plasma
+    dw PowerupSprite_Poison
+    dw PowerupSprite_Milk
+    dw PowerupSprite_Clock
+    dw PowerupSprite_Pepper
+    dw PowerupSprite_Magnet
+    dw PowerupSprite_TripleBall
+    dw PowerupSprite_ExtraLife
+    dw PowerupSprite_Laser
+    dw PowerupSprite_Reverse
+    dw PowerupSprite_Ninja
+    dw PowerupSprite_Ghost
+    dw PowerupSprite_Grenade
+PowerupSprite_Slowball:
     db $22, $06, $23, $06, $25, $06, $24, $06
-
+PowerupSprite_Rocket:
     db $08, $0e, $09, $0e, $0b, $0e, $0a, $0e
-
+PowerupSprite_Smiley:
     db $2a, $00, $2b, $00, $2d, $00, $2c, $00
+PowerupSprite_Plasma:
     db $2e, $05, $2f, $05, $31, $05, $30, $05
-
-    db $32, $06, $33, $06, $35, $06, $34, $06, $36, $01, $37, $01, $39, $01, $38, $01
+PowerupSprite_Poison:
+    db $32, $06, $33, $06, $35, $06, $34, $06
+PowerupSprite_Milk:
+    db $36, $01, $37, $01, $39, $01, $38, $01
+PowerupSprite_Clock:
     db $3a, $01, $3b, $01, $3d, $01, $3c, $01
-
+PowerupSprite_Pepper:
     db $3e, $07, $3f, $07, $41, $07, $40, $07
-
-    db $42, $06, $43, $06, $45, $06, $44, $06, $46, $06, $47, $06, $49, $06, $48, $06
-    db $7b, $06, $7c, $06, $7e, $06, $7d
-    db $06
-
+PowerupSprite_Magnet:
+    db $42, $06, $43, $06, $45, $06, $44, $06
+PowerupSprite_TripleBall:
+    db $46, $06, $47, $06, $49, $06, $48, $06
+PowerupSprite_ExtraLife:
+    db $7b, $06, $7c, $06, $7e, $06, $7d, $06
+PowerupSprite_Laser:
     db $26, $04, $28, $04, $29, $04, $27, $04
-
+PowerupSprite_Reverse:
     db $77, $01, $78, $01, $7a, $01, $79, $01
-    db $04, $0a, $05, $0a, $07, $0a, $06, $0a, $00, $09, $02, $09, $03, $09, $01, $09
-
+PowerupSprite_Ninja:
+    db $04, $0a, $05, $0a, $07, $0a, $06, $0a
+PowerupSprite_Ghost:
+    db $00, $09, $02, $09, $03, $09, $01, $09
+PowerupSprite_Grenade:
     db $0c, $09, $0d, $09, $0f, $09, $0e, $09
+
+Call_001_77c6:
     xor a
-    ld [$cce7], a
+    ld [wBricksLeft], a
     ld a, $01
     ldh [rVBK], a
     ld hl, $9841
@@ -4984,9 +5127,9 @@ jr_001_7809:
     jr jr_001_787f
 
 jr_001_780f:
-    ld a, [$cce7]
+    ld a, [wBricksLeft]
     inc a
-    ld [$cce7], a
+    ld [wBricksLeft], a
     dec l
     xor a
     ldh [rVBK], a
@@ -5100,6 +5243,7 @@ jr_001_7894:
 
     ret
 
+Call_001_7899:
     ld a, [$cb58]
     inc a
     ld [$cb58], a
@@ -5129,8 +5273,9 @@ jr_001_78b7:
     ld [$cb57], a
     ret
 
+Call_001_78c8:
     ld b, $14
-    ld hl, $c200
+    ld hl, wBatY
     ld de, $7990
 
 jr_001_78d0:
@@ -5219,11 +5364,11 @@ Call_001_7929:
 
 jr_001_792b:
     push af
-    call Call_001_7c54
+    call WaitVBlank
     push de
     call Call_001_78fd
     pop de
-    ld hl, $c201
+    ld hl, wBatX
     ld c, $04
 
 jr_001_7939:
@@ -5263,40 +5408,73 @@ jr_001_793b:
     db $80, $68, $e0, $6b, $40, $6f, $a0, $72, $00, $76, $60, $79, $01
 
     db $00
-    db $0a, $1d
 
-    db $11, $1d, $18, $1d, $1f, $1d, $23, $1d, $2a, $1d
-    db $31, $1d
-
-    db $38, $1d
-    db $3c, $1d
-
-    db $43, $1d
-    db $4a, $1d
-
-    db $51, $1d
-
-    db $55, $1d
-
-    db $5c, $1d
-    db $63, $1d
-
-    db $6a, $1d, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00
-    db $6e, $1d
-
-    db $5c, $1d, $75, $1d, $6a, $1d
-    db $6e, $1d, $5c, $1d
-
-    db $75, $1d, $6a, $1d, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    ds 44, $00
-    db $6a, $1d
-
-    db $6a, $1d
-
-    db $75, $1d
-
-    db $6a, $1d
+; Brick redraw routine, indexed by wHitRedrawIndex.
+BrickRedrawHandlers:
+    dw Jump_000_1d0a
+    dw Jump_000_1d11
+    dw Jump_000_1d18
+    dw Jump_000_1d1f
+    dw Jump_000_1d23
+    dw Jump_000_1d2a
+    dw Jump_000_1d31
+    dw Jump_000_1d38
+    dw Jump_000_1d3c
+    dw Jump_000_1d43
+    dw Jump_000_1d4a
+    dw Jump_000_1d51
+    dw Jump_000_1d55
+    dw Jump_000_1d5c
+    dw Jump_000_1d63
+    dw Jump_000_1d6a
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw Jump_000_1d6e
+    dw Jump_000_1d5c
+    dw Jump_000_1d75
+    dw Jump_000_1d6a
+    dw Jump_000_1d6e
+    dw Jump_000_1d5c
+    dw Jump_000_1d75
+    dw Jump_000_1d6a
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw RST_00
+    dw Jump_000_1d6a
+    dw Jump_000_1d6a
+    dw Jump_000_1d75
+    dw Jump_000_1d6a
     ld hl, $dcf4
     ld a, [hl]
     inc a
@@ -5341,11 +5519,11 @@ jr_001_7a8d:
 
     xor a
     ld [$dcf5], a
-    ld a, [$ff9f]
+    ld a, [hGameState]
     cp $01
     ret z
 
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     and $f0
     or a
     jr z, jr_001_7ab6
@@ -5353,11 +5531,11 @@ jr_001_7a8d:
     ld a, $ff
     ld [$dcf5], a
     ld a, $01
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $28
     ld [$ffa0], a
     ld a, $1a
-    call Call_000_3e64
+    call PlaySound
 
 jr_001_7ab6:
     ret
@@ -5415,7 +5593,7 @@ GBC_Check:
     call LoadOAMCode            ; Load OAM DMA code
     call LoadHighScores         ; Load High Scores info
     pop af                      ; Get RAM Check info back to A
-    ld [$ff9f], a               ; Store to RAM
+    ld [hGameState], a               ; Store to RAM
     ret                         ; return
 
     db $98, $50, $1e, $02, $98, $58, $1f, $02, $98, $60, $20, $02, $98, $68, $21, $02
@@ -5440,45 +5618,50 @@ GBC_Check:
     db $01, $02, $03, $04, $05, $06, $07, $08, $09, $09, $09, $09, $09, $08, $07, $06
     db $05, $04, $03, $02, $01, $ff
 
-    db $8d, $3e, $7b, $1f
+; Init handler for each game state.
+StateInitHandlers:
+    dw Jump_000_3e8d
+    dw Jump_000_1f7b
+    dw LoadLevel
+    dw Jump_000_2687
+    dw Jump_000_3959
+    dw Jump_000_254f
+    dw Jump_000_39ed
+    dw Jump_000_05d9
+    dw Jump_000_3aee
+    dw Jump_000_3c45
+    dw Jump_000_00a6
+    dw Jump_000_3dee
+    dw Jump_000_3a6c
+    dw Jump_000_3f03
 
-    db $03, $0b, $87
-    db $26
-
-    db $59, $39
-
-    db $4f, $25, $ed, $39, $d9, $05, $ee, $3a
-
-    db $45, $3c, $a6, $00
-    db $ee, $3d, $6c, $3a
-
-    db $03, $3f
-    db $da, $76, $bc, $76, $92, $76
-
-    db $9e
-    db $76
-
-    db $a4, $76
-
-    db $98, $76, $aa, $76, $b6, $76, $c2, $76
-
-    db $c8
-    db $76
-    db $ce, $76
-    db $d4, $76, $b0, $76
-
-    db $e0, $76
-    ld a, [$ff9f]
+; Update handler for each game state.
+StateUpdateHandlers:
+    dw Jump_001_76da
+    dw Jump_001_76bc
+    dw Jump_001_7692
+    dw Jump_001_769e
+    dw Jump_001_76a4
+    dw Jump_001_7698
+    dw Jump_001_76aa
+    dw Jump_001_76b6
+    dw Jump_001_76c2
+    dw Jump_001_76c8
+    dw Jump_001_76ce
+    dw Jump_001_76d4
+    dw Jump_001_76b0
+    dw Jump_001_76e0
+    ld a, [hGameState]
     cp $07
     ret z
 
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     and $f0
     or a
     jr z, jr_001_7c02
 
     ld a, $07
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $28
     ld [$ffa0], a
     ld a, $05
@@ -5487,34 +5670,35 @@ GBC_Check:
     ld [$ccb7], a
     call Call_000_08c8
     ld a, $1a
-    call Call_000_3e64
+    call PlaySound
 
 jr_001_7c02:
     ret
 
-    ld a, [$ff9f]
+    ld a, [hGameState]
     cp $02
     ret z
 
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     bit 7, a
     jr z, jr_001_7c2c
 
     ld a, $02
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $28
     ld [$ffa0], a
     xor a
-    ld [$ff8a], a
+    ld [hJoypad], a
     ld [$ff8b], a
     ld [$d75f], a
     ld [$d760], a
     ld a, $1a
-    call Call_000_3e64
+    call PlaySound
 
 jr_001_7c2c:
     ret
 
+Call_001_7c2d:
     ld hl, $d8ad
     ld a, $01
     ld [hl+], a
@@ -5553,13 +5737,14 @@ jr_001_7c4a:
 
     ret
 
-Call_001_7c54:
+; Wait for the next frame. A+B+Select+Start resets the game.
+WaitVBlank:
     call Call_000_0223
-    ld a, [$ff9f]
+    ld a, [hGameState]
     or a
     jr z, jr_001_7c67
 
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     and $f0
     cp $f0
     jp z, Boot
@@ -5575,21 +5760,21 @@ jr_001_7c67:
     ld [$ff95], a
     ret
 
-    ld a, [$ff9f]
+    ld a, [hGameState]
     cp $02
     ret z
 
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     and $f0
     or a
     jr z, jr_001_7c91
 
     ld a, $02
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $28
     ld [$ffa0], a
     ld a, $1a
-    call Call_000_3e64
+    call PlaySound
 
 jr_001_7c91:
     ret
@@ -5604,7 +5789,7 @@ jr_001_7c91:
 
 jr_001_7c9d:
     ld a, $0b
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $01
     ld [$ffa0], a
     ret
@@ -5715,9 +5900,9 @@ jr_001_7d1d:
     ld c, l
     call Call_001_7c3c
     ld hl, $dd0b
-    call Call_000_0e54
-    call Call_000_0e54
-    call Call_000_0e54
+    call DrawString
+    call DrawString
+    call DrawString
     ld a, $2d
     ld [$dd4b], a
     ld hl, $67ad

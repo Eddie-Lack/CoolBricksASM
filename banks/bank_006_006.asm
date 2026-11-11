@@ -5,6 +5,7 @@
 
 SECTION "ROM Bank $006", ROMX[$4000], BANK[$6]
 
+Call_006_4000:
     ld hl, $c000
     dec [hl]
     jr z, jr_006_4009
@@ -1565,7 +1566,7 @@ Call_006_473f:
 PlaySong:
     ld hl, SongModuleHeaderList     ; Song module list pointer
     ld d, $00                       ; Zero out D, we only need E as an index.
-    add hl, de                      ;
+    add hl, de                      
     add hl, de
     add hl, de
     add hl, de
@@ -1677,6 +1678,7 @@ InitWaveRAM:
     ld [$c035], a
     ret
 
+Call_006_4819:
     ld d, $00
     ld hl, $4911
     add hl, de
