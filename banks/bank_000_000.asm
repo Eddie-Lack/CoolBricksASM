@@ -1763,7 +1763,7 @@ LoadLevel:
     add hl, hl
     add hl, hl
     add hl, hl
-    ld de, Palettes_Level
+    ld de, LevelTable
     add hl, de
     ld a, $05
     call ChangeROMBank
@@ -1800,11 +1800,11 @@ jr_000_0b49:
     push bc
     ld a, $01
     call ChangeROMBank
-    ld de, wUnk_c95d
+    ld de, wBgPalettes
     ld bc, $0040
     call DataTransfer
     ld hl, LevelSpritePalettes
-    ld de, wUnk_c99d
+    ld de, wObjPalettes
     ld bc, $0040
     call DataTransfer
     pop hl
@@ -1815,13 +1815,13 @@ jr_000_0b49:
     ld hl, BrickPalette_4830
 
 jr_000_0b81:
-    ld de, wUnk_c95d
+    ld de, wBgPalettes
     ld bc, $0008
     call DataTransfer
-    ld de, wUnk_c96d
+    ld de, wBgPalettes + $10
     ld bc, $0008
     call DataTransfer
-    ld de, wUnk_c95d
+    ld de, wBgPalettes
     call LoadPalettes
     ld a, $05
     call ChangeROMBank
@@ -2350,22 +2350,22 @@ InitBall:
     ld a, $01
     ld [wBallCount], a
     ld a, $89
-    ld [wUnk_d77e], a
+    ld [wBalls + 1], a
     ld a, [wBatWidth]
     srl a
     ld b, a
     ld a, [wBatX]
     sub $0c
     add b
-    ld [wUnk_d780], a
+    ld [wBalls + 3], a
     ld a, $10
     ld [wBalls + 4], a
     ld a, $83
     ld [wBalls + 5], a
     xor a
     ld [wBalls], a
-    ld [wUnk_d77f], a
-    ld [wUnk_d783], a
+    ld [wBalls + 2], a
+    ld [wBalls + 6], a
     xor a
     ld [wMultiBallPending], a
     ld [wSleepyBallActive], a
@@ -5047,7 +5047,7 @@ jr_000_1e0c:
     dec c
     jr nz, jr_000_1dfa
 
-    ld hl, Palettes_Level
+    ld hl, $4000
     ld a, l
     ld [wUnk_dab3], a
     ld a, h
@@ -5344,7 +5344,7 @@ StateInit_MainMenu:
     ldh [rSCX], a
     ldh [rSCY], a
     ld [wUnk_c959], a
-    ld de, Palettes_Level
+    ld de, Palettes_MainMenu
     call LoadPalettes
     ld hl, $9800
     call ClearTileMap
@@ -6485,13 +6485,13 @@ ResetEnemies:
     ld [wBlobThrowCount], a
     ld [wUnk_dbea], a
     ld [wUfoHits], a
-    ld [wUnk_dc2e], a
-    ld [wUnk_dc2b], a
+    ld [wUfoPassIndex], a
+    ld [wUfoTick], a
     ld [wUfoBombActive], a
     dec a
     ld [wUfoWaitTimer], a
     ld a, $01
-    ld [wUnk_dc2c], a
+    ld [wUfoTickMask], a
     ld b, $f0
     ld c, $32
     ld a, c
@@ -7554,11 +7554,11 @@ UpdateUfo:
     or a
     jr nz, jr_000_2dd6
 
-    ld a, [wUnk_dc2c]
+    ld a, [wUfoTickMask]
     ld b, a
-    ld a, [wUnk_dc2b]
+    ld a, [wUfoTick]
     inc a
-    ld [wUnk_dc2b], a
+    ld [wUfoTick], a
     and b
     ret nz
 
@@ -7569,9 +7569,9 @@ UpdateUfo:
 
     inc a
     ld [wUfoFlying], a
-    ld a, [wUnk_dc2e]
+    ld a, [wUfoPassIndex]
     inc a
-    ld [wUnk_dc2e], a
+    ld [wUfoPassIndex], a
     and $07
     add a
     ld e, a
@@ -9541,7 +9541,7 @@ jr_000_39ec:
 
 StateInit_DeveloperLogos:
     ld a, $46
-    ld [hUnk_ff91], a
+    ld [hLogoTimer], a
     ld hl, $02b3
     ld a, l
     ld [hVBlankHandler], a
@@ -9598,7 +9598,7 @@ ClearCheatFlags:
 
 StateInit_PublisherLogo:
     ld a, $46
-    ld [hUnk_ff91], a
+    ld [hLogoTimer], a
     ld hl, $02b3
     ld a, l
     ld [hVBlankHandler], a
@@ -9644,12 +9644,12 @@ StateInit_PublisherLogo:
     ret
 
 PublisherLogo_Update:
-    ld a, [hUnk_ff91]
+    ld a, [hLogoTimer]
     or a
     jr z, jr_000_3ae3
 
     dec a
-    ld [hUnk_ff91], a
+    ld [hLogoTimer], a
     ret
 
 jr_000_3ae3:
@@ -10159,7 +10159,7 @@ UpdateSound:
 
 StateInit_Copyright:
     ld a, $46
-    ld [hUnk_ff91], a
+    ld [hLogoTimer], a
     ld hl, $02b3
     ld a, l
     ld [hVBlankHandler], a
@@ -10201,12 +10201,12 @@ StateInit_Copyright:
     ret
 
 Copyright_Update:
-    ld a, [hUnk_ff91]
+    ld a, [hLogoTimer]
     or a
     jr z, jr_000_3ef8
 
     dec a
-    ld [hUnk_ff91], a
+    ld [hLogoTimer], a
     ret
 
 jr_000_3ef8:
