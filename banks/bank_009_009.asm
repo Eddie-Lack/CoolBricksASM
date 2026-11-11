@@ -5,7 +5,8 @@
 
 SECTION "ROM Bank $009", ROMX[$4000], BANK[$9]
 
-BrickRedrawData_009_4000:
+; Tile changes for the shine that sweeps over the bricks, 3 bytes per step. $ff restarts the list.
+BrickShineAnimation:
     db $25, $98, $68, $26, $98, $69, $27, $98, $6a, $2c, $98, $68, $2d, $98, $69, $2e
     db $98, $6a, $a0, $98, $6e, $80, $99, $56, $a0, $99, $5c, $b3, $98, $6e, $93, $99
     db $56, $b3, $99, $5c, $25, $98, $68, $26, $98, $69, $27, $98, $6a, $2c, $98, $68
