@@ -2,14 +2,15 @@ SECTION "Interrupts", ROM0[$0]
 RST_00::
     reti
 
-Call_000_0001:
-Jump_000_0001:
+; Show the 20-character message whose address is stored at HL. The message is in bank $0E.
+ShowMessageBankE:
     ld a, $0e
 
 Call_000_0003:
     ld [ROM_BANK], a
 
-Call_000_0006:
+; Like ShowMessageBankE, but the message is in the current bank.
+ShowMessage:
     db $01
     inc d
 
