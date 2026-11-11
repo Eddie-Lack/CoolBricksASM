@@ -2068,7 +2068,7 @@ Jump_001_5e35:
     or a
     jr nz, jr_001_5e99
 
-    ld hl, LevelPasswordData_001_660a
+    ld hl, LevelPasswordCurves
     ld a, [wUnk_dd5e]
     ld e, a
     ld a, [wUnk_dd5f]
@@ -2232,7 +2232,7 @@ jr_001_5f20:
     push hl
     ld l, a
     ld h, $00
-    ld bc, LevelPasswordData_001_65a8
+    ld bc, LevelPasswordFrames
     add hl, bc
     ld a, [hl+]
     ld b, [hl]
@@ -3188,46 +3188,110 @@ LevelPasswordData_001_6543:
     db $01, $00, $2e, $99, $64, $0a, $00, $26, $99, $69, $14, $00, $d2, $98, $64, $1e
     db $00, $92, $99, $69, $28, $00, $90, $98, $64, $32, $00, $ad, $99, $69, $3c, $00
     db $87, $99, $64, $46, $00, $82, $99, $69, $50, $00, $20, $99, $64, $64, $00, $c1
-    db $98, $69, $5a, $00, $84, $98, $64, $55, $56, $57, $58, $59, $5a, $5b, $5c, $5d
-    db $5e, $5f, $60, $61, $62, $63, $64, $65, $66, $67, $68, $69, $6a, $6b, $6c, $6d
-    db $6e, $6f, $70, $71, $72, $73, $74, $75, $76, $77, $78, $59, $5a, $5b, $5c, $55
-    db $56, $57, $58, $00, $00
+    db $98, $69, $5a, $00, $84, $98, $64
 
-LevelPasswordData_001_65a8:
-    db $00, $00, $7a, $65, $7a, $65, $7a, $65, $7a, $65, $7e
-    db $65, $7e, $65, $7e, $65, $7e, $65, $82, $65, $82, $65, $82, $65, $82, $65, $86
-    db $65, $86, $65, $86, $65, $86, $65, $8a, $65, $8a, $65, $8a, $65, $8a, $65, $8e
-    db $65, $8e, $65, $8e, $65, $8e, $65, $92, $65, $92, $65, $92, $65, $92, $65, $96
-    db $65, $96, $65, $96, $65, $96, $65, $9a, $65, $9a, $65, $9a, $65, $9a, $65, $9e
-    db $65, $9e, $65, $9e, $65, $9e, $65, $a2, $65, $a2, $65, $a2, $65, $a2, $65, $a6
-    db $65, $a6, $65, $a6, $65
+LevelPasswordFrame_657a:
+    db $55, $56, $57, $58
 
-    db $a6, $65
+LevelPasswordFrame_657e:
+    db $59, $5a, $5b, $5c
 
-LevelPasswordData_001_660a:
-    db $5c, $fe, $32, $66, $a4, $01, $70, $66, $2e, $ff, $13, $67, $d2, $00, $13, $67
-    db $d4, $fe, $ae, $66, $2c, $01, $ae, $66, $1a, $ff, $e6, $66, $e6, $00, $e6, $66
-    db $52, $fe, $4d, $67, $ae, $01, $4d, $67, $fc, $fc, $fd, $fd, $fd, $fd, $fd, $fe
+LevelPasswordFrame_6582:
+    db $5d
+    db $5e, $5f, $60
+
+LevelPasswordFrame_6586:
+    db $61, $62, $63, $64
+
+LevelPasswordFrame_658a:
+    db $65, $66, $67, $68
+
+LevelPasswordFrame_658e:
+    db $69, $6a, $6b, $6c
+
+LevelPasswordFrame_6592:
+    db $6d
+    db $6e, $6f, $70
+
+LevelPasswordFrame_6596:
+    db $71, $72, $73, $74
+
+LevelPasswordFrame_659a:
+    db $75, $76, $77, $78
+
+LevelPasswordFrame_659e:
+    db $59, $5a, $5b, $5c
+
+LevelPasswordFrame_65a2:
+    db $55
+    db $56, $57, $58
+
+LevelPasswordFrame_65a6:
+    db $00, $00
+
+LevelPasswordFrames:
+    db $00, $00
+    dw LevelPasswordFrame_657a, LevelPasswordFrame_657a, LevelPasswordFrame_657a, LevelPasswordFrame_657a
+    dw LevelPasswordFrame_657e, LevelPasswordFrame_657e, LevelPasswordFrame_657e, LevelPasswordFrame_657e
+    dw LevelPasswordFrame_6582, LevelPasswordFrame_6582, LevelPasswordFrame_6582, LevelPasswordFrame_6582
+    dw LevelPasswordFrame_6586, LevelPasswordFrame_6586, LevelPasswordFrame_6586, LevelPasswordFrame_6586
+    dw LevelPasswordFrame_658a, LevelPasswordFrame_658a, LevelPasswordFrame_658a, LevelPasswordFrame_658a
+    dw LevelPasswordFrame_658e, LevelPasswordFrame_658e, LevelPasswordFrame_658e, LevelPasswordFrame_658e
+    dw LevelPasswordFrame_6592, LevelPasswordFrame_6592, LevelPasswordFrame_6592, LevelPasswordFrame_6592
+    dw LevelPasswordFrame_6596, LevelPasswordFrame_6596, LevelPasswordFrame_6596, LevelPasswordFrame_6596
+    dw LevelPasswordFrame_659a, LevelPasswordFrame_659a, LevelPasswordFrame_659a, LevelPasswordFrame_659a
+    dw LevelPasswordFrame_659e, LevelPasswordFrame_659e, LevelPasswordFrame_659e, LevelPasswordFrame_659e
+    dw LevelPasswordFrame_65a2, LevelPasswordFrame_65a2, LevelPasswordFrame_65a2, LevelPasswordFrame_65a2
+    dw LevelPasswordFrame_65a6, LevelPasswordFrame_65a6, LevelPasswordFrame_65a6, LevelPasswordFrame_65a6
+
+LevelPasswordCurves:
+    dw $fe5c, LevelPasswordCurve_6632
+    dw $01a4, LevelPasswordCurve_6670
+    dw $ff2e, LevelPasswordCurve_6713
+    dw $00d2, LevelPasswordCurve_6713
+    dw $fed4, LevelPasswordCurve_66ae
+    dw $012c, LevelPasswordCurve_66ae
+    dw $ff1a, LevelPasswordCurve_66e6
+    dw $00e6, LevelPasswordCurve_66e6
+    dw $fe52, LevelPasswordCurve_674d
+    dw $01ae, LevelPasswordCurve_674d
+
+LevelPasswordCurve_6632:
+    db $fc, $fc, $fd, $fd, $fd, $fd, $fd, $fe
     db $fe, $fe, $fe, $ff, $ff, $00, $00, $00, $00, $01, $01, $02, $02, $02, $03, $03
     db $03, $03, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
-    db $04, $04, $04, $04, $04, $80, $fc, $fc, $fd, $fd, $fd, $fd, $fd, $fe, $fe, $fe
+    db $04, $04, $04, $04, $04, $80
+
+LevelPasswordCurve_6670:
+    db $fc, $fc, $fd, $fd, $fd, $fd, $fd, $fe, $fe, $fe
     db $fe, $ff, $ff, $00, $00, $00, $00, $01, $01, $02, $02, $02, $03, $03, $03, $03
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04
 
     db $7f
+
+LevelPasswordCurve_66ae:
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $01, $01, $02, $02, $02
     db $03, $03, $03, $03, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
-    db $04, $04, $04, $04, $04, $04, $04, $7f, $01, $01, $02, $02, $02, $03, $03, $03
+    db $04, $04, $04, $04, $04, $04, $04, $7f
+
+LevelPasswordCurve_66e6:
+    db $01, $01, $02, $02, $02, $03, $03, $03
     db $03, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
-    db $04, $04, $04, $04, $7f, $fc, $fc, $fd, $fd, $fd, $fe, $fe, $ff, $ff, $00, $00
+    db $04, $04, $04, $04, $7f
+
+LevelPasswordCurve_6713:
+    db $fc, $fc, $fd, $fd, $fd, $fe, $fe, $ff, $ff, $00, $00
     db $00, $00, $01, $01, $02, $02, $02, $03, $03, $03, $03, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
-    db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $7f, $01
+    db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $7f
+
+LevelPasswordCurve_674d:
+    db $01
     db $01, $01, $02, $02, $02, $02, $02, $02, $02, $03, $03, $03, $03, $03, $03, $03
     db $03, $03, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
