@@ -1807,13 +1807,13 @@ Call_001_5d63:
     inc a
     and $03
     ld [$de80], a
-    ld hl, wBatY
+    ld hl, wOamBuffer
     ld a, [$de7d]
     inc a
-    call Call_001_6e9a
+    call ClearOamEntries
     xor a
     ld [$de7d], a
-    ld hl, wBatY
+    ld hl, wOamBuffer
     ld a, l
     ld [$de7e], a
     ld a, h
@@ -2626,9 +2626,9 @@ jr_001_62ee:
     ld a, [hl]
     ld b, a
     pop hl
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld e, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld d, a
     push bc
     ld a, [hl+]
@@ -2660,12 +2660,12 @@ jr_001_62ee:
     ld [de], a
     inc de
     ld a, e
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, d
-    ld [$c2b7], a
-    ld a, [$c2b5]
+    ld [wOamWritePtr + 1], a
+    ld a, [wOamUsed]
     inc a
-    ld [$c2b5], a
+    ld [wOamUsed], a
     jr jr_001_633a
 
 jr_001_6336:
@@ -2795,9 +2795,9 @@ jr_001_63a5:
     ld [hl-], a
     ld a, e
     ld [hl+], a
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld e, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld d, a
     ld a, [hl+]
     ld c, a
@@ -2829,12 +2829,12 @@ jr_001_63a5:
     ld [de], a
     inc de
     ld a, e
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, d
-    ld [$c2b7], a
-    ld a, [$c2b5]
+    ld [wOamWritePtr + 1], a
+    ld a, [wOamUsed]
     add $02
-    ld [$c2b5], a
+    ld [wOamUsed], a
     jr jr_001_63f5
 
 jr_001_63f1:
@@ -3067,9 +3067,9 @@ jr_001_64fe:
     add hl, de
     ld a, [hl]
     ld d, a
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld l, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld h, a
     ld a, c
     ld [hl+], a
@@ -3080,12 +3080,12 @@ jr_001_64fe:
     ld a, $0b
     ld [hl+], a
     ld a, l
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, h
-    ld [$c2b7], a
-    ld a, [$c2b5]
+    ld [wOamWritePtr + 1], a
+    ld a, [wOamUsed]
     inc a
-    ld [$c2b5], a
+    ld [wOamUsed], a
     pop hl
     jr jr_001_653e
 
@@ -3171,7 +3171,8 @@ Data_001_67cb:
     db $ff, $cb, $67, $3e, $80, $e0, $68, $0e, $40
     db $2a, $e0, $69, $0d, $20, $fa, $c9, $3e, $80, $e0, $6a, $0e, $40
     db $2a, $e0, $6b, $0d, $20, $fa, $c9
-Call_001_67f4:
+
+CopyPalettesToHardware:
     ld a, $80
     ldh [rBCPS], a
     ldh [rOCPS], a
@@ -3319,7 +3320,7 @@ jr_001_6895:
     call WaitVBlank
     ld hl, $ca9d
     ld de, $cadd
-    call Call_001_67f4
+    call CopyPalettesToHardware
     call Call_001_693c
     jr jr_001_68c3
 
@@ -3880,8 +3881,8 @@ Call_001_6cd4:
 
     push af
     ld a, $28
-    ld hl, wBatY
-    call Call_001_6e9a
+    ld hl, wOamBuffer
+    call ClearOamEntries
     pop af
     cp $01
     jr nz, jr_001_6d15
@@ -4070,7 +4071,7 @@ jr_001_6df5:
 
 Jump_001_6e0b:
 jr_001_6e0b:
-    ld de, wBatY
+    ld de, wOamBuffer
     ld b, $10
     ld a, [hl+]
 
@@ -4140,7 +4141,9 @@ Call_001_6e25:
 
     db $40, $98, $00, $0a, $20, $20, $20, $46, $45, $4c, $49, $43, $49, $54, $41, $54
     db $49, $4f, $4e, $53, $20, $20, $20, $20, $ff
-Call_001_6e9a:
+
+; Hide A sprites starting at HL by clearing their Y position.
+ClearOamEntries:
     ld b, a
     xor a
     ld de, $0004
@@ -4153,8 +4156,9 @@ jr_001_6e9f:
 
     ret
 
-Call_001_6ea5:
-    ld hl, wBatY
+; Copy the 9 sprites of the bat and ball to the OAM buffer.
+InitBatSprites:
+    ld hl, wOamBuffer
     ld de, Data_001_7b0c
     ld b, $09
 
@@ -4177,31 +4181,31 @@ jr_001_6ead:
     jr nz, jr_001_6ead
 
     ld a, $01
-    ld [$c2b4], a
+    ld [wOamUsedLastFrame], a
     dec a
-    ld [$c2b5], a
+    ld [wOamUsed], a
     ld [$db70], a
     ld de, $c2b9
     ld a, e
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
 
     ld a, d
-    ld [$c2b7], a
+    ld [wOamWritePtr + 1], a
     ret
 
-Call_001_6ed4:
-    ld hl, $c204
-    ld a, [$c2b4]
-    call Call_001_6e9a
+DrawBatSprites:
+    ld hl, wOamBuffer + 4
+    ld a, [wOamUsedLastFrame]
+    call ClearOamEntries
     ld a, [wBatExplosionTimer]
     or a
     jr z, jr_001_6ee8
 
-    ld hl, wBatY
+    ld hl, wOamBuffer
     jr jr_001_6f66
 
 jr_001_6ee8:
-    ld hl, $c204
+    ld hl, wOamBuffer + 4
     ld a, [wBatX]
     add $08
     ld b, a
@@ -4299,16 +4303,16 @@ jr_001_6f55:
     jr nz, jr_001_6f46
 
 jr_001_6f66:
-    ld a, [$c2b5]
+    ld a, [wOamUsed]
     or a
     jr z, jr_001_6f87
 
     ld c, a
     ld de, $c2b9
     ld a, e
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, d
-    ld [$c2b7], a
+    ld [wOamWritePtr + 1], a
 
 jr_001_6f78:
     ld a, [de]
@@ -4497,11 +4501,11 @@ jr_001_7041:
     ld a, [$db70]
     add b
     ld b, a
-    ld a, [$c2b5]
+    ld a, [wOamUsed]
     add b
-    ld [$c2b4], a
+    ld [wOamUsedLastFrame], a
     xor a
-    ld [$c2b5], a
+    ld [wOamUsed], a
     ld [$db70], a
     ret
 
@@ -4718,7 +4722,7 @@ LanguageTable_German:
     dw Text_German_GameOver
     dw Text_German_LatestScore
 
-Call_001_71ef:
+InitMenuSparkles:
     ld hl, $dae3
     ld de, Data_001_7592
     ld b, $0a
@@ -4778,8 +4782,8 @@ jr_001_7213:
     ld [$db50], a
     ret
 
-Call_001_7238:
-    ld hl, wBatY
+UpdateMenuSparkles:
+    ld hl, wOamBuffer
     ld de, Data_001_7542
     ld a, $05
     ld bc, $dae3
@@ -4880,7 +4884,7 @@ jr_001_727d:
 jr_001_72ae:
     ld a, $14
     ld hl, $c250
-    call Call_001_6e9a
+    call ClearOamEntries
     ld a, [$ff8f]
     inc a
     ld [$ff8f], a
@@ -5112,7 +5116,8 @@ jr_001_75cc:
 Call_001_75d8:
     jp hl
 
-Jump_001_75d9:
+; The frame loop of the current game state: wait for VBlank and call hFrameHandler.
+FrameLoop:
     ld b, $ff
     ld a, $20
     call Call_001_6838
@@ -5217,7 +5222,7 @@ SetFrameHandler:
     ld [hFrameHandler], a
     ld a, h
     ld [hFrameHandler + 1], a
-    jp Jump_001_75d9
+    jp FrameLoop
 
 StateUpdate_Gameplay:
     ld hl, Gameplay_Update
@@ -5575,7 +5580,7 @@ jr_001_78b7:
 
 Call_001_78c8:
     ld b, $14
-    ld hl, wBatY
+    ld hl, wOamBuffer
     ld de, Data_001_7990
 
 jr_001_78d0:
