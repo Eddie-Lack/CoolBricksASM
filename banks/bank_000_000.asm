@@ -881,7 +881,7 @@ StateInit_HighScores:
     ld de, $9000                            ; Destination (VRAM)
     ld bc, $05c0                            ; Data Length
     call DataTransfer                       ; Start data transfer
-    ld hl, $472c
+    ld hl, HighScoresTextureData + $5c0
     ld de, $8000
     ld bc, $0400
     call DataTransfer
@@ -5047,7 +5047,7 @@ jr_000_1e0c:
     dec c
     jr nz, jr_000_1dfa
 
-    ld hl, $4000
+    ld hl, $4000                ; not a known label: stored in wUnk_dab3 and used later
     ld a, l
     ld [wUnk_dab3], a
     ld a, h
@@ -5368,11 +5368,11 @@ StateInit_MainMenu:
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $683c
+    ld hl, Gfx_MainMenu_002_603c + $800
     ld de, $8800
     ld bc, $0340
     call DataTransfer
-    ld hl, $6b7c
+    ld hl, Gfx_MainMenu_002_603c + $b40
     ld de, $8b40
     ld bc, $0090
     call DataTransfer
@@ -6290,11 +6290,11 @@ StateInit_TitleScreen:
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $4800
+    ld hl, Gfx_TitleScreen_007_4000 + $800
     ld de, $8800
     ld bc, $0620
     call DataTransfer
-    ld hl, $6468
+    ld hl, Gfx_TitleScreen_007_5f28 + $540
     ld de, $8000
     ld bc, $00d0
     call DataTransfer
@@ -6319,11 +6319,11 @@ jr_000_25cf:
     xor a
     ld [wUnk_dae1], a
     ldh [rVBK], a
-    ld hl, $4e10
+    ld hl, Gfx_TitleScreen_007_4000 + $e10
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $5610
+    ld hl, Gfx_TitleScreen_007_4000 + $1610
     ld de, $8800
     ld bc, $0620
     call DataTransfer
@@ -6440,7 +6440,7 @@ jr_000_2692:
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $516c
+    ld hl, Gfx_GameOver_005_496c + $800
     ld de, $8800
     ld bc, $0340
     call DataTransfer
@@ -6452,11 +6452,11 @@ jr_000_2692:
     call CopyTilemapRect
     xor a
     ldh [rVBK], a
-    ld hl, $54ac
+    ld hl, Gfx_GameOver_005_496c + $b40
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $5cac
+    ld hl, Gfx_GameOver_005_496c + $1340
     ld de, $8800
     ld bc, $0590
     call DataTransfer
@@ -6581,13 +6581,13 @@ jr_000_27b0:
     cp $68
     jr nc, jr_000_27e0
 
-    ld hl, $4f1e
+    ld hl, BlobThrowDirections_Left
     add hl, de
     ld l, [hl]
     ld h, d
     ld a, $40
 
-    ld de, $4d7d
+    ld de, BlobThrowData_Left
 
     jr jr_000_27eb
 
@@ -7068,7 +7068,7 @@ jr_000_2a6c:
     jr nc, jr_000_2a77
 
     ld a, $20
-    ld hl, $4e92
+    ld hl, ProjectileData_4e92
     jr jr_000_2ab3
 
 jr_000_2a77:
@@ -7076,7 +7076,7 @@ jr_000_2a77:
     jr nc, jr_000_2a82
 
     ld a, $1c
-    ld hl, $4eb2
+    ld hl, ProjectileData_4eb2
     jr jr_000_2ab3
 
 jr_000_2a82:
@@ -7084,7 +7084,7 @@ jr_000_2a82:
     jr nc, jr_000_2a8d
 
     ld a, $18
-    ld hl, $4ece
+    ld hl, ProjectileData_4ece
     jr jr_000_2ab3
 
 jr_000_2a8d:
@@ -7092,7 +7092,7 @@ jr_000_2a8d:
     jr nc, jr_000_2a98
 
     ld a, $14
-    ld hl, $4ee6
+    ld hl, ProjectileData_4ee6
     jr jr_000_2ab3
 
 jr_000_2a98:
@@ -7100,7 +7100,7 @@ jr_000_2a98:
     jr nc, jr_000_2aa3
 
     ld a, $10
-    ld hl, $4efa
+    ld hl, ProjectileData_4efa
     jr jr_000_2ab3
 
 jr_000_2aa3:
@@ -7108,12 +7108,12 @@ jr_000_2aa3:
     jr nc, jr_000_2aae
 
     ld a, $0c
-    ld hl, $4f0a
+    ld hl, ProjectileData_4f0a
     jr jr_000_2ab3
 
 jr_000_2aae:
     ld a, $08
-    ld hl, $4f16
+    ld hl, ProjectileData_4f16
 
 jr_000_2ab3:
     ld [wProjectileWork], a
@@ -8994,13 +8994,13 @@ UpdateShot2:
     ld l, a
     ld a, [wOamWritePtr + 1]
     ld h, a
-    ld bc, $5468
+    ld bc, ShotSprite_Rocket
     ld e, $01
     ld a, [wShots + 11]
     or a
     jr z, jr_000_3677
 
-    ld bc, $5474
+    ld bc, ShotSprite_Laser
     ld e, $02
 
 jr_000_3677:
@@ -9122,7 +9122,7 @@ UpdateShot3:
     ld l, a
     ld a, [wOamWritePtr + 1]
     ld h, a
-    ld bc, $5474
+    ld bc, ShotSprite_Laser
     ld a, [wShotActive + 3]
     inc a
     ld [wShotActive + 3], a
@@ -9241,7 +9241,7 @@ UpdateShot4:
     ld l, a
     ld a, [wOamWritePtr + 1]
     ld h, a
-    ld bc, $5474
+    ld bc, ShotSprite_Laser
     ld a, [wShotActive + 4]
     inc a
     ld [wShotActive + 4], a
@@ -9360,7 +9360,7 @@ UpdateShot5:
     ld l, a
     ld a, [wOamWritePtr + 1]
     ld h, a
-    ld bc, $5474
+    ld bc, ShotSprite_Laser
     ld a, [wShotActive + 5]
     inc a
     ld [wShotActive + 5], a
@@ -9496,7 +9496,7 @@ StateInit_Pause:
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $50c1
+    ld hl, Gfx_Pause_00e_48c1 + $800
     ld de, $8800
     ld bc, $0340
     call DataTransfer
@@ -9508,11 +9508,11 @@ StateInit_Pause:
     call CopyTilemapRect
     xor a
     ldh [rVBK], a
-    ld hl, $5401
+    ld hl, Gfx_Pause_00e_48c1 + $b40
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $5c01
+    ld hl, Gfx_Pause_00e_48c1 + $1340
     ld de, $8800
     ld bc, $0590
     call DataTransfer
@@ -9567,11 +9567,11 @@ StateInit_DeveloperLogos:
     call CopyTilemapRect
     xor a
     ldh [rVBK], a
-    ld hl, $739c
+    ld hl, Gfx_MainMenu_002_6edc + $4c0
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $7b9c
+    ld hl, Gfx_MainMenu_002_6edc + $cc0
     ld de, $8800
     ld bc, $00f0
     call DataTransfer
@@ -9689,7 +9689,7 @@ StateInit_Credits:
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $6d0c
+    ld hl, Gfx_Credits_005_650c + $800
     ld de, $8800
     ld bc, $0500
     call DataTransfer
@@ -9913,11 +9913,11 @@ StateInit_LevelPassword:
     ld de, $9000
     ld bc, $0790
     call DataTransfer
-    ld hl, $5584
+    ld hl, Gfx_LevelPassword_00c_4de4 + $7a0
     ld de, $8b40
     ld bc, $0090
     call DataTransfer
-    ld hl, $5574
+    ld hl, Gfx_LevelPassword_00c_4de4 + $790
     ld de, $8000
     ld bc, $0010
     call DataTransfer
@@ -10102,7 +10102,7 @@ StateInit_LanguageSelect:
     call DataTransfer
     ld de, $9800
 
-    ld hl, $4fe8
+    ld hl, Gfx_LanguageSelect_00d_49b8 + $630
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -10242,7 +10242,7 @@ StateInit_Ending:
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $6f4f
+    ld hl, Gfx_Ending_00e_674f + $800
     ld de, $8800
     ld bc, $0790
     call DataTransfer
@@ -10254,11 +10254,11 @@ StateInit_Ending:
     call CopyTilemapRect
     xor a
     ldh [rVBK], a
-    ld hl, $73cf
+    ld hl, Gfx_Ending_00e_674f + $c80
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, $7bcf
+    ld hl, Gfx_Ending_00e_674f + $1480
     ld de, $8800
     ld bc, $0150
     call DataTransfer
