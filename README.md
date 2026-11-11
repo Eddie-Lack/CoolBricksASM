@@ -38,15 +38,19 @@ make check
    - Bank 1 has `PowerupHandlers`, `PowerupSprites`, `StateInitHandlers`, `StateUpdateHandlers` and `BrickRedrawHandlers`.
    - Calls from bank 0 into banks 1, 6 and `$0F` use labels where the bank is known.
 5. **Level data is structured.** Brick layouts and power-up maps are written as (count, value) pairs, one labelled block per level.
+   - Tile maps are written one screen row per line and named `Tilemap_<screen>`. Graphics blocks are named `Gfx_<screen>`.
+   - `docs/ROM_MAP.md` lists what every part of each bank holds. `python tools/rom_map.py` rebuilds it.
 6. **Text is readable.** The five language tables in bank 1 (`LanguageTable_English` and so on) point to labelled strings. 106 strings and the 75 power-up messages are written as text. The credits lists in bank `$0F` are text too.
 
 ## What is left
 
-- About 110 routines and jump targets in banks 0 and 1 still have automatic names (`Call_000_xxxx`, `Jump_000_xxxx`), and the `jr_` labels inside routines are automatic too. The title, high score, level password, credits and ending screens are the least understood.
-- Most data is still unstructured `db` with automatic `Data_bbb_xxxx` labels: palettes, tile maps, background pictures and music.
-- Most pointers loaded in code (`ld hl, ...`) are labels now. 39 are still numbers: 15 were never reached in the emulator run that identified the bank, and 24 point into the middle of an image or a string. Pointers inside unstructured data are still numbers. The ROM cannot be rearranged safely until those are labels too.
-- Banks `$0B` and `$10`–`$13` hold the graphics of the five languages. The bank number comes from the language table (`wLangGraphicsBank`). Their contents are still unlabelled.
-- Banks `$14`–`$1F` are 12 copies of one bank, bank `$20` is a copy of bank `$13`, and banks `$21`–`$3F` are empty.
-- A few fragments at the end of bank 1 (`$7CAA` onwards) are unreachable leftovers of bank 0 code.
+- **Names inside routines.** Every subroutine in banks 0 and 1 has a name, but about 95 jump targets (`Jump_000_xxxx`) and about 700 `jr_` labels inside routines are still automatic. About 25 subroutines are named only after the screen that uses them and their address, for example `LevelPassword_Sub5c09`.
+- **RAM.** `include/ram.inc` has about 175 real names. Another 226 variables have placeholder names (`wUnk_xxxx`, `hUnk_xxxx`). Addresses loaded into a register pair (`ld hl, $dxxx`) are still numbers in about 175 places.
+- **Pointers.** 39 pointers loaded in code are still numbers: 15 were never reached in the emulator run that identified the bank, and 24 point into the middle of an image. Pointers inside unstructured data are still numbers. The ROM cannot be rearranged safely until those are labels too.
+- **Graphics.** Tile data is in `gfx/*.2bpp`. Six newer files have no PNG yet. Some images are loaded in two parts but stored as one file.
+- **Music.** Bank 6 holds the music driver and its data. Only the first routines are labelled.
+- **Unlabelled data.** `docs/ROM_MAP.md` shows the blocks with no meaningful name yet. Banks `$0B` and `$10`–`$13` (language graphics) and bank 9 are the largest.
+- **Filler.** Banks `$14`–`$1F` are 12 copies of one bank, bank `$20` is a copy of bank `$13`, and banks `$21`–`$3F` are empty.
+- **RGBDS.** All of this was checked with `tools/gbasm.py` only. It has not been assembled with RGBDS since the fork.
 
 The game's logic is described in [docs/RESEARCH.md](docs/RESEARCH.md).
