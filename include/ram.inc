@@ -33,7 +33,7 @@ DEF wWeaponFlag            EQU $dc3d ; 1 after Rocket, Plasma, Laser or Grenade.
 DEF wShotReloadDelay       EQU $dc45 ; Frames between rocket or laser shots
 DEF wPlasmaState           EQU $dc47 ; 1 = plasma bat, 2 = plasma shot in flight
 DEF wGrenadeCount          EQU $dc48 ; Grenades left
-DEF hJoypad                EQU $ff8a ; Buttons held. Bit 0 = right, 1 = left, 4 = A, 5 = B, 7 = Start
+DEF hJoypad                EQU $ff8a ; Buttons held. Bit 0 = right, 1 = left, 2 = up, 3 = down, 4 = A, 5 = B, 6 = Select, 7 = Start
 DEF hFrameCounter          EQU $ff8c ; Goes up by 1 every frame
 DEF hVBlankHandler         EQU $ff96 ; Address of the current VBlank handler
 DEF hStatHandler           EQU $ff98 ; Address of the current LCD STAT handler
@@ -115,6 +115,14 @@ DEF wBlobActive            EQU $dc23 ; Not 0 while the blob is on screen
 DEF wBrickBreakEffects     EQU $dc63 ; 14 effect slots, 6 bytes each
 DEF wPickupEffects         EQU $dcb7 ; 4 effect slots, 4 bytes each
 DEF wUnbreakableHitEffects EQU $dcd5 ; 10 effect slots
+
+; Main menu and password entry
+DEF wMenuCursor            EQU $dab5 ; Selected menu item: 0 start, 1 start at password level, 2 enter password, 3 music, 4 sound effects
+DEF wMenuButtonHeld        EQU $daba ; 1 until the buttons are released
+DEF wMenuItemColours       EQU $dabd ; Palette of each of the 5 menu items: 4 = selected, 1 = normal
+DEF wPasswordEntryActive   EQU $dac2 ; 1 while the password is being typed
+DEF wPasswordLetterColours EQU $dadb ; Palette of each password letter: 4 = selected, 1 = normal
+DEF wPasswordCursor        EQU $dadf ; Letter being edited, 0-3
 
 ; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
 DEF wLanguage              EQU $defc
