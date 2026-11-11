@@ -281,7 +281,8 @@ BrickPalette_49b0:
     db $00, $00, $40, $01, $60, $01, $06, $01, $00, $00, $80, $00, $a0, $00
     db $83, $00
 
-UpdateProjectileData_001_49c0:
+; Four sprite frames (small to large) for a ball thrown by the blob, at byte offsets $00, $0d, $22 and $3b as stored in the throw arc tables.
+BallProjectileFrames:
     db $fe, $fe, $06, $0a, $06, $06, $06, $0a, $01, $00, $00, $39, $0b, $fe
     db $fe, $06, $0a, $06, $06, $06, $0a, $03, $ff, $ff, $36, $0b, $ff, $07, $37, $0b
     db $07, $ff, $38, $0b, $fe, $fe, $06, $0a, $06, $06, $06, $0a, $04
@@ -302,7 +303,8 @@ UpdateProjectileData_001_49c0:
     db $fc
     db $30, $0b, $04, $04, $31, $0b
 
-UpdateProjectileData_001_4a14:
+; Four sprite frames (small to large) for a flying grenade, in the same layout and at the same offsets ($00, $0d, $22, $3b) as BallProjectileFrames.
+GrenadeProjectileFrames:
     db $fe, $fe, $06, $0a, $06, $06, $06, $0a, $01, $00
     db $00, $41, $0f, $fe, $fe, $06, $0a, $06, $06, $06, $0a, $03, $ff, $ff, $3e, $0f
     db $ff, $07, $3f, $0f, $07, $ff, $40, $0f, $fe, $fe, $06, $0a, $06, $06, $06, $0a
@@ -322,7 +324,8 @@ UpdateProjectileData_001_4a14:
     db $fc
     db $5b, $0f, $04, $04, $5c, $0f
 
-UpdateProjectilesData_001_4a68:
+; Thirteen sprite frames of the grenade explosion, each a sprite count followed by 4 bytes (Y offset, X offset, tile, attribute) per sprite.
+GrenadeExplosionFrames:
     db $01, $00, $00, $42, $0c, $04
     db $fc
     db $fc
@@ -354,7 +357,8 @@ UpdateProjectilesData_001_4a68:
     db $0c, $f9, $04, $4a, $0c, $04, $f9, $4b, $0c, $02, $f9, $f9, $4a, $0c, $f9, $04
     db $4b, $0c, $01, $f9, $f9, $4b, $0c
 
-UpdateProjectilesData_001_4b21:
+; For each value of the grenade explosion timer (51 down to 1), the byte offset of the frame to draw in GrenadeExplosionFrames.
+GrenadeExplosionSequence:
     db $b4
     db $b4, $b4, $b4, $ab, $ab, $ab, $ab, $9e, $9e, $9e, $9e, $8d, $8d, $8d, $8d, $7c
     db $7c, $7c, $7c, $6b, $6b, $6b, $6b, $5a, $5a, $5a, $5a, $49, $49, $49, $49, $38
@@ -446,38 +450,46 @@ ThrowPath_4e4d:
     db $3b, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00
     db $00
 
-UpdateBlobData_001_4e6e:
+; Flight path of $24 frames, one byte per frame: used for the blob's throw to the right and as the longest bounce path after a projectile hits a brick.
+ThrowPath_4e6e:
     db $00
     db $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $3b
     db $3b, $3b, $3b, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d
     db $00, $00, $00
 
-ProjectileData_4e92:
+; Arc table for a projectile that came down on a brick with Y from $6d to $71 and flies on for 32 more frames: one byte per remaining frame giving the frame offset ($00, $0d or $22) into BallProjectileFrames or GrenadeProjectileFrames.
+ProjectileBounceArc_1:
     db $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22
     db $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00, $00
 
-ProjectileData_4eb2:
+; Arc table for a projectile that came down on a brick with Y from $72 to $76 and flies on for 28 more frames: one frame offset into the projectile sprite frames per remaining frame.
+ProjectileBounceArc_2:
     db $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $22
     db $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $00, $00, $00
 
-ProjectileData_4ece:
+; Arc table for a projectile that came down on a brick with Y from $77 to $7b and flies on for 24 more frames: one frame offset into the projectile sprite frames per remaining frame.
+ProjectileBounceArc_3:
     db $00, $00, $00, $0d
     db $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d
     db $0d, $00, $00, $00
 
-ProjectileData_4ee6:
+; Arc table for a projectile that came down on a brick with Y from $7c to $80 and flies on for 20 more frames: one frame offset into the projectile sprite frames per remaining frame.
+ProjectileBounceArc_4:
     db $00, $00, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22
     db $22, $22, $0d, $0d, $0d, $0d, $00, $00
 
-ProjectileData_4efa:
+; Arc table for a projectile that came down on a brick with Y from $81 to $85 and flies on for 16 more frames: one frame offset into the projectile sprite frames per remaining frame.
+ProjectileBounceArc_5:
     db $00, $00, $0d, $0d, $0d, $22, $22, $22
     db $22, $22, $22, $0d, $0d, $0d, $00, $00
 
-ProjectileData_4f0a:
+; Arc table for a projectile that came down on a brick with Y from $86 to $8a and flies on for 12 more frames: one frame offset into the projectile sprite frames per remaining frame.
+ProjectileBounceArc_6:
     db $00, $0d, $0d, $22, $22, $22, $22, $22
     db $22, $0d, $0d, $00
 
-ProjectileData_4f16:
+; Arc table for a projectile that came down on a brick with Y of $8b or more and flies on for 8 more frames: one frame offset into the projectile sprite frames per remaining frame.
+ProjectileBounceArc_7:
     db $00, $0d, $22, $22, $22, $22, $0d, $00
 
 BlobThrowDirections_Left:
@@ -502,22 +514,25 @@ BlobThrowDirections_Right:
 
     db $0b
 
-BlobPathData_4f2e:
+; Segment list of the blob's first move (BlobPath entry 0): pairs of (frame count, direction index into BallVelocityTable, moved at half speed) ending with 0.
+BlobPathSegments_1:
     db $78, $08, $00
 
-BlobPathData_4f31:
+; Segment list of one of the blob's two looping moves: six pairs of (frame count, direction index into BallVelocityTable) ending with 0.
+BlobPathSegments_2:
     db $8c, $08, $46, $0d, $46, $13, $8c, $18, $46, $1d, $46, $03, $00
 
-BlobPathData_4f3e:
+; Segment list of the blob's other looping move, the same as BlobPathSegments_2 with the diagonal directions swapped: six pairs of (frame count, direction index) ending with 0.
+BlobPathSegments_3:
     db $8c, $08, $46, $13, $46, $0d, $8c, $18, $46, $03, $46, $1d, $00
 
 BlobPath:
     db $01, $01
-    dw BlobPathData_4f2e
+    dw BlobPathSegments_1
     db $02, $02
-    dw BlobPathData_4f31
+    dw BlobPathSegments_2
     db $01, $01
-    dw BlobPathData_4f3e
+    dw BlobPathSegments_3
 
 BlobSprites:
     db $00, $00, $5f, $00, $00, $08, $60, $00, $08, $00, $67, $00, $08, $08, $68, $00
@@ -751,7 +766,7 @@ UpdateFallingPowerups:
     jr nz, .removePowerup
 
     ld a, h
-    ld hl, UpdateFallingPowerupsData_001_7706
+    ld hl, PowerupFallSpeeds
     add l
     ld l, a
     jr nc, .noCarry
@@ -821,9 +836,9 @@ UpdateFallingPowerups:
     or a
     ret z
 
-    ld a, [wUnk_dc22]
+    ld a, [wGhostTick]
     inc a
-    ld [wUnk_dc22], a
+    ld [wGhostTick], a
     and $07
     ret nz
 
@@ -1620,9 +1635,9 @@ TitleLetterTiles_5c00:
     db $04, $04, $04, $04, $04, $04, $04, $04, $04
 
 LevelPassword_DrawBonus:
-    ld a, [wUnk_df37]
+    ld a, [wLangTable + $36]
     ld c, a
-    ld a, [wUnk_df38]
+    ld a, [wLangTable + $37]
     ld b, a
     xor a
 
@@ -1718,7 +1733,7 @@ LevelPassword_Update:
     or l
     jr z, .checkJoypad
 
-    ld a, [wUnk_dd4c]
+    ld a, [wBonusCountdownPaused]
     xor $01
     jr z, .drawBonus
 
@@ -3103,19 +3118,19 @@ SweepBricks_Cell:
 
 ClearUnbreakableHitEffects:
     ld a, $ff
-    ld [wUnk_dcf3], a
+    ld [wUnbreakableHitEffectsEnd], a
     ld hl, wUnbreakableHitEffects
     ld a, l
-    ld [wUnk_dcd3], a
+    ld [wUnbreakableHitEffectPtr], a
     ld a, h
-    ld [wUnk_dcd4], a
+    ld [wUnbreakableHitEffectPtr + 1], a
     ret
 
 ; Start the effect shown when the ball hits an unbreakable brick.
 SpawnUnbreakableHitEffect:
-    ld a, [wUnk_dcd3]
+    ld a, [wUnbreakableHitEffectPtr]
     ld l, a
-    ld a, [wUnk_dcd4]
+    ld a, [wUnbreakableHitEffectPtr + 1]
     ld h, a
     ld [hl], $12
     inc hl
@@ -3131,11 +3146,11 @@ SpawnUnbreakableHitEffect:
 
 .saveSlotPtr:
     ld a, l
-    ld [wUnk_dcd3], a
+    ld [wUnbreakableHitEffectPtr], a
     ld a, h
-    ld [wUnk_dcd4], a
+    ld [wUnbreakableHitEffectPtr + 1], a
     ld a, $01
-    ld [wUnk_d8ab], a
+    ld [wUnbreakableHitSpawned], a
     ret
 
 UpdateUnbreakableHitEffects:
@@ -3357,7 +3372,7 @@ CopyPalettesToHardware:
 
 CopyPaletteBuffer:
     ld de, wRasterTable
-    ld hl, wUnk_d6c0
+    ld hl, wRasterPalettesFaded
     ld b, $90
     ld a, $02
     ldh [rSVBK], a
@@ -3410,7 +3425,7 @@ FadePalettes_Step:
     ld [hTemp], a
     ld bc, $0040
     ld hl, wPaletteBuffer
-    ld de, wUnk_ca9d
+    ld de, wFadedPalettes
     ld a, [hPaletteMode]
     cp $02
     jr nz, .nextColour
@@ -3418,8 +3433,8 @@ FadePalettes_Step:
     ld bc, $0240
     ld a, $02
     ldh [rSVBK], a
-    ld hl, wUnk_d000
-    ld de, wUnk_d6c0
+    ld hl, wRasterPaletteBuffer
+    ld de, wRasterPalettesFaded
 
 .nextColour:
     push bc
@@ -3484,8 +3499,8 @@ FadePalettes_Step:
     jr z, .copyViaPaletteBuffer
 
     call WaitVBlank
-    ld hl, wUnk_ca9d
-    ld de, wUnk_cadd
+    ld hl, wFadedPalettes
+    ld de, wFadedObjPalettes
     call CopyPalettesToHardware
     call AnimatePalettes
     jr .stepDone
@@ -3527,8 +3542,8 @@ FadePalettes2_Step:
     ld bc, $0240
     ld a, $02
     ldh [rSVBK], a
-    ld hl, wUnk_d000
-    ld de, wUnk_d6c0
+    ld hl, wRasterPaletteBuffer
+    ld de, wRasterPalettesFaded
 
 .nextColour:
     push bc
@@ -3604,123 +3619,123 @@ AnimatePalettes:
     cp $04
     ret z
 
-    ld a, [wUnk_c958]
+    ld a, [wRasterObjPaletteIndex]
     ldh [rOCPS], a
     ld a, $9e
     ldh [rBCPS], a
-    ld hl, wUnk_cb1d
-    ld a, [wUnk_caf7]
+    ld hl, wRasterColours
+    ld a, [wFadedObjPalettes + $1a]
     ld [hl+], a
-    ld a, [wUnk_caf8]
+    ld a, [wFadedObjPalettes + $1b]
     ld [hl+], a
-    ld a, [wUnk_cafb]
+    ld a, [wFadedObjPalettes + $1e]
     ld [hl+], a
-    ld a, [wUnk_cafc]
+    ld a, [wFadedObjPalettes + $1f]
     ld [hl+], a
-    ld a, [wUnk_cab5]
+    ld a, [wFadedPalettes + $18]
     ld [hl+], a
-    ld a, [wUnk_cab6]
+    ld a, [wFadedPalettes + $19]
     ld [hl+], a
-    ld a, [wUnk_caf7]
+    ld a, [wFadedObjPalettes + $1a]
     ld [hl+], a
-    ld a, [wUnk_caf8]
+    ld a, [wFadedObjPalettes + $1b]
     ld [hl+], a
-    ld a, [wUnk_cafb]
+    ld a, [wFadedObjPalettes + $1e]
     ld [hl+], a
-    ld a, [wUnk_cafc]
+    ld a, [wFadedObjPalettes + $1f]
     ld [hl+], a
-    ld a, [wUnk_cafb]
+    ld a, [wFadedObjPalettes + $1e]
     ld [hl+], a
-    ld a, [wUnk_cafc]
+    ld a, [wFadedObjPalettes + $1f]
     ld [hl+], a
-    ld a, [wUnk_caf7]
+    ld a, [wFadedObjPalettes + $1a]
     ld [hl+], a
-    ld a, [wUnk_caf8]
+    ld a, [wFadedObjPalettes + $1b]
     ld [hl+], a
-    ld a, [wUnk_caf9]
+    ld a, [wFadedObjPalettes + $1c]
     ld [hl+], a
-    ld a, [wUnk_cafa]
+    ld a, [wFadedObjPalettes + $1d]
     ld [hl+], a
-    ld a, [wUnk_caf9]
+    ld a, [wFadedObjPalettes + $1c]
     ld [hl+], a
-    ld a, [wUnk_cafa]
+    ld a, [wFadedObjPalettes + $1d]
     ld [hl+], a
-    ld a, [wUnk_caf7]
+    ld a, [wFadedObjPalettes + $1a]
     ld [hl+], a
-    ld a, [wUnk_caf8]
+    ld a, [wFadedObjPalettes + $1b]
     ld [hl+], a
-    ld a, [wUnk_caf9]
+    ld a, [wFadedObjPalettes + $1c]
     ld [hl+], a
-    ld a, [wUnk_cafa]
+    ld a, [wFadedObjPalettes + $1d]
     ld [hl+], a
-    ld a, [wUnk_caf7]
+    ld a, [wFadedObjPalettes + $1a]
     ld [hl+], a
-    ld a, [wUnk_caf8]
+    ld a, [wFadedObjPalettes + $1b]
     ld [hl+], a
-    ld a, [wUnk_caf1]
+    ld a, [wFadedObjPalettes + $14]
     ld [hl+], a
-    ld a, [wUnk_caf2]
+    ld a, [wFadedObjPalettes + $15]
     ld [hl+], a
-    ld a, [wUnk_caf3]
+    ld a, [wFadedObjPalettes + $16]
     ld [hl+], a
-    ld a, [wUnk_caf4]
+    ld a, [wFadedObjPalettes + $17]
     ld [hl+], a
-    ld a, [wUnk_caed]
+    ld a, [wFadedObjPalettes + $10]
     ld [hl+], a
-    ld a, [wUnk_caee]
+    ld a, [wFadedObjPalettes + $11]
     ld [hl+], a
-    ld a, [wUnk_caf1]
+    ld a, [wFadedObjPalettes + $14]
     ld [hl+], a
-    ld a, [wUnk_caf2]
+    ld a, [wFadedObjPalettes + $15]
     ld [hl+], a
-    ld a, [wUnk_caf3]
+    ld a, [wFadedObjPalettes + $16]
     ld [hl+], a
-    ld a, [wUnk_caf4]
+    ld a, [wFadedObjPalettes + $17]
     ld [hl+], a
-    ld a, [wUnk_caf1]
+    ld a, [wFadedObjPalettes + $14]
     ld [hl+], a
-    ld a, [wUnk_caf2]
+    ld a, [wFadedObjPalettes + $15]
     ld [hl+], a
-    ld a, [wUnk_caf1]
+    ld a, [wFadedObjPalettes + $14]
     ld [hl+], a
-    ld a, [wUnk_caf2]
+    ld a, [wFadedObjPalettes + $15]
     ld [hl+], a
-    ld a, [wUnk_caf3]
+    ld a, [wFadedObjPalettes + $16]
     ld [hl+], a
-    ld a, [wUnk_caf4]
+    ld a, [wFadedObjPalettes + $17]
     ld [hl+], a
-    ld a, [wUnk_caf3]
+    ld a, [wFadedObjPalettes + $16]
     ld [hl+], a
-    ld a, [wUnk_caf4]
+    ld a, [wFadedObjPalettes + $17]
     ld [hl+], a
-    ld a, [wUnk_caf1]
+    ld a, [wFadedObjPalettes + $14]
     ld [hl+], a
-    ld a, [wUnk_caf2]
+    ld a, [wFadedObjPalettes + $15]
     ld [hl+], a
-    ld a, [wUnk_caf3]
+    ld a, [wFadedObjPalettes + $16]
     ld [hl+], a
-    ld a, [wUnk_caf4]
+    ld a, [wFadedObjPalettes + $17]
     ld [hl+], a
-    ld a, [wUnk_cab5]
+    ld a, [wFadedPalettes + $18]
     ld [hl+], a
-    ld a, [wUnk_cab6]
+    ld a, [wFadedPalettes + $19]
     ld [hl+], a
-    ld a, [wUnk_caf1]
+    ld a, [wFadedObjPalettes + $14]
     ld [hl+], a
-    ld a, [wUnk_caf2]
+    ld a, [wFadedObjPalettes + $15]
     ld [hl+], a
-    ld a, [wUnk_caf3]
+    ld a, [wFadedObjPalettes + $16]
     ld [hl+], a
-    ld a, [wUnk_caf4]
+    ld a, [wFadedObjPalettes + $17]
     ld [hl+], a
-    ld a, [wUnk_cabb]
+    ld a, [wFadedPalettes + $1e]
     ld [hl+], a
-    ld a, [wUnk_cabc]
+    ld a, [wFadedPalettes + $1f]
     ld [hl+], a
     ld hl, wRasterTable
     ld b, $09
     ld c, $81
-    ld de, wUnk_cb1d
+    ld de, wRasterColours
 
 .copyEntryLoop:
     ld a, [de]
@@ -3823,7 +3838,7 @@ LanguageSelect_Update:
 .readJoypad:
     ld a, [hJoypad]
     ld b, a
-    ld a, [wUnk_defd]
+    ld a, [wLanguageDownHeld]
     or a
     jr nz, .checkNextKeyReleased
 
@@ -3831,7 +3846,7 @@ LanguageSelect_Update:
     jr z, .checkPrevKey
 
     ld a, b
-    ld [wUnk_defd], a
+    ld [wLanguageDownHeld], a
     ld a, [wLanguage]
     cp $04
     jr z, .checkPrevKey
@@ -3847,10 +3862,10 @@ LanguageSelect_Update:
     jr nz, .checkPrevKey
 
     xor a
-    ld [wUnk_defd], a
+    ld [wLanguageDownHeld], a
 
 .checkPrevKey:
-    ld a, [wUnk_defe]
+    ld a, [wLanguageUpHeld]
     or a
     jr nz, .checkPrevKeyReleased
 
@@ -3858,7 +3873,7 @@ LanguageSelect_Update:
     jr z, .checkConfirm
 
     ld a, b
-    ld [wUnk_defe], a
+    ld [wLanguageUpHeld], a
     ld a, [wLanguage]
     or a
     jr z, .checkConfirm
@@ -3874,7 +3889,7 @@ LanguageSelect_Update:
     jr nz, .checkConfirm
 
     xor a
-    ld [wUnk_defe], a
+    ld [wLanguageUpHeld], a
 
 .checkConfirm:
     ld a, b
@@ -3913,18 +3928,18 @@ LanguageSelect_CopyTable:
     ld l, a
     ld a, [wLangTextHighScorePassword + 1]
     ld h, a
-    ld de, wUnk_cb69
+    ld de, wHighScoreTable + $10
     ld bc, $0018
     call DataTransfer
     ld a, [wLangTextLatestScore]
     ld l, a
     ld a, [wLangTextLatestScore + 1]
     ld h, a
-    ld de, wUnk_cc99
+    ld de, wLatestScoreText
     ld bc, $001b
     call DataTransfer
-    ld a, [wUnk_df43]
-    ld hl, wUnk_cb96
+    ld a, [wLangLevelLetter]
+    ld hl, wHighScoreTable + $3d
     ld de, $001c
     ld b, $0a
 
@@ -4326,7 +4341,7 @@ ClearOamEntries:
 ; Copy the 9 sprites of the bat and ball to the OAM buffer.
 InitBatSprites:
     ld hl, wOamBuffer
-    ld de, InitBatSpritesData_001_7b0c
+    ld de, BatAndBallStartSprites
     ld b, $09
 
 .copySpriteLoop:
@@ -4351,8 +4366,8 @@ InitBatSprites:
     ld [wOamUsedLastFrame], a
     dec a
     ld [wOamUsed], a
-    ld [wUnk_db70], a
-    ld de, wUnk_c2b9
+    ld [wPowerupSpritesUsed], a
+    ld de, wExtraSprites
     ld a, e
     ld [wOamWritePtr], a
 
@@ -4380,12 +4395,12 @@ DrawBatSprites:
     or a
     jr nz, .wideLowerRow
 
-    ld de, DrawBatSpritesData_001_7b30
+    ld de, BatShadowTiles_Normal
     ld c, $03
     jr .lowerRowLoop
 
 .wideLowerRow:
-    ld de, DrawBatSpritesData_001_7b36
+    ld de, BatShadowTiles_Wide
     ld c, $04
 
 .lowerRowLoop:
@@ -4404,12 +4419,12 @@ DrawBatSprites:
     dec c
     jr nz, .lowerRowLoop
 
-    ld de, DrawBatSpritesData_001_7b3e
+    ld de, BatTiles_Normal
     ld a, [wWeaponFlag]
     or a
     jr z, .checkStickyBat
 
-    ld de, DrawBatSpritesData_001_7b46
+    ld de, BatTiles_Weapon
 
 .checkStickyBat:
     ld a, [wBallOnBat]
@@ -4420,7 +4435,7 @@ DrawBatSprites:
     or a
     jr z, .upperRowDataChosen
 
-    ld de, DrawBatSpritesData_001_7b4e
+    ld de, BatTiles_Sticky
 
 .upperRowDataChosen:
     ld a, [wBatWidth]
@@ -4475,7 +4490,7 @@ DrawBatSprites:
     jr z, .stepNinjaFrame
 
     ld c, a
-    ld de, wUnk_c2b9
+    ld de, wExtraSprites
     ld a, e
     ld [wOamWritePtr], a
     ld a, d
@@ -4502,7 +4517,7 @@ DrawBatSprites:
     or a
     jr z, .drawBalls
 
-    ld a, [wUnk_c2b8]
+    ld a, [wNinjaBallFrame]
     inc a
     cp $03
     jr nz, .storeNinjaFrame
@@ -4510,7 +4525,7 @@ DrawBatSprites:
     xor a
 
 .storeNinjaFrame:
-    ld [wUnk_c2b8], a
+    ld [wNinjaBallFrame], a
 
 .drawBalls:
     ld a, [wBallCount]
@@ -4536,7 +4551,7 @@ DrawBatSprites:
     or a
     jr z, .normalBall
 
-    ld a, [wUnk_c2b8]
+    ld a, [wNinjaBallFrame]
     or a
     jr nz, .ninjaFrameNot0
 
@@ -4635,9 +4650,9 @@ DrawBatSprites:
     ld a, [de]
     inc de
     ld [hl+], a
-    ld a, [wUnk_db70]
+    ld a, [wPowerupSpritesUsed]
     add $04
-    ld [wUnk_db70], a
+    ld [wPowerupSpritesUsed], a
     jr .nextPowerup
 
 .skipEmptySlot:
@@ -4665,7 +4680,7 @@ DrawBatSprites:
     ld a, [wBallCount]
     add b
     ld b, a
-    ld a, [wUnk_db70]
+    ld a, [wPowerupSpritesUsed]
     add b
     ld b, a
     ld a, [wOamUsed]
@@ -4673,7 +4688,7 @@ DrawBatSprites:
     ld [wOamUsedLastFrame], a
     xor a
     ld [wOamUsed], a
-    ld [wUnk_db70], a
+    ld [wPowerupSpritesUsed], a
     ret
 
 ; Language tables, $51 bytes each. The table of the chosen language is copied to wLangTable.
@@ -4891,7 +4906,7 @@ LanguageTable_German:
 
 InitMenuSparkles:
     ld hl, wMenuSparkles
-    ld de, InitMenuSparklesData_001_7592
+    ld de, BoingLetterStartPositions
     ld b, $0a
 
 .copyPositionsLoop:
@@ -4902,7 +4917,7 @@ InitMenuSparkles:
     jr nz, .copyPositionsLoop
 
     ld de, MenuSparkleCurveStarts
-    ld hl, wUnk_daed
+    ld hl, wMenuSparkleCurvePtrs
     ld b, $0a
 
 .copyCurveStartsLoop:
@@ -4912,8 +4927,8 @@ InitMenuSparkles:
     dec b
     jr nz, .copyCurveStartsLoop
 
-    ld hl, wUnk_daf7
-    ld de, InitMenuSparklesData_001_74b4
+    ld hl, wMenuTwinkles
+    ld de, MenuSparkleStartData
     ld b, $0b
 
 .initAnimRecordLoop:
@@ -4942,16 +4957,16 @@ InitMenuSparkles:
     dec b
     jr nz, .initAnimRecordLoop
 
-    ld hl, InitMenuSparklesData_001_749b
+    ld hl, MenuSlideInSteps
     ld a, l
-    ld [wUnk_db4f], a
+    ld [wMenuScrollStepPtr], a
     ld a, h
-    ld [wUnk_db50], a
+    ld [wMenuScrollStepPtr + 1], a
     ret
 
 UpdateMenuSparkles:
     ld hl, wOamBuffer
-    ld de, UpdateMenuSparklesData_001_7542
+    ld de, BoingLetterSprites
     ld a, $05
     ld bc, wMenuSparkles
 
@@ -4995,7 +5010,7 @@ UpdateMenuSparkles:
     jr nz, .drawSparkleLoop
 
     ld de, wMenuSparkles
-    ld hl, wUnk_daed
+    ld hl, wMenuSparkleCurvePtrs
     ld a, $05
 
 .moveSparkleLoop:
@@ -5008,7 +5023,7 @@ UpdateMenuSparkles:
     or a
     jr nz, .stepLoaded
 
-    ld bc, UpdateMenuSparklesData_001_75af
+    ld bc, BoingLetterBobSteps
     ld a, [bc]
 
 .stepLoaded:
@@ -5033,16 +5048,16 @@ UpdateMenuSparkles:
     or a
     jr z, .scrollIsZero
 
-    ld a, [wUnk_db4f]
+    ld a, [wMenuScrollStepPtr]
     ld l, a
-    ld a, [wUnk_db50]
+    ld a, [wMenuScrollStepPtr + 1]
     ld h, a
     ld a, [hl+]
     ld b, a
     ld a, l
-    ld [wUnk_db4f], a
+    ld [wMenuScrollStepPtr], a
     ld a, h
-    ld [wUnk_db50], a
+    ld [wMenuScrollStepPtr + 1], a
     ld a, [hMenuScrollY]
     add b
     ld [hMenuScrollY], a
@@ -5050,14 +5065,14 @@ UpdateMenuSparkles:
 
 .scrollIsZero:
     ld a, $14
-    ld hl, wUnk_c250
+    ld hl, wOamBuffer + $50
     call ClearOamEntries
-    ld a, [hUnk_ff8f]
+    ld a, [hMenuSparkleTick]
     inc a
-    ld [hUnk_ff8f], a
+    ld [hMenuSparkleTick], a
     ld a, $0b
-    ld hl, wUnk_daf7
-    ld de, wUnk_c250
+    ld hl, wMenuTwinkles
+    ld de, wOamBuffer + $50
 
 .animRecordLoop:
     push af
@@ -5081,7 +5096,7 @@ UpdateMenuSparkles:
 
 .delayExpired:
     ld b, [hl]
-    ld a, [hUnk_ff8f]
+    ld a, [hMenuSparkleTick]
     and $03
     jr nz, .checkAnimEnd
 
@@ -5208,7 +5223,8 @@ Text_Italian_LevelTitle:
     dw $9801
     db $00, $04, "    LEVELLO ", $00, $01, "000   ", $ff
 
-VBlank_InGameData_001_745e:
+; A DrawString record that writes 20 spaces over the top tile row at $9800, drawn in the off phase of the blinking level title.
+Text_LevelTitleBlank:
     dw $9800
     db $00, $04, "                    ", $ff
 
@@ -5233,13 +5249,15 @@ Tilemap_Level_001_748b:
     db $2f
     db $30
 
-InitMenuSparklesData_001_749b:
+; Value added to hMenuScrollY each frame while the main menu slides in: -8 seventeen times, then -7, +4, +4, -3, -3, -2, -1 for a small bounce, followed by a 0.
+MenuSlideInSteps:
     db $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8
     db $f8, $f9, $04, $04, $fd, $fd, $fe, $ff
 
     db $00
 
-InitMenuSparklesData_001_74b4:
+; Start values of the 11 menu sparkles, 6 bytes each: dw frames until the first twinkle, db x, db y, dw delay reloaded after each twinkle.
+MenuSparkleStartData:
     db $01, $00, $82, $79, $c8, $00, $0a, $00, $51, $81, $c9, $00, $14, $00, $70, $38
     db $cb, $00, $1e, $00, $18, $50, $cc, $00, $64, $00, $0a, $3a, $cd, $00, $6e, $00
     db $8e, $35, $ce, $00, $78, $00, $51, $40, $cf, $00, $b4, $00, $40, $57, $d0, $00
@@ -5288,7 +5306,8 @@ MenuSparkleFrames:
     dw MenuSparkleFrame_74fc
     dw MenuSparkleFrame_74f6
 
-UpdateMenuSparklesData_001_7542:
+; Sprite layout of the five 16x32 letter objects B, O, I, N, G: 4 sprites each of (y offset, x offset, tile, attribute), top tiles $00-$12 with palette 1 and bottom tiles $14-$26 with palette 0.
+BoingLetterSprites:
     db $00, $00
     db $00, $01, $00, $08, $02, $01, $10, $00, $14, $00, $10, $08, $16, $00, $00, $00
     db $04, $01, $00, $08, $06, $01, $10, $00, $18, $00, $10, $08, $1a, $00, $00, $00
@@ -5296,7 +5315,8 @@ UpdateMenuSparklesData_001_7542:
     db $0c, $01, $00, $08, $0e, $01, $10, $00, $20, $00, $10, $08, $22, $00, $00, $00
     db $10, $01, $00, $08, $12, $01, $10, $00, $24, $00, $10, $08, $26, $00
 
-InitMenuSparklesData_001_7592:
+; Start position (x, y) of the five 16x32 letter objects B, O, I, N, G drawn by UpdateMenuSparkles: x $90, y $a4 each, which is below the visible screen.
+BoingLetterStartPositions:
     db $90, $a4
     db $90, $a4, $90, $a4, $90, $a4, $90, $a4
 
@@ -5305,7 +5325,8 @@ MenuSparkleCurve:
     db $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
 
-UpdateMenuSparklesData_001_75af:
+; Looping y steps of the menu letter objects: -2, -2, -2, -1, -1, +1, +1, +2, +2, +2, then a 0 that restarts the list here.
+BoingLetterBobSteps:
     db $fe, $fe, $fe, $ff, $ff
     db $01, $01, $02, $02, $02, $00
 
@@ -5522,7 +5543,8 @@ PowerupHandlers:
     dw Powerup_Ghost
     dw Powerup_Grenade
 
-UpdateFallingPowerupsData_001_7706:
+; Fall speed of each of the 16 power-up types, a word added to the power-up's 16-bit y (low byte = fraction) each frame; all are $0080, half a pixel per frame.
+PowerupFallSpeeds:
     db $80, $00
 
     db $80, $00
@@ -5603,7 +5625,7 @@ SetUpBricks:
     ld a, $01
     ldh [rVBK], a
     ld hl, $9841
-    ld de, wUnk_ccfb
+    ld de, wBrickMap + $11
     ld b, $10
 
 SetUpBricks_Row:
@@ -6044,14 +6066,14 @@ Credits_Update:
     jr z, .advanceScroll
 
     dec a
-    ld [wUnk_c954], a
+    ld [wRasterTable + 143 * 10 + 8], a
 
 .advanceScroll:
     ld a, [wCreditsScrollY]
     inc a
     ld [wCreditsScrollY], a
-    ld de, wUnk_c3be
-    ld hl, wUnk_c3c8
+    ld de, wRasterTable + 8
+    ld hl, wRasterTable + 18
     ld b, $8f
 
 .shiftEntryLoop:
@@ -6104,13 +6126,13 @@ GBC_Check:
     xor a                       ; switch WRAM1 to Bank 0
     ldh [rSVBK], a
     xor a                       ; store 0 to first byte of WRAM1
-    ld [wUnk_d000], a
+    ld [wRasterPaletteBuffer], a
     ld a, $02                   ; switch WRAM to Bank 2
     ldh [rSVBK], a
-    ld [wUnk_d000], a               ; Store value $02 to the first byte of WRAM1 Bank 2
+    ld [wRasterPaletteBuffer], a               ; Store value $02 to the first byte of WRAM1 Bank 2
     xor a                       ; switch WRAM1 back to Bank 0
     ldh [rSVBK], a
-    ld a, [wUnk_d000]               ; Read value from first byte of WRAM1
+    ld a, [wRasterPaletteBuffer]               ; Read value from first byte of WRAM1
     or a                        ; Bitwise OR with itself, Zero flag should be set. LD instruction doesn't change register flags in Z80...
     jr z, .RAMCheckPass         ; RAM check passed, WRAM bank switching works so this is a GBC with a MBC
 
@@ -6155,25 +6177,31 @@ GBC_Check:
     ld [hGameState], a               ; Store to RAM
     ret                         ; return
 
-InitBatSpritesData_001_7b0c:
+; Start values of the first 9 OAM entries: 4 bat shadow sprites at y $98 (tiles $1e-$21), the 4 bat sprites at y $90 (tiles $56, $57) and the ball (tile 0, palette 3) at y $89, x $54.
+BatAndBallStartSprites:
     db $98, $50, $1e, $02, $98, $58, $1f, $02, $98, $60, $20, $02, $98, $68, $21, $02
     db $90, $48, $56, $02, $90, $50, $57, $02, $90, $58, $57, $22, $90, $60, $56, $22
     db $89, $54, $00, $03
 
-DrawBatSpritesData_001_7b30:
+; Tile and attribute of shadow sprites 1 to 3 of the bat (dither tiles $1f, $20, $21, palette 2), drawn at y $98 when hTemp2 is 0 on entry.
+BatShadowTiles_Normal:
     db $1f, $02, $20, $02, $21, $02
 
-DrawBatSpritesData_001_7b36:
+; Four-sprite version of the bat shadow row ($1f, $20, $20, $21), used when hTemp2 is not 0 on entry; hTemp2 is left at 1 by the previous call when wBatWidth is not $20.
+BatShadowTiles_Wide:
     db $1f, $02, $20, $02, $20, $02
     db $21, $02
 
-DrawBatSpritesData_001_7b3e:
+; Tile and attribute of the 4 sprites of the bat itself (y $90, from x = wBatX - 8): $56, $57, $57 flipped, $56 flipped, palette 2.
+BatTiles_Normal:
     db $56, $02, $57, $02, $57, $22, $56, $22
 
-DrawBatSpritesData_001_7b46:
+; Bat sprites while wWeaponFlag is set: the two middle sprites become tile $08 (palette 1), the weapon bat.
+BatTiles_Weapon:
     db $56, $02, $08, $01, $08, $21, $56, $22
 
-DrawBatSpritesData_001_7b4e:
+; Bat sprites while wBallSticks is set and no ball is on the bat: the two middle sprites become tile $07 (palette 1).
+BatTiles_Sticky:
     db $56, $02, $07, $01, $07, $21, $56, $22
 
 UnbreakableHitEffectFrames:
@@ -6247,7 +6275,7 @@ GameOver_Update:
     ld a, $28
     ld [hStateTimer], a
     ld a, $05
-    ld [wUnk_ccb6], a
+    ld [wHighScoresNextState], a
     ld a, $ff
     ld [wMenuIdleTimer], a
     call BuildScoreText
@@ -6383,182 +6411,60 @@ DeveloperLogos_Update:
 ColorOnly_Update:
     jr ColorOnly_Update
 
-    ld bc, $0090
-    call DataTransfer
-    ld hl, GrenadeText_French_2 + $13
-    ld de, $8000
-    ld bc, $0010
-    call DataTransfer
-    ld a, $26
-    ld de, $9800
-    ld hl, GrenadeText_Spanish_3 + $b
-    ld b, $14
-    ld c, $12
-    call CopyTilemapRect
-    ld hl, ColorOnlyData_001_4ca8
-    ld de, wScrollSplits
-    ld bc, $0006
-    call DataTransfer
-    ld a, [wLangTextLevelPassword]
-    ld l, a
-    ld a, [wLangTextLevelPassword + 1]
-    ld h, a
-    ld de, wLevelPasswordText
-    ld bc, $003e
-    call DataTransfer
-    ld a, $01
-    call ChangeROMBank
-    ld hl, LogoSwaySteps
-    ld a, l
-    ld [wLogoSwayPtr], a
-    ld a, h
-    ld [wLogoSwayPtr + 1], a
-    call BuildLevelTitle
-    ld hl, wLevelPasswordText + 12
-    ld a, [wLanguage]
-    cp $04
-    jr nz, .notLanguage4
-
-    ld a, [wLevelTitleText + 18]
-    ld [hl+], a
-    ld a, [wLevelTitleText + 19]
-    ld [hl+], a
-    ld a, [wLevelTitleText + 20]
-    jr .storeLastDigit
-
-.notLanguage4:
-    ld a, [wLevelTitleText + 17]
-    ld [hl+], a
-    ld a, [wLevelTitleText + 18]
-    ld [hl+], a
-    ld a, [wLevelTitleText + 19]
-
-.storeLastDigit:
-    ld [hl-], a
-    dec hl
-    call ParseDecimal
-    ld a, [wUnk_df35]
-    ld l, a
-    ld a, [wUnk_df36]
-    ld h, a
-    ld de, wLevelPasswordChars
-    ld a, [wPasswordChars]
-    ld [hl+], a
-    ld [de], a
-    inc de
-    ld a, [wPasswordChars + 1]
-    ld [hl+], a
-    ld [de], a
-    inc de
-    ld a, [wPasswordChars + 2]
-    ld [hl+], a
-    ld [de], a
-    inc de
-    ld a, [wPasswordChars + 3]
-    ld [hl+], a
-    ld [de], a
-    ld a, [wLevelBonus]
-    ld l, a
-    ld a, [wLevelBonus + 1]
-    ld h, a
-    ld de, $01f4
-    add hl, de
-    ld a, l
-    ld [wLevelBonus], a
-    ld a, h
-    ld [wLevelBonus + 1], a
-    ld a, l
-    ld [wBonusCountdown], a
-    ld a, h
-    ld [wBonusCountdown + 1], a
-    call LevelPassword_DrawBonus
-    ld a, [wLevelBonusUnits]
-    ld l, a
-    ld a, [wLevelBonusUnits + 1]
-    ld h, a
-    ld de, $0032
-    add hl, de
-    ld a, l
-    ld [wLevelBonusUnits], a
-    ld a, h
-    ld [wLevelBonusUnits + 1], a
-    ld b, h
-    ld c, l
-    call AddScoreBC
-    ld hl, wLevelPasswordText
-    call DrawString
-    call DrawString
-    call DrawString
-    ld a, $2d
-    ld [wBonusDelay], a
-    ld hl, FireworkScript_0
-    ld a, l
-    ld [wFireworks], a
-    ld a, h
-    ld [wFireworks + 1], a
-    ld hl, FireworkScript_1
-    ld a, l
-    ld [wFireworks + 15], a
-    ld a, h
-    ld [wFireworks + 16], a
-    ld hl, FireworkScript_2
-    ld a, l
-    ld [wFireworks + 30], a
-    ld a, h
-    ld [wFireworks + 31], a
-    ld hl, wFireworks
-    call Firework_Launch
-    ld hl, wFireworks + 15
-    call Firework_Launch
-    ld hl, wFireworks + 30
-    call Firework_Launch
-    ld hl, wFireworkSparks
-    ld a, l
-    ld [wFireworks + 13], a
-    ld a, h
-    ld [wFireworks + 14], a
-    ld hl, wFireworkSparks + 80
-    ld a, l
-    ld [wFireworks + 28], a
-    ld a, h
-    ld [wFireworks + 29], a
-    ld hl, wFireworkSparks + 160
-    ld a, l
-    ld [wFireworks + 43], a
-    ld a, h
-    ld [wFireworks + 44], a
-    ld hl, TwinkleInitData
-    ld de, wTwinkles
-    ld bc, $0037
-    call DataTransfer
-    ret
-
-    db $21, $b3, $02, $7d, $ea, $96, $ff, $7c, $ea, $97, $ff, $3e, $01, $ea, $9c, $ff
-    db $ea, $9b, $ff, $3e, $01, $ea, $9a, $ff, $af, $e0, $43, $11, $b0, $43, $cd, $61
-    db $00, $3e, $0d, $cd, $06, $02, $3e, $01, $e0, $4f, $af, $11, $00, $98, $21, $50
-    db $51, $06, $14, $0e, $12, $cd, $d4, $01, $af, $ea, $fc, $de, $ea, $fd, $de, $ea
-    db $fe, $de, $e0, $4f, $21, $b8, $49, $11, $00, $90, $01, $30, $06, $cd, $b0, $01
-    db $11, $00, $98, $21, $e8, $4f, $06, $14, $0e, $12, $cd, $d4, $01, $3e, $01, $cd
-    db $06, $02, $c9, $fa, $bb, $da, $b7, $c0, $3e, $06, $ea, $00, $21, $cd, $3f, $47
-    db $3e, $01, $ea, $00, $21, $c9, $d5, $e5, $c5, $5f, $fa, $bc, $da, $b7, $20, $0d
-    db $3e, $06, $ea, $00, $21, $cd, $19, $48, $3e, $01, $ea, $00, $21
-    db $c1, $e1, $d1, $c9, $3e, $06, $ea, $00, $21, $cd, $00, $40, $3e, $01, $ea, $00
-    db $21, $c9, $3e, $46, $ea, $91, $ff, $21, $b3, $02, $7d, $ea, $96, $ff, $7c, $ea
-    db $97, $ff, $3e, $01, $ea, $9c, $ff, $ea, $9b, $ff, $3e, $01, $ea, $9a, $ff, $af
-    db $e0, $43, $11, $30, $45, $cd, $61, $00, $3e, $03, $cd, $06, $02, $3e, $01, $e0
-    db $4f, $af, $11, $00, $98, $21, $98, $5e, $06, $14, $0e, $12, $cd, $d4, $01, $af
-    db $e0, $4f, $21, $80, $55, $11, $00, $90, $01, $b0, $07, $cd, $b0, $01, $af, $11
-    db $00, $98, $21, $30, $5d, $06, $14, $0e, $12, $cd, $d4, $01, $3e, $01, $cd, $06
-    db $02, $c9, $fa, $91, $ff, $b7, $28, $05, $3d, $ea, $91, $ff, $c9
-    db $3e, $0c, $ea, $9f, $ff, $3e, $01, $ea, $a0, $ff, $c9, $1e, $08, $cd, $51, $3e
-    db $af, $e0, $43, $21, $b3, $02, $7d, $ea, $96, $ff, $7c, $ea, $97, $ff, $af, $ea
-    db $9c, $ff, $ea, $fe, $dc, $3e, $01, $ea, $9a, $ff, $11, $b0, $44, $cd, $61, $00
-    db $3e, $0e, $ea, $ff, $dc, $cd, $06, $02, $3e, $01, $e0, $4f, $21, $4f, $67, $11
-    db $00, $90, $01, $00, $08, $cd, $b0, $01, $21, $4f, $6f, $11, $00, $88, $01, $90
-    db $07, $cd, $b0, $01, $af, $11, $00, $98, $21, $87, $7e, $06, $14, $0e, $12, $cd
-    db $d4, $01, $af, $e0, $4f, $21, $cf, $73, $11, $00, $90, $01, $00, $08, $cd, $b0
-    db $01, $21, $cf, $7b, $11, $00, $88, $01, $50, $01, $cd, $b0, $01, $3e, $09, $11
-    db $00, $98, $21, $1f, $7d, $06, $14, $0e, $09, $cd, $d4, $01, $af, $11, $20, $99
-    db $06, $14, $0e, $09, $cd, $d4, $01, $fa, $0d, $df, $6f, $fa, $0e, $df, $67, $cd
-    db $84, $0e, $cd, $84, $0e, $cd, $84, $0e, $cd, $84, $0e, $cd, $84, $0e, $cd, $84
-    db $0e, $3e, $01, $ea, $ac, $d8, $cd, $06, $02, $c9
+; Filler. The rest of the bank is a stale copy of the last 854 bytes of bank 0 ($3CAA-$3FFF).
+; Nothing runs or reads it.
+BankFiller_001:
+    db $01, $90, $00, $cd, $b0, $01, $21, $74, $55, $11, $00, $80, $01, $10, $00, $cd
+    db $b0, $01, $3e, $26, $11, $00, $98, $21, $14, $56, $06, $14, $0e, $12, $cd, $d4
+    db $01, $21, $a8, $4c, $11, $03, $dd, $01, $06, $00, $cd, $b0, $01, $fa, $33, $df
+    db $6f, $fa, $34, $df, $67, $11, $0b, $dd, $01, $3e, $00, $cd, $b0, $01, $3e, $01
+    db $cd, $06, $02, $21, $84, $67, $7d, $ea, $09, $dd, $7c, $ea, $0a, $dd, $cd, $de
+    db $0d, $21, $17, $dd, $fa, $fc, $de, $fe, $04, $20, $0d, $fa, $3c, $d7, $22, $fa
+    db $3d, $d7, $22, $fa, $3e, $d7, $18, $0b, $fa, $3b, $d7, $22, $fa, $3c, $d7, $22
+    db $fa, $3d, $d7, $32, $2b, $cd, $74, $09, $fa, $35, $df, $6f, $fa, $36, $df, $67
+    db $11, $e3, $cc, $fa, $7c, $cb, $22, $12, $13, $fa, $7d, $cb, $22, $12, $13, $fa
+    db $7e, $cb, $22, $12, $13, $fa, $7f, $cb, $22, $12, $fa, $4d, $dd, $6f, $fa, $4e
+    db $dd, $67, $11, $f4, $01, $19, $7d, $ea, $4d, $dd, $7c, $ea, $4e, $dd, $7d, $ea
+    db $49, $dd, $7c, $ea, $4a, $dd, $cd, $09, $5c, $fa, $4f, $dd, $6f, $fa, $50, $dd
+    db $67, $11, $32, $00, $19, $7d, $ea, $4f, $dd, $7c, $ea, $50, $dd, $44, $4d, $cd
+    db $3c, $7c, $21, $0b, $dd, $cd, $54, $0e, $cd, $54, $0e, $cd, $54, $0e, $3e, $2d
+    db $ea, $4b, $dd, $21, $ad, $67, $7d, $ea, $60, $dd, $7c, $ea, $61, $dd, $21, $bc
+    db $67, $7d, $ea, $6f, $dd, $7c, $ea, $70, $dd, $21, $cb, $67, $7d, $ea, $7e, $dd
+    db $7c, $ea, $7f, $dd, $21, $60, $dd, $cd, $2e, $5d, $21, $6f, $dd, $cd, $2e, $5d
+    db $21, $7e, $dd, $cd, $2e, $5d, $21, $8d, $dd, $7d, $ea, $6d, $dd, $7c, $ea, $6e
+    db $dd, $21, $dd, $dd, $7d, $ea, $7c, $dd, $7c, $ea, $7d, $dd, $21, $2d, $de, $7d
+    db $ea, $8b, $dd, $7c, $ea, $8c, $dd, $21, $43, $65, $11, $81, $de, $01, $37, $00
+    db $cd, $b0, $01, $c9, $21, $b3, $02, $7d, $ea, $96, $ff, $7c, $ea, $97, $ff, $3e
+    db $01, $ea, $9c, $ff, $ea, $9b, $ff, $3e, $01, $ea, $9a, $ff, $af, $e0, $43, $11
+    db $b0, $43, $cd, $61, $00, $3e, $0d, $cd, $06, $02, $3e, $01, $e0, $4f, $af, $11
+    db $00, $98, $21, $50, $51, $06, $14, $0e, $12, $cd, $d4, $01, $af, $ea, $fc, $de
+    db $ea, $fd, $de, $ea, $fe, $de, $e0, $4f, $21, $b8, $49, $11, $00, $90, $01, $30
+    db $06, $cd, $b0, $01, $11, $00, $98, $21, $e8, $4f, $06, $14, $0e, $12, $cd, $d4
+    db $01, $3e, $01, $cd, $06, $02, $c9, $fa, $bb, $da, $b7, $c0, $3e, $06, $ea, $00
+    db $21, $cd, $3f, $47, $3e, $01, $ea, $00, $21, $c9, $d5, $e5, $c5, $5f, $fa, $bc
+    db $da, $b7, $20, $0d, $3e, $06, $ea, $00, $21, $cd, $19, $48, $3e, $01, $ea, $00
+    db $21, $c1, $e1, $d1, $c9, $3e, $06, $ea, $00, $21, $cd, $00, $40, $3e, $01, $ea
+    db $00, $21, $c9, $3e, $46, $ea, $91, $ff, $21, $b3, $02, $7d, $ea, $96, $ff, $7c
+    db $ea, $97, $ff, $3e, $01, $ea, $9c, $ff, $ea, $9b, $ff, $3e, $01, $ea, $9a, $ff
+    db $af, $e0, $43, $11, $30, $45, $cd, $61, $00, $3e, $03, $cd, $06, $02, $3e, $01
+    db $e0, $4f, $af, $11, $00, $98, $21, $98, $5e, $06, $14, $0e, $12, $cd, $d4, $01
+    db $af, $e0, $4f, $21, $80, $55, $11, $00, $90, $01, $b0, $07, $cd, $b0, $01, $af
+    db $11, $00, $98, $21, $30, $5d, $06, $14, $0e, $12, $cd, $d4, $01, $3e, $01, $cd
+    db $06, $02, $c9, $fa, $91, $ff, $b7, $28, $05, $3d, $ea, $91, $ff, $c9, $3e, $0c
+    db $ea, $9f, $ff, $3e, $01, $ea, $a0, $ff, $c9, $1e, $08, $cd, $51, $3e, $af, $e0
+    db $43, $21, $b3, $02, $7d, $ea, $96, $ff, $7c, $ea, $97, $ff, $af, $ea, $9c, $ff
+    db $ea, $fe, $dc, $3e, $01, $ea, $9a, $ff, $11, $b0, $44, $cd, $61, $00, $3e, $0e
+    db $ea, $ff, $dc, $cd, $06, $02, $3e, $01, $e0, $4f, $21, $4f, $67, $11, $00, $90
+    db $01, $00, $08, $cd, $b0, $01, $21, $4f, $6f, $11, $00, $88, $01, $90, $07, $cd
+    db $b0, $01, $af, $11, $00, $98, $21, $87, $7e, $06, $14, $0e, $12, $cd, $d4, $01
+    db $af, $e0, $4f, $21, $cf, $73, $11, $00, $90, $01, $00, $08, $cd, $b0, $01, $21
+    db $cf, $7b, $11, $00, $88, $01, $50, $01, $cd, $b0, $01, $3e, $09, $11, $00, $98
+    db $21, $1f, $7d, $06, $14, $0e, $09, $cd, $d4, $01, $af, $11, $20, $99, $06, $14
+    db $0e, $09, $cd, $d4, $01, $fa, $0d, $df, $6f, $fa, $0e, $df, $67, $cd, $84, $0e
+    db $cd, $84, $0e, $cd, $84, $0e, $cd, $84, $0e, $cd, $84, $0e, $cd, $84, $0e, $3e
+    db $01, $ea, $ac, $d8, $cd, $06, $02, $c9, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00

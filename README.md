@@ -47,8 +47,8 @@ The sources build to the matching ROM with RGBDS 0.8.0 (`make`), with no warning
 
 ## What is left
 
-- **Names inside routines.** Every subroutine and every `jp` target in banks 0, 1 and `$0F` has a name. About 710 `jr_` labels inside routines are still automatic. Bank 6 has no automatic labels left.
-- **RAM.** `include/ram.inc` has 325 real names. Another 107 variables have placeholder names (`wUnk_xxxx`, `hUnk_xxxx`). Code in banks 0, 1 and 6 no longer contains raw work RAM addresses.
+- **Names inside routines.** No automatic labels are left. Every subroutine and `jp` target has a name, and every `jr` target is a local label named for what the code does. The names were proposed and then checked against the code in a second pass, but they have not all been tested in play.
+- **RAM.** `include/ram.inc` has 382 names and no placeholders. Code in banks 0, 1 and 6 contains no raw work RAM addresses.
 - **Relocation.** `tools/relocation_test.py` shifts a bank by 3 bytes, rebuilds, and compares a scripted play-through with the original. The session covers the menus, the high score and credits screens that appear when the menu idles, every level load, pause, the password screens, the ending and game over.
   - In English, banks 0, 1, 2, 3, 5, 7, 8, 9, `$0A`, `$0C`, `$0D`, `$0E` and `$0F` pass.
   - In Spanish, French, German and Italian, banks 0, 1, 5, `$0C` and `$0E` pass. These hold the language tables and text. Bank `$0F` (credits) also passes in French.
@@ -62,6 +62,6 @@ The sources build to the matching ROM with RGBDS 0.8.0 (`make`), with no warning
 - **Graphics.** Tile data is in `gfx/*.2bpp`. Every file has a PNG. Some images are loaded in two parts but stored as one file.
 - **Music.** The driver in bank 6 is named, commented and described in [docs/RESEARCH.md](docs/RESEARCH.md). Songs, patterns, instruments and sound effects have labels, but the rows are plain `db` and `dw` lines. Sound effects have numbers, not names.
 - **Unlabelled data.** `docs/ROM_MAP.md` shows the blocks with no meaningful name yet. Banks `$0B` and `$10`–`$13` (language graphics) and bank 9 are the largest.
-- **Filler.** Banks `$14`–`$1F` are 12 copies of one bank, bank `$20` is a copy of bank `$13`, and banks `$21`–`$3F` are empty.
+- **Filler.** The end of bank 1 (from `$7CAA`) is a stale copy of bank 0 and is stored as plain bytes (`BankFiller_001`). Banks 2 to `$0D` and `$0F` to `$20` end with similar copies that are still part of the last data block. Banks `$14`–`$1F` are 12 copies of one bank, bank `$20` is a copy of bank `$13`, and banks `$21`–`$3F` are empty.
 
 The game's logic is described in [docs/RESEARCH.md](docs/RESEARCH.md).

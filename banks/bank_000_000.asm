@@ -10,7 +10,7 @@ INCLUDE "src/header.asm"
 SECTION "FIXED BANK ROM", ROM0[$0150]
 ProgramStart:
     di                      ; disable interrupts
-    ld hl, wUnk_c1fe            ; setup stack pointer
+    ld hl, wStackTop            ; setup stack pointer
     ld sp, hl
     call GBC_Check          ; Do a RAM Check to check if the ROM is being booted on the correct hardware
 
@@ -386,7 +386,7 @@ VBlank_InGame:
     inc [hl]
 
 .drawAlternateText:
-    ld hl, VBlank_InGameData_001_745e
+    ld hl, Text_LevelTitleBlank
     call DrawString
     jr .flushTileWrites
 
@@ -496,7 +496,7 @@ VBlankMenus:
     call StartHdmaTransfer
     ld a, $01
     ldh [rVBK], a
-    ld a, [wUnk_c959]
+    ld a, [wHighScoresVBlankFlag]
     or a
     jp nz, VBlankMenus_BlinkRow
 
@@ -619,9 +619,9 @@ VBlankMenus:
 .noPasswordEntry:
     xor a
     ldh [rVBK], a
-    ld a, [wUnk_df48]
+    ld a, [wLangStartLevelDigitsAddress]
     ld l, a
-    ld a, [wUnk_df49]
+    ld a, [wLangStartLevelDigitsAddress + 1]
     ld h, a
     ld a, [wStartLevelText]
     sub $2f
@@ -632,17 +632,17 @@ VBlankMenus:
     ld a, [wStartLevelText + 2]
     sub $2f
     ld [hl], a
-    ld de, wUnk_df40
+    ld de, wLangOffTiles
     ld a, [wMusicOff]
     or a
     jr nz, .drawMusicSetting
 
-    ld de, wUnk_df3d
+    ld de, wLangOnTiles
 
 .drawMusicSetting:
-    ld a, [wUnk_df39]
+    ld a, [wLangTable + $38]
     ld l, a
-    ld a, [wUnk_df3a]
+    ld a, [wLangTable + $39]
     ld h, a
     ld a, [de]
     ld [hl+], a
@@ -652,17 +652,17 @@ VBlankMenus:
     inc de
     ld a, [de]
     ld [hl], a
-    ld de, wUnk_df40
+    ld de, wLangOffTiles
     ld a, [wSfxOff]
     or a
     jr nz, .drawSfxSetting
 
-    ld de, wUnk_df3d
+    ld de, wLangOnTiles
 
 .drawSfxSetting:
-    ld a, [wUnk_df3b]
+    ld a, [wLangTable + $3a]
     ld l, a
-    ld a, [wUnk_df3c]
+    ld a, [wLangTable + $3b]
     ld h, a
     ld a, [de]
     ld [hl+], a
@@ -672,7 +672,7 @@ VBlankMenus:
     inc de
     ld a, [de]
     ld [hl], a
-    ld hl, wUnk_db56
+    ld hl, wPasswordSlotTiles
     ld a, [hl+]
     ld [$9968], a
     ld a, [hl+]
@@ -699,7 +699,7 @@ VBlankMenus_BlinkRow:
     ld [wBlinkTimer], a
     jr nz, .drawNameEntry
 
-    ld a, [wUnk_df45]
+    ld a, [wLangLatestBlinkWidth]
     ld b, a
     ld a, [wBlinkPhase]
     or a
@@ -757,11 +757,11 @@ VBlankMenus_BlinkRow:
     add $07
     ld l, a
     push hl
-    ld a, [wUnk_cccd]
+    ld a, [wNameEntryDone]
     or a
     jr nz, .finishNameEntry
 
-    ld de, wUnk_ccc2
+    ld de, wNameEntryColours
     ld b, $07
 
 .copyAttrLoop:
@@ -836,9 +836,9 @@ VBlank_Credits:
     ld a, h
     ld [wRasterPtr + 1], a
     call hOamDmaRoutine
-    ld a, [wUnk_c95a]
+    ld a, [wCreditsFrameToggle]
     xor $01
-    ld [wUnk_c95a], a
+    ld [wCreditsFrameToggle], a
     call z, UpdateCreditsScroll
     ld a, $01
     ld [hVBlankDone], a
@@ -911,18 +911,18 @@ StateInit_HighScores:
     ld c, $03
     call CopyTilemapRect
     ld a, $02
-    ld [wUnk_c959], a
+    ld [wHighScoresVBlankFlag], a
     call ChangeROMBank
     ld a, $01
-    ld [wUnk_c959], a
+    ld [wHighScoresVBlankFlag], a
     call ChangeROMBank
     call HighScores_InitSprites
     call HighScores_MoveSprites
     ld a, $81
-    ld [wUnk_ccc2], a
+    ld [wNameEntryColours], a
     xor a
     ld [wLevelSweepPending], a
-    ld [wUnk_cccd], a
+    ld [wNameEntryDone], a
     ld [wNameEntryCursor], a
     ld a, $41
     ld [wNameEntry], a
@@ -934,12 +934,12 @@ StateInit_HighScores:
     ld [wNameEntry + 5], a
     ld [wNameEntry + 6], a
     ld a, $84
-    ld [wUnk_ccc3], a
-    ld [wUnk_ccc4], a
-    ld [wUnk_ccc5], a
-    ld [wUnk_ccc6], a
-    ld [wUnk_ccc7], a
-    ld [wUnk_ccc8], a
+    ld [wNameEntryColours + 1], a
+    ld [wNameEntryColours + 2], a
+    ld [wNameEntryColours + 3], a
+    ld [wNameEntryColours + 4], a
+    ld [wNameEntryColours + 5], a
+    ld [wNameEntryColours + 6], a
     ; Start address of the first animation frame, low byte then high byte.
     ; The frames are sent with HDMA, which needs source addresses that are multiples of 16.
     ASSERT LOW(HighScoreAnim_00b_4000) == 0, "the high score animation must start at an address ending in $00"
@@ -965,10 +965,10 @@ HighScores_Update:
     cp $ff
     jr z, .idleTimerDisabled
 
-    ld a, [wUnk_ccce]
+    ld a, [wHighScoresIdleTick]
     inc a
     and $03
-    ld [wUnk_ccce], a
+    ld [wHighScoresIdleTick], a
     jr nz, .checkButtons
 
     ld a, [wMenuIdleTimer]
@@ -997,10 +997,10 @@ HighScores_Leave:
     cp $07
     ret nz
 
-    ld a, [wUnk_ccb6]
+    ld a, [wHighScoresNextState]
     ld [hGameState], a
     ld a, $01
-    ld [wUnk_cccd], a
+    ld [wNameEntryDone], a
     ld a, $1e
     ld [hStateTimer], a
     ld a, $1a
@@ -1064,12 +1064,12 @@ HighScores_Leave:
     bit 3, b
     jr z, .prevLetterReleased
 
-    ld a, [wUnk_ccca]
+    ld a, [wNameEntryDownHeld]
     or a
     jr nz, .checkNextLetter
 
     inc a
-    ld [wUnk_ccca], a
+    ld [wNameEntryDownHeld], a
     ld a, $19
     call PlaySound
     push hl
@@ -1087,18 +1087,18 @@ HighScores_Leave:
 
 .prevLetterReleased:
     xor a
-    ld [wUnk_ccca], a
+    ld [wNameEntryDownHeld], a
 
 .checkNextLetter:
     bit 2, b
     jr z, .nextLetterReleased
 
-    ld a, [wUnk_ccc9]
+    ld a, [wNameEntryUpHeld]
     or a
     jr nz, .checkCursorMove
 
     inc a
-    ld [wUnk_ccc9], a
+    ld [wNameEntryUpHeld], a
     ld a, $19
     call PlaySound
     push hl
@@ -1116,7 +1116,7 @@ HighScores_Leave:
 
 .nextLetterReleased:
     xor a
-    ld [wUnk_ccc9], a
+    ld [wNameEntryUpHeld], a
 
 .checkCursorMove:
     ld a, b
@@ -1124,14 +1124,14 @@ HighScores_Leave:
     or a
     jp z, HighScores_ButtonsReleased
 
-    ld a, [wUnk_cccb]
+    ld a, [wNameEntryButtonHeld]
     or a
     ret nz
 
     ld a, $19
     call PlaySound
     ld a, $01
-    ld [wUnk_cccb], a
+    ld [wNameEntryButtonHeld], a
     ld a, [wNameEntryCursor]
     bit 4, b
     jr z, .checkBit5CursorBack
@@ -1183,9 +1183,9 @@ HighScores_Leave:
     jr nz, .checkMarkCursor1
 
     ld a, $81
-    ld [wUnk_ccc2], a
+    ld [wNameEntryColours], a
     ld a, $84
-    ld [wUnk_ccc3], a
+    ld [wNameEntryColours + 1], a
     ret
 
 .checkMarkCursor1:
@@ -1194,10 +1194,10 @@ HighScores_Leave:
 
     ld a, $81
 
-    ld [wUnk_ccc3], a
+    ld [wNameEntryColours + 1], a
     ld a, $84
-    ld [wUnk_ccc2], a
-    ld [wUnk_ccc4], a
+    ld [wNameEntryColours], a
+    ld [wNameEntryColours + 2], a
     ret
 
 .checkMarkCursor2:
@@ -1205,10 +1205,10 @@ HighScores_Leave:
     jr nz, .checkMarkCursor3
 
     ld a, $84
-    ld [wUnk_ccc3], a
-    ld [wUnk_ccc5], a
+    ld [wNameEntryColours + 1], a
+    ld [wNameEntryColours + 3], a
     ld a, $81
-    ld [wUnk_ccc4], a
+    ld [wNameEntryColours + 2], a
     ret
 
 .checkMarkCursor3:
@@ -1216,10 +1216,10 @@ HighScores_Leave:
     jr nz, .checkMarkCursor4
 
     ld a, $84
-    ld [wUnk_ccc4], a
-    ld [wUnk_ccc6], a
+    ld [wNameEntryColours + 2], a
+    ld [wNameEntryColours + 4], a
     ld a, $81
-    ld [wUnk_ccc5], a
+    ld [wNameEntryColours + 3], a
     ret
 
 .checkMarkCursor4:
@@ -1227,10 +1227,10 @@ HighScores_Leave:
     jr nz, .checkMarkCursor5
 
     ld a, $84
-    ld [wUnk_ccc5], a
-    ld [wUnk_ccc7], a
+    ld [wNameEntryColours + 3], a
+    ld [wNameEntryColours + 5], a
     ld a, $81
-    ld [wUnk_ccc6], a
+    ld [wNameEntryColours + 4], a
     ret
 
 .checkMarkCursor5:
@@ -1238,10 +1238,10 @@ HighScores_Leave:
     jr nz, .checkMarkCursor6
 
     ld a, $84
-    ld [wUnk_ccc6], a
-    ld [wUnk_ccc8], a
+    ld [wNameEntryColours + 4], a
+    ld [wNameEntryColours + 6], a
     ld a, $81
-    ld [wUnk_ccc7], a
+    ld [wNameEntryColours + 5], a
     ret
 
 .checkMarkCursor6:
@@ -1249,14 +1249,14 @@ HighScores_Leave:
     jp nz, HighScores_Leave
 
     ld a, $84
-    ld [wUnk_ccc7], a
+    ld [wNameEntryColours + 5], a
     ld a, $81
-    ld [wUnk_ccc8], a
+    ld [wNameEntryColours + 6], a
     ret
 
 HighScores_ButtonsReleased:
     xor a
-    ld [wUnk_cccb], a
+    ld [wNameEntryButtonHeld], a
     ret
 
 LoadHighScores:
@@ -1296,7 +1296,7 @@ DrawHighScoreTable:
 ; Turn the score digits into characters for the score display.
 BuildScoreText:
     ld hl, wScoreDigits + 1
-    ld de, wUnk_ccad
+    ld de, wScoreText
     ld b, $05
 
 .digitToCharLoop:
@@ -1311,12 +1311,12 @@ BuildScoreText:
     xor a
     ld [wNameEntryAddress], a
     ld [wNameEntryAddress + 1], a
-    ld hl, wUnk_cb85
+    ld hl, wHighScoreTable + $2c
     ld b, $0a
 
 .compareEntryLoop:
     push hl
-    ld de, wUnk_ccad
+    ld de, wScoreText
     ld c, $05
 
 .compareDigitLoop:
@@ -1345,8 +1345,8 @@ BuildScoreText:
     jr z, .insertScore
 
     push bc
-    ld hl, wUnk_cc7c
-    ld de, wUnk_cc98
+    ld hl, wHighScoreTable + $123
+    ld de, wHighScoreTable + $13f
 
 .shiftEntryLoop:
     ld c, $1a
@@ -1369,7 +1369,7 @@ BuildScoreText:
 
 .insertScore:
     pop hl
-    ld de, wUnk_ccad
+    ld de, wScoreText
     ld c, $05
 
 .copyScoreLoop:
@@ -1433,8 +1433,9 @@ BuildScoreText:
     call DataTransfer
     ret
 
-; Read a 3-digit decimal number from the string at HL.
-ParseDecimal:
+; Build the password of the level whose 3-digit number is at HL and write its 4 letters to wPasswordChars.
+; Also calls CheckPassword on the result, which sets wStartLevel.
+EncodeLevelPassword:
     ld a, $02
     call ChangeROMBank
     ld b, $00
@@ -1759,7 +1760,7 @@ LoadLevel:
     ld a, $03
     ld [hInterruptEnable], a
     ld a, $94
-    ld [wUnk_c958], a
+    ld [wRasterObjPaletteIndex], a
     ld a, [wCurrentLevel]
     ld l, a
     ld h, $00
@@ -1833,7 +1834,7 @@ LoadLevel:
     ld b, a
     swap a
     and $0f
-    ld [wLevelFlagsHigh], a
+    ld [wBlobPalette], a
     ld a, b
     and $0f
     ld [wLevelType], a
@@ -1898,7 +1899,7 @@ LoadLevel:
     xor a
     ld [wBrickRedrawCount], a
     ld [wVBlankAttrWriteCount], a
-    ld [wUnk_dab2], a
+    ld [wBatTilesDrawn], a
     ld [hLifeLostTimer], a
     jr LoadLevel_SkipTilemap.drawAttrMapUnlessResuming
 
@@ -3133,7 +3134,7 @@ RestartAfterLifeLost:
     call ClearUnbreakableHitEffects
     xor a
     ld [wOamUsed], a
-    ld de, wUnk_c2b9
+    ld de, wExtraSprites
     ld a, e
     ld [wOamWritePtr], a
     ld a, d
@@ -3494,7 +3495,7 @@ UpdateBall_Move:
     ld a, h
     ld [wBallWorkY], a
     xor a
-    ld [wUnk_d8ab], a
+    ld [wUnbreakableHitSpawned], a
     call CollideBall
     ld a, [wBallSecondStep]
     or a
@@ -4010,7 +4011,7 @@ HitBrickAtBall:
     jp HitBrickWithBall
 
 .brickIs0e:
-    ld a, [wUnk_d8ab]
+    ld a, [wUnbreakableHitSpawned]
     or a
     call z, SpawnUnbreakableHitEffect
 
@@ -4138,15 +4139,15 @@ UpdateBatTiles:
     jr nz, .queueWideBatTiles
 
 .restoreTiles:
-    ld a, [wUnk_dab2]
+    ld a, [wBatTilesDrawn]
     or a
     ret z
 
     xor a
-    ld [wUnk_dab2], a
+    ld [wBatTilesDrawn], a
     ld hl, $0200
     ld d, $00
-    ld a, [wUnk_dab1]
+    ld a, [wBatTilesColumn]
     inc a
     ld e, a
     add hl, de
@@ -4192,7 +4193,7 @@ UpdateBatTiles:
     ret
 
 .queueWideBatTiles:
-    ld [wUnk_dab2], a
+    ld [wBatTilesDrawn], a
     ld hl, $0200
     ld a, [wBatX]
     sub $08
@@ -4201,7 +4202,7 @@ UpdateBatTiles:
     sra a
     ld e, a
     ld d, $00
-    ld [wUnk_dab1], a
+    ld [wBatTilesColumn], a
     add hl, de
     ld b, h
     ld c, l
@@ -4291,10 +4292,10 @@ HitBrickWithShot:
 .checkPlasma:
     ld a, [wPlasmaState]
     cp $02
-    jr nz, HitBrickWithBall.clearD8ba
+    jr nz, HitBrickWithBall.noHitEffect
 
-    ld a, [wUnk_d8bb]
-    ld [wUnk_d8ba], a
+    ld a, [wPlasmaShotX]
+    ld [wHitEffectX], a
     jr HitBrickWithBall.storeHitPtr
 
 ; The ball hit the brick at HL. A = its hit points.
@@ -4312,17 +4313,17 @@ HitBrickWithBall:
     dec a
     ld [wHitNewValue], a
     or a
-    jr z, .clearD8ba
+    jr z, .noHitEffect
 
     ld a, [wNinjaActive]
     or a
-    jr z, .clearD8ba
+    jr z, .noHitEffect
 
     ld [wHitNewValue], a
 
-.clearD8ba:
+.noHitEffect:
     xor a
-    ld [wUnk_d8ba], a
+    ld [wHitEffectX], a
 
 .storeHitPtr:
     ld a, l
@@ -4466,7 +4467,7 @@ QueueBrickHit:
     ld [hl+], a
     ld a, b
     ld [hl+], a
-    ld a, [wUnk_d8ba]
+    ld a, [wHitEffectX]
     ld [hl+], a
     ret
 
@@ -5364,7 +5365,7 @@ StateInit_MainMenu:
     ld [wHdmaMode], a
     ldh [rSCX], a
     ldh [rSCY], a
-    ld [wUnk_c959], a
+    ld [wHighScoresVBlankFlag], a
     ld de, Palettes_MainMenu
     call LoadPalettes
     ld hl, $9800
@@ -5410,19 +5411,19 @@ StateInit_MainMenu:
     ld l, a
     ld a, [wLangTextStartLevel + 1]
     ld h, a
-    ld de, wUnk_dac3
+    ld de, wStartLevelLine
     ld bc, $0014
     call DataTransfer
 
-    ld a, [wUnk_df43]
-    ld [wUnk_dad2], a
+    ld a, [wLangLevelLetter]
+    ld [wStartLevelLine + 15], a
     call FormatLevelNumber
     ld a, [wLangTextStartGame]
     ld l, a
     ld a, [wLangTextStartGame + 1]
     ld h, a
     call DrawString
-    ld hl, wUnk_dac3
+    ld hl, wStartLevelLine
     call DrawString
     ld a, [wLangTextEnterPassword]
     ld l, a
@@ -5467,7 +5468,7 @@ StateInit_MainMenu:
     call DrawString
 
 .skipVersionText:
-    ld hl, wUnk_db56
+    ld hl, wPasswordSlotTiles
     ld a, [$9968]
     ld [hl+], a
     ld a, [$9969]
@@ -6130,12 +6131,12 @@ MainMenu_Navigate:
     bit 0, b
     jr z, .bit0Released
 
-    ld a, [wUnk_dab8]
+    ld a, [wMenuRightHeld]
     or a
     jr nz, .checkJoyBit1
 
     inc a
-    ld [wUnk_dab8], a
+    ld [wMenuRightHeld], a
     ld a, $19
     call PlaySound
     ld a, [wMenuCursor]
@@ -6163,18 +6164,18 @@ MainMenu_Navigate:
 
 .bit0Released:
     xor a
-    ld [wUnk_dab8], a
+    ld [wMenuRightHeld], a
 
 .checkJoyBit1:
     bit 1, b
     jr z, .bit1Released
 
-    ld a, [wUnk_dab9]
+    ld a, [wMenuLeftHeld]
     or a
     jr nz, MainMenu_IdleTick
 
     inc a
-    ld [wUnk_dab9], a
+    ld [wMenuLeftHeld], a
     ld a, $19
     call PlaySound
     ld a, [wMenuCursor]
@@ -6202,7 +6203,7 @@ MainMenu_Navigate:
 
 .bit1Released:
     xor a
-    ld [wUnk_dab9], a
+    ld [wMenuLeftHeld], a
 
 MainMenu_IdleTick:
     ld a, [wMenuTick]
@@ -6239,7 +6240,7 @@ MainMenu_IdleTick:
     ld a, $28
     ld [hStateTimer], a
     ld a, $01
-    ld [wUnk_ccb6], a
+    ld [wHighScoresNextState], a
     ld a, $fe
     ld [wMenuIdleTimer], a
     ld a, $1a
@@ -6295,7 +6296,7 @@ StateInit_TitleScreen:
     xor a
     ld [hLycStart], a
     ld a, $80
-    ld [wUnk_c958], a
+    ld [wRasterObjPaletteIndex], a
     ld a, $01
     ld [hInterruptEnable], a
     xor a
@@ -6348,15 +6349,15 @@ StateInit_TitleScreen:
     ld bc, $0620
     call DataTransfer
     ld a, [wLanguage]
-    ld hl, TitleScreenData_007_6538
+    ld hl, Gfx_TitleLicensedBy_Spanish
     dec a
     jr z, .loadLangTiles
 
-    ld hl, TitleScreenData_007_67b8
+    ld hl, Gfx_TitleLicensedBy_French
     dec a
     jr z, .loadLangTiles
 
-    ld hl, TitleScreenData_007_6678
+    ld hl, Gfx_TitleLicensedBy_German
     dec a
     jr z, .loadLangTiles
 
@@ -6503,7 +6504,7 @@ ResetEnemies:
     ld [wUfoFlying], a
     ld [wGhostActive], a
     ld [wBlobThrowCount], a
-    ld [wUnk_dbea], a
+    ld [wGrenadeBlastTimer], a
     ld [wUfoHits], a
     ld [wUfoPassIndex], a
     ld [wUfoTick], a
@@ -6515,10 +6516,10 @@ ResetEnemies:
     ld b, $f0
     ld c, $32
     ld a, c
-    ld [wUnk_dc1e], a
+    ld [wBlob + 13], a
     ld a, $3c
     add b
-    ld [wUnk_dc1f], a
+    ld [wBlob + 14], a
     ld hl, BlobPath
     ld de, wBlob
     call InitEnemyObject
@@ -6617,7 +6618,7 @@ UpdateBlob:
     ld l, [hl]
     ld h, d
     ld a, $24
-    ld de, UpdateBlobData_001_4e6e
+    ld de, ThrowPath_4e6e
 
 .spawnThrow:
     call SpawnProjectile
@@ -6679,7 +6680,7 @@ UpdateBlob:
     inc de
     push de
     ld d, a
-    ld a, [wLevelFlagsHigh]
+    ld a, [wBlobPalette]
     add d
     pop de
     ld [hl+], a
@@ -6985,12 +6986,12 @@ UpdateProjectiles:
     dec b
     jr nz, .slotLoop
 
-    ld a, [wUnk_dbea]
+    ld a, [wGrenadeBlastTimer]
     or a
     jr z, .done
 
     dec a
-    ld [wUnk_dbea], a
+    ld [wGrenadeBlastTimer], a
     jr nz, .timerStillRunning
 
     xor a
@@ -7009,10 +7010,10 @@ UpdateProjectiles:
 .drawTimedSprites:
     ld e, a
     ld d, $00
-    ld hl, UpdateProjectilesData_001_4b21
+    ld hl, GrenadeExplosionSequence
     add hl, de
     ld e, [hl]
-    ld hl, UpdateProjectilesData_001_4a68
+    ld hl, GrenadeExplosionFrames
     add hl, de
     ld d, h
     ld e, l
@@ -7028,9 +7029,9 @@ UpdateProjectiles:
     add b
 
     ld [wOamUsed], a
-    ld a, [wUnk_dbec]
+    ld a, [wGrenadeBlastY]
     ld b, a
-    ld a, [wUnk_dbeb]
+    ld a, [wGrenadeBlastX]
     ld c, a
 
 .spriteLoop:
@@ -7080,7 +7081,7 @@ UpdateProjectile_HitBrick:
     jr nc, .checkBelow72
 
     ld a, $24
-    ld hl, UpdateBlobData_001_4e6e
+    ld hl, ThrowPath_4e6e
     jr .storeTimerAndData
 
 .checkBelow72:
@@ -7088,7 +7089,7 @@ UpdateProjectile_HitBrick:
     jr nc, .checkBelow77
 
     ld a, $20
-    ld hl, ProjectileData_4e92
+    ld hl, ProjectileBounceArc_1
     jr .storeTimerAndData
 
 .checkBelow77:
@@ -7096,7 +7097,7 @@ UpdateProjectile_HitBrick:
     jr nc, .checkBelow7c
 
     ld a, $1c
-    ld hl, ProjectileData_4eb2
+    ld hl, ProjectileBounceArc_2
     jr .storeTimerAndData
 
 .checkBelow7c:
@@ -7104,7 +7105,7 @@ UpdateProjectile_HitBrick:
     jr nc, .checkBelow81
 
     ld a, $18
-    ld hl, ProjectileData_4ece
+    ld hl, ProjectileBounceArc_3
     jr .storeTimerAndData
 
 .checkBelow81:
@@ -7112,7 +7113,7 @@ UpdateProjectile_HitBrick:
     jr nc, .checkBelow86
 
     ld a, $14
-    ld hl, ProjectileData_4ee6
+    ld hl, ProjectileBounceArc_4
     jr .storeTimerAndData
 
 .checkBelow86:
@@ -7120,7 +7121,7 @@ UpdateProjectile_HitBrick:
     jr nc, .checkBelow8b
 
     ld a, $10
-    ld hl, ProjectileData_4efa
+    ld hl, ProjectileBounceArc_5
     jr .storeTimerAndData
 
 .checkBelow8b:
@@ -7128,12 +7129,12 @@ UpdateProjectile_HitBrick:
     jr nc, .atOrAbove8b
 
     ld a, $0c
-    ld hl, ProjectileData_4f0a
+    ld hl, ProjectileBounceArc_6
     jr .storeTimerAndData
 
 .atOrAbove8b:
     ld a, $08
-    ld hl, ProjectileData_4f16
+    ld hl, ProjectileBounceArc_7
 
 .storeTimerAndData:
     ld [wProjectileWork], a
@@ -7182,12 +7183,12 @@ UpdateProjectile:
     jr z, .becomeBall
 
     ld a, $34
-    ld [wUnk_dbea], a
+    ld [wGrenadeBlastTimer], a
     ld a, [wProjectileWork + 2]
-    ld [wUnk_dbeb], a
+    ld [wGrenadeBlastX], a
     ld c, a
     ld a, [wProjectileWork + 4]
-    ld [wUnk_dbec], a
+    ld [wGrenadeBlastY], a
     call Projectile_HitBrick
     ld a, [wProjectileWork + 2]
     add $07
@@ -7252,12 +7253,12 @@ UpdateProjectile_Move:
     ld h, a
     add hl, de
     ld e, [hl]
-    ld hl, UpdateProjectileData_001_49c0
+    ld hl, BallProjectileFrames
     ld a, [wProjectileWork + 8]
     bit 7, a
     jr z, .offsetTableChosen
 
-    ld hl, UpdateProjectileData_001_4a14
+    ld hl, GrenadeProjectileFrames
 
 .offsetTableChosen:
     add hl, de
@@ -7279,10 +7280,10 @@ UpdateProjectile_Move:
     ld e, a
     ld d, [hl]
     ld a, [wProjectileWork + 1]
-    ld [wUnk_dc39], a
+    ld [wProjectileOldXSub], a
     ld l, a
     ld a, [wProjectileWork + 2]
-    ld [wUnk_dc3a], a
+    ld [wProjectileOldX], a
     ld h, a
     add hl, bc
     ld a, l
@@ -7290,10 +7291,10 @@ UpdateProjectile_Move:
     ld a, h
     ld [wProjectileWork + 2], a
     ld a, [wProjectileWork + 3]
-    ld [wUnk_dc3b], a
+    ld [wProjectileOldYSub], a
     ld l, a
     ld a, [wProjectileWork + 4]
-    ld [wUnk_dc3c], a
+    ld [wProjectileOldY], a
     ld h, a
     add hl, de
     ld a, l
@@ -7302,8 +7303,8 @@ UpdateProjectile_Move:
     ld [wProjectileWork + 4], a
     pop de
     xor a
-    ld [wUnk_dc37], a
-    ld [wUnk_dc38], a
+    ld [wProjectileBouncedX], a
+    ld [wProjectileBouncedY], a
     ld a, [de]
     inc de
     ld b, a
@@ -7335,7 +7336,7 @@ UpdateProjectile_Move:
     ld a, [hl]
     ld [wProjectileWork + 7], a
     ld a, $01
-    ld [wUnk_dc37], a
+    ld [wProjectileBouncedX], a
 
 .checkRightSide:
     ld a, [wProjectileWork + 2]
@@ -7361,7 +7362,7 @@ UpdateProjectile_Move:
     ld a, [hl]
     ld [wProjectileWork + 7], a
     ld a, $01
-    ld [wUnk_dc37], a
+    ld [wProjectileBouncedX], a
 
 .checkTopSide:
     ld a, [wProjectileWork + 2]
@@ -7382,7 +7383,7 @@ UpdateProjectile_Move:
     ld a, [hl]
     ld [wProjectileWork + 7], a
     ld a, $01
-    ld [wUnk_dc38], a
+    ld [wProjectileBouncedY], a
 
 .checkBottomSide:
     ld a, [wProjectileWork + 2]
@@ -7408,7 +7409,7 @@ UpdateProjectile_Move:
     ld [wProjectileWork + 7], a
     ld a, $01
 
-    ld [wUnk_dc38], a
+    ld [wProjectileBouncedY], a
 
 .probesDone:
     pop bc
@@ -7418,23 +7419,23 @@ UpdateProjectile_Move:
     ld a, [wProjectileWork + 4]
     sub c
     ld [wProjectileWork + 4], a
-    ld a, [wUnk_dc37]
+    ld a, [wProjectileBouncedX]
     or a
     jr z, .checkRestoreY
 
-    ld a, [wUnk_dc39]
+    ld a, [wProjectileOldXSub]
     ld [wProjectileWork + 1], a
-    ld a, [wUnk_dc3a]
+    ld a, [wProjectileOldX]
     ld [wProjectileWork + 2], a
 
 .checkRestoreY:
-    ld a, [wUnk_dc38]
+    ld a, [wProjectileBouncedY]
     or a
     jr z, .drawSprites
 
-    ld a, [wUnk_dc3b]
+    ld a, [wProjectileOldYSub]
     ld [wProjectileWork + 3], a
-    ld a, [wUnk_dc3c]
+    ld a, [wProjectileOldY]
     ld [wProjectileWork + 4], a
 
 .drawSprites:
@@ -7656,7 +7657,7 @@ UpdateUfo:
     ld a, [wUfoHeight]
     add $10
     ld [wUfoBombY], a
-    ld [wUnk_dc32], a
+    ld [wUfoBombStartY], a
     ld a, $01
     ld [wUfoBombActive], a
     ld a, $14
@@ -8109,7 +8110,7 @@ UpdateUfoBomb:
     jr nc, .bombFalling
 
     inc d
-    ld a, [wUnk_dc32]
+    ld a, [wUfoBombStartY]
     ld [hl+], a
     ld a, [wUfoBombX]
     ld [hl+], a
@@ -8724,7 +8725,7 @@ UpdateShot0:
 .plasmaSprite:
     ld bc, ShotSprite_Plasma
     ld a, [wShots]
-    ld [wUnk_d8bb], a
+    ld [wPlasmaShotX], a
 
 .spriteChosen:
     ld a, [wShotActive]
@@ -8877,7 +8878,7 @@ UpdateShot1:
 .usePlasmaSprite:
     ld bc, ShotSprite_Plasma
     ld a, [wShots + 4]
-    ld [wUnk_d8bb], a
+    ld [wPlasmaShotX], a
 
 .spriteChosen:
     ld a, [wShotActive + 1]
@@ -9542,9 +9543,9 @@ StateInit_Pause:
     ld b, $14
     ld c, $12
     call CopyTilemapRect
-    ld a, [wUnk_df4c]
+    ld a, [wLangTextPause]
     ld l, a
-    ld a, [wUnk_df4d]
+    ld a, [wLangTextPause + 1]
     ld h, a
     call DrawString
     ld a, $01
@@ -9692,7 +9693,7 @@ StateInit_Credits:
     ld a, $03
     ld [hInterruptEnable], a
     ld a, $80
-    ld [wUnk_c958], a
+    ld [wRasterObjPaletteIndex], a
     xor a
     ld [wLevelSweepPending], a
     ld a, $02
@@ -9916,7 +9917,7 @@ StateInit_LevelPassword:
     ld a, $0c
     call ChangeROMBank
     xor a
-    ld [wUnk_defb], a
+    ld [wLevelPasswordUnused], a
     ld a, $01
     ld [wLevelPasswordReady], a
     ldh [rVBK], a
@@ -9989,10 +9990,10 @@ StateInit_LevelPassword:
 .storeLastDigit:
     ld [hl-], a
     dec hl
-    call ParseDecimal
-    ld a, [wUnk_df35]
+    call EncodeLevelPassword
+    ld a, [wLangTable + $34]
     ld l, a
-    ld a, [wUnk_df36]
+    ld a, [wLangTable + $35]
     ld h, a
     ld de, wLevelPasswordChars
     ld a, [wPasswordChars]
@@ -10113,8 +10114,8 @@ StateInit_LanguageSelect:
     call CopyTilemapRect
     xor a
     ld [wLanguage], a
-    ld [wUnk_defd], a
-    ld [wUnk_defe], a
+    ld [wLanguageDownHeld], a
+    ld [wLanguageUpHeld], a
     ldh [rVBK], a
     ld hl, Gfx_LanguageSelect_00d_49b8
     ld de, $9000

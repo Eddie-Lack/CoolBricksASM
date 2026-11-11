@@ -24,6 +24,12 @@ The password is valid when `(a + b) & $FF == $FD` and `b` is a multiple of 4.
 
 `tools/pw.py` encodes and decodes passwords.
 
+### The encoder
+
+`EncodeLevelPassword` (`00:0974`) is the reverse of the check. It reads a 3-digit level number, builds `X` and `Y` from `b = level - 1`, and writes the four letters to `wPasswordChars`. It then calls `CheckPassword` on its own result, so `wStartLevel` is set as a side effect. The level password screen uses it.
+
+The four cheat passwords are what the encoder would produce for levels 201, 205, 209 and 213 (`b` = `$C8`, `$CC`, `$D0`, `$D4`). `CheckPassword` tests for these values before its range check.
+
 ## Cheat flags
 
 | Password | Flag | Used at | Effect |
@@ -182,7 +188,7 @@ The table holds:
 - tile map addresses and a few single bytes that are not understood yet
 - the number of the bank that holds the language's graphics: `$0B` English, `$12` Spanish, `$11` French, `$13` German, `$10` Italian
 
-A string for `DrawString` is a 2-byte tile map address, then characters, and ends with `$FF`. A `$00` byte is followed by an attribute byte. A power-up message is 21 bytes: an attribute byte and 20 characters.
+A string for `DrawString` is a 2-byte tile map address, then characters, and ends with `$FF`. A `$00` byte is followed by an attribute byte. A power-up message is 21 bytes: a horizontal scroll value and 20 characters. The scroll value is 0 or 4 and shifts the top row by half a tile, which centres texts of odd or even length. `ShowMessage` stores it in `hLevelScrollX`.
 
 ## Gameplay update
 
@@ -196,7 +202,7 @@ A string for `DrawString` is a 2-byte tile map address, then characters, and end
 6. `Gameplay_UpdateBalls`: copies each 7-byte ball from `wBalls` to `wBallWork`, calls `UpdateBall` and stores it back. A ball whose Y reaches `$A0` is removed.
    - When the last ball is lost, the bat explodes, `wWeaponFlag` is cleared and a life is taken.
    - With no lives left the state changes to game over. Otherwise `hLifeLostTimer` counts to `$28` and `RestartAfterLifeLost` runs.
-7. `Gameplay_AfterBalls`: `UpdateFallingPowerups`, `UpdateEnemies` (UFO or blob), `UpdateShots`, three bank 1 routines that are not understood yet, and `ProcessBrickHitQueue`.
+7. `Gameplay_AfterBalls`: `UpdateFallingPowerups`, `UpdateEnemies` (UFO or blob), `UpdateShots`, `UpdatePickupEffects`, `UpdateBrickBreakEffects`, `UpdateUnbreakableHitEffects`, `DrawBatSprites`, `UpdateBatTiles` and `ProcessBrickHitQueue`.
 8. `Gameplay_CheckPause`: Start changes the state to pause.
 
 ## Ball movement and collision
@@ -247,7 +253,7 @@ The password screen after every fourth level adds a bonus: 2000 points the first
 
 Three small effect lists are updated every frame in bank 1:
 
-- `wBrickBreakEffects` (14 slots), started by `SpawnBrickBreakEffect` when a brick is destroyed
+- `wBrickBreakEffects` (14 slots), started by `SpawnBrickBreakEffect` when a plasma shot destroys a brick. The effect appears at the X of the shot (`wPlasmaShotX`). Bricks destroyed in any other way start no effect
 - `wPickupEffects` (4 slots), started by `SpawnPickupEffect` where a power-up is collected
 - `wUnbreakableHitEffects` (10 slots), started by `SpawnUnbreakableHitEffect` when the ball hits an unbreakable brick
 
@@ -503,7 +509,8 @@ No song or sound effect reaches 3 patterns, 15 pulse and wave instruments, 3 noi
 | `$D8AC` | Lives |
 | `$D77C` | Balls in play |
 | `$DAD7`–`$DADA` | Letters on the password screen (ASCII) |
-| `$DC35` | Level type: 1 = UFO, 2 = Blob |
+| `$DC35` | Level type (`wLevelType`): bit 0 = UFO, bit 1 = blob |
+| `$DC36` | `wBlobPalette`: the high nibble of the level type byte, added to the attributes of the blob's sprites |
 | `$DB71` | Falling power-ups, 8 × 12 bytes: active, y, x, type, 4 × (tile, attribute) |
 | `$C000`–`$C068` | Sound driver variables (`wSoundState`) |
 
@@ -513,6 +520,9 @@ No song or sound effect reaches 3 patterns, 15 pulse and wave instruments, 3 noi
 - The ending text says "Congratulations, you have mastered Cool Bricks. Now try with just one life" (bank `$0E`, around `0E:6465`).
 - The default high-score names are CLIVE, ANDY, MARCUS, RACHEL and VICKY (`02:4045`).
 - The ending sets `wEndingSeen`. While it is set, no level password screen appears. `StartGame` clears it.
+- The main menu has five hidden sprites that spell B, O, I, N, G. `UpdateMenuSparkles` draws them from `BoingLetterSprites` and moves them with `BoingLetterBobSteps`. They start below the visible screen (`BoingLetterStartPositions`) and never come into view.
+- The end of several banks is stale filler, not code or data. Bank 1 from `$7CAA` is a copy of the last 854 bytes of bank 0. Banks 2 to `$0D` end with a copy of the last 164 bytes of bank 0. Banks `$0F` to `$20` end with a copy of the last 360 bytes of bank `$0E`.
+- Some variables are written and never read: `wMessageUnused`, `wLevelPasswordUnused`, and the two bytes at `wBlob + 13`. `wBonusCountdownPaused` is read but never written.
 - Level 33 has two unbreakable bricks with the power-up id `$29`. They can never drop anything.
 
 ## Check against the community savestates
