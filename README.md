@@ -47,7 +47,7 @@ The sources build to the matching ROM with RGBDS 0.8.0 (`make`), with no warning
 ## What is left
 
 - **Names inside routines.** Every subroutine in banks 0 and 1 has a name, but about 60 jump targets (`Jump_000_xxxx`) and about 700 `jr_` labels inside routines are still automatic. About 25 subroutines are named only after the screen that uses them and their address, for example `LevelPassword_Sub5c09`.
-- **RAM.** `include/ram.inc` has about 175 real names. Another 279 variables have placeholder names (`wUnk_xxxx`, `hUnk_xxxx`). Code in banks 0 and 1 no longer contains raw work RAM addresses.
+- **RAM.** `include/ram.inc` has about 215 real names. Another 242 variables have placeholder names (`wUnk_xxxx`, `hUnk_xxxx`). Code in banks 0 and 1 no longer contains raw work RAM addresses.
 - **Relocation.** `tools/relocation_test.py` shifts a bank by 3 bytes, rebuilds, and compares a scripted play-through with the original. Banks 0, 1, 2, 3, 5, 7, 8, 9, `$0A`, `$0C`, `$0D`, `$0E` and `$0F` pass. What is not covered:
   - The session plays in English, so the other four language tables and banks `$10`–`$13` are not exercised. The language graphics banks (`$0B`, `$10`–`$13`) share one layout and must stay identical in structure.
   - Bank `$0B` cannot be shifted by a few bytes: the "HIGH SCORE" animation is sent with HDMA and must stay 16-byte aligned. An `ASSERT` checks this.
