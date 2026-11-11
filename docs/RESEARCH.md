@@ -184,6 +184,25 @@ The table holds:
 
 A string for `DrawString` is a 2-byte tile map address, then characters, and ends with `$FF`. A `$00` byte is followed by an attribute byte. A power-up message is 21 bytes: an attribute byte and 20 characters.
 
+## Gameplay update
+
+`Gameplay_Update` (`00:0F30`) runs once per frame while a level is played. Its parts are labelled in this order:
+
+1. The level skip cheat (B button with `wCheatLevelSkip`).
+2. `Gameplay_UpdateStun`: Poison shakes the bat by 3 pixels left and right until `wBatEffectTimer` runs out.
+3. `Gameplay_MoveBat`: reads left and right from `hJoypad`. Reverse swaps the two bits first. The step size comes from `BatSpeedTable`, so the bat speeds up while a direction is held. The bat's X stays between `$17` and `$AA` minus its width.
+4. `Gameplay_AntigravitySteering`: while Pepper is active, left and right set the direction of every ball (`$1C` and `$04`; no button gives 0). When `wBallEffectTimer` ends, the balls get fixed directions again.
+5. `Gameplay_LaunchBall`: A launches a ball that sticks to the bat. The launch direction depends on which half of the screen the bat is in. Multi ball also goes through here.
+6. `Gameplay_UpdateBalls`: copies each 7-byte ball from `wBalls` to `wBallWork`, calls `UpdateBall` and stores it back. A ball whose Y reaches `$A0` is removed.
+   - When the last ball is lost, the bat explodes, `wWeaponFlag` is cleared and a life is taken.
+   - With no lives left the state changes to game over. Otherwise `hLifeLostTimer` counts to `$28` and `RestartAfterLifeLost` runs.
+7. `Gameplay_AfterBalls`: `UpdateFallingPowerups`, `UpdateEnemies` (UFO or blob), `UpdateShots`, three bank 1 routines that are not understood yet, and `ProcessBrickHitQueue`.
+8. `Gameplay_CheckPause`: Start changes the state to pause.
+
+A ball has a position with a fraction byte for each axis, a direction from 0 to `$1F`, a speed byte and a flags byte. Bounces change the direction through four 32-byte tables (`BallReflectX1Table` and so on). A hit on the bat sets direction and speed from the hit position (`BatBounceLookup`).
+
+`hJoypad` bits: 0 = right, 1 = left, 4 = A, 5 = B, 7 = Start.
+
 ## Useful RAM
 
 | Address | Meaning |

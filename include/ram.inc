@@ -33,7 +33,7 @@ DEF wWeaponFlag            EQU $dc3d ; 1 after Rocket, Plasma, Laser or Grenade.
 DEF wShotReloadDelay       EQU $dc45 ; Frames between rocket or laser shots
 DEF wPlasmaState           EQU $dc47 ; 1 = plasma bat, 2 = plasma shot in flight
 DEF wGrenadeCount          EQU $dc48 ; Grenades left
-DEF hJoypad                EQU $ff8a ; Buttons held. Bit 4 = A, bit 5 = B
+DEF hJoypad                EQU $ff8a ; Buttons held. Bit 0 = right, 1 = left, 4 = A, 5 = B, 7 = Start
 DEF hFrameCounter          EQU $ff8c ; Goes up by 1 every frame
 DEF hVBlankHandler         EQU $ff96 ; Address of the current VBlank handler
 DEF hStatHandler           EQU $ff98 ; Address of the current LCD STAT handler
@@ -42,6 +42,39 @@ DEF wHighScoreTable        EQU $cb59 ; High score table as 13 strings for DrawSt
 DEF wMusicOff              EQU $dabb ; Not 0 when music is turned off in the menu
 DEF wSfxOff                EQU $dabc ; Not 0 when sound effects are turned off
 DEF wLevelsSincePassword   EQU $dcfe ; Counts levels; the password screen appears when it reaches 4
+
+; Gameplay: bat and balls
+DEF wBatMovingRight        EQU $d75f ; $ff while the bat moves right
+DEF wBatMovingLeft         EQU $d760 ; 1 while the bat moves left
+DEF wBatSpeedPtr           EQU $d761 ; Position in BatSpeedTable
+DEF wStunActive            EQU $d765 ; Not 0 while the bat is stunned (Poison)
+DEF wStunWobble            EQU $d766 ; Stun shake offset, +3 or -3
+DEF wStunWobbleNow         EQU $d767 ; Shake offset applied this frame
+DEF wBatEffectTimer        EQU $d768 ; Time left for Stun or Reverse
+DEF wBatEffectTick         EQU $d769 ; Frame counter for wBatEffectTimer
+DEF wReverseActive         EQU $d76a ; Not 0 while left and right are swapped (Reverse)
+DEF wBatExplosionTimer     EQU $d76b ; Counts down while the bat explodes after a lost life
+DEF wBallWorkYSub          EQU $d775 ; Working copy of the ball being updated (7 bytes): Y fraction
+DEF wBallWorkY             EQU $d776 ; Y
+DEF wBallWorkXSub          EQU $d777 ; X fraction
+DEF wBallWorkX             EQU $d778 ; X
+DEF wBallWorkDirection     EQU $d779 ; Direction, 0-$1f
+DEF wBallWorkSpeed         EQU $d77a ; Speed. Bit 7 is set while the ball sits on the bat
+DEF wBallWorkFlags         EQU $d77b ; Flags. $ff marks a removed ball
+DEF wBalls                 EQU $d77d ; The balls, 7 bytes each, in the same layout as wBallWork
+DEF wBatDeltaX             EQU $d89f ; Bat movement this frame
+DEF wLaunchDirection       EQU $d8a0 ; Direction for a ball launched this frame, or 0
+DEF wMultiBallPending      EQU $d8a1 ; Set by Multi ball until the ball splits
+DEF wAntigravityActive     EQU $d8a2 ; Not 0 while Antigravity (Pepper) is active
+DEF wSlowBallPending       EQU $d8a3 ; Set by Slow ball
+DEF wSleepyBallActive      EQU $d8a5 ; Not 0 while the ball sleeps (Clock)
+DEF wBallEffectTimer       EQU $d8a6 ; Time left for Sleepy ball, Antigravity or Ninja
+DEF wBallOnBat             EQU $d8a8 ; Not 0 while a ball is held on the bat
+DEF wAntigravityCancel     EQU $d8a9 ; Set when another power-up ends Antigravity early
+DEF wRemoveBall            EQU $d8aa ; Set to remove the ball being updated
+DEF hLastDirection         EQU $ff8b ; Left/right bits of the last frame
+DEF hStateTimer            EQU $ffa0 ; Counts down before a game state change; gameplay input is ignored while it is not 0
+DEF hLifeLostTimer         EQU $ffa2 ; Counts up to $28 after a lost life, then the bat and ball restart
 
 ; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
 DEF wLanguage              EQU $defc
