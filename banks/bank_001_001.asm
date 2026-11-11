@@ -839,7 +839,7 @@ jr_001_51f2:
     ld [$d8a5], a
     ld [$d8a2], a
     ld [wNinjaActive], a
-    ld hl, $df11
+    ld hl, wLangTextSlowBall
     call Call_000_0001
     jp PowerupCollected
 
@@ -848,7 +848,7 @@ Powerup_Rocket:
     ld [wShotReloadDelay], a
     xor a
     ld [$dc4c], a
-    ld hl, $df17
+    ld hl, wLangTextRocketBat
     call Call_000_0001
 
 Jump_001_5219:
@@ -921,7 +921,7 @@ Powerup_Plasma:
     ld [$dc46], a
     ld [$dc4c], a
     ld [wGrenadeCount], a
-    ld hl, $df19
+    ld hl, wLangTextPlasmaBat
     call Call_000_0001
     ld a, $01
     ld [wPlasmaState], a
@@ -937,7 +937,7 @@ Powerup_Poison:
     ld [wBallSticks], a
     ld [wWeaponFlag], a
     ld [$d76a], a
-    ld hl, $df1d
+    ld hl, wLangTextStunBat
     call Call_000_0001
     ld a, [wBatWidth]
     cp $28
@@ -975,7 +975,7 @@ jr_001_52e8:
     ld [$d765], a
     ld [$d766], a
     ld [$d76a], a
-    ld hl, $df1b
+    ld hl, wLangTextBigBat
     call Call_000_0001
     jp PowerupCollected
 
@@ -994,7 +994,7 @@ jr_001_5312:
     ld [$d8a2], a
     ld [$d8a3], a
     ld [wNinjaActive], a
-    ld hl, $df15
+    ld hl, wLangTextSleepyBall
     call Call_000_0001
     jp PowerupCollected
 
@@ -1006,7 +1006,7 @@ Powerup_Pepper:
     ld [$d8a5], a
     ld [$d8a3], a
     ld [wNinjaActive], a
-    ld hl, $df13
+    ld hl, wLangTextAntigravityBall
     call Call_000_0001
     jp PowerupCollected
 
@@ -1018,7 +1018,7 @@ Powerup_Magnet:
     ld [$d766], a
     ld [wWeaponFlag], a
     ld [$d76a], a
-    ld hl, $df1f
+    ld hl, wLangTextMagneticBat
     call Call_000_0001
     ld a, [wBatWidth]
     cp $28
@@ -1046,12 +1046,12 @@ jr_001_5381:
     ld [$d8a2], a
     ld [$d8a3], a
     ld [wNinjaActive], a
-    ld hl, $df0f
+    ld hl, wLangTextMultiBall
     call Call_000_0001
     jp PowerupCollected
 
 Powerup_ExtraLife:
-    ld hl, $df21
+    ld hl, wLangTextExtraLife
     ld a, [wLives]
     inc a
     cp $0a
@@ -1070,7 +1070,7 @@ Powerup_Laser:
     ld [wShotReloadDelay], a
     ld a, $01
     ld [$dc4c], a
-    ld hl, $df23
+    ld hl, wLangTextLazerBat
     call Call_000_0001
     jp Jump_001_5219
 
@@ -1083,7 +1083,7 @@ Powerup_Reverse:
     ld [$d766], a
     ld [wWeaponFlag], a
     ld [wBallSticks], a
-    ld hl, $df25
+    ld hl, wLangTextReverseBat
     call Call_000_0001
     ld a, [wBatWidth]
     cp $28
@@ -1114,7 +1114,7 @@ jr_001_5402:
     ld [$d8a2], a
     ld [$d8a3], a
     ld [$d8a5], a
-    ld hl, $df2b
+    ld hl, wLangTextNinjaUp
     call Call_000_0001
     jr PowerupCollected
 
@@ -1123,7 +1123,7 @@ Powerup_Ghost:
     ld [$dc20], a
     ld a, $ff
     ld [$dc21], a
-    ld hl, $df27
+    ld hl, wLangTextGhostUp
     call Call_000_0001
     jr PowerupCollected
 
@@ -1131,7 +1131,7 @@ Powerup_Grenade:
     xor a
     ld [$dc4c], a
     ld [$dc46], a
-    ld hl, $df29
+    ld hl, wLangTextGrenadeBat
     call Call_000_0001
     ld b, $04
     ld a, [wGrenadeCount]
@@ -3527,7 +3527,7 @@ jr_001_6a56:
 
     ld a, $01
     ldh [rVBK], a
-    ld a, [$defc]
+    ld a, [wLanguage]
     or a
     jr nz, jr_001_6a71
 
@@ -3594,12 +3594,12 @@ jr_001_6abe:
 
     ld a, b
     ld [$defd], a
-    ld a, [$defc]
+    ld a, [wLanguage]
     cp $04
     jr z, jr_001_6aea
 
     inc a
-    ld [$defc], a
+    ld [wLanguage], a
     ld a, $19
     call PlaySound
     jr jr_001_6aea
@@ -3621,12 +3621,12 @@ jr_001_6aea:
 
     ld a, b
     ld [$defe], a
-    ld a, [$defc]
+    ld a, [wLanguage]
     or a
     jr z, jr_001_6b11
 
     dec a
-    ld [$defc], a
+    ld [wLanguage], a
     ld a, $19
     call PlaySound
     jr jr_001_6b11
@@ -3648,39 +3648,39 @@ jr_001_6b11:
     cp $05
     ret z
 
-    ld a, [$defc]
-    ld hl, $70ab
+    ld a, [wLanguage]
+    ld hl, LanguageTable_English
     or a
     jp z, Jump_001_6b40
 
-    ld hl, $70fc
+    ld hl, LanguageTable_Spanish
     dec a
     jp z, Jump_001_6b40
 
-    ld hl, $714d
+    ld hl, LanguageTable_French
     dec a
     jp z, Jump_001_6b40
 
-    ld hl, $719e
+    ld hl, LanguageTable_German
     dec a
     jp z, Jump_001_6b40
 
-    ld hl, $705a
+    ld hl, LanguageTable_Italian
 
 Jump_001_6b40:
-    ld de, $df01
+    ld de, wLangTextStartGame
     ld bc, $0051
     call DataTransfer
-    ld a, [$df4a]
+    ld a, [wLangTextHighScorePassword]
     ld l, a
-    ld a, [$df4b]
+    ld a, [wLangTextHighScorePassword + 1]
     ld h, a
     ld de, $cb69
     ld bc, $0018
     call DataTransfer
-    ld a, [$df50]
+    ld a, [wLangTextLatestScore]
     ld l, a
-    ld a, [$df51]
+    ld a, [wLangTextLatestScore + 1]
     ld h, a
     ld de, $cc99
     ld bc, $001b
@@ -3706,35 +3706,45 @@ jr_001_6b76:
 Jump_001_6b8a:
     ret
 
-    db $7f, $98, $00, $84, $20, $20, $20, $20, $50, $41, $53, $53, $57, $4f, $52, $44
-    db $20, $00, $81, $50, $54, $50, $50, $ff
+Text_English_HighScorePassword:
+    dw $987f
+    db $00, $84, "    PASSWORD ", $00, $81, "PTPP", $ff
 
-    db $81, $98, $00, $84, $4d, $4f, $54, $20, $44, $45, $20, $50, $41, $53, $53, $45
-    db $20, $00, $81, $50, $54, $50, $50, $ff
+Text_French_HighScorePassword:
+    dw $9881
+    db $00, $84, "MOT DE PASSE ", $00, $81, "PTPP", $ff
 
-    db $7f, $98, $00, $84, $20, $20, $20, $20, $50, $41, $53, $53, $57, $4f, $52, $54
-    db $20, $00, $81, $50, $54, $50, $50, $ff
+Text_German_HighScorePassword:
+    dw $987f
+    db $00, $84, "    PASSWORT ", $00, $81, "PTPP", $ff
 
-    db $80, $98, $00, $84, $20, $20, $43, $4f, $4e, $54, $52, $41, $53, $45, $f0, $41
-    db $20, $00, $81, $50, $54, $50, $50, $ff
+Text_Spanish_HighScorePassword:
+    dw $9880
+    db $00, $84, "  CONTRASE", $f0, "A ", $00, $81, "PTPP", $ff
 
-    db $7f, $98, $00, $84, $20, $20, $20, $20, $50, $41, $53, $53, $57, $4f, $52, $44
-    db $20, $00, $81, $50, $54, $50, $50, $ff
+Text_Italian_HighScorePassword:
+    dw $987f
+    db $00, $84, "    PASSWORD ", $00, $81, "PTPP", $ff
 
-    db $fc, $99, $00, $84, $20, $20, $20, $20, $20, $20, $20, $4c, $41, $54, $45, $53
-    db $54, $20, $00, $81, $30, $30, $30, $30, $30, $30, $ff
+Text_English_LatestScore:
+    dw $99fc
+    db $00, $84, "       LATEST ", $00, $81, "000000", $ff
 
-    db $fd, $99, $00, $84, $20, $20, $20, $20, $20, $20, $44, $45, $52, $4e, $49, $45
-    db $52, $20, $00, $81, $30, $30, $30, $30, $30, $30, $ff
+Text_French_LatestScore:
+    dw $99fd
+    db $00, $84, "      DERNIER ", $00, $81, "000000", $ff
 
-    db $ff, $99, $00, $84, $20, $20, $ee, $4c, $54, $49, $4d, $41, $20, $50, $55, $4e
-    db $54, $20, $00, $81, $30, $30, $30, $30, $30, $30, $ff
+Text_Spanish_LatestScore:
+    dw $99ff
+    db $00, $84, "  ", $ee, "LTIMA PUNT ", $00, $81, "000000", $ff
 
-    db $fc, $99, $00, $84, $20, $20, $20, $20, $20, $20, $20, $55, $4c, $54, $49, $4d
-    db $4f, $20, $00, $81, $30, $30, $30, $30, $30, $30, $ff
+Text_Italian_LatestScore:
+    dw $99fc
+    db $00, $84, "       ULTIMO ", $00, $81, "000000", $ff
 
-    db $fc, $99, $00, $84, $20, $20, $20, $20, $20, $20, $20, $4c, $45, $54, $5a, $54
-    db $45, $20, $00, $81, $30, $30, $30, $30, $30, $30, $ff
+Text_German_LatestScore:
+    dw $99fc
+    db $00, $84, "       LETZTE ", $00, $81, "000000", $ff
 
 Call_001_6c8a:
     ld a, [$db5a]
@@ -4423,40 +4433,218 @@ jr_001_7041:
     ld [$db70], a
     ret
 
-    db $ee, $41, $46, $42, $57, $42, $24, $42, $35, $42, $11, $42, $23, $66, $a7, $42
-    db $10, $43, $79, $43, $e2, $43, $4b, $44, $b4, $44, $1d, $45, $86, $45, $ef, $45
-    db $58, $46, $c1, $46, $2a, $47, $93, $47, $fc, $47, $65, $48, $02, $58, $c2, $73
-    db $45, $74, $a6, $4d, $2a, $dd, $3f, $dd, $6c, $99, $8d, $99, $1d, $13, $00, $18
-    db $19, $00, $4c, $10, $08, $fd, $41, $ec, $98, $eb, $6b, $b7, $48, $53, $49, $54
-    db $6c
+; Language tables, $51 bytes each. The table of the chosen language is copied to wLangTable.
+; Fields: 7 menu and ending strings, 15 power-up messages, then HUD strings, tile map
+; addresses and the bank that holds the language's graphics. See include/ram.inc.
+LanguageTable_Italian:
+    dw Text_Italian_StartGame
+    dw Text_Italian_SfxOn
+    dw Text_Italian_SfxOff
+    dw Text_Italian_MusicOn
+    dw Text_Italian_MusicOff
+    dw Text_Italian_EnterPassword
+    dw Text_Italian_Ending
+    dw PowerupText_Italian_MultiBall
+    dw PowerupText_Italian_SlowBall
+    dw PowerupText_Italian_AntigravityBall
+    dw PowerupText_Italian_SleepyBall
+    dw PowerupText_Italian_RocketBat
+    dw PowerupText_Italian_PlasmaBat
+    dw PowerupText_Italian_BigBat
+    dw PowerupText_Italian_StunBat
+    dw PowerupText_Italian_MagneticBat
+    dw PowerupText_Italian_ExtraLife
+    dw PowerupText_Italian_LazerBat
+    dw PowerupText_Italian_ReverseBat
+    dw PowerupText_Italian_GhostUp
+    dw PowerupText_Italian_GrenadeBat
+    dw PowerupText_Italian_NinjaUp
+    dw $5802
+    dw Text_Italian_Hud
+    dw Text_Italian_LevelTitle
+    dw Text_Italian_LevelPassword
+    dw $dd2a
+    dw $dd3f
+    dw $996c
+    dw $998d
+    db $1d, $13, $00, $18, $19, $00
+    db $4c
+    db $10  ; bank of this language's graphics
+    db $08
+    dw Text_Italian_StartLevel
+    dw $98ec
+    dw Text_Italian_HighScorePassword
+    dw $48b7
+    dw Text_Italian_GameOver
+    dw Text_Italian_LatestScore
 
-    db $86, $40, $de, $40, $ee, $40, $bc, $40, $cd, $40, $a9, $40, $61, $64, $68, $42
-    db $d1, $42, $3a, $43, $a3, $43, $0c, $44, $75, $44, $de, $44, $47, $45, $b0, $45
-    db $19, $46, $82, $46, $eb, $46, $54, $47, $bd, $47, $26, $48, $c2, $57, $46, $73
-    db $e1, $73, $ae, $4c, $2a, $dd, $3f, $dd, $6d, $99, $8c, $99, $19, $18, $00, $19
-    db $10, $10, $4c, $0b, $08, $95, $40, $eb, $98, $8b, $6b, $8f, $48, $f0, $48, $03
-    db $6c
+LanguageTable_English:
+    dw Text_English_StartGame
+    dw Text_English_SfxOn
+    dw Text_English_SfxOff
+    dw Text_English_MusicOn
+    dw Text_English_MusicOff
+    dw Text_English_EnterPassword
+    dw Text_English_Ending
+    dw PowerupText_English_MultiBall
+    dw PowerupText_English_SlowBall
+    dw PowerupText_English_AntigravityBall
+    dw PowerupText_English_SleepyBall
+    dw PowerupText_English_RocketBat
+    dw PowerupText_English_PlasmaBat
+    dw PowerupText_English_BigBat
+    dw PowerupText_English_StunBat
+    dw PowerupText_English_MagneticBat
+    dw PowerupText_English_ExtraLife
+    dw PowerupText_English_LazerBat
+    dw PowerupText_English_ReverseBat
+    dw PowerupText_English_GhostUp
+    dw PowerupText_English_GrenadeBat
+    dw PowerupText_English_NinjaUp
+    dw $57c2
+    dw Text_English_Hud
+    dw Text_English_LevelTitle
+    dw Text_English_LevelPassword
+    dw $dd2a
+    dw $dd3f
+    dw $996d
+    dw $998c
+    db $19, $18, $00, $19, $10, $10
+    db $4c
+    db $0b  ; bank of this language's graphics
+    db $08
+    dw Text_English_StartLevel
+    dw $98eb
+    dw Text_English_HighScorePassword
+    dw $488f
+    dw Text_English_GameOver
+    dw Text_English_LatestScore
 
-    db $0e, $40, $66, $40, $76, $40, $44, $40, $55, $40, $31, $40, $b9, $66, $bc, $42
-    db $25, $43, $8e, $43, $f7, $43, $60, $44, $c9, $44, $32, $45, $9b, $45, $04, $46
-    db $6d, $46, $d6, $46, $3f, $47, $a8, $47, $11, $48, $7a, $48, $f2, $57, $84, $73
-    db $13, $74, $2a, $4d, $2b, $dd, $43, $dd, $6d, $99, $8b, $99, $1d, $b9, $00, $18
-    db $19, $00, $4e, $12, $0b, $1d, $40, $ed, $98, $d3, $6b, $a3, $48, $22, $49, $39
-    db $6c
+LanguageTable_Spanish:
+    dw Text_Spanish_StartGame
+    dw Text_Spanish_SfxOn
+    dw Text_Spanish_SfxOff
+    dw Text_Spanish_MusicOn
+    dw Text_Spanish_MusicOff
+    dw Text_Spanish_EnterPassword
+    dw Text_Spanish_Ending
+    dw PowerupText_Spanish_MultiBall
+    dw PowerupText_Spanish_SlowBall
+    dw PowerupText_Spanish_AntigravityBall
+    dw PowerupText_Spanish_SleepyBall
+    dw PowerupText_Spanish_RocketBat
+    dw PowerupText_Spanish_PlasmaBat
+    dw PowerupText_Spanish_BigBat
+    dw PowerupText_Spanish_StunBat
+    dw PowerupText_Spanish_MagneticBat
+    dw PowerupText_Spanish_ExtraLife
+    dw PowerupText_Spanish_LazerBat
+    dw PowerupText_Spanish_ReverseBat
+    dw PowerupText_Spanish_GhostUp
+    dw PowerupText_Spanish_GrenadeBat
+    dw PowerupText_Spanish_NinjaUp
+    dw $57f2
+    dw Text_Spanish_Hud
+    dw Text_Spanish_LevelTitle
+    dw Text_Spanish_LevelPassword
+    dw $dd2b
+    dw $dd43
+    dw $996d
+    dw $998b
+    db $1d, $b9, $00, $18, $19, $00
+    db $4e
+    db $12  ; bank of this language's graphics
+    db $0b
+    dw Text_Spanish_StartLevel
+    dw $98ed
+    dw Text_Spanish_HighScorePassword
+    dw $48a3
+    dw Text_Spanish_GameOver
+    dw Text_Spanish_LatestScore
 
-    db $fe, $40, $56, $41, $66, $41, $45, $41, $34, $41, $21, $41, $f7, $64, $7d, $42
-    db $e6, $42, $4f, $43, $b8, $43, $21, $44, $8a, $44, $f3, $44, $5c, $45, $c5, $45
-    db $2e, $46, $97, $46, $00, $47, $69, $47, $d2, $47, $3b, $48, $d2, $57, $65, $73
-    db $fa, $73, $ec, $4c, $2c, $dd, $3f, $dd, $6c, $99, $8c, $99, $19, $1f, $13, $18
-    db $19, $18, $45, $11, $09, $0d, $41, $ec, $98, $a3, $6b, $99, $48, $09, $49, $1e
-    db $6c
+LanguageTable_French:
+    dw Text_French_StartGame
+    dw Text_French_SfxOn
+    dw Text_French_SfxOff
+    dw Text_French_MusicOn
+    dw Text_French_MusicOff
+    dw Text_French_EnterPassword
+    dw Text_French_Ending
+    dw PowerupText_French_MultiBall
+    dw PowerupText_French_SlowBall
+    dw PowerupText_French_AntigravityBall
+    dw PowerupText_French_SleepyBall
+    dw PowerupText_French_RocketBat
+    dw PowerupText_French_PlasmaBat
+    dw PowerupText_French_BigBat
+    dw PowerupText_French_StunBat
+    dw PowerupText_French_MagneticBat
+    dw PowerupText_French_ExtraLife
+    dw PowerupText_French_LazerBat
+    dw PowerupText_French_ReverseBat
+    dw PowerupText_French_GhostUp
+    dw PowerupText_French_GrenadeBat
+    dw PowerupText_French_NinjaUp
+    dw $57d2
+    dw Text_French_Hud
+    dw Text_French_LevelTitle
+    dw Text_French_LevelPassword
+    dw $dd2c
+    dw $dd3f
+    dw $996c
+    dw $998c
+    db $19, $1f, $13, $18, $19, $18
+    db $45
+    db $11  ; bank of this language's graphics
+    db $09
+    dw Text_French_StartLevel
+    dw $98ec
+    dw Text_French_HighScorePassword
+    dw $4899
+    dw Text_French_GameOver
+    dw Text_French_LatestScore
 
-    db $76, $41, $ce, $41, $de, $41, $ac, $41, $bd, $41, $99, $41, $8d, $65, $92, $42
-    db $fb, $42, $64, $43, $cd, $43, $36, $44, $9f, $44, $08, $45, $71, $45, $da, $45
-    db $43, $46, $ac, $46, $15, $47, $7e, $47, $e7, $47, $50, $48, $e2, $57, $a3, $73
-    db $2c, $74, $68, $4d, $2a, $dd, $3f, $dd, $6c, $99, $8a, $99, $0b, $18, $00, $0b
-    db $1f, $1d, $4c, $13, $08, $85, $41, $ed, $98, $bb, $6b, $ad, $48, $3a, $49, $6f
-    db $6c
+LanguageTable_German:
+    dw Text_German_StartGame
+    dw Text_German_SfxOn
+    dw Text_German_SfxOff
+    dw Text_German_MusicOn
+    dw Text_German_MusicOff
+    dw Text_German_EnterPassword
+    dw Text_German_Ending
+    dw PowerupText_German_MultiBall
+    dw PowerupText_German_SlowBall
+    dw PowerupText_German_AntigravityBall
+    dw PowerupText_German_SleepyBall
+    dw PowerupText_German_RocketBat
+    dw PowerupText_German_PlasmaBat
+    dw PowerupText_German_BigBat
+    dw PowerupText_German_StunBat
+    dw PowerupText_German_MagneticBat
+    dw PowerupText_German_ExtraLife
+    dw PowerupText_German_LazerBat
+    dw PowerupText_German_ReverseBat
+    dw PowerupText_German_GhostUp
+    dw PowerupText_German_GrenadeBat
+    dw PowerupText_German_NinjaUp
+    dw $57e2
+    dw Text_German_Hud
+    dw Text_German_LevelTitle
+    dw Text_German_LevelPassword
+    dw $dd2a
+    dw $dd3f
+    dw $996c
+    dw $998a
+    db $0b, $18, $00, $0b, $1f, $1d
+    db $4c
+    db $13  ; bank of this language's graphics
+    db $08
+    dw Text_German_StartLevel
+    dw $98ed
+    dw Text_German_HighScorePassword
+    dw $48ad
+    dw Text_German_GameOver
+    dw Text_German_LatestScore
 
 Call_001_71ef:
     ld hl, $dae3
@@ -4737,38 +4925,48 @@ jr_001_7341:
 
     ret
 
-    db $00, $98, $00, $04, $53, $43, $4f, $52, $45, $20, $00, $01, $30, $30, $30, $30
-    db $30, $30, $20, $00, $04, $4c, $49, $56, $45, $53, $20, $00, $01, $30, $ff
+Text_English_Hud:
+    dw $9800
+    db $00, $04, "SCORE ", $00, $01, "000000 ", $00, $04, "LIVES ", $00, $01, "0", $ff
 
-    db $00, $98, $00, $04, $53, $43, $4f, $52, $45, $20, $00, $01, $30, $30, $30, $30
-    db $30, $30, $20, $00, $04, $20, $56, $49, $45, $53, $20, $00, $01, $30, $ff
+Text_French_Hud:
+    dw $9800
+    db $00, $04, "SCORE ", $00, $01, "000000 ", $00, $04, " VIES ", $00, $01, "0", $ff
 
-    db $00, $98, $00, $04, $ae, $af, $b0, $b1, $b2, $20, $00, $01, $30, $30, $30, $30
-    db $30, $30, $20, $00, $04, $56, $49, $44, $41, $53, $20, $00, $01, $30, $ff
+Text_Spanish_Hud:
+    dw $9800
+    db $00, $04, $ae, $af, $b0, $b1, $b2, " ", $00, $01, "000000 ", $00, $04, "VIDAS ", $00, $01, "0", $ff
 
-    db $00, $98, $00, $04, $ae, $af, $b3, $b4, $b5, $20, $00, $01, $30, $30, $30, $30
-    db $30, $30, $20, $00, $04, $4c, $45, $42, $45, $4e, $20, $00, $01, $30, $ff
+Text_German_Hud:
+    dw $9800
+    db $00, $04, $ae, $af, $b3, $b4, $b5, " ", $00, $01, "000000 ", $00, $04, "LEBEN ", $00, $01, "0", $ff
 
-    db $00, $98, $00, $04, $53, $43, $4f, $52, $45, $20, $00, $01, $30, $30, $30, $30
-    db $30, $30, $20, $00, $04, $20, $56, $49, $54, $45, $20, $00, $01, $30, $ff
+Text_Italian_Hud:
+    dw $9800
+    db $00, $04, "SCORE ", $00, $01, "000000 ", $00, $04, " VITE ", $00, $01, "0", $ff
 
-    db $01, $98, $00, $04, $20, $20, $20, $20, $20, $4c, $45, $56, $45, $4c, $20, $00
-    db $01, $30, $30, $30, $20, $20, $20, $20, $ff
+Text_English_LevelTitle:
+    dw $9801
+    db $00, $04, "     LEVEL ", $00, $01, "000    ", $ff
 
-    db $01, $98, $00, $04, $20, $20, $20, $20, $20, $45, $54, $41, $47, $45, $20, $00
-    db $01, $30, $30, $30, $20, $20, $20, $20, $ff
+Text_French_LevelTitle:
+    dw $9801
+    db $00, $04, "     ETAGE ", $00, $01, "000    ", $ff
 
-    db $01, $98, $00, $04, $20, $20, $20, $20, $20, $4e, $49, $56, $45, $4c, $20, $00
-    db $01, $30, $30, $30, $20, $20, $20, $20, $ff
+Text_Spanish_LevelTitle:
+    dw $9801
+    db $00, $04, "     NIVEL ", $00, $01, "000    ", $ff
 
-    db $01, $98, $00, $04, $20, $20, $20, $20, $20, $4c, $45, $56, $45, $4c, $20, $00
-    db $01, $30, $30, $30, $20, $20, $20, $20, $ff
+Text_German_LevelTitle:
+    dw $9801
+    db $00, $04, "     LEVEL ", $00, $01, "000    ", $ff
 
-    db $01, $98, $00, $04, $20, $20, $20, $20, $4c, $45, $56, $45, $4c, $4c, $4f, $20
-    db $00, $01, $30, $30, $30, $20, $20, $20, $ff
-
-    db $00, $98, $00, $04, $20, $20, $20, $20, $20, $20, $20, $20, $20, $20, $20, $20
-    db $20, $20, $20, $20, $20, $20, $20, $20, $ff, $06, $08, $0a, $0a, $0a, $43, $44
+Text_Italian_LevelTitle:
+    dw $9801
+    db $00, $04, "    LEVELLO ", $00, $01, "000   ", $ff
+    dw $9800
+    db $00, $04, "                    ", $ff
+    db $06, $08, $0a, $0a, $0a, $43, $44
     db $45, $0a, $0a, $0a, $0a, $43, $44, $45, $0a, $0a, $0a, $08, $07, $0b, $0c, $2f
     db $49, $0c, $0c, $0d, $0e, $0c, $0c, $31, $37, $0c, $2e, $2f, $30
 
@@ -4947,7 +5145,7 @@ StateUpdate_PublisherLogo:
     ld hl, $3ad8
     jp Jump_001_7687
 
-StateUpdate_State07:
+StateUpdate_HighScores:
     ld hl, $06da
     jp Jump_001_7687
 
@@ -4955,7 +5153,7 @@ StateUpdate_MainMenu:
     ld hl, $20fa
     jp Jump_001_7687
 
-StateUpdate_State08:
+StateUpdate_Credits:
     ld hl, $7a5e
     jp Jump_001_7687
 
@@ -4963,7 +5161,7 @@ StateUpdate_LevelPassword:
     ld hl, $5c66
     jp Jump_001_7687
 
-StateUpdate_State10:
+StateUpdate_ColorOnly:
     ld hl, $7ca8
     jp Jump_001_7687
 
@@ -5627,10 +5825,10 @@ StateInitHandlers:
     dw StateInit_Pause
     dw StateInit_TitleScreen
     dw StateInit_DeveloperLogos
-    dw StateInit_State07
-    dw StateInit_State08
+    dw StateInit_HighScores
+    dw StateInit_Credits
     dw StateInit_LevelPassword
-    dw StateInit_State10
+    dw StateInit_ColorOnly
     dw StateInit_LanguageSelect
     dw StateInit_PublisherLogo
     dw StateInit_Ending
@@ -5644,10 +5842,10 @@ StateUpdateHandlers:
     dw StateUpdate_Pause
     dw StateUpdate_TitleScreen
     dw StateUpdate_DeveloperLogos
-    dw StateUpdate_State07
-    dw StateUpdate_State08
+    dw StateUpdate_HighScores
+    dw StateUpdate_Credits
     dw StateUpdate_LevelPassword
-    dw StateUpdate_State10
+    dw StateUpdate_ColorOnly
     dw StateUpdate_LanguageSelect
     dw StateUpdate_PublisherLogo
     dw StateUpdate_Ending
@@ -5813,9 +6011,9 @@ jr_001_7ca8:
     ld de, $dd03
     ld bc, $0006
     call DataTransfer
-    ld a, [$df33]
+    ld a, [wLangTextLevelPassword]
     ld l, a
-    ld a, [$df34]
+    ld a, [wLangTextLevelPassword + 1]
     ld h, a
     ld de, $dd0b
     ld bc, $003e
@@ -5829,7 +6027,7 @@ jr_001_7ca8:
     ld [$dd0a], a
     call Call_000_0dde
     ld hl, $dd17
-    ld a, [$defc]
+    ld a, [wLanguage]
     cp $04
     jr nz, jr_001_7d12
 

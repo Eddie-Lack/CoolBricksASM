@@ -40,13 +40,15 @@ python tools/gbasm.py game.asm game.gbc 5a7673f1e61cd707bdc880ff76396a3d
    - Bank 1 has `PowerupHandlers`, `PowerupSprites`, `StateInitHandlers`, `StateUpdateHandlers` and `BrickRedrawHandlers`.
    - Calls from bank 0 into banks 1, 6 and `$0F` use labels where the bank is known.
 5. **Level data is structured.** Brick layouts and power-up maps are written as (count, value) pairs, one labelled block per level.
+6. **Text is readable.** The five language tables in bank 1 (`LanguageTable_English` and so on) point to labelled strings. 106 strings and the 75 power-up messages are written as text.
 
 ## What is left
 
-- Most routines still have automatic names (`Call_000_xxxx`). Ball physics, the UFO and blob enemies, scoring, menus, high scores and the ending are not traced yet.
-- Most data is still unlabelled `db`: text, palettes, tile maps, background pictures, music.
+- Most routines still have automatic names (`Call_000_xxxx`). Ball physics, the UFO and blob enemies, scoring and the menus are not traced yet.
+- Most data is still unlabelled `db`: palettes, tile maps, background pictures, music, and the text that the language tables do not point to (credits, high-score names).
 - Pointers inside code (`ld hl, $4630`) and inside unstructured data are still numbers. The ROM cannot be rearranged safely until they are labels.
-- Banks `$10`–`$13` are not referenced by any bank switch and are not understood. Banks `$14`–`$1F` are 12 copies of one bank, bank `$20` is a copy of bank `$13`, and banks `$21`–`$3F` are empty.
+- Banks `$0B` and `$10`–`$13` hold the graphics of the five languages. The bank number comes from the language table (`wLangGraphicsBank`). Their contents are still unlabelled.
+- Banks `$14`–`$1F` are 12 copies of one bank, bank `$20` is a copy of bank `$13`, and banks `$21`–`$3F` are empty.
 - A few fragments at the end of bank 1 (`$7CAA` onwards) are unreachable leftovers of bank 0 code.
 
 The game's logic is described in [docs/RESEARCH.md](docs/RESEARCH.md).
