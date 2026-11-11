@@ -199,7 +199,26 @@ A string for `DrawString` is a 2-byte tile map address, then characters, and end
 7. `Gameplay_AfterBalls`: `UpdateFallingPowerups`, `UpdateEnemies` (UFO or blob), `UpdateShots`, three bank 1 routines that are not understood yet, and `ProcessBrickHitQueue`.
 8. `Gameplay_CheckPause`: Start changes the state to pause.
 
-A ball has a position with a fraction byte for each axis, a direction from 0 to `$1F`, a speed byte and a flags byte. Bounces change the direction through four 32-byte tables (`BallReflectX1Table` and so on). A hit on the bat sets direction and speed from the hit position (`BatBounceLookup`).
+## Ball movement and collision
+
+A ball has a position with a fraction byte for each axis, a direction from 0 to `$1F`, a speed byte and a flags byte.
+
+- **Movement** (`UpdateBall_Move`): the ball moves by the X and Y velocity of its direction in `BallVelocityTable`. If the low nibble of the speed byte is n > 0, a second step of 1/2^n of that velocity follows in the same frame, unless the first step bounced. A sleeping ball (Clock) does not move.
+- **Collision** (`CollideBall`): the ball is 8 × 8 pixels. The middle of each side is tested first, in the order left, right, bottom, top. Then the four corners are tested. At a corner, the pixel offsets inside the brick decide between a horizontal and a vertical bounce. An exact diagonal hit does both.
+- **Each test point** (`CollideBallPoint`): a ball that moves down is tested against the bat first. Otherwise the point is looked up in `wBrickMap`.
+- **Bounces** change the direction through four 32-byte tables (`BallReflectLeftTable` and so on). A hit on the bat sets direction and speed from the hit position (`BatBounceLookup`).
+- **Multi ball** (`UpdateBall_Split`) adds two balls at the same position, one direction step to each side of the original.
+- **Antigravity** tests only the two top corners after the side tests.
+
+One of the four corner cases has a mistake in the original code. For an exact diagonal hit on the top-left corner, the new direction is calculated but not stored, so the ball keeps its direction.
+
+## Enemies
+
+`UpdateEnemies` runs `UpdateUfo` on UFO levels and `UpdateBlob` on blob levels. `UpdateProjectiles` runs on every level.
+
+- **UFO:** `UfoPassTable` gives a wait time and a side for each of 8 passes. The UFO then crosses the screen at the height `wUfoHeight`, moving half a pixel per frame. At an X position taken from the frame counter it drops a bomb (`UpdateUfoBomb`). A bomb that hits the bat costs a life.
+- **Blob:** the blob is a 15-byte object that follows path data (`UpdateEnemyPath`). When `wBlobThrowing` is set it plays a throw animation and then starts a projectile with `SpawnProjectile`. While `wBlobThrowCount` is not 0, losing the last ball does not cost a life.
+- **Projectiles:** `wProjectiles` has 4 slots of 9 bytes. Grenades use the same slots.
 
 `hJoypad` bits: 0 = right, 1 = left, 4 = A, 5 = B, 7 = Start.
 
