@@ -203,6 +203,14 @@ A ball has a position with a fraction byte for each axis, a direction from 0 to 
 
 `hJoypad` bits: 0 = right, 1 = left, 4 = A, 5 = B, 7 = Start.
 
+## Weapons
+
+`UpdateShots` updates six shot slots (`wShotActive`), then `Shots_HandleFire` reads the A button.
+
+- **Grenade:** holding A raises `wGrenadePower` up to a limit. Releasing A throws the grenade, takes one from `wGrenadeCount` and shows the "GRENADE n" message from `GrenadeTexts_*`. Left or right held at that moment sets the throw direction. Using the last grenade clears `wWeaponFlag`.
+- **Rocket and Laser:** `wRocketLaserBat` is 1 and `wLaserBat` picks the type. `wShotReloadDelay` is the wait between shots.
+- **Plasma:** A fires when no shot is in flight. Firing sets `wPlasmaState` to 2 and clears `wWeaponFlag`.
+
 ## Useful RAM
 
 | Address | Meaning |
