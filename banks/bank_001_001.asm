@@ -886,7 +886,7 @@ jr_001_522d:
 
 Powerup_Smiley:
     ld b, $02
-    ld a, [$dcfe]
+    ld a, [wLevelsSincePassword]
     cp $04
     jr nz, jr_001_526a
 
@@ -1575,7 +1575,7 @@ jr_001_5c63:
     jr jr_001_5c12
 
     xor a
-    ld [$dcfe], a
+    ld [wLevelsSincePassword], a
     call Call_001_5d63
     call Call_001_5f18
     ld a, [$dd4b]
@@ -3773,7 +3773,7 @@ Call_001_6c8a:
     ldh [rVBK], a
     xor a
     ld c, $06
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, [$db5a]
     ld c, a
     ld b, $00
@@ -3798,7 +3798,7 @@ Call_001_6c8a:
     ld [$db5a], a
     ld a, $ad
     ld c, $06
-    call Call_000_01d4
+    call CopyTilemapRect
     ret
 
 Call_001_6cd4:
@@ -5937,7 +5937,7 @@ jr_001_7c4a:
 
 ; Wait for the next frame. A+B+Select+Start resets the game.
 WaitVBlank:
-    call Call_000_0223
+    call ReadJoypad
     ld a, [hGameState]
     or a
     jr z, jr_001_7c67
@@ -6006,7 +6006,7 @@ jr_001_7ca8:
     ld hl, $5614
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
     ld hl, $4ca8
     ld de, $dd03
     ld bc, $0006

@@ -103,7 +103,8 @@ DataTransfer:
     jr nz, DataTransfer     ; Go back if it's not zero.
     ret                     ; return
 
-Call_000_01b9:
+; Clear the tile map at HL in both VRAM banks.
+ClearTileMap:
     push hl
     xor a
     ldh [rVBK], a
@@ -134,7 +135,9 @@ jr_000_01cc:
     ret
 
     ; TODO: Document this function
-Call_000_01d4:
+
+; Copy a rectangle of B x C tiles from HL to the tile map at DE.
+CopyTilemapRect:
     ld [$ff8d], a
 
 jr_000_01d7:
@@ -226,7 +229,7 @@ LoadOAMCode:
         ; jr nz, .DMALoop
         ; ret
 
-Call_000_0223:
+ReadJoypad:
     ld a, $20
     ldh [rP1], a
     ldh a, [rP1]
@@ -513,7 +516,7 @@ VBlankMenus:
     ld hl, $6d74
     ld b, $14
     ld c, $04
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, $01
     call ChangeROMBank
 
@@ -530,7 +533,7 @@ jr_000_03ec:
     ld hl, $6c0c
     ld b, $14
     ld c, $04
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, $01
     call ChangeROMBank
     jp Jump_000_04f7
@@ -628,7 +631,7 @@ jr_000_048f:
     sub $2f
     ld [hl], a
     ld de, $df40
-    ld a, [$dabb]
+    ld a, [wMusicOff]
     or a
     jr nz, jr_000_04b8
 
@@ -648,7 +651,7 @@ jr_000_04b8:
     ld a, [de]
     ld [hl], a
     ld de, $df40
-    ld a, [$dabc]
+    ld a, [wSfxOff]
     or a
     jr nz, jr_000_04d4
 
@@ -847,7 +850,7 @@ jr_000_05a1:
 
 StateInit_HighScores:
     ld e, $06
-    call Call_000_3e51
+    call PlayMusic
     ld a, $04
     ld [$c359], a
     ld hl, $03a4
@@ -866,7 +869,7 @@ StateInit_HighScores:
     ld de, $40b0
     call Call_000_0061
     ld hl, $9800
-    call Call_000_01b9
+    call ClearTileMap
     ld a, $02
     call ChangeROMBank
 
@@ -881,7 +884,7 @@ StateInit_HighScores:
     ld de, $8000
     ld bc, $0400
     call DataTransfer
-    call Call_000_089d
+    call DrawHighScoreTable
     ld a, $0b
     call ChangeROMBank
     ld hl, $7d2c
@@ -895,7 +898,7 @@ StateInit_HighScores:
     ld hl, $7cc0
     ld b, $12
     ld c, $03
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, $01
     ld [$cb53], a
     ldh [rVBK], a
@@ -904,7 +907,7 @@ StateInit_HighScores:
     ld hl, $7cf6
     ld b, $12
     ld c, $03
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, $02
     ld [$c959], a
     call ChangeROMBank
@@ -1255,7 +1258,7 @@ LoadHighScores:
     ld a, $02                               ; Load ROM Bank 2
     ld [ROM_BANK], a
     ld hl, HighScoreScreenDataHeader        ; Data Source
-    ld de, $cb59                            ; Destination
+    ld de, wHighScoreTable                            ; Destination
     ld bc, $0010                            ; Data Length
     call DataTransfer
     ld bc, $0018                            ; Data Length
@@ -1269,8 +1272,8 @@ Call_000_0899:              ; this is NOT a function, it's just data that manage
     call ChangeROMBank
     ret
 
-Call_000_089d:
-    ld hl, $cb59
+DrawHighScoreTable:
+    ld hl, wHighScoreTable
     call DrawString
     call DrawString
     call DrawString
@@ -1729,7 +1732,7 @@ jr_000_0af9:
     ld e, $04
 
 jr_000_0aff:
-    call Call_000_3e51
+    call PlayMusic
     ret
 
 ; Game state 2: load the graphics, brick layout and power-up map of wCurrentLevel.
@@ -1836,7 +1839,7 @@ jr_000_0b81:
     jp nz, Jump_000_0c40
 
     ld hl, $9800
-    call Call_000_01b9
+    call ClearTileMap
     ld a, $08
     call ChangeROMBank
     ld de, $4000
@@ -1873,17 +1876,17 @@ jr_000_0b81:
     call ChangeROMBank
     xor a
     ld [$dd00], a
-    ld a, [$dcfe]
+    ld a, [wLevelsSincePassword]
     inc a
-    ld [$dcfe], a
-    call Call_000_0eb7
-    call Call_000_0ee5
+    ld [wLevelsSincePassword], a
+    call InitBat
+    call InitBall
     call Call_000_271b
     call Call_000_31da
     call ClearFallingPowerups
     call Call_001_627f
     call Call_001_633e
-    call Call_000_1df3
+    call ClearBrickHitQueue
     call Call_001_64c3
     xor a
     ld [$d9bd], a
@@ -1910,7 +1913,7 @@ jr_000_0c41:
     ld de, $9841
     ld b, $12
     ld c, $10
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, $01
     call ChangeROMBank
     ld hl, $9840
@@ -1999,19 +2002,19 @@ jr_000_0c9a:
     ld hl, $748b
     ld b, $01
     ld c, $10
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, $25
     ld de, $9853
     ld hl, $748b
     ld b, $01
     ld c, $10
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, $25
     ld de, $9820
     ld hl, $7477
     ld b, $14
     ld c, $01
-    call Call_000_01d4
+    call CopyTilemapRect
     pop hl
     ld a, $05
     call ChangeROMBank
@@ -2028,14 +2031,14 @@ jr_000_0c9a:
     ld b, $12
     ld c, $10
     push hl
-    call Call_000_01d4
+    call CopyTilemapRect
     pop hl
     ld a, $00
     ld de, $cf6b
 
     ld b, $12
     ld c, $10
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, $01
     call ChangeROMBank
     ld hl, $9800
@@ -2315,7 +2318,8 @@ jr_000_0eb2:
 
     ret
 
-Call_000_0eb7:
+; Centre the bat, reset its width and make the ball stick to it.
+InitBat:
     ld a, $50
     ld [wBatX], a
     ld hl, $5f77
@@ -2336,7 +2340,7 @@ Call_000_0eb7:
     ld [wBatWidth], a
     ret
 
-Call_000_0ee5:
+InitBall:
     ld a, $01
     ld [wBallCount], a
     ld a, $89
@@ -2389,7 +2393,7 @@ Gameplay_Update:
     jr nz, jr_000_0f77
 
     ld b, $02
-    ld a, [$dcfe]
+    ld a, [wLevelsSincePassword]
     cp $04
     jr nz, jr_000_0f5d
 
@@ -3094,8 +3098,8 @@ Call_000_1347:
     ld [hJoypad], a
     call Call_001_6838
     call Call_001_6ea5
-    call Call_000_0eb7
-    call Call_000_0ee5
+    call InitBat
+    call InitBall
     xor a
     ld [$d9be], a
     ld [$d9bd], a
@@ -3890,19 +3894,19 @@ Call_000_1822:
     ld d, c
     ld a, [$d779]
     cp $17
-    jp nc, Jump_000_1884
+    jp nc, HitBrickAtBall
 
     cp $09
-    jp c, Jump_000_1884
+    jp c, HitBrickAtBall
 
     ld a, [wBatY]
     sub $08
     cp b
-    jp nc, Jump_000_1884
+    jp nc, HitBrickAtBall
 
     add $04
     cp b
-    jp c, Jump_000_1884
+    jp c, HitBrickAtBall
 
     ld a, [wBatWidth]
     ld b, a
@@ -3911,10 +3915,10 @@ Call_000_1822:
     ld c, a
     ld a, d
     sub c
-    jr c, jr_000_1884
+    jr c, HitBrickAtBall
 
     cp b
-    jr nc, jr_000_1884
+    jr nc, HitBrickAtBall
 
     push af
     ld a, [$d76b]
@@ -3942,8 +3946,8 @@ jr_000_187d:
     sub $01
     ret
 
-Jump_000_1884:
-jr_000_1884:
+; Look up the brick at the position D = x, E = y and hit it with the ball.
+HitBrickAtBall:
     ld a, e
     ld c, d
     push de
@@ -4448,7 +4452,7 @@ CountBrickDestroyed:
     xor a
     ld [$ffa2], a
     ld b, $02
-    ld a, [$dcfe]
+    ld a, [wLevelsSincePassword]
     cp $04
     jr nz, jr_000_1b3b
 
@@ -4990,7 +4994,7 @@ Call_000_1def:
     ld b, $01
     jr jr_000_1df5
 
-Call_000_1df3:
+ClearBrickHitQueue:
     ld b, $00
 
 jr_000_1df5:
@@ -5297,7 +5301,7 @@ jr_000_1f68:
 
 StateInit_MainMenu:
     ld e, $05
-    call Call_000_3e51
+    call PlayMusic
     ld a, $04
     ld [$c359], a
     ld hl, $03a4
@@ -5317,7 +5321,7 @@ StateInit_MainMenu:
     ld de, $4000
     call Call_000_0061
     ld hl, $9800
-    call Call_000_01b9
+    call ClearTileMap
     ld a, $02
     call ChangeROMBank
     ld a, $01
@@ -5327,7 +5331,7 @@ StateInit_MainMenu:
     ld hl, $6dc4
     ld b, $14
     ld c, $0e
-    call Call_000_01d4
+    call CopyTilemapRect
     xor a
     ldh [rVBK], a
     ld hl, $6edc
@@ -5352,7 +5356,7 @@ StateInit_MainMenu:
     ld hl, $6c5c
     ld b, $14
     ld c, $0e
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, $0e
     call ChangeROMBank
     ld a, [wLangTextStartLevel]
@@ -5382,7 +5386,7 @@ StateInit_MainMenu:
     ld l, a
     ld a, [wLangTextMusicOn + 1]
     ld h, a
-    ld a, [$dabb]
+    ld a, [wMusicOff]
     or a
     jr z, jr_000_205b
 
@@ -5397,7 +5401,7 @@ jr_000_205b:
     ld l, a
     ld a, [wLangTextSfxOn + 1]
     ld h, a
-    ld a, [$dabc]
+    ld a, [wSfxOff]
     or a
     jr z, jr_000_2074
 
@@ -6047,9 +6051,9 @@ jr_000_2416:
     cp $03
     jr nz, jr_000_244e
 
-    ld a, [$dabb]
+    ld a, [wMusicOff]
     xor $01
-    ld [$dabb], a
+    ld [wMusicOff], a
     ld e, $05
     or a
     jr z, jr_000_2449
@@ -6061,9 +6065,9 @@ jr_000_2449:
     jr jr_000_245c
 
 jr_000_244e:
-    ld a, [$dabc]
+    ld a, [wSfxOff]
     xor $01
-    ld [$dabc], a
+    ld [wSfxOff], a
     jr jr_000_245c
 
 jr_000_2458:
@@ -6086,9 +6090,9 @@ jr_000_245c:
     cp $03
     jr nz, jr_000_248a
 
-    ld a, [$dabb]
+    ld a, [wMusicOff]
     xor $01
-    ld [$dabb], a
+    ld [wMusicOff], a
     ld e, $05
     or a
     jr z, jr_000_2485
@@ -6100,9 +6104,9 @@ jr_000_2485:
     jr jr_000_2498
 
 jr_000_248a:
-    ld a, [$dabc]
+    ld a, [wSfxOff]
     xor $01
-    ld [$dabc], a
+    ld [wSfxOff], a
     jr jr_000_2498
 
 jr_000_2494:
@@ -6125,9 +6129,9 @@ jr_000_2498:
     cp $03
     jr nz, jr_000_24c6
 
-    ld a, [$dabb]
+    ld a, [wMusicOff]
     xor $01
-    ld [$dabb], a
+    ld [wMusicOff], a
     ld e, $05
     or a
     jr z, jr_000_24c1
@@ -6139,9 +6143,9 @@ jr_000_24c1:
     jr jr_000_24d4
 
 jr_000_24c6:
-    ld a, [$dabc]
+    ld a, [wSfxOff]
     xor $01
-    ld [$dabc], a
+    ld [wSfxOff], a
     jr jr_000_24d4
 
 jr_000_24d0:
@@ -6196,7 +6200,7 @@ jr_000_251a:
 Call_000_251b:
     call Call_001_7c2d
     xor a
-    ld [$dcfe], a
+    ld [wLevelsSincePassword], a
     ld [$dcff], a
     ld a, $05
     ld [wLives], a
@@ -6226,7 +6230,7 @@ jr_000_2535:
 
 StateInit_TitleScreen:
     ld e, $01
-    call Call_000_3e51
+    call PlayMusic
     ld a, $00
     ld [$c359], a
     ld hl, $02b3
@@ -6267,7 +6271,7 @@ StateInit_TitleScreen:
     ld hl, $5dac
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, [wLanguage]
     or a
     jr z, jr_000_25cf
@@ -6277,7 +6281,7 @@ StateInit_TitleScreen:
     xor a
     ld b, $14
     ld c, $01
-    call Call_000_01d4
+    call CopyTilemapRect
 
 jr_000_25cf:
     xor a
@@ -6320,7 +6324,7 @@ jr_000_2605:
     ld hl, $5c30
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, [wLanguage]
     or a
     jr z, jr_000_2640
@@ -6330,7 +6334,7 @@ jr_000_2605:
     ld de, $9a20
     ld b, $14
     ld c, $01
-    call Call_000_01d4
+    call CopyTilemapRect
 
 jr_000_2640:
     ld a, $01
@@ -6373,7 +6377,7 @@ jr_000_2683:
     ret
 
 StateInit_GameOver:
-    ld a, [$dabc]
+    ld a, [wSfxOff]
     or a
     jr nz, jr_000_2692
 
@@ -6412,7 +6416,7 @@ jr_000_2692:
     ld hl, $63a4
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
     xor a
     ldh [rVBK], a
     ld hl, $54ac
@@ -6428,7 +6432,7 @@ jr_000_2692:
     ld hl, $623c
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, [wLangTextGameOver]
     ld l, a
     ld a, [wLangTextGameOver + 1]
@@ -9451,7 +9455,7 @@ StateInit_Pause:
     ld hl, $62f9
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
     xor a
     ldh [rVBK], a
     ld hl, $5401
@@ -9467,7 +9471,7 @@ StateInit_Pause:
     ld hl, $6191
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, [$df4c]
     ld l, a
     ld a, [$df4d]
@@ -9510,7 +9514,7 @@ StateInit_DeveloperLogos:
     ld hl, $7df4
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
     xor a
     ldh [rVBK], a
     ld hl, $739c
@@ -9527,7 +9531,7 @@ StateInit_DeveloperLogos:
     ld hl, $7c8c
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, $01
     call ChangeROMBank
 
@@ -9568,7 +9572,7 @@ StateInit_PublisherLogo:
     ld hl, $5418
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
     xor a
     ldh [rVBK], a
     ld hl, $4a20
@@ -9584,7 +9588,7 @@ StateInit_PublisherLogo:
     ld hl, $52b0
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, $01
     call ChangeROMBank
     ret
@@ -9606,7 +9610,7 @@ jr_000_3ae3:
 
 StateInit_Credits:
     ld e, $09
-    call Call_000_3e51
+    call PlayMusic
     ld hl, $05a9
     ld a, l
     ld [hVBlankHandler], a
@@ -9623,7 +9627,7 @@ StateInit_Credits:
     ld a, $02
     ld [$ff9c], a
     ld hl, $9800
-    call Call_000_01b9
+    call ClearTileMap
     ld a, $05
     call ChangeROMBank
     ld a, $01
@@ -9812,7 +9816,7 @@ Call_000_3c34:
 jr_000_3c3d:
     ld [$db55], a
     xor a
-    ld [$dcfe], a
+    ld [wLevelsSincePassword], a
     ret
 
 StateInit_LevelPassword:
@@ -9848,7 +9852,7 @@ StateInit_LevelPassword:
     ld hl, $577c
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
     xor a
     ld [$dae1], a
     ldh [rVBK], a
@@ -9869,7 +9873,7 @@ StateInit_LevelPassword:
     ld hl, $5614
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
     ld hl, $4ca8
     ld de, $dd03
     ld bc, $0006
@@ -10033,7 +10037,7 @@ StateInit_LanguageSelect:
     ld hl, $5150
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
     xor a
     ld [wLanguage], a
     ld [$defd], a
@@ -10048,13 +10052,14 @@ StateInit_LanguageSelect:
     ld hl, $4fe8
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, $01
     call ChangeROMBank
     ret
 
-Call_000_3e51:
-    ld a, [$dabb]
+; Start song E. Does nothing while music is turned off.
+PlayMusic:
+    ld a, [wMusicOff]
     or a
     ret nz
 
@@ -10072,7 +10077,7 @@ PlaySound:
     push hl
     push bc
     ld e, a
-    ld a, [$dabc]
+    ld a, [wSfxOff]
     or a
     jr nz, jr_000_3e7b
 
@@ -10123,7 +10128,7 @@ StateInit_Copyright:
     ld hl, $5e98
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
     xor a
     ldh [rVBK], a
     ld hl, $5580
@@ -10135,7 +10140,7 @@ StateInit_Copyright:
     ld hl, $5d30
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, $01
     call ChangeROMBank
     ret
@@ -10157,7 +10162,7 @@ jr_000_3ef8:
 
 StateInit_Ending:
     ld e, $08
-    call Call_000_3e51
+    call PlayMusic
     xor a
     ldh [rSCX], a
     ld hl, $02b3
@@ -10167,7 +10172,7 @@ StateInit_Ending:
     ld [hVBlankHandler + 1], a
     xor a
     ld [$ff9c], a
-    ld [$dcfe], a
+    ld [wLevelsSincePassword], a
     ld a, $01
     ld [$ff9a], a
     ld de, $44b0
@@ -10190,7 +10195,7 @@ StateInit_Ending:
     ld hl, $7e87
     ld b, $14
     ld c, $12
-    call Call_000_01d4
+    call CopyTilemapRect
     xor a
     ldh [rVBK], a
     ld hl, $73cf
@@ -10206,12 +10211,12 @@ StateInit_Ending:
     ld hl, $7d1f
     ld b, $14
     ld c, $09
-    call Call_000_01d4
+    call CopyTilemapRect
     xor a
     ld de, $9920
     ld b, $14
     ld c, $09
-    call Call_000_01d4
+    call CopyTilemapRect
     ld a, [wLangTextEnding]
     ld l, a
     ld a, [wLangTextEnding + 1]
