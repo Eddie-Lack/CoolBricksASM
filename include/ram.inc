@@ -183,6 +183,13 @@ DEF wBrickShinePtr         EQU $dab3 ; Position in BrickShineAnimation (bank 9),
 DEF wHdmaMode              EQU $cb53 ; 0 or 1 = no transfer, 3 = from bank $0C, other = from the language graphics bank
 DEF wHdmaSource            EQU $cb54 ; Source address of the next HDMA transfer (low byte first)
 DEF wHighScoreAnimPtr      EQU $cb56 ; Position in HighScoreAnimFrames
+DEF wBatExplosionY         EQU $d76c ; Position of the bat explosion
+DEF wBatExplosionX         EQU $d76d
+DEF wRemovedBallPtrs       EQU $d895 ; Addresses of ball slots freed this frame
+DEF wBallEffectTick        EQU $d8a7 ; Frame counter for wBallEffectTimer
+DEF wBrickRedrawQueue      EQU $d91c ; Brick tile changes waiting to be drawn, 4 bytes each
+DEF wStartLevelText        EQU $dad3 ; The three digits of "START nnn" on the menu
+DEF wMenuSparkles          EQU $dae3 ; The sparkles on the menu screens
 
 ; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
 DEF wLanguage              EQU $defc
@@ -324,17 +331,10 @@ DEF wUnk_d6c0 EQU $d6c0
 DEF wUnk_d745 EQU $d745
 DEF wUnk_d746 EQU $d746
 DEF wUnk_d75e EQU $d75e
-DEF wUnk_d76c EQU $d76c
-DEF wUnk_d76d EQU $d76d
-DEF wUnk_d895 EQU $d895
 DEF wUnk_d8a4 EQU $d8a4
-DEF wUnk_d8a7 EQU $d8a7
 DEF wUnk_d8ab EQU $d8ab
-DEF wUnk_d8ae EQU $d8ae
-DEF wUnk_d8b2 EQU $d8b2
 DEF wUnk_d8ba EQU $d8ba
 DEF wUnk_d8bb EQU $d8bb
-DEF wUnk_d91c EQU $d91c
 DEF wUnk_d9bc EQU $d9bc
 DEF wUnk_d9be EQU $d9be
 DEF wUnk_d9bf EQU $d9bf
@@ -347,13 +347,9 @@ DEF wUnk_dab8 EQU $dab8
 DEF wUnk_dab9 EQU $dab9
 DEF wUnk_dac3 EQU $dac3
 DEF wUnk_dad2 EQU $dad2
-DEF wUnk_dad3 EQU $dad3
-DEF wUnk_dad4 EQU $dad4
-DEF wUnk_dad5 EQU $dad5
 DEF wUnk_dae0 EQU $dae0
 DEF wUnk_dae1 EQU $dae1
 DEF wUnk_dae2 EQU $dae2
-DEF wUnk_dae3 EQU $dae3
 DEF wUnk_daed EQU $daed
 DEF wUnk_daf7 EQU $daf7
 DEF wUnk_db4f EQU $db4f
