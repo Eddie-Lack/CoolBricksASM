@@ -226,8 +226,12 @@ One of the four corner cases has a mistake in the original code. For an exact di
 `UpdateShots` updates six shot slots (`wShotActive`), then `Shots_HandleFire` reads the A button.
 
 - **Grenade:** holding A raises `wGrenadePower` up to a limit. Releasing A throws the grenade, takes one from `wGrenadeCount` and shows the "GRENADE n" message from `GrenadeTexts_*`. Left or right held at that moment sets the throw direction. Using the last grenade clears `wWeaponFlag`.
-- **Rocket and Laser:** `wRocketLaserBat` is 1 and `wLaserBat` picks the type. `wShotReloadDelay` is the wait between shots.
-- **Plasma:** A fires when no shot is in flight. Firing sets `wPlasmaState` to 2 and clears `wWeaponFlag`.
+- **Rocket and Laser:** `wRocketLaserBat` is 1 and `wLaserBat` picks the type. Each shot needs a new press of A (`wFireLatch`) and the cooldown `wShotCooldown` must have run out.
+  - Rocket: cooldown 30 frames, at most 3 on screen (slots 0 to 2), 1 pixel per frame.
+  - Laser: cooldown 8 frames, at most 6 on screen (slots 0 to 5), 2 pixels per frame.
+  - A shot starts at the bat and flies straight up. It ends at the top of the playfield, on an unbreakable brick, or on the first brick it hits.
+- **Shot slots differ.** Slots 0 and 1 hit bricks with `HitBrickWithShot`. Slots 2 to 5 use `HitBrickWithBall`, the ball's routine. So while Ninja is active, a shot from slots 2 to 5 sets a brick to 1 hit point as the ball would, and a shot from slots 0 and 1 removes 1 hit point as usual.
+- **Plasma:** A fires when no shot is in flight. Firing sets `wPlasmaState` to 2 and clears `wWeaponFlag`. The plasma shot uses slot 0 and passes through the bricks it hits.
 
 ## Score and effects
 
