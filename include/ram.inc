@@ -179,6 +179,11 @@ DEF wUfoPassIndex          EQU $dc2e ; Which UFO pass comes next (index into Ufo
 DEF hLogoTimer             EQU $ff91 ; Counts down while a logo screen is shown
 DEF wBrickShinePtr         EQU $dab3 ; Position in BrickShineAnimation (bank 9), the shine that sweeps over the bricks
 
+; HDMA transfers
+DEF wHdmaMode              EQU $cb53 ; 0 or 1 = no transfer, 3 = from bank $0C, other = from the language graphics bank
+DEF wHdmaSource            EQU $cb54 ; Source address of the next HDMA transfer (low byte first)
+DEF wHighScoreAnimPtr      EQU $cb56 ; Position in HighScoreAnimFrames
+
 ; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
 DEF wLanguage              EQU $defc
 
@@ -270,11 +275,6 @@ DEF wUnk_cafa EQU $cafa
 DEF wUnk_cafb EQU $cafb
 DEF wUnk_cafc EQU $cafc
 DEF wUnk_cb1d EQU $cb1d
-DEF wUnk_cb53 EQU $cb53
-DEF wUnk_cb54 EQU $cb54
-DEF wUnk_cb55 EQU $cb55
-DEF wUnk_cb56 EQU $cb56
-DEF wUnk_cb57 EQU $cb57
 DEF wUnk_cb58 EQU $cb58
 DEF wUnk_cb69 EQU $cb69
 DEF wUnk_cb7c EQU $cb7c
