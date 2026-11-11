@@ -947,7 +947,7 @@ Powerup_Smiley:
     cp $04
     jr nz, jr_001_526a
 
-    call Call_000_3c34
+    call NextLevelMusic
     ld a, [$dcff]
     or a
     jr nz, jr_001_526a
@@ -5149,7 +5149,7 @@ jr_001_7615:
 
 jr_001_7618:
     call WaitVBlank
-    call Call_000_3e7f
+    call UpdateSound
     ld a, [hFrameHandler]
     ld l, a
     ld a, [hFrameHandler + 1]
@@ -5164,7 +5164,7 @@ jr_001_7618:
     jr nz, jr_001_7618
 
     ld e, $00
-    call Call_000_3e56
+    call StartSong
     xor a
     call PlaySound
     ld a, $09
@@ -5172,7 +5172,7 @@ jr_001_7618:
 jr_001_7640:
     push af
     call WaitVBlank
-    call Call_000_3e7f
+    call UpdateSound
     pop af
     dec a
     jr nz, jr_001_7640
@@ -6164,7 +6164,7 @@ ColorOnly_Update:
     ld [$dd09], a
     ld a, h
     ld [$dd0a], a
-    call Call_000_0dde
+    call BuildLevelTitle
     ld hl, $dd17
     ld a, [wLanguage]
     cp $04

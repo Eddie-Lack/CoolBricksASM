@@ -132,6 +132,9 @@ DEF wShots                 EQU $dc4e ; 6 shots, 4 bytes each: x, y, y when fired
 ; Gameplay: UFO hits
 DEF wUfoHits               EQU $dc34 ; Times the ball has hit the UFO in this level. The UFO is gone at 5
 
+; Music
+DEF wLevelMusicIndex       EQU $db55 ; 0-2: which of the three level songs plays. Steps when the password screen appears
+
 ; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
 DEF wLanguage              EQU $defc
 
