@@ -268,6 +268,21 @@ Slowball, Clock, Pepper, Ninja and Triple ball are "ball" power-ups. The pick-up
 
 Bat power-ups (Rocket, Plasma, Laser, Grenade, Poison, Milk, Magnet, Reverse) do not touch these flags.
 
+## How long timed power-ups last
+
+Measured in the emulator on level 4, from the pick-up until the flag cleared.
+
+| Power-up | Frames | Seconds |
+|---|---|---|
+| Pepper (Antigravity) | 159 | 2.7 |
+| Poison (Stun) | 230 | 3.9 |
+| Reverse | 230 | 3.9 |
+| Ninja | 314 | 5.3 |
+| Clock (Sleepy ball) | 318 | 5.3 |
+| Ghost | 2038 | 34.1 |
+
+Slowball, Milk, Magnet and the weapon bats have no timer. They last until another power-up replaces them or a life is lost.
+
 ## Useful RAM
 
 | Address | Meaning |
