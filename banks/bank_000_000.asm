@@ -9677,7 +9677,7 @@ StateInit_Credits:
     ld de, $8800
     ld bc, $0500
     call DataTransfer
-    call Call_000_3b50
+    call SelectCreditsText
     ld a, $01
     call ChangeROMBank
     xor a
@@ -9686,25 +9686,26 @@ StateInit_Credits:
     ld [$dcf5], a
     ret
 
-Call_000_3b50:
-    ld hl, $4a84
+; Point the credits scroller at the list for the chosen language.
+SelectCreditsText:
+    ld hl, Credits_English
     ld a, [wLanguage]
     or a
     jr z, jr_000_3b6e
 
-    ld hl, $7385
+    ld hl, Credits_Spanish
     dec a
     jr z, jr_000_3b6e
 
-    ld hl, $5471
+    ld hl, Credits_French
     dec a
     jr z, jr_000_3b6e
 
-    ld hl, $5ebb
+    ld hl, Credits_German
     dec a
     jr z, jr_000_3b6e
 
-    ld hl, $6922
+    ld hl, Credits_Italian
 
 jr_000_3b6e:
     ld a, l
