@@ -4823,7 +4823,7 @@ jr_001_71f7:
     dec b
     jr nz, jr_001_71f7
 
-    ld de, InitMenuSparklesData_001_75ba
+    ld de, MenuSparkleCurveStarts
     ld hl, wUnk_daed
     ld b, $0a
 
@@ -5048,7 +5048,7 @@ jr_001_7305:
     add a
     ld l, a
     ld h, $00
-    ld de, UpdateMenuSparklesData_001_752c
+    ld de, MenuSparkleFrames
     add hl, de
     pop de
     ld a, [hl+]
@@ -5166,14 +5166,49 @@ InitMenuSparklesData_001_74b4:
     db $cb, $00, $1e, $00, $18, $50, $cc, $00, $64, $00, $0a, $3a, $cd, $00, $6e, $00
     db $8e, $35, $ce, $00, $78, $00, $51, $40, $cf, $00, $b4, $00, $40, $57, $d0, $00
     db $be, $00, $94, $6a, $d1, $00, $c8, $00, $18, $73, $d2, $00, $d3, $00, $2c, $8a
-    db $d3, $00, $00, $00, $28, $00, $08, $2a, $00, $00, $2c, $00, $08, $2e, $00, $00
-    db $30, $00, $08, $32, $00, $00, $34, $00, $08, $36, $00, $00, $38, $00, $08, $3a
-    db $00, $00, $3c, $00, $08, $3e, $00, $00, $40, $00, $08, $42, $00, $00, $44, $00
-    db $08, $46, $00, $00, $48, $00, $08, $4a
+    db $d3, $00
 
-UpdateMenuSparklesData_001_752c:
-    db $f6, $74, $fc, $74, $02, $75, $08, $75
-    db $0e, $75, $14, $75, $1a, $75, $20, $75, $26, $75, $fc, $74, $f6, $74
+MenuSparkleFrame_74f6:
+    db $00, $00, $28, $00, $08, $2a
+
+MenuSparkleFrame_74fc:
+    db $00, $00, $2c, $00, $08, $2e
+
+MenuSparkleFrame_7502:
+    db $00, $00
+    db $30, $00, $08, $32
+
+MenuSparkleFrame_7508:
+    db $00, $00, $34, $00, $08, $36
+
+MenuSparkleFrame_750e:
+    db $00, $00, $38, $00, $08, $3a
+
+MenuSparkleFrame_7514:
+    db $00, $00, $3c, $00, $08, $3e
+
+MenuSparkleFrame_751a:
+    db $00, $00, $40, $00, $08, $42
+
+MenuSparkleFrame_7520:
+    db $00, $00, $44, $00
+    db $08, $46
+
+MenuSparkleFrame_7526:
+    db $00, $00, $48, $00, $08, $4a
+
+MenuSparkleFrames:
+    dw MenuSparkleFrame_74f6
+    dw MenuSparkleFrame_74fc
+    dw MenuSparkleFrame_7502
+    dw MenuSparkleFrame_7508
+    dw MenuSparkleFrame_750e
+    dw MenuSparkleFrame_7514
+    dw MenuSparkleFrame_751a
+    dw MenuSparkleFrame_7520
+    dw MenuSparkleFrame_7526
+    dw MenuSparkleFrame_74fc
+    dw MenuSparkleFrame_74f6
 
 UpdateMenuSparklesData_001_7542:
     db $00, $00
@@ -5185,15 +5220,23 @@ UpdateMenuSparklesData_001_7542:
 
 InitMenuSparklesData_001_7592:
     db $90, $a4
-    db $90, $a4, $90, $a4, $90, $a4, $90, $a4, $04, $04, $04, $04, $04, $04, $04, $04
+    db $90, $a4, $90, $a4, $90, $a4, $90, $a4
+
+; Movement steps of the menu sparkles. MenuSparkleCurveStarts points into this list.
+MenuSparkleCurve:
+    db $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
 
 UpdateMenuSparklesData_001_75af:
     db $fe, $fe, $fe, $ff, $ff
     db $01, $01, $02, $02, $02, $00
 
-InitMenuSparklesData_001_75ba:
-    db $a4, $75, $a2, $75, $a0, $75, $9e, $75, $9c, $75
+MenuSparkleCurveStarts:
+    dw MenuSparkleCurve + $8
+    dw MenuSparkleCurve + $6
+    dw MenuSparkleCurve + $4
+    dw MenuSparkleCurve + $2
+    dw MenuSparkleCurve
 
 ; Jump to the init handler of game state hGameState.
 RunStateInit:
