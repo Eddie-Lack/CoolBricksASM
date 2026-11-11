@@ -953,13 +953,13 @@ Powerup_Rocket:
     ld hl, wLangTextRocketBat
     call ShowMessageBankE
 
-Jump_001_5219:
+Powerup_ShotBatCommon:
     ld a, $01
     ld [wRocketLaserBat], a
     xor a
     ld [wGrenadeCount], a
 
-Jump_001_5222:
+Powerup_WeaponCommon:
     ld a, [wPlasmaState]
     cp $01
     jr nz, jr_001_522d
@@ -1020,7 +1020,7 @@ jr_001_526a:
 jr_001_5281:
     ld [wCurrentLevel], a
     ld b, $32
-    jp Jump_001_5450
+    jp PowerupCollected_AddScore
 
 Powerup_Plasma:
     xor a
@@ -1164,7 +1164,7 @@ Powerup_ExtraLife:
     jr nz, jr_001_53ac
 
     ld b, $32
-    jp Jump_001_5450
+    jp PowerupCollected_AddScore
 
 jr_001_53ac:
     ld [wLives], a
@@ -1178,7 +1178,7 @@ Powerup_Laser:
     ld [wLaserBat], a
     ld hl, wLangTextLazerBat
     call ShowMessageBankE
-    jp Jump_001_5219
+    jp Powerup_ShotBatCommon
 
 Powerup_Reverse:
     ld a, $50
@@ -1243,13 +1243,13 @@ Powerup_Grenade:
     ld a, [wGrenadeCount]
     add b
     ld [wGrenadeCount], a
-    jp Jump_001_5222
+    jp Powerup_WeaponCommon
 
 ; Common end of the pick-up handlers.
 PowerupCollected:
     ld b, $0a
 
-Jump_001_5450:
+PowerupCollected_AddScore:
     call AddScore
     pop de
     pop bc
@@ -1697,8 +1697,8 @@ jr_001_5c63:
 LevelPassword_Update:
     xor a
     ld [wLevelsSincePassword], a
-    call LevelPassword_Sub5d63
-    call LevelPassword_Sub5f18
+    call UpdateFireworks
+    call UpdateTwinkles
     ld a, [wBonusDelay]
     or a
     jr z, jr_001_5c7c
@@ -1830,7 +1830,9 @@ jr_001_5d05:
     ld [wUnk_dd02], a
     ret
 
-LevelPassword_Sub5d2e:
+; Start the next firework. HL = a firework record; its first two bytes point into the launch script.
+; A script entry of $ff is followed by the address to continue from.
+Firework_Launch:
     push hl
     ld a, [hl+]
     ld e, a
@@ -1886,29 +1888,30 @@ jr_001_5d41:
     ld [hl+], a
     ret
 
-LevelPassword_Sub5d63:
-    ld a, [wUnk_de80]
+; Update the three fireworks on the level password screen and write their sprites.
+UpdateFireworks:
+    ld a, [wFireworkTick]
     inc a
     and $03
-    ld [wUnk_de80], a
+    ld [wFireworkTick], a
     ld hl, wOamBuffer
-    ld a, [wUnk_de7d]
+    ld a, [wFireworkSpriteCount]
     inc a
     call ClearOamEntries
     xor a
-    ld [wUnk_de7d], a
+    ld [wFireworkSpriteCount], a
     ld hl, wOamBuffer
     ld a, l
-    ld [wUnk_de7e], a
+    ld [wFireworkOamPtr], a
     ld a, h
-    ld [wUnk_de7f], a
+    ld [wFireworkOamPtr + 1], a
     ld a, $03
-    ld hl, wUnk_dd60
+    ld hl, wFireworks
 
 jr_001_5d8a:
     push af
     push hl
-    ld de, wUnk_dd51
+    ld de, wFireworkWork
     ld c, $0f
 
 jr_001_5d91:
@@ -1918,9 +1921,9 @@ jr_001_5d91:
     dec c
     jr nz, jr_001_5d91
 
-    call LevelPassword_Sub5dab
+    call UpdateFirework
     pop hl
-    ld de, wUnk_dd51
+    ld de, wFireworkWork
     ld c, $0f
 
 jr_001_5da0:
@@ -1936,14 +1939,15 @@ jr_001_5da0:
 
     ret
 
-LevelPassword_Sub5dab:
-    ld a, [wUnk_dd5d]
+; Update the firework in wFireworkWork. After the burst, move its 10 sparks along their curves.
+UpdateFirework:
+    ld a, [wFireworkWork + 12]
     or a
-    jp z, Jump_001_5e35
+    jp z, Firework_Fly
 
-    ld a, [wUnk_dd5e]
+    ld a, [wFireworkWork + 13]
     ld e, a
-    ld a, [wUnk_dd5f]
+    ld a, [wFireworkWork + 14]
     ld d, a
     ld a, $0a
 
@@ -1997,9 +2001,9 @@ jr_001_5dbc:
     ld [de], a
     inc de
     push af
-    ld a, [wUnk_de7e]
+    ld a, [wFireworkOamPtr]
     ld l, a
-    ld a, [wUnk_de7f]
+    ld a, [wFireworkOamPtr + 1]
     ld h, a
     pop af
     ld [hl+], a
@@ -2009,7 +2013,7 @@ jr_001_5dbc:
     ld [hl+], a
     ld a, [de]
     ld b, a
-    ld a, [wUnk_de80]
+    ld a, [wFireworkTick]
     or a
     jr nz, jr_001_5e0a
 
@@ -2023,13 +2027,13 @@ jr_001_5e0a:
     ld [de], a
     inc de
     ld [hl+], a
-    ld a, [wUnk_de7d]
+    ld a, [wFireworkSpriteCount]
     inc a
-    ld [wUnk_de7d], a
+    ld [wFireworkSpriteCount], a
     ld a, l
-    ld [wUnk_de7e], a
+    ld [wFireworkOamPtr], a
     ld a, h
-    ld [wUnk_de7f], a
+    ld [wFireworkOamPtr + 1], a
     jr jr_001_5e26
 
 jr_001_5e1f:
@@ -2050,18 +2054,19 @@ jr_001_5e2b:
     pop de
     pop hl
     pop af
-    ld hl, wUnk_dd51
-    call LevelPassword_Sub5d2e
+    ld hl, wFireworkWork
+    call Firework_Launch
     ret
 
-Jump_001_5e35:
-    ld a, [wUnk_dd57]
+; Move the rocket until its fuse runs out, then burst it into 10 sparks.
+Firework_Fly:
+    ld a, [wFireworkWork + 6]
     ld e, a
-    ld a, [wUnk_dd58]
+    ld a, [wFireworkWork + 7]
     ld d, a
-    ld a, [wUnk_dd5a]
+    ld a, [wFireworkWork + 9]
     ld l, a
-    ld a, [wUnk_dd5b]
+    ld a, [wFireworkWork + 10]
     ld h, a
     add hl, de
     ld a, h
@@ -2069,13 +2074,13 @@ Jump_001_5e35:
     jr nz, jr_001_5e99
 
     ld hl, LevelPasswordCurves
-    ld a, [wUnk_dd5e]
+    ld a, [wFireworkWork + 13]
     ld e, a
-    ld a, [wUnk_dd5f]
+    ld a, [wFireworkWork + 14]
     ld d, a
     ld c, $0a
     ld a, c
-    ld [wUnk_dd5d], a
+    ld [wFireworkWork + 12], a
     ld a, [hGameState]
     cp $02
     jr z, jr_001_5e67
@@ -2087,7 +2092,7 @@ jr_001_5e67:
     xor a
     ld [de], a
     inc de
-    ld a, [wUnk_dd54]
+    ld a, [wFireworkWork + 3]
     ld [de], a
     inc de
     ld a, [hl+]
@@ -2102,7 +2107,7 @@ jr_001_5e67:
     ld a, [hl+]
     ld [de], a
     inc de
-    ld a, [wUnk_dd56]
+    ld a, [wFireworkWork + 5]
     ld [de], a
     inc de
     cp $90
@@ -2127,10 +2132,10 @@ jr_001_5e90:
 
 jr_001_5e99:
     ld a, l
-    ld [wUnk_dd5a], a
+    ld [wFireworkWork + 9], a
     ld a, h
-    ld [wUnk_dd5b], a
-    ld a, [wUnk_dd59]
+    ld [wFireworkWork + 10], a
+    ld a, [wFireworkWork + 8]
     ld l, a
     ld h, $00
     add hl, hl
@@ -2144,11 +2149,11 @@ jr_001_5e99:
     ld a, [hl+]
     ld e, a
     ld d, [hl]
-    ld a, [wUnk_dd53]
+    ld a, [wFireworkWork + 2]
     ld l, a
-    ld a, [wUnk_dd54]
+    ld a, [wFireworkWork + 3]
     ld h, a
-    ld a, [wUnk_dd5b]
+    ld a, [wFireworkWork + 10]
 
 jr_001_5ebf:
     add hl, bc
@@ -2156,14 +2161,14 @@ jr_001_5ebf:
     jr nz, jr_001_5ebf
 
     ld a, l
-    ld [wUnk_dd53], a
+    ld [wFireworkWork + 2], a
     ld a, h
-    ld [wUnk_dd54], a
-    ld a, [wUnk_dd55]
+    ld [wFireworkWork + 3], a
+    ld a, [wFireworkWork + 4]
     ld l, a
-    ld a, [wUnk_dd56]
+    ld a, [wFireworkWork + 5]
     ld h, a
-    ld a, [wUnk_dd5b]
+    ld a, [wFireworkWork + 10]
 
 jr_001_5ed6:
     add hl, de
@@ -2171,46 +2176,47 @@ jr_001_5ed6:
     jr nz, jr_001_5ed6
 
     ld a, l
-    ld [wUnk_dd55], a
+    ld [wFireworkWork + 4], a
     ld a, h
-    ld [wUnk_dd56], a
-    ld a, [wUnk_de7e]
+    ld [wFireworkWork + 5], a
+    ld a, [wFireworkOamPtr]
     ld l, a
-    ld a, [wUnk_de7f]
+    ld a, [wFireworkOamPtr + 1]
     ld h, a
-    ld a, [wUnk_dd56]
+    ld a, [wFireworkWork + 5]
     ld [hl+], a
-    ld a, [wUnk_dd54]
+    ld a, [wFireworkWork + 3]
     ld [hl+], a
     xor a
     ld [hl+], a
-    ld a, [wUnk_dd5c]
+    ld a, [wFireworkWork + 11]
     ld b, a
-    ld a, [wUnk_de80]
+    ld a, [wFireworkTick]
     or a
     jr nz, jr_001_5f06
 
     ld a, b
     inc a
     and $07
-    ld [wUnk_dd5c], a
+    ld [wFireworkWork + 11], a
     ld b, a
 
 jr_001_5f06:
     ld a, b
     ld [hl+], a
-    ld a, [wUnk_de7d]
+    ld a, [wFireworkSpriteCount]
     inc a
-    ld [wUnk_de7d], a
+    ld [wFireworkSpriteCount], a
     ld a, l
-    ld [wUnk_de7e], a
+    ld [wFireworkOamPtr], a
     ld a, h
-    ld [wUnk_de7f], a
+    ld [wFireworkOamPtr + 1], a
     ret
 
-LevelPassword_Sub5f18:
+; Animate the 11 twinkling stars on the level password screen.
+UpdateTwinkles:
     ld a, $0b
-    ld hl, wUnk_de81
+    ld hl, wTwinkles
     ld de, wUnk_deb8
 
 jr_001_5f20:
@@ -2932,16 +2938,19 @@ jr_001_63f5:
 
     ret
 
-FrameLoop_Sub63fa:
-    ld a, [wUnk_dae1]
+; Runs once when a level appears. A sweep crosses the bricks along 22 diagonals.
+; On each diagonal, tiles $27/$29 and $4c/$51 are drawn as $25/$26 and $4f/$50.
+; The row behind the sweep is restored from wLevelTilemapCopy.
+SweepBricks:
+    ld a, [wLevelSweepPending]
     or a
     ret z
 
     ld b, $16
     ld hl, $99d1
-    ld de, UpdatePickupEffectsData_001_7b8a
+    ld de, BrickSweepLengths
 
-Jump_001_6407:
+SweepBricks_Diagonal:
     push de
     call WaitVBlank
     call WaitVBlank
@@ -2953,15 +2962,15 @@ Jump_001_6407:
     inc de
     ld c, a
     push de
-    ld de, wUnk_d9bf
+    ld de, wVBlankTileWrites
     push hl
 
-Jump_001_641e:
+SweepBricks_Cell:
     push bc
     push hl
     ld bc, $6800
     add hl, bc
-    ld bc, wUnk_d32a
+    ld bc, wLevelTilemapCopy
     add hl, bc
     ld a, [hl]
     pop hl
@@ -3023,7 +3032,7 @@ jr_001_6468:
     push hl
     ld bc, $6800
     add hl, bc
-    ld bc, wUnk_d32a
+    ld bc, wLevelTilemapCopy
     add hl, bc
     ld c, l
     ld b, h
@@ -3063,7 +3072,7 @@ jr_001_6468:
     jr z, jr_001_64ad
 
     dec c
-    jp nz, Jump_001_641e
+    jp nz, SweepBricks_Cell
 
 jr_001_64a8:
     ld c, $fe
@@ -3085,7 +3094,7 @@ jr_001_64ad:
 jr_001_64bd:
     pop de
     dec b
-    jp nz, Jump_001_6407
+    jp nz, SweepBricks_Diagonal
 
     ret
 
@@ -3302,24 +3311,24 @@ LevelPasswordData_001_6784:
     db $ff, $fe, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd
     db $fd, $fd, $fe, $ff, $01, $02, $03, $03, $03, $03, $03, $03, $03, $03, $00
 
-LevelPasswordData_001_67ad:
+FireworkScript_0:
     db $50
     db $a0, $f4, $ff, $01, $04, $40, $a0, $eb, $ff, $1f, $05
 
     db $ff
-    dw LevelPasswordData_001_67ad
+    dw FireworkScript_0
 
-LevelPasswordData_001_67bc:
+FireworkScript_1:
     db $6e, $d8, $e9, $ff, $1e, $06, $1e, $d8, $f8, $ff, $02, $04
 
     db $ff
-    dw LevelPasswordData_001_67bc
+    dw FireworkScript_1
 
-LevelPasswordData_001_67cb:
+FireworkScript_2:
     db $6e, $c0, $f4, $ff, $01, $04, $82, $c0, $ed, $ff, $1f, $05
 
     db $ff
-    dw LevelPasswordData_001_67cb
+    dw FireworkScript_2
     db $3e, $80, $e0, $68, $0e, $40
     db $2a, $e0, $69, $0d, $20, $fa, $c9, $3e, $80, $e0, $6a, $0e, $40
     db $2a, $e0, $6b, $0d, $20, $fa, $c9
@@ -3342,7 +3351,7 @@ jr_001_67fc:
     ret
 
 CopyPaletteBuffer:
-    ld de, wUnk_c3b6
+    ld de, wRasterTable
     ld hl, wUnk_d6c0
     ld b, $90
     ld a, $02
@@ -3383,14 +3392,13 @@ jr_001_6813:
     ret
 
     ld c, $10
-    jr jr_001_683a
+    jr FadePalettes_Step
 
 ; Fade the palettes one step. Used by FrameLoop when a screen appears or disappears.
 FadePalettes:
     ld c, $20
 
-Jump_001_683a:
-jr_001_683a:
+FadePalettes_Step:
     add b
     push af
     push bc
@@ -3485,13 +3493,13 @@ jr_001_68c3:
     pop bc
     pop af
     dec c
-    jp nz, Jump_001_683a
+    jp nz, FadePalettes_Step
 
     call WaitVBlank
     ret
 
     ld c, $10
-    jr jr_001_68dd
+    jr FadePalettes2_Step
 
 FadePalettes2:
     ld h, a
@@ -3506,8 +3514,7 @@ FadePalettes2:
 jr_001_68dc:
     ld a, h
 
-Jump_001_68dd:
-jr_001_68dd:
+FadePalettes2_Step:
     add b
     push af
     push bc
@@ -3576,7 +3583,7 @@ jr_001_691f:
     pop bc
     pop af
     dec c
-    jp nz, Jump_001_68dd
+    jp nz, FadePalettes2_Step
 
     call WaitVBlank
     ret
@@ -3705,7 +3712,7 @@ AnimatePalettes:
     ld [hl+], a
     ld a, [wUnk_cabc]
     ld [hl+], a
-    ld hl, wUnk_c3b6
+    ld hl, wRasterTable
     ld b, $09
     ld c, $81
     ld de, wUnk_cb1d
@@ -3868,7 +3875,7 @@ jr_001_6b11:
     ld a, b
     and $f0
     or a
-    jp z, Jump_001_6b8a
+    jp z, LanguageSelect_Done
 
     ld a, [hGameState]
     cp $05
@@ -3877,23 +3884,23 @@ jr_001_6b11:
     ld a, [wLanguage]
     ld hl, LanguageTable_English
     or a
-    jp z, Jump_001_6b40
+    jp z, LanguageSelect_CopyTable
 
     ld hl, LanguageTable_Spanish
     dec a
-    jp z, Jump_001_6b40
+    jp z, LanguageSelect_CopyTable
 
     ld hl, LanguageTable_French
     dec a
-    jp z, Jump_001_6b40
+    jp z, LanguageSelect_CopyTable
 
     ld hl, LanguageTable_German
     dec a
-    jp z, Jump_001_6b40
+    jp z, LanguageSelect_CopyTable
 
     ld hl, LanguageTable_Italian
 
-Jump_001_6b40:
+LanguageSelect_CopyTable:
     ld de, wLangTextStartGame
     ld bc, $0051
     call DataTransfer
@@ -3929,7 +3936,7 @@ jr_001_6b76:
     ld a, $28
     ld [hStateTimer], a
 
-Jump_001_6b8a:
+LanguageSelect_Done:
     ret
 
 Text_English_HighScorePassword:
@@ -4065,7 +4072,7 @@ jr_001_6cfe:
     ld [wUnk_db5b], a
     ld c, a
     ld hl, TitleScreenData_001_5855
-    jp Jump_001_6e0b
+    jp TitleScreen_WriteOam
 
 jr_001_6d15:
     cp $02
@@ -4096,7 +4103,7 @@ jr_001_6d30:
     ld [wUnk_db5c], a
     ld c, a
     ld hl, TitleScreenData_001_589e
-    jp Jump_001_6e0b
+    jp TitleScreen_WriteOam
 
 jr_001_6d47:
     cp $03
@@ -4127,7 +4134,7 @@ jr_001_6d62:
     ld [wUnk_db5d], a
     ld c, a
     ld hl, TitleScreenData_001_592f
-    jp Jump_001_6e0b
+    jp TitleScreen_WriteOam
 
 jr_001_6d79:
     cp $04
@@ -4158,7 +4165,7 @@ jr_001_6d94:
     ld [wUnk_db5e], a
     ld c, a
     ld hl, TitleScreenData_001_59c0
-    jr jr_001_6e0b
+    jr TitleScreen_WriteOam
 
 jr_001_6daa:
     cp $05
@@ -4189,11 +4196,11 @@ jr_001_6dc5:
     ld [wUnk_db5f], a
     ld c, a
     ld hl, TitleScreenData_001_5a51
-    jr jr_001_6e0b
+    jr TitleScreen_WriteOam
 
 jr_001_6ddb:
     cp $06
-    jr nz, jr_001_6e0b
+    jr nz, TitleScreen_WriteOam
 
     ld a, [wUnk_db6b]
     ld l, a
@@ -4220,10 +4227,9 @@ jr_001_6df5:
     ld [wUnk_db60], a
     ld c, a
     ld hl, TitleScreenData_001_5ae2
-    jr jr_001_6e0b
+    jr TitleScreen_WriteOam
 
-Jump_001_6e0b:
-jr_001_6e0b:
+TitleScreen_WriteOam:
     ld de, wOamBuffer
     ld b, $10
     ld a, [hl+]
@@ -5354,12 +5360,12 @@ jr_001_75fc:
     ld a, $03
     ldh [rIE], a
     ld d, $04
-    call HighScores_Sub7929
+    call HighScores_SlideSprites
     ld a, $02
     ld [wHdmaMode], a
 
 jr_001_7615:
-    call FrameLoop_Sub63fa
+    call SweepBricks
 
 jr_001_7618:
     call WaitVBlank
@@ -5397,7 +5403,7 @@ jr_001_7640:
 
     ld [wHdmaMode], a
     ld d, $fc
-    call HighScores_Sub7929
+    call HighScores_SlideSprites
     call WaitVBlank
     ld a, $01
     ldh [rIE], a
@@ -5592,10 +5598,10 @@ SetUpBricks:
     ld de, wUnk_ccfb
     ld b, $10
 
-Jump_001_77d6:
+SetUpBricks_Row:
     ld c, $09
 
-Jump_001_77d8:
+SetUpBricks_Cell:
     ld a, [de]
     or a
     jr z, jr_001_783a
@@ -5734,7 +5740,7 @@ jr_001_787f:
     inc l
     inc l
     dec c
-    jp nz, Jump_001_77d8
+    jp nz, SetUpBricks_Cell
 
     ld a, l
     add $0e
@@ -5753,19 +5759,20 @@ jr_001_788d:
 
 jr_001_7894:
     dec b
-    jp nz, Jump_001_77d6
+    jp nz, SetUpBricks_Row
 
     ret
 
-HighScores_Sub7899:
-    ld a, [wUnk_cb58]
+; Every third frame, point the HDMA transfer at the next frame of the "HIGH SCORE" animation.
+HighScores_AdvanceAnim:
+    ld a, [wHighScoreAnimTick]
     inc a
-    ld [wUnk_cb58], a
+    ld [wHighScoreAnimTick], a
     cp $03
     ret nz
 
     xor a
-    ld [wUnk_cb58], a
+    ld [wHighScoreAnimTick], a
     ld a, [wHighScoreAnimPtr]
     ld l, a
     ld a, [wHighScoreAnimPtr + 1]
@@ -5790,7 +5797,7 @@ jr_001_78b7:
 HighScores_InitSprites:
     ld b, $14
     ld hl, wOamBuffer
-    ld de, SetUpBricksData_001_7990
+    ld de, HighScoreSpritePositions
 
 jr_001_78d0:
     ld a, [de]
@@ -5816,7 +5823,7 @@ jr_001_78d0:
     jr nz, jr_001_78d0
 
     ld b, $04
-    ld hl, wUnk_cccf
+    ld hl, wHighScoreSpriteFrames
     xor a
 
 jr_001_78ed:
@@ -5838,8 +5845,8 @@ jr_001_78f0:
 
 HighScores_MoveSprites:
     ld a, $14
-    ld de, wUnk_cccf
-    ld hl, wUnk_c202
+    ld de, wHighScoreSpriteFrames
+    ld hl, wOamBuffer + 2
     ld bc, $0004
 
 jr_001_7908:
@@ -5854,7 +5861,7 @@ jr_001_7908:
     add a
     ld l, a
     ld h, $00
-    ld de, SetUpBricksData_001_7950
+    ld de, HighScoreSpriteTiles
     add hl, de
     ld d, h
     ld e, l
@@ -5873,7 +5880,8 @@ jr_001_7908:
 
     ret
 
-HighScores_Sub7929:
+; Slide the four rows of sprites sideways for 32 frames. D is the step per frame; rows alternate direction.
+HighScores_SlideSprites:
     ld a, $20
 
 jr_001_792b:
@@ -5911,13 +5919,15 @@ jr_001_793b:
 
     ret
 
-SetUpBricksData_001_7950:
+; Tile pair for each of the 32 animation steps of a high score sprite.
+HighScoreSpriteTiles:
     db $00, $02, $00, $02, $04, $06, $04, $06, $08, $0a, $08, $0a, $0c, $0e, $0c, $0e
     db $10, $12, $10, $12, $14, $16, $14, $16, $18, $1a, $18, $1a, $1c, $1e, $1c, $1e
     db $20, $22, $20, $22, $24, $26, $24, $26, $28, $2a, $28, $2a, $2c, $2e, $2c, $2e
     db $30, $32, $30, $32, $34, $36, $34, $36, $38, $3a, $38, $3a, $3c, $3e, $3c, $3e
 
-SetUpBricksData_001_7990:
+; Y and X of the 20 sprite pairs on the high score screen.
+HighScoreSpritePositions:
     db $37, $a6, $37, $ba, $37, $ce, $37, $e2, $37, $f6, $4f, $a6, $4f, $ba, $4f, $ce
     db $4f, $e2, $4f, $f6, $67, $a6, $67, $ba, $67, $ce, $67, $e2, $67, $f6, $7f, $a6
     db $7f, $ba, $7f, $ce, $7f, $e2, $7f, $f6
@@ -5950,70 +5960,70 @@ HighScoreAnimFrames_Second:
 
 ; Brick redraw routine, indexed by wHitRedrawIndex.
 BrickRedrawHandlers:
-    dw Jump_000_1d0a
-    dw Jump_000_1d11
-    dw Jump_000_1d18
-    dw Jump_000_1d1f
-    dw Jump_000_1d23
-    dw Jump_000_1d2a
-    dw Jump_000_1d31
-    dw Jump_000_1d38
-    dw Jump_000_1d3c
-    dw Jump_000_1d43
-    dw Jump_000_1d4a
-    dw Jump_000_1d51
-    dw Jump_000_1d55
-    dw Jump_000_1d5c
-    dw Jump_000_1d63
-    dw Jump_000_1d6a
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw Jump_000_1d6e
-    dw Jump_000_1d5c
-    dw Jump_000_1d75
-    dw Jump_000_1d6a
-    dw Jump_000_1d6e
-    dw Jump_000_1d5c
-    dw Jump_000_1d75
-    dw Jump_000_1d6a
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw RST_00
-    dw Jump_000_1d6a
-    dw Jump_000_1d6a
-    dw Jump_000_1d75
-    dw Jump_000_1d6a
+    dw BrickRedrawCase_Lit_Below
+    dw BrickRedrawCase_Lit_BelowRight
+    dw BrickRedrawCase_Lit_BelowLeft
+    dw BrickRedrawCase_Lit
+    dw BrickRedrawCase_ShadowRight_Below
+    dw BrickRedrawCase_ShadowRight_BelowRight
+    dw BrickRedrawCase_ShadowRight_BelowLeft
+    dw BrickRedrawCase_ShadowRight
+    dw BrickRedrawCase_ShadowLeft_Below
+    dw BrickRedrawCase_ShadowLeft_BelowRight
+    dw BrickRedrawCase_ShadowLeft_BelowLeft
+    dw BrickRedrawCase_ShadowLeft
+    dw BrickRedrawCase_Shadow_Below
+    dw BrickRedrawCase_Shadow_BelowRight
+    dw BrickRedrawCase_Shadow_BelowLeft
+    dw BrickRedrawCase_Shadow
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw BrickRedrawCase_Shadow_BelowHalfShadow
+    dw BrickRedrawCase_Shadow_BelowRight
+    dw BrickRedrawCase_Shadow_BelowLeftShadow
+    dw BrickRedrawCase_Shadow
+    dw BrickRedrawCase_Shadow_BelowHalfShadow
+    dw BrickRedrawCase_Shadow_BelowRight
+    dw BrickRedrawCase_Shadow_BelowLeftShadow
+    dw BrickRedrawCase_Shadow
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw BrickRedrawCase_Shadow
+    dw BrickRedrawCase_Shadow
+    dw BrickRedrawCase_Shadow_BelowLeftShadow
+    dw BrickRedrawCase_Shadow
 
 Credits_Update:
     ld hl, wUnk_dcf4
@@ -6175,7 +6185,8 @@ PickupEffectFrames:
 
     db $15, $17, $19, $1b
 
-UpdatePickupEffectsData_001_7b8a:
+; Number of cells on each diagonal of SweepBricks.
+BrickSweepLengths:
     db $01, $02, $03, $04, $05, $06, $07, $08, $09, $09, $09, $09, $09, $08, $07, $06
     db $05, $04, $03, $02, $01, $ff
 
@@ -6472,44 +6483,44 @@ jr_001_7d1d:
     call DrawString
     ld a, $2d
     ld [wBonusDelay], a
-    ld hl, LevelPasswordData_001_67ad
+    ld hl, FireworkScript_0
     ld a, l
-    ld [wUnk_dd60], a
+    ld [wFireworks], a
     ld a, h
-    ld [wUnk_dd61], a
-    ld hl, LevelPasswordData_001_67bc
+    ld [wFireworks + 1], a
+    ld hl, FireworkScript_1
     ld a, l
-    ld [wUnk_dd6f], a
+    ld [wFireworks + 15], a
     ld a, h
-    ld [wUnk_dd70], a
-    ld hl, LevelPasswordData_001_67cb
+    ld [wFireworks + 16], a
+    ld hl, FireworkScript_2
     ld a, l
-    ld [wUnk_dd7e], a
+    ld [wFireworks + 30], a
     ld a, h
-    ld [wUnk_dd7f], a
-    ld hl, wUnk_dd60
-    call LevelPassword_Sub5d2e
-    ld hl, wUnk_dd6f
-    call LevelPassword_Sub5d2e
-    ld hl, wUnk_dd7e
-    call LevelPassword_Sub5d2e
-    ld hl, wUnk_dd8d
+    ld [wFireworks + 31], a
+    ld hl, wFireworks
+    call Firework_Launch
+    ld hl, wFireworks + 15
+    call Firework_Launch
+    ld hl, wFireworks + 30
+    call Firework_Launch
+    ld hl, wFireworkSparks
     ld a, l
-    ld [wUnk_dd6d], a
+    ld [wFireworks + 13], a
     ld a, h
-    ld [wUnk_dd6e], a
-    ld hl, wUnk_dddd
+    ld [wFireworks + 14], a
+    ld hl, wFireworkSparks + 80
     ld a, l
-    ld [wUnk_dd7c], a
+    ld [wFireworks + 28], a
     ld a, h
-    ld [wUnk_dd7d], a
-    ld hl, wUnk_de2d
+    ld [wFireworks + 29], a
+    ld hl, wFireworkSparks + 160
     ld a, l
-    ld [wUnk_dd8b], a
+    ld [wFireworks + 43], a
     ld a, h
-    ld [wUnk_dd8c], a
+    ld [wFireworks + 44], a
     ld hl, LevelPasswordData_001_6543
-    ld de, wUnk_de81
+    ld de, wTwinkles
     ld bc, $0037
     call DataTransfer
     ret

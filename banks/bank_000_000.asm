@@ -280,11 +280,11 @@ InstallInterruptHandlers:
     ldh [rLYC], a
     ld a, [hUnk_ff9a]
     ldh [rIE], a
-    ld hl, wUnk_c3b6
+    ld hl, wRasterTable
     ld a, l
-    ld [wUnk_c956], a
+    ld [wRasterPtr], a
     ld a, h
-    ld [wUnk_c957], a
+    ld [wRasterPtr + 1], a
     ret
 
 Stat_Default:
@@ -320,11 +320,11 @@ VBlank:
     call TitleScreen_VBlank
     call hOamDmaRoutine
     call LevelPassword_VBlank
-    ld hl, wUnk_c3b6
+    ld hl, wRasterTable
     ld a, l
-    ld [wUnk_c956], a
+    ld [wRasterPtr], a
     ld a, h
-    ld [wUnk_c957], a
+    ld [wRasterPtr + 1], a
     ld a, $01
     ld [hVBlankDone], a
     pop hl
@@ -432,7 +432,7 @@ jr_000_0361:
     jr z, jr_000_0374
 
     ld b, a
-    ld hl, wUnk_d9bf
+    ld hl, wVBlankTileWrites
 
 jr_000_036b:
     ld a, [hl+]
@@ -445,14 +445,14 @@ jr_000_036b:
     jr nz, jr_000_036b
 
 jr_000_0374:
-    ld a, [wUnk_d9be]
+    ld a, [wVBlankAttrWriteCount]
     or a
     jr z, jr_000_038b
 
     ld c, a
     ld a, $01
     ldh [rVBK], a
-    ld hl, wUnk_da37
+    ld hl, wVBlankAttrWrites
 
 jr_000_0382:
     ld a, [hl+]
@@ -467,11 +467,11 @@ jr_000_0382:
     jr nz, jr_000_0382
 
 jr_000_038b:
-    ld hl, wUnk_c3b6
+    ld hl, wRasterTable
     ld a, l
-    ld [wUnk_c956], a
+    ld [wRasterPtr], a
     ld a, h
-    ld [wUnk_c957], a
+    ld [wRasterPtr + 1], a
     ld a, $01
     ld [hVBlankDone], a
     ld hl, hFrameCounter
@@ -488,17 +488,17 @@ VBlankMenus:
     push de
     push bc
     call hOamDmaRoutine
-    ld hl, wUnk_c3b6
+    ld hl, wRasterTable
     ld a, l
-    ld [wUnk_c956], a
+    ld [wRasterPtr], a
     ld a, h
-    ld [wUnk_c957], a
+    ld [wRasterPtr + 1], a
     call StartHdmaTransfer
     ld a, $01
     ldh [rVBK], a
     ld a, [wUnk_c959]
     or a
-    jp nz, Jump_000_0505
+    jp nz, VBlankMenus_BlinkRow
 
     ld a, [hUnk_ff9e]
     ldh [rSCY], a
@@ -524,7 +524,7 @@ VBlankMenus:
 
 jr_000_03ec:
     cp $60
-    jp nz, Jump_000_04f7
+    jp nz, VBlankMenus_Done
 
     xor a
     ldh [rVBK], a
@@ -538,7 +538,7 @@ jr_000_03ec:
     call CopyTilemapRect
     ld a, $01
     call ChangeROMBank
-    jp Jump_000_04f7
+    jp VBlankMenus_Done
 
 jr_000_0410:
     ld hl, $98c4
@@ -614,7 +614,7 @@ jr_000_0448:
 
     sub $36
     ld [$996b], a
-    jr jr_000_04f7
+    jr VBlankMenus_Done
 
 jr_000_048f:
     xor a
@@ -682,8 +682,7 @@ jr_000_04d4:
     ld a, [hl]
     ld [$996b], a
 
-Jump_000_04f7:
-jr_000_04f7:
+VBlankMenus_Done:
     ld a, $01
     ld [hVBlankDone], a
     ld hl, hFrameCounter
@@ -694,7 +693,7 @@ jr_000_04f7:
     pop af
     reti
 
-Jump_000_0505:
+VBlankMenus_BlinkRow:
     ld a, [wUnk_c95c]
     dec a
     ld [wUnk_c95c], a
@@ -733,7 +732,7 @@ jr_000_0536:
     ld a, [wUnk_ccb5]
     ld h, a
     or l
-    jr z, jr_000_04f7
+    jr z, VBlankMenus_Done
 
     ld de, wUnk_ccbb
     ld b, $07
@@ -786,7 +785,7 @@ jr_000_0576:
     dec b
     jr nz, jr_000_0576
 
-    jp Jump_000_04f7
+    jp VBlankMenus_Done
 
 jr_000_0581:
     xor a
@@ -820,7 +819,7 @@ jr_000_05a1:
     dec b
     jr nz, jr_000_0599
 
-    jp Jump_000_04f7
+    jp VBlankMenus_Done
 
 VBlank_Credits:
     push af
@@ -831,11 +830,11 @@ VBlank_Credits:
     push af
     xor a
     ldh [rSVBK], a
-    ld hl, wUnk_c3b6
+    ld hl, wRasterTable
     ld a, l
-    ld [wUnk_c956], a
+    ld [wRasterPtr], a
     ld a, h
-    ld [wUnk_c957], a
+    ld [wRasterPtr + 1], a
     call hOamDmaRoutine
     ld a, [wUnk_c95a]
     xor $01
@@ -922,7 +921,7 @@ StateInit_HighScores:
     ld a, $81
     ld [wUnk_ccc2], a
     xor a
-    ld [wUnk_dae1], a
+    ld [wLevelSweepPending], a
     ld [wUnk_cccd], a
     ld [wUnk_cccc], a
     ld a, $41
@@ -960,7 +959,7 @@ StateInit_HighScores:
     ret
 
 HighScores_Update:
-    call HighScores_Sub7899
+    call HighScores_AdvanceAnim
     call HighScores_MoveSprites
     ld a, [wMenuIdleTimer]
     cp $ff
@@ -975,7 +974,7 @@ HighScores_Update:
     ld a, [wMenuIdleTimer]
     dec a
     ld [wMenuIdleTimer], a
-    jr z, jr_000_0710
+    jr z, HighScores_Leave
 
     jr jr_000_0708
 
@@ -993,8 +992,7 @@ jr_000_0708:
     or a
     jr z, jr_000_072b
 
-Jump_000_0710:
-jr_000_0710:
+HighScores_Leave:
     ld a, [hGameState]
     cp $07
     ret nz
@@ -1124,7 +1122,7 @@ jr_000_07b7:
     ld a, b
     and $f3
     or a
-    jp z, Jump_000_0872
+    jp z, HighScores_ButtonsReleased
 
     ld a, [wUnk_cccb]
     or a
@@ -1248,7 +1246,7 @@ jr_000_0850:
 
 jr_000_0862:
     cp $06
-    jp nz, Jump_000_0710
+    jp nz, HighScores_Leave
 
     ld a, $84
     ld [wUnk_ccc7], a
@@ -1256,7 +1254,7 @@ jr_000_0862:
     ld [wUnk_ccc8], a
     ret
 
-Jump_000_0872:
+HighScores_ButtonsReleased:
     xor a
     ld [wUnk_cccb], a
     ret
@@ -1845,7 +1843,7 @@ jr_000_0b81:
     call ChangeROMBank
     ld a, [hResumeFromPause]
     or a
-    jp nz, Jump_000_0c40
+    jp nz, LoadLevel_SkipTilemap
 
     ld hl, $9800
     call ClearTileMap
@@ -1899,12 +1897,12 @@ jr_000_0b81:
     call ClearUnbreakableHitEffects
     xor a
     ld [wBrickRedrawCount], a
-    ld [wUnk_d9be], a
+    ld [wVBlankAttrWriteCount], a
     ld [wUnk_dab2], a
     ld [hLifeLostTimer], a
     jr jr_000_0c41
 
-Jump_000_0c40:
+LoadLevel_SkipTilemap:
     pop hl
 
 jr_000_0c41:
@@ -1913,7 +1911,7 @@ jr_000_0c41:
     jr nz, jr_000_0c9a
 
     ld a, $01
-    ld [wUnk_dae1], a
+    ld [wLevelSweepPending], a
     ldh [rVBK], a
     ld a, $03
     call ChangeROMBank
@@ -2004,7 +2002,7 @@ jr_000_0c9a:
     call ChangeROMBank
     ld a, [hResumeFromPause]
     or a
-    jp nz, Jump_000_0db5
+    jp nz, LoadLevel_ResumeDone
 
     ld a, $25
     ld de, $9840
@@ -2043,7 +2041,7 @@ jr_000_0c9a:
     call CopyTilemapRect
     pop hl
     ld a, $00
-    ld de, wUnk_cf6b
+    ld de, wBackgroundTilemap + $41
 
     ld b, $12
     ld c, $10
@@ -2067,13 +2065,13 @@ jr_000_0c9a:
     xor a
     ldh [rVBK], a
     ld hl, $9800
-    ld de, wUnk_d32a
+    ld de, wLevelTilemapCopy
     ld bc, $0400
     call DataTransfer
     call InitBatSprites
     ret
 
-Jump_000_0db5:
+LoadLevel_ResumeDone:
     pop hl
     xor a
     ld [hResumeFromPause], a
@@ -2541,9 +2539,9 @@ jr_000_1012:
 
     ld a, [wBatMovingLeft]
     or a
-    jp nz, Jump_000_10b5
+    jp nz, Gameplay_MoveBat_Left
 
-Jump_000_101d:
+Gameplay_MoveBat_Right:
     inc hl
     ld a, [hl]
     or a
@@ -2663,7 +2661,7 @@ jr_000_10af:
     or a
     jr z, jr_000_10c6
 
-Jump_000_10b5:
+Gameplay_MoveBat_Left:
     dec hl
     ld b, [hl]
     ld a, b
@@ -2673,7 +2671,7 @@ Jump_000_10b5:
     ld [wBatMovingLeft], a
     ld a, [hJoypad]
     bit 0, a
-    jp nz, Jump_000_101d
+    jp nz, Gameplay_MoveBat_Right
 
 jr_000_10c6:
     ld a, [wStunActive]
@@ -3053,7 +3051,7 @@ jr_000_12d4:
     call UpdateUnbreakableHitEffects
     call DrawBatSprites
     xor a
-    ld [wUnk_d9be], a
+    ld [wVBlankAttrWriteCount], a
     ld [wBrickRedrawCount], a
     call UpdateBatTiles
     call ProcessBrickHitQueue
@@ -3119,7 +3117,7 @@ RestartAfterLifeLost:
     call InitBat
     call InitBall
     xor a
-    ld [wUnk_d9be], a
+    ld [wVBlankAttrWriteCount], a
     ld [wBrickRedrawCount], a
     inc a
     ld [wUnk_d745], a
@@ -4158,7 +4156,7 @@ jr_000_195d:
     add hl, bc
     ld d, h
     ld e, l
-    ld hl, wUnk_cf2a
+    ld hl, wBackgroundTilemap
     add hl, bc
     ld b, h
     ld c, l
@@ -4211,7 +4209,7 @@ jr_000_19a6:
     add hl, bc
     ld d, h
     ld e, l
-    ld hl, wUnk_cf2a
+    ld hl, wBackgroundTilemap
     add hl, bc
     ld b, h
     ld c, l
@@ -4546,7 +4544,13 @@ jr_000_1b70:
     ld l, a
     jp hl
 
-BrickRedraw_1b7f:
+; The routines below queue the background tiles that replace a broken brick.
+; Each queue entry is a tilemap address, a tile and an attribute byte.
+; Attribute $08 is the normal background palette. $0a is the shadow palette.
+; A brick casts a shadow on the two tiles below it, so those are redrawn too.
+
+; Both tiles of the brick, lit.
+BrickRedraw_Lit:
     ld a, [wBrickRedrawCount]
     add $02
     ld [wBrickRedrawCount], a
@@ -4559,7 +4563,7 @@ BrickRedraw_1b7f:
     ld a, [hTemp + 1]
     ld e, a
     push hl
-    ld hl, wUnk_cf49
+    ld hl, wBackgroundTilemap + $1f
     add hl, de
     ld a, [hl+]
     ld e, a
@@ -4580,7 +4584,8 @@ BrickRedraw_1b7f:
     ld [hl+], a
     ret
 
-BrickRedraw_1bac:
+; Both tiles of the brick, in shadow.
+BrickRedraw_Shadow:
     ld a, [wBrickRedrawCount]
     add $02
     ld [wBrickRedrawCount], a
@@ -4593,7 +4598,7 @@ BrickRedraw_1bac:
     ld a, [hTemp + 1]
     ld e, a
     push hl
-    ld hl, wUnk_cf49
+    ld hl, wBackgroundTilemap + $1f
     add hl, de
     ld a, [hl+]
     ld e, a
@@ -4614,7 +4619,8 @@ BrickRedraw_1bac:
     ld [hl+], a
     ret
 
-BrickRedraw_1bd9:
+; Left tile lit, right tile in shadow.
+BrickRedraw_ShadowRight:
     ld a, [wBrickRedrawCount]
     add $02
     ld [wBrickRedrawCount], a
@@ -4628,7 +4634,7 @@ BrickRedraw_1bd9:
     ld a, [hTemp + 1]
     ld e, a
     push hl
-    ld hl, wUnk_cf49
+    ld hl, wBackgroundTilemap + $1f
     add hl, de
     ld a, [hl+]
     ld e, a
@@ -4642,10 +4648,15 @@ BrickRedraw_1bd9:
     ld a, c
     ld [hl+], a
     ld a, b
+    ld [hl+], a
+    ld a, d
+    ld [hl+], a
+    ld a, $0a
+    ld [hl+], a
+    ret
 
-    db $22, $7a, $22, $3e, $0a, $22, $c9
-
-BrickRedraw_1c07:
+; Left tile in shadow, right tile lit.
+BrickRedraw_ShadowLeft:
     ld a, [wBrickRedrawCount]
     add $02
     ld [wBrickRedrawCount], a
@@ -4659,7 +4670,7 @@ BrickRedraw_1c07:
     ld a, [hTemp + 1]
     ld e, a
     push hl
-    ld hl, wUnk_cf49
+    ld hl, wBackgroundTilemap + $1f
     add hl, de
     ld a, [hl+]
     ld e, a
@@ -4681,7 +4692,8 @@ BrickRedraw_1c07:
     ld [hl+], a
     ret
 
-Jump_000_1c34:
+; Both tiles below the brick, lit.
+BrickRedraw_BelowLit:
     ld a, [wBrickRedrawCount]
     add $02
     ld [wBrickRedrawCount], a
@@ -4702,7 +4714,7 @@ jr_000_1c43:
     ld a, [hTemp + 1]
     ld e, a
     push hl
-    ld hl, wUnk_cf6a
+    ld hl, wBackgroundTilemap + $40
     add hl, de
     ld a, [hl+]
     ld e, a
@@ -4723,7 +4735,8 @@ jr_000_1c43:
     ld [hl+], a
     ret
 
-Jump_000_1c67:
+; Both tiles below the brick: left in shadow, right lit.
+BrickRedraw_BelowHalfShadow:
     ld a, [wBrickRedrawCount]
     add $02
     ld [wBrickRedrawCount], a
@@ -4743,7 +4756,7 @@ jr_000_1c76:
     ld a, [hTemp + 1]
     ld e, a
     push hl
-    ld hl, wUnk_cf6a
+    ld hl, wBackgroundTilemap + $40
     add hl, de
     ld a, [hl+]
     ld e, a
@@ -4764,7 +4777,8 @@ jr_000_1c76:
     ld [hl+], a
     ret
 
-Jump_000_1c9a:
+; The tile below the right half, lit.
+BrickRedraw_BelowRightLit:
     ld a, [wBrickRedrawCount]
     inc a
     ld [wBrickRedrawCount], a
@@ -4784,7 +4798,7 @@ jr_000_1ca8:
     ld a, [hTemp + 1]
     ld e, a
     push hl
-    ld hl, wUnk_cf6b
+    ld hl, wBackgroundTilemap + $41
     add hl, de
     ld a, [hl]
     pop hl
@@ -4793,7 +4807,8 @@ jr_000_1ca8:
     ld [hl+], a
     ret
 
-Jump_000_1cbf:
+; The tile below the left half, lit.
+BrickRedraw_BelowLeftLit:
     ld a, [wBrickRedrawCount]
     inc a
     ld [wBrickRedrawCount], a
@@ -4813,7 +4828,7 @@ jr_000_1ccd:
     ld a, [hTemp + 1]
     ld e, a
     push hl
-    ld hl, wUnk_cf6a
+    ld hl, wBackgroundTilemap + $40
     add hl, de
     ld a, [hl]
     pop hl
@@ -4822,7 +4837,8 @@ jr_000_1ccd:
     ld [hl+], a
     ret
 
-Jump_000_1ce4:
+; The tile below the left half, in shadow.
+BrickRedraw_BelowLeftShadow:
     ld a, [wBrickRedrawCount]
     inc a
     ld [wBrickRedrawCount], a
@@ -4842,7 +4858,7 @@ jr_000_1cf2:
     ld a, [hTemp + 1]
     ld e, a
     push hl
-    ld hl, wUnk_cf6a
+    ld hl, wBackgroundTilemap + $40
     add hl, de
     ld d, [hl]
     pop hl
@@ -4852,92 +4868,93 @@ jr_000_1cf2:
     ld [hl+], a
     ret
 
-Jump_000_1d0a:
+; Entries of BrickRedrawHandlers. The name gives the brick tiles, then the tiles below that are redrawn.
+BrickRedrawCase_Lit_Below:
     pop hl
-    call BrickRedraw_1b7f
-    jp Jump_000_1c34
+    call BrickRedraw_Lit
+    jp BrickRedraw_BelowLit
 
-Jump_000_1d11:
+BrickRedrawCase_Lit_BelowRight:
     pop hl
-    call BrickRedraw_1b7f
-    jp Jump_000_1c9a
+    call BrickRedraw_Lit
+    jp BrickRedraw_BelowRightLit
 
-Jump_000_1d18:
+BrickRedrawCase_Lit_BelowLeft:
     pop hl
-    call BrickRedraw_1b7f
-    jp Jump_000_1cbf
+    call BrickRedraw_Lit
+    jp BrickRedraw_BelowLeftLit
 
-Jump_000_1d1f:
+BrickRedrawCase_Lit:
     pop hl
 
-    jp BrickRedraw_1b7f
+    jp BrickRedraw_Lit
 
-Jump_000_1d23:
+BrickRedrawCase_ShadowRight_Below:
     pop hl
-    call BrickRedraw_1bd9
-    jp Jump_000_1c34
+    call BrickRedraw_ShadowRight
+    jp BrickRedraw_BelowLit
 
-Jump_000_1d2a:
+BrickRedrawCase_ShadowRight_BelowRight:
     pop hl
-    call BrickRedraw_1bd9
-    jp Jump_000_1c9a
+    call BrickRedraw_ShadowRight
+    jp BrickRedraw_BelowRightLit
 
-Jump_000_1d31:
+BrickRedrawCase_ShadowRight_BelowLeft:
     pop hl
-    call BrickRedraw_1bd9
-    jp Jump_000_1cbf
+    call BrickRedraw_ShadowRight
+    jp BrickRedraw_BelowLeftLit
 
-Jump_000_1d38:
+BrickRedrawCase_ShadowRight:
     pop hl
-    jp BrickRedraw_1bd9
+    jp BrickRedraw_ShadowRight
 
-Jump_000_1d3c:
+BrickRedrawCase_ShadowLeft_Below:
     pop hl
-    call BrickRedraw_1c07
-    jp Jump_000_1c34
+    call BrickRedraw_ShadowLeft
+    jp BrickRedraw_BelowLit
 
-Jump_000_1d43:
+BrickRedrawCase_ShadowLeft_BelowRight:
     pop hl
-    call BrickRedraw_1c07
-    jp Jump_000_1c9a
+    call BrickRedraw_ShadowLeft
+    jp BrickRedraw_BelowRightLit
 
-Jump_000_1d4a:
+BrickRedrawCase_ShadowLeft_BelowLeft:
     pop hl
-    call BrickRedraw_1c07
-    jp Jump_000_1cbf
+    call BrickRedraw_ShadowLeft
+    jp BrickRedraw_BelowLeftLit
 
-Jump_000_1d51:
+BrickRedrawCase_ShadowLeft:
     pop hl
-    jp BrickRedraw_1c07
+    jp BrickRedraw_ShadowLeft
 
-Jump_000_1d55:
+BrickRedrawCase_Shadow_Below:
     pop hl
-    call BrickRedraw_1bac
-    jp Jump_000_1c34
+    call BrickRedraw_Shadow
+    jp BrickRedraw_BelowLit
 
-Jump_000_1d5c:
+BrickRedrawCase_Shadow_BelowRight:
     pop hl
-    call BrickRedraw_1bac
-    jp Jump_000_1c9a
+    call BrickRedraw_Shadow
+    jp BrickRedraw_BelowRightLit
 
-Jump_000_1d63:
+BrickRedrawCase_Shadow_BelowLeft:
     pop hl
-    call BrickRedraw_1bac
-    jp Jump_000_1cbf
+    call BrickRedraw_Shadow
+    jp BrickRedraw_BelowLeftLit
 
-Jump_000_1d6a:
+BrickRedrawCase_Shadow:
     pop hl
-    jp BrickRedraw_1bac
+    jp BrickRedraw_Shadow
 
-Jump_000_1d6e:
+BrickRedrawCase_Shadow_BelowHalfShadow:
     pop hl
-    call BrickRedraw_1bac
-    jp Jump_000_1c67
+    call BrickRedraw_Shadow
+    jp BrickRedraw_BelowHalfShadow
 
-Jump_000_1d75:
+BrickRedrawCase_Shadow_BelowLeftShadow:
     pop hl
-    call BrickRedraw_1bac
-    jp Jump_000_1ce4
+    call BrickRedraw_Shadow
+    jp BrickRedraw_BelowLeftShadow
 
 ; Copy the queued brick tile changes to the buffer that VBlank writes to the screen.
 FlushBrickRedraw:
@@ -4947,10 +4964,10 @@ FlushBrickRedraw:
 
     ld [hTemp], a
     ld hl, wBrickRedrawQueue
-    ld bc, wUnk_da37
-    ld a, [wUnk_daaf]
+    ld bc, wVBlankAttrWrites
+    ld a, [wVBlankTileWritePtr]
     ld e, a
-    ld a, [wUnk_dab0]
+    ld a, [wVBlankTileWritePtr + 1]
     ld d, a
 
 jr_000_1d93:
@@ -5013,7 +5030,7 @@ jr_000_1dc6:
     ld a, $01
     ld [ROM_BANK], a
     ld a, [wBrickRedrawCount]
-    ld [wUnk_d9be], a
+    ld [wVBlankAttrWriteCount], a
     ld b, a
     ld a, [wUnk_d9bc]
     add b
@@ -5062,23 +5079,23 @@ jr_000_1e0c:
 ; Redraw hit bricks, remove destroyed ones and release power-ups.
 ProcessBrickHitQueue:
     ld hl, wBrickHitQueue
-    ld de, wUnk_d9bf
+    ld de, wVBlankTileWrites
     xor a
     ld [wUnk_d9bc], a
     ld a, $0c
     ld [hTemp2], a
 
-Jump_000_1e2a:
+ProcessBrickHitQueue_Entry:
     ld a, [hl]
     or a
-    jp z, Jump_000_1f61
+    jp z, ProcessBrickHitQueue_SkipEntry
 
     cp $05
-    jp z, Jump_000_1ed8
+    jp z, ProcessBrickHitQueue_NewHit
 
     dec a
     ld [hl], a
-    jp nz, Jump_000_1f61
+    jp nz, ProcessBrickHitQueue_SkipEntry
 
     inc hl
     ld a, [hl+]
@@ -5110,7 +5127,7 @@ Jump_000_1e2a:
     call nz, SpawnBrickBreakEffect
     ld a, $03
     call PlaySound
-    jp Jump_000_1f68
+    jp ProcessBrickHitQueue_Next
 
 jr_000_1e64:
     push hl
@@ -5201,9 +5218,9 @@ jr_000_1eb3:
     add $02
     ld [wUnk_d9bc], a
     inc hl
-    jp Jump_000_1f68
+    jp ProcessBrickHitQueue_Next
 
-Jump_000_1ed8:
+ProcessBrickHitQueue_NewHit:
     dec a
     ld [hl+], a
     ld a, [hl+]
@@ -5307,27 +5324,26 @@ jr_000_1f35:
     inc hl
     ld a, $02
     call PlaySound
-    jr jr_000_1f68
+    jr ProcessBrickHitQueue_Next
 
-Jump_000_1f61:
+ProcessBrickHitQueue_SkipEntry:
     ld a, l
     add $08
     ld l, a
-    jr nc, jr_000_1f68
+    jr nc, ProcessBrickHitQueue_Next
 
     inc h
 
-Jump_000_1f68:
-jr_000_1f68:
+ProcessBrickHitQueue_Next:
     ld a, [hTemp2]
     dec a
     ld [hTemp2], a
-    jp nz, Jump_000_1e2a
+    jp nz, ProcessBrickHitQueue_Entry
 
     ld a, e
-    ld [wUnk_daaf], a
+    ld [wVBlankTileWritePtr], a
     ld a, d
-    ld [wUnk_dab0], a
+    ld [wVBlankTileWritePtr + 1], a
     ret
 
 StateInit_MainMenu:
@@ -5465,7 +5481,7 @@ jr_000_2083:
     ld a, $fd
     ld [wMenuIdleTimer], a
     xor a
-    ld [wUnk_dae1], a
+    ld [wLevelSweepPending], a
     ld [wPasswordEntryActive], a
     ld [wLevelMusicIndex], a
     call InitMenuSparkles
@@ -5680,7 +5696,7 @@ jr_000_21b2:
     ld a, b
     and $f3
     or a
-    jp z, Jump_000_2268
+    jp z, SubmitPassword_ButtonsReleased
 
     ld a, [wMenuButtonHeld]
     or a
@@ -5808,7 +5824,7 @@ jr_000_225e:
     ld [wPasswordEntryActive], a
     ret
 
-Jump_000_2268:
+SubmitPassword_ButtonsReleased:
     xor a
     ld [wMenuButtonHeld], a
     ret
@@ -6068,7 +6084,7 @@ jr_000_2412:
 jr_000_2416:
     ld a, [wMenuCursor]
     cp $03
-    jp c, Jump_000_24d4
+    jp c, MainMenu_IdleTick
 
     ld a, b
     and $f0
@@ -6155,7 +6171,7 @@ jr_000_2498:
 
     ld a, [wUnk_dab9]
     or a
-    jr nz, jr_000_24d4
+    jr nz, MainMenu_IdleTick
 
     inc a
     ld [wUnk_dab9], a
@@ -6176,20 +6192,19 @@ jr_000_2498:
 
 jr_000_24c1:
     call StartSong
-    jr jr_000_24d4
+    jr MainMenu_IdleTick
 
 jr_000_24c6:
     ld a, [wSfxOff]
     xor $01
     ld [wSfxOff], a
-    jr jr_000_24d4
+    jr MainMenu_IdleTick
 
 jr_000_24d0:
     xor a
     ld [wUnk_dab9], a
 
-Jump_000_24d4:
-jr_000_24d4:
+MainMenu_IdleTick:
     ld a, [wMenuTick]
     inc a
     ld [wMenuTick], a
@@ -6322,7 +6337,7 @@ StateInit_TitleScreen:
 
 jr_000_25cf:
     xor a
-    ld [wUnk_dae1], a
+    ld [wLevelSweepPending], a
     ldh [rVBK], a
     ld hl, Gfx_TitleScreen_007_4000 + $e10
     ld de, $9000
@@ -6433,7 +6448,7 @@ jr_000_2692:
     ld a, $01
     ld [hUnk_ff9a], a
     xor a
-    ld [wUnk_dae1], a
+    ld [wLevelSweepPending], a
     ldh [rSCX], a
     ld de, Palettes_GameOver
     call LoadPalettes
@@ -7046,7 +7061,7 @@ jr_000_2a2b:
 jr_000_2a4a:
     ret
 
-Jump_000_2a4b:
+UpdateProjectile_HitBrick:
     ld a, [wProjectileWork + 8]
     bit 7, a
     jr z, jr_000_2a59
@@ -7132,27 +7147,27 @@ UpdateProjectile:
     ld a, [wProjectileWork]
     dec a
     ld [wProjectileWork], a
-    jp nz, Jump_000_2b81
+    jp nz, UpdateProjectile_Move
 
     ld a, [wProjectileWork + 2]
     ld c, a
     ld a, [wProjectileWork + 4]
     call Projectile_CheckBrick
-    jp nz, Jump_000_2a4b
+    jp nz, UpdateProjectile_HitBrick
 
     ld a, [wProjectileWork + 2]
     add $07
     ld c, a
     ld a, [wProjectileWork + 4]
     call Projectile_CheckBrick
-    jp nz, Jump_000_2a4b
+    jp nz, UpdateProjectile_HitBrick
 
     ld a, [wProjectileWork + 2]
     ld c, a
     ld a, [wProjectileWork + 4]
     add $07
     call Projectile_CheckBrick
-    jp nz, Jump_000_2a4b
+    jp nz, UpdateProjectile_HitBrick
 
     ld a, [wProjectileWork + 2]
     add $07
@@ -7160,7 +7175,7 @@ UpdateProjectile:
     ld a, [wProjectileWork + 4]
     add $07
     call Projectile_CheckBrick
-    jp nz, Jump_000_2a4b
+    jp nz, UpdateProjectile_HitBrick
 
     ld a, [wProjectileWork + 8]
     bit 7, a
@@ -7228,7 +7243,7 @@ jr_000_2b62:
     ld [wBallCount], a
     ret
 
-Jump_000_2b81:
+UpdateProjectile_Move:
     ld e, a
     ld d, $00
     ld a, [wProjectileWork + 5]
@@ -8329,27 +8344,27 @@ UpdateShots:
     or a
     jp nz, UpdateShot0
 
-Jump_000_3213:
+UpdateShots_Shot1:
     ld a, [wShotActive + 1]
     or a
     jp nz, UpdateShot1
 
-Jump_000_321a:
+UpdateShots_Shot2:
     ld a, [wShotActive + 2]
     or a
     jp nz, UpdateShot2
 
-Jump_000_3221:
+UpdateShots_Shot3:
     ld a, [wShotActive + 3]
     or a
     jp nz, UpdateShot3
 
-Jump_000_3228:
+UpdateShots_Shot4:
     ld a, [wShotActive + 4]
     or a
     jp nz, UpdateShot4
 
-Jump_000_322f:
+UpdateShots_Shot5:
     ld a, [wShotActive + 5]
     or a
     jp nz, UpdateShot5
@@ -8788,10 +8803,10 @@ jr_000_34ea:
     add hl, de
     ld a, [hl]
     or a
-    jp z, Jump_000_3213
+    jp z, UpdateShots_Shot1
 
     cp $0f
-    jp z, Jump_000_3213
+    jp z, UpdateShots_Shot1
 
     cp $0e
     jr z, jr_000_352e
@@ -8799,7 +8814,7 @@ jr_000_34ea:
     call HitBrickWithShot
     ld a, [wPlasmaState]
     cp $02
-    jp z, Jump_000_3213
+    jp z, UpdateShots_Shot1
 
 jr_000_352e:
     ld a, [wPlasmaState]
@@ -8818,26 +8833,26 @@ jr_000_353e:
     ld [wShotActive], a
     ld a, [wShotActive + 1]
     or a
-    jp nz, Jump_000_3213
+    jp nz, UpdateShots_Shot1
 
     ld a, [wShotActive + 2]
     or a
-    jp nz, Jump_000_3213
+    jp nz, UpdateShots_Shot1
 
     ld a, [wShotActive + 3]
     or a
-    jp nz, Jump_000_3213
+    jp nz, UpdateShots_Shot1
 
     ld a, [wShotActive + 4]
     or a
-    jp nz, Jump_000_3213
+    jp nz, UpdateShots_Shot1
 
     ld a, [wShotActive + 5]
     or a
-    jp nz, Jump_000_3213
+    jp nz, UpdateShots_Shot1
 
     ld [wShotCooldown], a
-    jp Jump_000_3213
+    jp UpdateShots_Shot1
 
 UpdateShot1:
     ld d, $00
@@ -8941,10 +8956,10 @@ jr_000_35dc:
     add hl, de
     ld a, [hl]
     or a
-    jp z, Jump_000_321a
+    jp z, UpdateShots_Shot2
 
     cp $0f
-    jp z, Jump_000_321a
+    jp z, UpdateShots_Shot2
 
     cp $0e
     jr z, jr_000_3620
@@ -8952,7 +8967,7 @@ jr_000_35dc:
     call HitBrickWithShot
     ld a, [wPlasmaState]
     cp $02
-    jp z, Jump_000_321a
+    jp z, UpdateShots_Shot2
 
 jr_000_3620:
     ld a, [wPlasmaState]
@@ -8971,26 +8986,26 @@ jr_000_3630:
     ld [wShotActive + 1], a
     ld a, [wShotActive]
     or a
-    jp nz, Jump_000_321a
+    jp nz, UpdateShots_Shot2
 
     ld a, [wShotActive + 2]
     or a
-    jp nz, Jump_000_321a
+    jp nz, UpdateShots_Shot2
 
     ld a, [wShotActive + 3]
     or a
-    jp nz, Jump_000_321a
+    jp nz, UpdateShots_Shot2
 
     ld a, [wShotActive + 4]
     or a
-    jp nz, Jump_000_321a
+    jp nz, UpdateShots_Shot2
 
     ld a, [wShotActive + 5]
     or a
-    jp nz, Jump_000_321a
+    jp nz, UpdateShots_Shot2
 
     ld [wShotCooldown], a
-    jp Jump_000_321a
+    jp UpdateShots_Shot2
 
 ; Shot slots 2 to 5 hit bricks with HitBrickWithBall.
 UpdateShot2:
@@ -9085,10 +9100,10 @@ jr_000_36bc:
     add hl, de
     ld a, [hl]
     or a
-    jp z, Jump_000_3221
+    jp z, UpdateShots_Shot3
 
     cp $0f
-    jp z, Jump_000_3221
+    jp z, UpdateShots_Shot3
 
     cp $0e
     jr z, jr_000_36f8
@@ -9100,26 +9115,26 @@ jr_000_36f8:
     ld [wShotActive + 2], a
     ld a, [wShotActive]
     or a
-    jp nz, Jump_000_3221
+    jp nz, UpdateShots_Shot3
 
     ld a, [wShotActive + 1]
     or a
-    jp nz, Jump_000_3221
+    jp nz, UpdateShots_Shot3
 
     ld a, [wShotActive + 3]
     or a
-    jp nz, Jump_000_3221
+    jp nz, UpdateShots_Shot3
 
     ld a, [wShotActive + 4]
     or a
-    jp nz, Jump_000_3221
+    jp nz, UpdateShots_Shot3
 
     ld a, [wShotActive + 5]
     or a
-    jp nz, Jump_000_3221
+    jp nz, UpdateShots_Shot3
 
     ld [wShotCooldown], a
-    jp Jump_000_3221
+    jp UpdateShots_Shot3
 
 UpdateShot3:
     ld d, $00
@@ -9204,10 +9219,10 @@ jr_000_3778:
     add hl, de
     ld a, [hl]
     or a
-    jp z, Jump_000_3228
+    jp z, UpdateShots_Shot4
 
     cp $0f
-    jp z, Jump_000_3228
+    jp z, UpdateShots_Shot4
 
     cp $0e
     jr z, jr_000_37b4
@@ -9219,26 +9234,26 @@ jr_000_37b4:
     ld [wShotActive + 3], a
     ld a, [wShotActive]
     or a
-    jp nz, Jump_000_3228
+    jp nz, UpdateShots_Shot4
 
     ld a, [wShotActive + 1]
     or a
-    jp nz, Jump_000_3228
+    jp nz, UpdateShots_Shot4
 
     ld a, [wShotActive + 2]
     or a
-    jp nz, Jump_000_3228
+    jp nz, UpdateShots_Shot4
 
     ld a, [wShotActive + 4]
     or a
-    jp nz, Jump_000_3228
+    jp nz, UpdateShots_Shot4
 
     ld a, [wShotActive + 5]
     or a
-    jp nz, Jump_000_3228
+    jp nz, UpdateShots_Shot4
 
     ld [wShotCooldown], a
-    jp Jump_000_3228
+    jp UpdateShots_Shot4
 
 UpdateShot4:
     ld d, $00
@@ -9323,10 +9338,10 @@ jr_000_3834:
     add hl, de
     ld a, [hl]
     or a
-    jp z, Jump_000_322f
+    jp z, UpdateShots_Shot5
 
     cp $0f
-    jp z, Jump_000_322f
+    jp z, UpdateShots_Shot5
 
     cp $0e
     jr z, jr_000_3870
@@ -9338,26 +9353,26 @@ jr_000_3870:
     ld [wShotActive + 4], a
     ld a, [wShotActive]
     or a
-    jp nz, Jump_000_322f
+    jp nz, UpdateShots_Shot5
 
     ld a, [wShotActive + 1]
     or a
-    jp nz, Jump_000_322f
+    jp nz, UpdateShots_Shot5
 
     ld a, [wShotActive + 2]
     or a
-    jp nz, Jump_000_322f
+    jp nz, UpdateShots_Shot5
 
     ld a, [wShotActive + 3]
     or a
-    jp nz, Jump_000_322f
+    jp nz, UpdateShots_Shot5
 
     ld a, [wShotActive + 5]
     or a
-    jp nz, Jump_000_322f
+    jp nz, UpdateShots_Shot5
 
     ld [wShotCooldown], a
-    jp Jump_000_3228
+    jp UpdateShots_Shot4
 
 UpdateShot5:
     ld d, $00
@@ -9476,7 +9491,7 @@ jr_000_392c:
     jp nz, Shots_HandleFire
 
     ld [wShotCooldown], a
-    jp Jump_000_3228
+    jp UpdateShots_Shot4
 
 StateInit_Pause:
     ld hl, VBlank
@@ -9489,7 +9504,7 @@ StateInit_Pause:
     ld a, $01
     ld [hUnk_ff9a], a
     xor a
-    ld [wUnk_dae1], a
+    ld [wLevelSweepPending], a
     ldh [rSCX], a
     ld de, Palettes_Pause
     call LoadPalettes
@@ -9581,7 +9596,7 @@ StateInit_DeveloperLogos:
     ld bc, $00f0
     call DataTransfer
     xor a
-    ld [wUnk_dae1], a
+    ld [wLevelSweepPending], a
     ld de, $9800
     ld hl, Tilemap_DeveloperLogos_002_7c8c
     ld b, $14
@@ -9679,7 +9694,7 @@ StateInit_Credits:
     ld a, $80
     ld [wUnk_c958], a
     xor a
-    ld [wUnk_dae1], a
+    ld [wLevelSweepPending], a
     ld a, $02
     ld [hPaletteMode], a
     ld hl, $9800
@@ -9767,7 +9782,7 @@ UpdateCreditsScroll:
     ld h, a
     ld a, [hl+]
     or a
-    jp z, Jump_000_3c1b
+    jp z, UpdateCreditsScroll_BlankRow
 
     inc a
     jr z, jr_000_3c04
@@ -9800,7 +9815,7 @@ jr_000_3bcc:
     ld a, h
     ld [wUnk_dcfb], a
 
-Jump_000_3bdd:
+UpdateCreditsScroll_AdvanceRow:
     ld a, [wUnk_dcfc]
     add $20
     ld [wUnk_dcfc], a
@@ -9843,7 +9858,7 @@ jr_000_3c04:
     ld a, [wUnk_dcf9]
     ld h, a
 
-Jump_000_3c1b:
+UpdateCreditsScroll_BlankRow:
     ld a, l
     ld [wUnk_dcfa], a
     ld a, h
@@ -9860,7 +9875,7 @@ jr_000_3c28:
 
     ld a, $fe
     ld [wUnk_dcf4], a
-    jp Jump_000_3bdd
+    jp UpdateCreditsScroll_AdvanceRow
 
 ; Step wLevelMusicIndex (0, 1, 2, 0, ...) and restart the count of levels since the last password.
 NextLevelMusic:
@@ -9912,7 +9927,7 @@ StateInit_LevelPassword:
     ld c, $12
     call CopyTilemapRect
     xor a
-    ld [wUnk_dae1], a
+    ld [wLevelSweepPending], a
     ldh [rVBK], a
     ld hl, Gfx_LevelPassword_00c_4de4
     ld de, $9000
@@ -10029,44 +10044,44 @@ jr_000_3d1d:
     call DrawString
     ld a, $2d
     ld [wBonusDelay], a
-    ld hl, LevelPasswordData_001_67ad
+    ld hl, FireworkScript_0
     ld a, l
-    ld [wUnk_dd60], a
+    ld [wFireworks], a
     ld a, h
-    ld [wUnk_dd61], a
-    ld hl, LevelPasswordData_001_67bc
+    ld [wFireworks + 1], a
+    ld hl, FireworkScript_1
     ld a, l
-    ld [wUnk_dd6f], a
+    ld [wFireworks + 15], a
     ld a, h
-    ld [wUnk_dd70], a
-    ld hl, LevelPasswordData_001_67cb
+    ld [wFireworks + 16], a
+    ld hl, FireworkScript_2
     ld a, l
-    ld [wUnk_dd7e], a
+    ld [wFireworks + 30], a
     ld a, h
-    ld [wUnk_dd7f], a
-    ld hl, wUnk_dd60
-    call LevelPassword_Sub5d2e
-    ld hl, wUnk_dd6f
-    call LevelPassword_Sub5d2e
-    ld hl, wUnk_dd7e
-    call LevelPassword_Sub5d2e
-    ld hl, wUnk_dd8d
+    ld [wFireworks + 31], a
+    ld hl, wFireworks
+    call Firework_Launch
+    ld hl, wFireworks + 15
+    call Firework_Launch
+    ld hl, wFireworks + 30
+    call Firework_Launch
+    ld hl, wFireworkSparks
     ld a, l
-    ld [wUnk_dd6d], a
+    ld [wFireworks + 13], a
     ld a, h
-    ld [wUnk_dd6e], a
-    ld hl, wUnk_dddd
+    ld [wFireworks + 14], a
+    ld hl, wFireworkSparks + 80
     ld a, l
-    ld [wUnk_dd7c], a
+    ld [wFireworks + 28], a
     ld a, h
-    ld [wUnk_dd7d], a
-    ld hl, wUnk_de2d
+    ld [wFireworks + 29], a
+    ld hl, wFireworkSparks + 160
     ld a, l
-    ld [wUnk_dd8b], a
+    ld [wFireworks + 43], a
     ld a, h
-    ld [wUnk_dd8c], a
+    ld [wFireworks + 44], a
     ld hl, LevelPasswordData_001_6543
-    ld de, wUnk_de81
+    ld de, wTwinkles
     ld bc, $0037
     call DataTransfer
     ret

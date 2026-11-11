@@ -46,8 +46,8 @@ The sources build to the matching ROM with RGBDS 0.8.0 (`make`), with no warning
 
 ## What is left
 
-- **Names inside routines.** Every subroutine in banks 0 and 1 has a name, but about 60 jump targets (`Jump_000_xxxx`) and about 700 `jr_` labels inside routines are still automatic. About 25 subroutines are named only after the screen that uses them and their address, for example `LevelPassword_Sub5c09`.
-- **RAM.** `include/ram.inc` has about 195 real names. Another 242 variables have placeholder names (`wUnk_xxxx`, `hUnk_xxxx`). Code in banks 0 and 1 no longer contains raw work RAM addresses.
+- **Names inside routines.** Every subroutine and every `jp` target in banks 0, 1 and `$0F` has a name. About 710 `jr_` labels inside routines are still automatic. One subroutine, `TitleScreen_Sub6cd4`, is named only after its screen and address.
+- **RAM.** `include/ram.inc` has 217 real names. Another 188 variables have placeholder names (`wUnk_xxxx`, `hUnk_xxxx`). Code in banks 0 and 1 no longer contains raw work RAM addresses.
 - **Relocation.** `tools/relocation_test.py` shifts a bank by 3 bytes, rebuilds, and compares a scripted play-through with the original. The session covers the menus, the high score and credits screens that appear when the menu idles, every level load, pause, the password screens, the ending and game over.
   - In English, banks 0, 1, 2, 3, 5, 7, 8, 9, `$0A`, `$0C`, `$0D`, `$0E` and `$0F` pass.
   - In Spanish, French, German and Italian, banks 0, 1, 5, `$0C` and `$0E` pass. These hold the language tables and text. Bank `$0F` (credits) also passes in French.

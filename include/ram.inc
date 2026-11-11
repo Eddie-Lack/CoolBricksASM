@@ -142,7 +142,7 @@ DEF wOamUsed               EQU $c2b5 ; Extra sprites drawn so far this frame
 DEF wOamWritePtr           EQU $c2b6 ; Next free entry in wOamBuffer
 
 ; Interrupt stubs in RAM
-DEF wStatJump              EQU $c35a ; jp instruction to the current LCD STAT handler
+DEF wStatJump              EQU $c35a ; jp instruction to the LCD STAT handler. A raster effect copies its handler code here instead
 DEF hOamDmaRoutine         EQU $ff80 ; OAM DMA routine, copied here by LoadOAMCode
 DEF hVBlankJump            EQU $ff92 ; jp instruction to the current VBlank handler
 
@@ -187,6 +187,26 @@ DEF wBatExplosionY         EQU $d76c ; Position of the bat explosion
 DEF wBatExplosionX         EQU $d76d
 DEF wRemovedBallPtrs       EQU $d895 ; Addresses of ball slots freed this frame
 DEF wBallEffectTick        EQU $d8a7 ; Frame counter for wBallEffectTimer
+DEF wBackgroundTilemap    EQU $cf2a ; Copy of the level background tilemap, laid out like the screen at $9800
+DEF wLevelTilemapCopy     EQU $d32a ; Copy of the tilemap at $9800, taken after the bricks are drawn
+DEF wVBlankTileWrites     EQU $d9bf ; Tile changes for VBlank, 3 bytes each: address, tile. wBrickRedrawCount is their number
+DEF wVBlankAttrWrites     EQU $da37 ; Attribute changes for VBlank, 3 bytes each: address, attribute
+DEF wVBlankAttrWriteCount EQU $d9be ; Number of entries in wVBlankAttrWrites
+DEF wVBlankTileWritePtr   EQU $daaf ; Next free position in wVBlankTileWrites
+DEF wLevelSweepPending    EQU $dae1 ; 1 = SweepBricks runs when the level appears
+DEF wHighScoreAnimTick    EQU $cb58 ; Counts frames up to 3 between steps of the "HIGH SCORE" animation
+DEF wHighScoreSpriteFrames EQU $cccf ; Animation step of each of the 20 sprites on the high score screen
+DEF wRasterTable          EQU $c3b6 ; One record per screen line for the raster effect handlers
+DEF wRasterPtr            EQU $c956 ; Address of the record in wRasterTable for the next line
+DEF wFireworkWork         EQU $dd51 ; Working copy of the firework being updated (15 bytes):
+                                    ; +0 script address, +2 x (16-bit), +4 y (16-bit), +6 fuse step (16-bit), +8 direction,
+                                    ; +9 fuse (16-bit), +11 colour, +12 sparks left, +13 address of its sparks
+DEF wFireworks            EQU $dd60 ; The three fireworks on the level password screen, 15 bytes each
+DEF wFireworkSparks       EQU $dd8d ; Sparks of the three fireworks: 10 sparks of 8 bytes for each
+DEF wFireworkSpriteCount  EQU $de7d ; Sprites written by UpdateFireworks this frame
+DEF wFireworkOamPtr       EQU $de7e ; Next free sprite in wOamBuffer
+DEF wFireworkTick         EQU $de80 ; Counts 0 to 3; sparks change colour when it is 0
+DEF wTwinkles             EQU $de81 ; The 11 twinkling stars on the level password screen
 DEF wBrickRedrawQueue      EQU $d91c ; Brick tile changes waiting to be drawn, 4 bytes each
 DEF wStartLevelText        EQU $dad3 ; The three digits of "START nnn" on the menu
 DEF wMenuSparkles          EQU $dae3 ; The sparkles on the menu screens
@@ -251,16 +271,12 @@ DEF STATE_ENDING             EQU 13 ; Ending text after level 160
 ; Variables whose purpose is not known yet
 DEF wUnk_c000 EQU $c000
 DEF wUnk_c1fe EQU $c1fe
-DEF wUnk_c202 EQU $c202
 DEF wUnk_c250 EQU $c250
 DEF wUnk_c2b8 EQU $c2b8
 DEF wUnk_c2b9 EQU $c2b9
-DEF wUnk_c3b6 EQU $c3b6
 DEF wUnk_c3be EQU $c3be
 DEF wUnk_c3c8 EQU $c3c8
 DEF wUnk_c954 EQU $c954
-DEF wUnk_c956 EQU $c956
-DEF wUnk_c957 EQU $c957
 DEF wUnk_c958 EQU $c958
 DEF wUnk_c959 EQU $c959
 DEF wUnk_c95a EQU $c95a
@@ -285,7 +301,6 @@ DEF wUnk_cafa EQU $cafa
 DEF wUnk_cafb EQU $cafb
 DEF wUnk_cafc EQU $cafc
 DEF wUnk_cb1d EQU $cb1d
-DEF wUnk_cb58 EQU $cb58
 DEF wUnk_cb69 EQU $cb69
 DEF wUnk_cb7c EQU $cb7c
 DEF wUnk_cb7d EQU $cb7d
@@ -320,15 +335,9 @@ DEF wUnk_cccb EQU $cccb
 DEF wUnk_cccc EQU $cccc
 DEF wUnk_cccd EQU $cccd
 DEF wUnk_ccce EQU $ccce
-DEF wUnk_cccf EQU $cccf
 DEF wUnk_cce3 EQU $cce3
 DEF wUnk_ccfb EQU $ccfb
-DEF wUnk_cf2a EQU $cf2a
-DEF wUnk_cf49 EQU $cf49
-DEF wUnk_cf6a EQU $cf6a
-DEF wUnk_cf6b EQU $cf6b
 DEF wUnk_d000 EQU $d000
-DEF wUnk_d32a EQU $d32a
 DEF wUnk_d6c0 EQU $d6c0
 DEF wUnk_d745 EQU $d745
 DEF wUnk_d746 EQU $d746
@@ -338,18 +347,12 @@ DEF wUnk_d8ab EQU $d8ab
 DEF wUnk_d8ba EQU $d8ba
 DEF wUnk_d8bb EQU $d8bb
 DEF wUnk_d9bc EQU $d9bc
-DEF wUnk_d9be EQU $d9be
-DEF wUnk_d9bf EQU $d9bf
-DEF wUnk_da37 EQU $da37
-DEF wUnk_daaf EQU $daaf
-DEF wUnk_dab0 EQU $dab0
 DEF wUnk_dab1 EQU $dab1
 DEF wUnk_dab2 EQU $dab2
 DEF wUnk_dab8 EQU $dab8
 DEF wUnk_dab9 EQU $dab9
 DEF wUnk_dac3 EQU $dac3
 DEF wUnk_dad2 EQU $dad2
-DEF wUnk_dae1 EQU $dae1
 DEF wUnk_daed EQU $daed
 DEF wUnk_daf7 EQU $daf7
 DEF wUnk_db4f EQU $db4f
@@ -426,40 +429,6 @@ DEF wUnk_dd0b EQU $dd0b
 DEF wUnk_dd17 EQU $dd17
 DEF wUnk_dd32 EQU $dd32
 DEF wUnk_dd4c EQU $dd4c
-DEF wUnk_dd51 EQU $dd51
-DEF wUnk_dd53 EQU $dd53
-DEF wUnk_dd54 EQU $dd54
-DEF wUnk_dd55 EQU $dd55
-DEF wUnk_dd56 EQU $dd56
-DEF wUnk_dd57 EQU $dd57
-DEF wUnk_dd58 EQU $dd58
-DEF wUnk_dd59 EQU $dd59
-DEF wUnk_dd5a EQU $dd5a
-DEF wUnk_dd5b EQU $dd5b
-DEF wUnk_dd5c EQU $dd5c
-DEF wUnk_dd5d EQU $dd5d
-DEF wUnk_dd5e EQU $dd5e
-DEF wUnk_dd5f EQU $dd5f
-DEF wUnk_dd60 EQU $dd60
-DEF wUnk_dd61 EQU $dd61
-DEF wUnk_dd6d EQU $dd6d
-DEF wUnk_dd6e EQU $dd6e
-DEF wUnk_dd6f EQU $dd6f
-DEF wUnk_dd70 EQU $dd70
-DEF wUnk_dd7c EQU $dd7c
-DEF wUnk_dd7d EQU $dd7d
-DEF wUnk_dd7e EQU $dd7e
-DEF wUnk_dd7f EQU $dd7f
-DEF wUnk_dd8b EQU $dd8b
-DEF wUnk_dd8c EQU $dd8c
-DEF wUnk_dd8d EQU $dd8d
-DEF wUnk_dddd EQU $dddd
-DEF wUnk_de2d EQU $de2d
-DEF wUnk_de7d EQU $de7d
-DEF wUnk_de7e EQU $de7e
-DEF wUnk_de7f EQU $de7f
-DEF wUnk_de80 EQU $de80
-DEF wUnk_de81 EQU $de81
 DEF wUnk_deb8 EQU $deb8
 DEF wUnk_defa EQU $defa
 DEF wUnk_defb EQU $defb
