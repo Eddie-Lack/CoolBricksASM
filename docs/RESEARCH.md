@@ -258,6 +258,8 @@ Three small effect lists are updated every frame in bank 1:
 - **Navigation** (`MainMenu_Navigate`): `wMenuCursor` selects one of 5 items: start, start at the password level, enter password, music and sound effects. The second item is hidden until a level password has been entered. A, B, Select or Start on either start item calls `StartGame`, which sets 5 lives, clears the score and sets the level.
 - **Password entry** (`MainMenu_PasswordEntry`): up and down change the letter at `wPasswordCursor`. The letters run from B to Z without the vowels, so 21 letters can be typed, but only the 16 in `PasswordAlphabet` are valid. A, Start or right moves to the next letter and B, Select or left moves back. Moving past the fourth letter calls `SubmitPassword`.
 
+- **Idle:** `wMenuIdleTimer` is reset by any button and counts down every second frame. After about 8 seconds without input the menu changes to the high score table, and the next time to the credits (`wAttractToggle`). A button returns to the menu.
+
 `hJoypad` bits: 0 = right, 1 = left, 2 = up, 3 = down, 4 = A, 5 = B, 6 = Select, 7 = Start.
 
 ## Ball power-ups replace each other
