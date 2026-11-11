@@ -1536,7 +1536,7 @@ Text_German_LatestScoreData_001_5b44:
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $0a, $08, $08, $0a, $08, $08, $0a
     db $0a, $0a, $04, $04, $04, $04, $04, $04, $04, $04, $04
 
-Call_001_5c09:
+LevelPassword_Sub5c09:
     ld a, [$df37]
     ld c, a
     ld a, [$df38]
@@ -1617,8 +1617,8 @@ jr_001_5c63:
 LevelPassword_Update:
     xor a
     ld [wLevelsSincePassword], a
-    call Call_001_5d63
-    call Call_001_5f18
+    call LevelPassword_Sub5d63
+    call LevelPassword_Sub5f18
     ld a, [$dd4b]
     or a
     jr z, jr_001_5c7c
@@ -1644,7 +1644,7 @@ jr_001_5c7c:
 
 jr_001_5c92:
     push hl
-    call Call_001_5c09
+    call LevelPassword_Sub5c09
     pop hl
     ld a, l
     ld [$dd49], a
@@ -1671,7 +1671,7 @@ jr_001_5c9f:
 jr_001_5cbd:
     ret
 
-Call_001_5cbe:
+LevelPassword_VBlank:
     ld a, [$dd00]
     or a
     ret z
@@ -1750,7 +1750,7 @@ jr_001_5d05:
     ld [$dd02], a
     ret
 
-Call_001_5d2e:
+LevelPassword_Sub5d2e:
     push hl
     ld a, [hl+]
     ld e, a
@@ -1806,7 +1806,7 @@ jr_001_5d41:
     ld [hl+], a
     ret
 
-Call_001_5d63:
+LevelPassword_Sub5d63:
     ld a, [$de80]
     inc a
     and $03
@@ -1838,7 +1838,7 @@ jr_001_5d91:
     dec c
     jr nz, jr_001_5d91
 
-    call Call_001_5dab
+    call LevelPassword_Sub5dab
     pop hl
     ld de, $dd51
     ld c, $0f
@@ -1856,7 +1856,7 @@ jr_001_5da0:
 
     ret
 
-Call_001_5dab:
+LevelPassword_Sub5dab:
     ld a, [$dd5d]
     or a
     jp z, Jump_001_5e35
@@ -1971,7 +1971,7 @@ jr_001_5e2b:
     pop hl
     pop af
     ld hl, $dd51
-    call Call_001_5d2e
+    call LevelPassword_Sub5d2e
     ret
 
 Jump_001_5e35:
@@ -2128,7 +2128,7 @@ jr_001_5f06:
     ld [$de7f], a
     ret
 
-Call_001_5f18:
+LevelPassword_Sub5f18:
     ld a, $0b
     ld hl, $de81
     ld de, $deb8
@@ -2569,7 +2569,7 @@ jr_001_629e:
     pop hl
     ret
 
-Call_001_62bf:
+FindFreeBrickBreakEffect:
     push hl
     push af
     ld hl, wBrickBreakEffects
@@ -2777,7 +2777,7 @@ jr_001_638b:
     inc hl
     inc hl
     ld a, d
-    call Call_001_62bf
+    call FindFreeBrickBreakEffect
     pop hl
 
 jr_001_63a5:
@@ -2852,7 +2852,7 @@ jr_001_63f5:
 
     ret
 
-Call_001_63fa:
+FrameLoop_Sub63fa:
     ld a, [$dae1]
     or a
     ret z
@@ -3193,7 +3193,7 @@ jr_001_67fc:
 
     ret
 
-Call_001_6807:
+CopyPaletteBuffer:
     ld de, $c3b6
     ld hl, $d6c0
     ld b, $90
@@ -3237,7 +3237,8 @@ jr_001_6813:
     ld c, $10
     jr jr_001_683a
 
-Call_001_6838:
+; Fade the palettes one step. Used by FrameLoop when a screen appears or disappears.
+FadePalettes:
     ld c, $20
 
 Jump_001_683a:
@@ -3325,12 +3326,12 @@ jr_001_6895:
     ld hl, $ca9d
     ld de, $cadd
     call CopyPalettesToHardware
-    call Call_001_693c
+    call AnimatePalettes
     jr jr_001_68c3
 
 jr_001_68bd:
     call WaitVBlank
-    call Call_001_6807
+    call CopyPaletteBuffer
 
 jr_001_68c3:
     pop bc
@@ -3344,7 +3345,7 @@ jr_001_68c3:
     ld c, $10
     jr jr_001_68dd
 
-Call_001_68d1:
+FadePalettes2:
     ld h, a
     ld c, $08
     ld a, b
@@ -3423,7 +3424,7 @@ jr_001_691f:
     jr nz, jr_001_68f0
 
     call WaitVBlank
-    call Call_001_6807
+    call CopyPaletteBuffer
     pop bc
     pop af
     dec c
@@ -3432,7 +3433,7 @@ jr_001_691f:
     call WaitVBlank
     ret
 
-Call_001_693c:
+AnimatePalettes:
     ld a, [$ff9c]
     or a
     ret z
@@ -3823,7 +3824,7 @@ Text_German_LatestScore:
     dw $99fc
     db $00, $84, "       LETZTE ", $00, $81, "000000", $ff
 
-Call_001_6c8a:
+TitleScreen_VBlank:
     ld a, [$db5a]
     or a
     ret z
@@ -3878,7 +3879,7 @@ Call_001_6c8a:
     call CopyTilemapRect
     ret
 
-Call_001_6cd4:
+TitleScreen_Sub6cd4:
     ld a, [$db6d]
     or a
     ret z
@@ -4101,7 +4102,7 @@ jr_001_6e11:
 
     ret
 
-Call_001_6e25:
+TitleScreen_Init6e25:
     ld a, $a8
     ld [$db5b], a
     ld [$db5c], a
@@ -5130,14 +5131,14 @@ jr_001_75cc:
     ld l, a
     jp hl
 
-Call_001_75d8:
+CallHL:
     jp hl
 
 ; The frame loop of the current game state: wait for VBlank and call hFrameHandler.
 FrameLoop:
     ld b, $ff
     ld a, $20
-    call Call_001_6838
+    call FadePalettes
     ld a, [$ff9c]
     cp $04
     jr nz, jr_001_75fc
@@ -5148,7 +5149,7 @@ FrameLoop:
     ldh [rIE], a
     ld b, $ff
     ld a, $20
-    call Call_001_68d1
+    call FadePalettes2
     ld a, $04
     ld [$ff9c], a
 
@@ -5162,12 +5163,12 @@ jr_001_75fc:
     ld a, $03
     ldh [rIE], a
     ld d, $04
-    call Call_001_7929
+    call HighScores_Sub7929
     ld a, $02
     ld [$cb53], a
 
 jr_001_7615:
-    call Call_001_63fa
+    call FrameLoop_Sub63fa
 
 jr_001_7618:
     call WaitVBlank
@@ -5176,7 +5177,7 @@ jr_001_7618:
     ld l, a
     ld a, [hFrameHandler + 1]
     ld h, a
-    call Call_001_75d8
+    call CallHL
     ld a, [hStateTimer]
     or a
     jr z, jr_001_7618
@@ -5205,7 +5206,7 @@ jr_001_7640:
 
     ld [$cb53], a
     ld d, $fc
-    call Call_001_7929
+    call HighScores_Sub7929
     call WaitVBlank
     ld a, $01
     ldh [rIE], a
@@ -5221,7 +5222,7 @@ jr_001_7665:
     ld [$ff9c], a
     ld b, $01
     xor a
-    call Call_001_68d1
+    call FadePalettes2
     ld a, $01
     ldh [rIE], a
     ld a, $04
@@ -5230,7 +5231,7 @@ jr_001_7665:
 jr_001_7680:
     ld b, $01
     xor a
-    call Call_001_6838
+    call FadePalettes
     ret
 
 ; Store HL as the per-frame handler (hFrameHandler) and enter the frame loop.
@@ -5565,7 +5566,7 @@ jr_001_7894:
 
     ret
 
-Call_001_7899:
+HighScores_Sub7899:
     ld a, [$cb58]
     inc a
     ld [$cb58], a
@@ -5595,7 +5596,7 @@ jr_001_78b7:
     ld [$cb57], a
     ret
 
-Call_001_78c8:
+HighScores_InitSprites:
     ld b, $14
     ld hl, wOamBuffer
     ld de, SetUpBricksData_001_7990
@@ -5644,7 +5645,7 @@ jr_001_78f0:
 
     ret
 
-Call_001_78fd:
+HighScores_MoveSprites:
     ld a, $14
     ld de, $cccf
     ld hl, $c202
@@ -5681,14 +5682,14 @@ jr_001_7908:
 
     ret
 
-Call_001_7929:
+HighScores_Sub7929:
     ld a, $20
 
 jr_001_792b:
     push af
     call WaitVBlank
     push de
-    call Call_001_78fd
+    call HighScores_MoveSprites
     pop de
     ld hl, wBatX
     ld c, $04
@@ -6023,7 +6024,7 @@ GameOver_Update:
     ld [$ccb6], a
     ld a, $ff
     ld [$ccb7], a
-    call Call_000_08c8
+    call BuildScoreText
     ld a, $1a
     call PlaySound
 
@@ -6209,7 +6210,7 @@ jr_001_7d12:
 jr_001_7d1d:
     ld [hl-], a
     dec hl
-    call Call_000_0974
+    call ParseDecimal
     ld a, [$df35]
     ld l, a
     ld a, [$df36]
@@ -6244,7 +6245,7 @@ jr_001_7d1d:
     ld [$dd49], a
     ld a, h
     ld [$dd4a], a
-    call Call_001_5c09
+    call LevelPassword_Sub5c09
     ld a, [$dd4f]
     ld l, a
     ld a, [$dd50]
@@ -6280,11 +6281,11 @@ jr_001_7d1d:
     ld a, h
     ld [$dd7f], a
     ld hl, $dd60
-    call Call_001_5d2e
+    call LevelPassword_Sub5d2e
     ld hl, $dd6f
-    call Call_001_5d2e
+    call LevelPassword_Sub5d2e
     ld hl, $dd7e
-    call Call_001_5d2e
+    call LevelPassword_Sub5d2e
     ld hl, $dd8d
     ld a, l
     ld [$dd6d], a

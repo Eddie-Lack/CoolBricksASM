@@ -5,8 +5,10 @@
 
 SECTION "ROM Bank $00e", ROMX[$4000], BANK[$e]
 
-MainMenuData_00e_4000:
-    db $a6, $98, $00, $04, $56, $45, $52, $20, $32, $33, $20, $30, $32, $ff
+; Shown on the title menu by the NXRZ cheat.
+Text_Version:
+    dw $98a6
+    db $00, $04, "VER 23 02", $ff
 
 Text_Spanish_StartGame:
     dw $98c4

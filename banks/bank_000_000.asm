@@ -46,7 +46,7 @@ ProgramStart:
 
 jr_000_0184:
     call RunStateInit
-    call Call_000_024b
+    call InstallInterruptHandlers
     ld a, [$ffa1]
     or a
     jr nz, jr_000_0199
@@ -253,7 +253,8 @@ ReadJoypad:
     ld [hJoypad], a
     ret
 
-Call_000_024b:
+; Write the VBlank and LCD STAT jump stubs to RAM from hVBlankHandler and hStatHandler.
+InstallInterruptHandlers:
     ld a, $c3
     ld [$ff92], a
     ld a, $c3
@@ -315,9 +316,9 @@ VBlank:
     push hl
     xor a
     ldh [rSVBK], a
-    call Call_001_6c8a
+    call TitleScreen_VBlank
     call $ff80
-    call Call_001_5cbe
+    call LevelPassword_VBlank
     ld hl, $c3b6
     ld a, l
     ld [$c956], a
@@ -914,8 +915,8 @@ StateInit_HighScores:
     ld a, $01
     ld [$c959], a
     call ChangeROMBank
-    call Call_001_78c8
-    call Call_001_78fd
+    call HighScores_InitSprites
+    call HighScores_MoveSprites
     ld a, $81
     ld [$ccc2], a
     xor a
@@ -954,8 +955,8 @@ StateInit_HighScores:
     ret
 
 HighScores_Update:
-    call Call_001_7899
-    call Call_001_78fd
+    call HighScores_Sub7899
+    call HighScores_MoveSprites
     ld a, [$ccb7]
     cp $ff
     jr z, jr_000_06fd
@@ -1269,7 +1270,6 @@ LoadHighScores:
     call DataTransfer
     ld a, $01                               ; Switch ROM1 to Bank 1
 
-Call_000_0899:              ; this is NOT a function, it's just data that managed to make this address part of the decompiled code
     call ChangeROMBank
     ret
 
@@ -1290,7 +1290,8 @@ DrawHighScoreTable:
     call DrawString
     ret
 
-Call_000_08c8:
+; Turn the score digits into characters for the score display.
+BuildScoreText:
     ld hl, $d8ae
     ld de, $ccad
     ld b, $05
@@ -1429,7 +1430,8 @@ jr_000_095b:
     call DataTransfer
     ret
 
-Call_000_0974:
+; Read a 3-digit decimal number from the string at HL.
+ParseDecimal:
     ld a, $02
     call ChangeROMBank
     ld b, $00
@@ -3048,9 +3050,9 @@ jr_000_12d4:
     xor a
     ld [$d9be], a
     ld [$d9bd], a
-    call Call_000_1950
+    call UpdateBatTiles
     call ProcessBrickHitQueue
-    call Call_000_1d7c
+    call FlushBrickRedraw
     ld a, [hLifeLostTimer]
     or a
     jr z, Gameplay_CheckPause
@@ -3107,7 +3109,7 @@ RestartAfterLifeLost:
     xor a
     ld [wOamUsed], a
     ld [hJoypad], a
-    call Call_001_6838
+    call FadePalettes
     call InitBatSprites
     call InitBat
     call InitBall
@@ -3116,10 +3118,10 @@ RestartAfterLifeLost:
     ld [$d9bd], a
     inc a
     ld [$d745], a
-    call Call_000_1def
-    call Call_000_1950
+    call MarkBrickHitQueue
+    call UpdateBatTiles
     call ProcessBrickHitQueue
-    call Call_000_1d7c
+    call FlushBrickRedraw
     call ResetShots
     call ResetEnemies
     call ClearFallingPowerups
@@ -3138,7 +3140,7 @@ RestartAfterLifeLost:
     call DrawBatSprites
     ld b, $ff
     ld a, $20
-    call Call_001_6838
+    call FadePalettes
     call PlayLevelMusic
     ret
 
@@ -4123,7 +4125,7 @@ jr_000_1930:
     ld [wOamWritePtr + 1], a
     ret
 
-Call_000_1950:
+UpdateBatTiles:
     ld a, [wBatExplosionTimer]
     or a
     jr nz, jr_000_195d
@@ -4539,8 +4541,7 @@ jr_000_1b70:
     ld l, a
     jp hl
 
-Call_000_1b7f:
-Jump_000_1b7f:
+BrickRedraw_1b7f:
     ld a, [$d9bd]
     add $02
     ld [$d9bd], a
@@ -4574,8 +4575,7 @@ Jump_000_1b7f:
     ld [hl+], a
     ret
 
-Call_000_1bac:
-Jump_000_1bac:
+BrickRedraw_1bac:
     ld a, [$d9bd]
     add $02
     ld [$d9bd], a
@@ -4609,8 +4609,7 @@ Jump_000_1bac:
     ld [hl+], a
     ret
 
-Call_000_1bd9:
-Jump_000_1bd9:
+BrickRedraw_1bd9:
     ld a, [$d9bd]
     add $02
     ld [$d9bd], a
@@ -4641,8 +4640,7 @@ Jump_000_1bd9:
 
     db $22, $7a, $22, $3e, $0a, $22, $c9
 
-Call_000_1c07:
-Jump_000_1c07:
+BrickRedraw_1c07:
     ld a, [$d9bd]
     add $02
     ld [$d9bd], a
@@ -4851,92 +4849,93 @@ jr_000_1cf2:
 
 Jump_000_1d0a:
     pop hl
-    call Call_000_1b7f
+    call BrickRedraw_1b7f
     jp Jump_000_1c34
 
 Jump_000_1d11:
     pop hl
-    call Call_000_1b7f
+    call BrickRedraw_1b7f
     jp Jump_000_1c9a
 
 Jump_000_1d18:
     pop hl
-    call Call_000_1b7f
+    call BrickRedraw_1b7f
     jp Jump_000_1cbf
 
 Jump_000_1d1f:
     pop hl
 
-    jp Jump_000_1b7f
+    jp BrickRedraw_1b7f
 
 Jump_000_1d23:
     pop hl
-    call Call_000_1bd9
+    call BrickRedraw_1bd9
     jp Jump_000_1c34
 
 Jump_000_1d2a:
     pop hl
-    call Call_000_1bd9
+    call BrickRedraw_1bd9
     jp Jump_000_1c9a
 
 Jump_000_1d31:
     pop hl
-    call Call_000_1bd9
+    call BrickRedraw_1bd9
     jp Jump_000_1cbf
 
 Jump_000_1d38:
     pop hl
-    jp Jump_000_1bd9
+    jp BrickRedraw_1bd9
 
 Jump_000_1d3c:
     pop hl
-    call Call_000_1c07
+    call BrickRedraw_1c07
     jp Jump_000_1c34
 
 Jump_000_1d43:
     pop hl
-    call Call_000_1c07
+    call BrickRedraw_1c07
     jp Jump_000_1c9a
 
 Jump_000_1d4a:
     pop hl
-    call Call_000_1c07
+    call BrickRedraw_1c07
     jp Jump_000_1cbf
 
 Jump_000_1d51:
     pop hl
-    jp Jump_000_1c07
+    jp BrickRedraw_1c07
 
 Jump_000_1d55:
     pop hl
-    call Call_000_1bac
+    call BrickRedraw_1bac
     jp Jump_000_1c34
 
 Jump_000_1d5c:
     pop hl
-    call Call_000_1bac
+    call BrickRedraw_1bac
     jp Jump_000_1c9a
 
 Jump_000_1d63:
     pop hl
-    call Call_000_1bac
+    call BrickRedraw_1bac
     jp Jump_000_1cbf
 
 Jump_000_1d6a:
     pop hl
-    jp Jump_000_1bac
+    jp BrickRedraw_1bac
 
 Jump_000_1d6e:
     pop hl
-    call Call_000_1bac
+    call BrickRedraw_1bac
     jp Jump_000_1c67
 
 Jump_000_1d75:
     pop hl
-    call Call_000_1bac
+    call BrickRedraw_1bac
     jp Jump_000_1ce4
 
-Call_000_1d7c:
+; Copy the queued brick tile changes to the buffer that VBlank writes to the screen.
+FlushBrickRedraw:
     ld a, [$d9bd]
     or a
     jr z, jr_000_1dae
@@ -4987,7 +4986,7 @@ jr_000_1dbd:
     cp $ff
     jr nz, jr_000_1dc6
 
-    ld hl, CountBrickDestroyedData_009_4000
+    ld hl, BrickRedrawData_009_4000
     ld a, [hl+]
 
 jr_000_1dc6:
@@ -5017,7 +5016,7 @@ jr_000_1dc6:
     ld [$d9bd], a
     ret
 
-Call_000_1def:
+MarkBrickHitQueue:
     ld b, $01
     jr jr_000_1df5
 
@@ -5443,7 +5442,7 @@ jr_000_2074:
     or a
     jr z, jr_000_2083
 
-    ld hl, MainMenuData_00e_4000
+    ld hl, Text_Version
     call DrawString
 
 jr_000_2083:
@@ -6386,7 +6385,7 @@ jr_000_2640:
     ld [wMenuItemColours + 1], a
 
 jr_000_2661:
-    call Call_001_6e25
+    call TitleScreen_Init6e25
     ret
 
 TitleScreen_Update:
@@ -6407,7 +6406,7 @@ TitleScreen_Update:
     call PlaySound
 
 jr_000_2683:
-    call Call_001_6cd4
+    call TitleScreen_Sub6cd4
     ret
 
 StateInit_GameOver:
@@ -9970,7 +9969,7 @@ jr_000_3d12:
 jr_000_3d1d:
     ld [hl-], a
     dec hl
-    call Call_000_0974
+    call ParseDecimal
     ld a, [$df35]
     ld l, a
     ld a, [$df36]
@@ -10005,7 +10004,7 @@ jr_000_3d1d:
     ld [$dd49], a
     ld a, h
     ld [$dd4a], a
-    call Call_001_5c09
+    call LevelPassword_Sub5c09
     ld a, [$dd4f]
     ld l, a
     ld a, [$dd50]
@@ -10041,11 +10040,11 @@ jr_000_3d1d:
     ld a, h
     ld [$dd7f], a
     ld hl, $dd60
-    call Call_001_5d2e
+    call LevelPassword_Sub5d2e
     ld hl, $dd6f
-    call Call_001_5d2e
+    call LevelPassword_Sub5d2e
     ld hl, $dd7e
-    call Call_001_5d2e
+    call LevelPassword_Sub5d2e
     ld hl, $dd8d
     ld a, l
     ld [$dd6d], a
