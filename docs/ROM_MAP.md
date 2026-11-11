@@ -45,10 +45,10 @@ Runs of labels with the same prefix are shown as one row.
 | `$024B` | 77 | code | `InstallInterruptHandlers` |
 | `$0298` | 27 | code | `Stat_Default` |
 | `$02B3` | 241 | code | `VBlank` to `VBlank_InGame` (2 labels) |
-| `$03A4` | 517 | code | `VBlankMenus` |
+| `$03A4` | 517 | code | `VBlankMenus` to `VBlankMenus_BlinkRow` (3 labels) |
 | `$05A9` | 48 | code | `VBlank_Credits` |
 | `$05D9` | 257 | code | `StateInit_HighScores` |
-| `$06DA` | 413 | code | `HighScores_Update` |
+| `$06DA` | 413 | code | `HighScores_Update` to `HighScores_ButtonsReleased` (3 labels) |
 | `$0877` | 38 | code | `LoadHighScores` |
 | `$089D` | 43 | code | `DrawHighScoreTable` |
 | `$08C8` | 172 | code | `BuildScoreText` |
@@ -56,7 +56,7 @@ Runs of labels with the same prefix are shown as one row.
 | `$09FA` | 178 | code | `CheckPassword` |
 | `$0AAC` | 63 | code | `StartHdmaTransfer` |
 | `$0AEB` | 24 | code | `PlayLevelMusic` |
-| `$0B03` | 696 | code | `LoadLevel` |
+| `$0B03` | 696 | code | `LoadLevel` to `LoadLevel_ResumeDone` (3 labels) |
 | `$0DBB` | 13 | code | `RleFill` |
 | `$0DC8` | 22 | code | `RleOverlay` |
 | `$0DDE` | 118 | code | `BuildLevelTitle` |
@@ -64,7 +64,9 @@ Runs of labels with the same prefix are shown as one row.
 | `$0E84` | 51 | code | `DrawStringSkipZero` |
 | `$0EB7` | 46 | code | `InitBat` |
 | `$0EE5` | 75 | code | `InitBall` |
-| `$0F30` | 1047 | code | `Gameplay_Update` to `Gameplay_CheckPause` (10 labels) |
+| `$0F30` | 237 | code | `Gameplay_Update` to `Gameplay_MoveBat` (3 labels) |
+| `$101D` | 186 | code | `Gameplay_MoveBat_Right` to `Gameplay_MoveBat_Left` (2 labels) |
+| `$10D7` | 624 | code | `Gameplay_AntigravitySteering` to `Gameplay_CheckPause` (7 labels) |
 | `$1347` | 101 | code | `RestartAfterLifeLost` |
 | `$13AC` | 583 | code | `UpdateBall` to `UpdateBall_Move` (3 labels) |
 | `$15F3` | 453 | code | `CollideBall` to `CollideBall_Corners` (2 labels) |
@@ -82,16 +84,27 @@ Runs of labels with the same prefix are shown as one row.
 | `$1A96` | 79 | code | `GetBrickNeighbourMask` |
 | `$1AE5` | 47 | code | `QueueBrickHit` |
 | `$1B14` | 107 | code | `CountBrickDestroyed` |
-| `$1B7F` | 509 | code | `BrickRedraw_1b7f` to `BrickRedraw_1c07` (4 labels) |
+| `$1B7F` | 395 | code | `BrickRedraw_Lit` to `BrickRedraw_BelowLeftShadow` (9 labels) |
+| `$1D0A` | 21 | code | `BrickRedrawCase_Lit_Below` to `BrickRedrawCase_Lit_BelowLeft` (3 labels) |
+| `$1D1F` | 4 | code | `BrickRedrawCase_Lit` |
+| `$1D23` | 21 | code | `BrickRedrawCase_ShadowRight_Below` to `BrickRedrawCase_ShadowRight_BelowLeft` (3 labels) |
+| `$1D38` | 4 | code | `BrickRedrawCase_ShadowRight` |
+| `$1D3C` | 21 | code | `BrickRedrawCase_ShadowLeft_Below` to `BrickRedrawCase_ShadowLeft_BelowLeft` (3 labels) |
+| `$1D51` | 4 | code | `BrickRedrawCase_ShadowLeft` |
+| `$1D55` | 21 | code | `BrickRedrawCase_Shadow_Below` to `BrickRedrawCase_Shadow_BelowLeft` (3 labels) |
+| `$1D6A` | 4 | code | `BrickRedrawCase_Shadow` |
+| `$1D6E` | 14 | code | `BrickRedrawCase_Shadow_BelowHalfShadow` to `BrickRedrawCase_Shadow_BelowLeftShadow` (2 labels) |
 | `$1D7C` | 115 | code | `FlushBrickRedraw` |
 | `$1DEF` | 4 | code | `MarkBrickHitQueue` |
 | `$1DF3` | 40 | code | `ClearBrickHitQueue` |
-| `$1E1B` | 352 | code | `ProcessBrickHitQueue` |
+| `$1E1B` | 15 | code | `ProcessBrickHitQueue` |
+| `$1E2A` | 337 | code | `ProcessBrickHitQueue_Entry` to `ProcessBrickHitQueue_Next` (4 labels) |
 | `$1F7B` | 312 | code | `StateInit_MainMenu` |
 | `$20B3` | 71 | code | `FormatLevelNumber` |
 | `$20FA` | 314 | code | `MainMenu_Update` to `MainMenu_PasswordEntry` (2 labels) |
-| `$2234` | 57 | code | `SubmitPassword` |
-| `$226D` | 686 | code | `MainMenu_Navigate` |
+| `$2234` | 52 | code | `SubmitPassword` |
+| `$2268` | 5 | code | `SubmitPassword_ButtonsReleased` |
+| `$226D` | 686 | code | `MainMenu_Navigate` to `MainMenu_IdleTick` (2 labels) |
 | `$251B` | 52 | code | `StartGame` |
 | `$254F` | 278 | code | `StateInit_TitleScreen` |
 | `$2665` | 34 | code | `TitleScreen_Update` |
@@ -103,8 +116,10 @@ Runs of labels with the same prefix are shown as one row.
 | `$2892` | 185 | code | `UpdateEnemyPath` |
 | `$294B` | 15 | code | `ClearProjectiles` |
 | `$295A` | 39 | code | `SpawnProjectile` |
-| `$2981` | 318 | code | `UpdateProjectiles` |
-| `$2ABF` | 578 | code | `UpdateProjectile` |
+| `$2981` | 202 | code | `UpdateProjectiles` |
+| `$2A4B` | 116 | code | `UpdateProjectile_HitBrick` |
+| `$2ABF` | 194 | code | `UpdateProjectile` |
+| `$2B81` | 384 | code | `UpdateProjectile_Move` |
 | `$2D01` | 101 | code | `Projectile_CheckBrickKeepDE` to `Projectile_HitBrick` (3 labels) |
 | `$2D66` | 777 | code | `UpdateUfo` |
 | `$306F` | 40 | code | `UfoHit` |
@@ -112,7 +127,7 @@ Runs of labels with the same prefix are shown as one row.
 | `$316C` | 47 | code | `CheckUfoHit` |
 | `$319B` | 63 | code | `CheckBlobCatch` |
 | `$31DA` | 50 | code | `ResetShots` |
-| `$320C` | 42 | code | `UpdateShots` |
+| `$320C` | 42 | code | `UpdateShots` to `UpdateShots_Shot5` (6 labels) |
 | `$3236` | 579 | code | `Shots_HandleFire` to `Shots_FireRocketOrLaser` (3 labels) |
 | `$3479` | 242 | code | `UpdateShot0` |
 | `$356B` | 242 | code | `UpdateShot1` |
@@ -126,7 +141,7 @@ Runs of labels with the same prefix are shown as one row.
 | `$3AD8` | 22 | code | `PublisherLogo_Update` |
 | `$3AEE` | 98 | code | `StateInit_Credits` |
 | `$3B50` | 59 | code | `SelectCreditsText` |
-| `$3B8B` | 169 | code | `UpdateCreditsScroll` |
+| `$3B8B` | 169 | code | `UpdateCreditsScroll` to `UpdateCreditsScroll_BlankRow` (3 labels) |
 | `$3C34` | 17 | code | `NextLevelMusic` |
 | `$3C45` | 524 | code | `StateInit_LevelPassword` to `StateInit_LanguageSelect` (2 labels) |
 | `$3E51` | 5 | code | `PlayMusic` |
@@ -165,8 +180,9 @@ Runs of labels with the same prefix are shown as one row.
 | `$5034` | 171 | code | `SpawnPowerup` |
 | `$50DF` | 154 | code | `UpdateFallingPowerups` |
 | `$5179` | 91 | code | `CheckPowerupCaught` |
-| `$51D4` | 634 | code | `Powerup_Slowball` to `Powerup_Grenade` (16 labels) |
-| `$544E` | 26 | code | `PowerupCollected` |
+| `$51D4` | 634 | code | `Powerup_Slowball` to `Powerup_Grenade` (18 labels) |
+| `$544E` | 2 | code | `PowerupCollected` |
+| `$5450` | 24 | code | `PowerupCollected_AddScore` |
 | `$5468` | 18 | data | `ShotSprite_Rocket` to `ShotSprite_Laser` (3 labels) |
 | `$547A` | 21 | data | `GrenadeText_English_0` |
 | `$548F` | 21 | data | `GrenadeText_French_0` |
@@ -213,7 +229,12 @@ Runs of labels with the same prefix are shown as one row.
 | `$583E` | 744 | data | `TitleScreenData_001_583e` to `TitleScreenData_001_5ae2` (12 labels) |
 | `$5B26` | 65 | data | `TitleLetterTable_5b26` to `TitleLetterTable_5b44` (2 labels) |
 | `$5B67` | 162 | data | `TitleLetterTiles_5b67` to `TitleLetterTiles_5c00` (18 labels) |
-| `$5C09` | 878 | code | `LevelPassword_DrawBonus` to `LevelPassword_Sub5f18` (7 labels) |
+| `$5C09` | 293 | code | `LevelPassword_DrawBonus` to `LevelPassword_VBlank` (3 labels) |
+| `$5D2E` | 53 | code | `Firework_Launch` |
+| `$5D63` | 72 | code | `UpdateFireworks` |
+| `$5DAB` | 138 | code | `UpdateFirework` |
+| `$5E35` | 227 | code | `Firework_Fly` |
+| `$5F18` | 95 | code | `UpdateTwinkles` |
 | `$5F77` | 22 | data | `BatSpeedTable` |
 | `$5F8D` | 128 | data | `BatBounceTable` |
 | `$600D` | 160 | data | `BatBounceTable_BigBat` |
@@ -231,7 +252,7 @@ Runs of labels with the same prefix are shown as one row.
 | `$633E` | 15 | code | `ClearPickupEffects` |
 | `$634D` | 57 | code | `SpawnPickupEffect` |
 | `$6386` | 116 | code | `UpdatePickupEffects` |
-| `$63FA` | 201 | code | `FrameLoop_Sub63fa` |
+| `$63FA` | 201 | code | `SweepBricks` to `SweepBricks_Cell` (3 labels) |
 | `$64C3` | 17 | code | `ClearUnbreakableHitEffects` |
 | `$64D4` | 37 | code | `SpawnUnbreakableHitEffect` |
 | `$64F9` | 74 | code | `UpdateUnbreakableHitEffects` |
@@ -240,13 +261,15 @@ Runs of labels with the same prefix are shown as one row.
 | `$65A8` | 98 | data | `LevelPasswordFrames` |
 | `$660A` | 40 | data | `LevelPasswordCurves` |
 | `$6632` | 338 | data | `LevelPasswordCurve_6632` to `LevelPasswordCurve_674d` (6 labels) |
-| `$6784` | 112 | data | `LevelPasswordData_001_6784` to `LevelPasswordData_001_67cb` (4 labels) |
+| `$6784` | 41 | data | `LevelPasswordData_001_6784` |
+| `$67AD` | 71 | data | `FireworkScript_0` to `FireworkScript_2` (3 labels) |
 | `$67F4` | 19 | code | `CopyPalettesToHardware` |
 | `$6807` | 49 | code | `CopyPaletteBuffer` |
-| `$6838` | 153 | code | `FadePalettes` |
-| `$68D1` | 107 | code | `FadePalettes2` |
+| `$6838` | 153 | code | `FadePalettes` to `FadePalettes_Step` (2 labels) |
+| `$68D1` | 12 | code | `FadePalettes2` |
+| `$68DD` | 95 | code | `FadePalettes2_Step` |
 | `$693C` | 287 | code | `AnimatePalettes` |
-| `$6A5B` | 304 | code | `LanguageSelect_Update` |
+| `$6A5B` | 304 | code | `LanguageSelect_Update` to `LanguageSelect_Done` (3 labels) |
 | `$6B8B` | 24 | data | `Text_English_HighScorePassword` |
 | `$6BA3` | 24 | data | `Text_French_HighScorePassword` |
 | `$6BBB` | 24 | data | `Text_German_HighScorePassword` |
@@ -257,7 +280,7 @@ Runs of labels with the same prefix are shown as one row.
 | `$6C39` | 27 | data | `Text_Spanish_LatestScore` |
 | `$6C54` | 27 | data | `Text_Italian_LatestScore` |
 | `$6C6F` | 27 | data | `Text_German_LatestScore` |
-| `$6C8A` | 528 | code | `TitleScreen_VBlank` to `TitleScreen_Init6e25` (3 labels) |
+| `$6C8A` | 528 | code | `TitleScreen_VBlank` to `TitleScreen_Init6e25` (4 labels) |
 | `$6E9A` | 11 | code | `ClearOamEntries` |
 | `$6EA5` | 47 | code | `InitBatSprites` |
 | `$6ED4` | 390 | code | `DrawBatSprites` |
@@ -294,9 +317,10 @@ Runs of labels with the same prefix are shown as one row.
 | `$7706` | 32 | data | `UpdateFallingPowerupsData_001_7706` |
 | `$7726` | 32 | data | `PowerupSprites` |
 | `$7746` | 128 | data | `PowerupSprite_Slowball` to `PowerupSprite_Grenade` (16 labels) |
-| `$77C6` | 211 | code | `SetUpBricks` |
-| `$7899` | 183 | code | `HighScores_Sub7899` to `HighScores_Sub7929` (4 labels) |
-| `$7950` | 104 | data | `SetUpBricksData_001_7950` to `SetUpBricksData_001_7990` (2 labels) |
+| `$77C6` | 211 | code | `SetUpBricks` to `SetUpBricks_Cell` (3 labels) |
+| `$7899` | 183 | code | `HighScores_AdvanceAnim` to `HighScores_SlideSprites` (4 labels) |
+| `$7950` | 64 | data | `HighScoreSpriteTiles` |
+| `$7990` | 40 | data | `HighScoreSpritePositions` |
 | `$79B8` | 38 | data | `HighScoreAnimFrames` to `HighScoreAnimFrames_Second` (2 labels) |
 | `$79DE` | 128 | data | `BrickRedrawHandlers` |
 | `$7A5E` | 89 | code | `Credits_Update` |
@@ -306,7 +330,7 @@ Runs of labels with the same prefix are shown as one row.
 | `$7B56` | 18 | data | `UnbreakableHitEffectFrames` |
 | `$7B68` | 28 | data | `BrickBreakEffectFrames` |
 | `$7B84` | 6 | data | `PickupEffectFrames` |
-| `$7B8A` | 22 | data | `UpdatePickupEffectsData_001_7b8a` |
+| `$7B8A` | 22 | data | `BrickSweepLengths` |
 | `$7BA0` | 28 | data | `StateInitHandlers` |
 | `$7BBC` | 28 | data | `StateUpdateHandlers` |
 | `$7BD8` | 43 | code | `GameOver_Update` |
@@ -546,12 +570,12 @@ Runs of labels with the same prefix are shown as one row.
 
 | Address | Bytes | Kind | Labels |
 |---|---|---|---|
-| `$4000` | 256 | code | `SetUpRasterEffect` |
-| `$4100` | 46 | code | `Raster_CopyBytes` to `Raster_Sub4128` (5 labels) |
-| `$412E` | 82 | data | `RasterHandler_412e` |
-| `$4180` | 92 | data | `RasterData_4180` |
-| `$41DC` | 56 | data | `RasterHandler_41dc` |
-| `$4214` | 2160 | data | `RasterData_4214` to `RasterData_4964` (8 labels) |
+| `$4000` | 256 | code | `SetUpRasterEffect` to `SetUpRasterEffect_Mode3` (2 labels) |
+| `$4100` | 46 | code | `Raster_CopyBytes` to `Raster_FillByteColumn` (5 labels) |
+| `$412E` | 230 | code | `RasterHandler_Mode1` to `RasterHandler_Mode3` (3 labels) |
+| `$4214` | 144 | data | `RasterNextLines` |
+| `$42A4` | 288 | data | `RasterColours_Mode3` |
+| `$43C4` | 1728 | data | `RasterColours_Mode2_3` to `RasterColours_Mode4_3` (6 labels) |
 | `$4A84` | 13692 | data | `Credits_English` to `Credits_Spanish` (5 labels) |
 
 ## Bank $10
