@@ -513,7 +513,7 @@ VBlankMenus:
     call ChangeROMBank
     xor a
     ld de, $9800
-    ld hl, Data_002_6d74
+    ld hl, Tilemap_VBlankMenus_002_6d74
     ld b, $14
     ld c, $04
     call CopyTilemapRect
@@ -530,7 +530,7 @@ jr_000_03ec:
     call ChangeROMBank
     ld a, $25
     ld de, $9800
-    ld hl, Data_002_6c0c
+    ld hl, Tilemap_VBlankMenus_002_6c0c
     ld b, $14
     ld c, $04
     call CopyTilemapRect
@@ -887,7 +887,7 @@ StateInit_HighScores:
     call DrawHighScoreTable
     ld a, $0b
     call ChangeROMBank
-    ld hl, Data_00b_7d2c
+    ld hl, Gfx_HighScores_00b_7d2c
     ld de, $8b40
     ld bc, $0090
     call DataTransfer
@@ -895,7 +895,7 @@ StateInit_HighScores:
     call ChangeROMBank
     ld a, $26
     ld de, $9800
-    ld hl, Data_00b_7cc0
+    ld hl, Tilemap_HighScores_00b_7cc0
     ld b, $12
     ld c, $03
     call CopyTilemapRect
@@ -904,7 +904,7 @@ StateInit_HighScores:
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, Data_00b_7cf6
+    ld hl, Tilemap_HighScores_00b_7cf6
     ld b, $12
     ld c, $03
     call CopyTilemapRect
@@ -1910,7 +1910,7 @@ jr_000_0c41:
     ldh [rVBK], a
     ld a, $03
     call ChangeROMBank
-    ld hl, Data_003_4000
+    ld hl, Tilemap_Level_003_4000
     ld a, $00
     ld de, $9841
     ld b, $12
@@ -1945,21 +1945,21 @@ jr_000_0c9a:
     ldh [rVBK], a
     ld a, $02
     call ChangeROMBank
-    ld hl, Data_002_4b2c
+    ld hl, Gfx_Level_002_4b2c
     ld de, $8000
     ld bc, $07f0
     call DataTransfer
-    ld hl, Data_002_5dec
+    ld hl, Gfx_Level_002_5dec
     ld de, $9000
     ld bc, $0250
     call DataTransfer
-    ld hl, Data_002_594c
+    ld hl, Gfx_Level_002_594c
     ld de, $9250
     ld bc, $04a0
     call DataTransfer
     ld a, $0b
     call ChangeROMBank
-    ld hl, Data_00b_7d2c
+    ld hl, Gfx_HighScores_00b_7d2c
     ld de, $96f0
     ld bc, $0110
     call DataTransfer
@@ -1987,7 +1987,7 @@ jr_000_0c9a:
     call DataTransfer
     ld a, $02
     call ChangeROMBank
-    ld hl, Data_002_531c
+    ld hl, Gfx_Level_002_531c
     ld de, $8000
     ld bc, $0630
     call DataTransfer
@@ -2001,19 +2001,19 @@ jr_000_0c9a:
 
     ld a, $25
     ld de, $9840
-    ld hl, Data_001_748b
+    ld hl, Tilemap_Level_001_748b
     ld b, $01
     ld c, $10
     call CopyTilemapRect
     ld a, $25
     ld de, $9853
-    ld hl, Data_001_748b
+    ld hl, Tilemap_Level_001_748b
     ld b, $01
     ld c, $10
     call CopyTilemapRect
     ld a, $25
     ld de, $9820
-    ld hl, Data_001_7477
+    ld hl, Tilemap_Level_001_7477
     ld b, $14
     ld c, $01
     call CopyTilemapRect
@@ -5355,17 +5355,17 @@ StateInit_MainMenu:
     ldh [rVBK], a
     xor a
     ld de, $9880
-    ld hl, Data_002_6dc4
+    ld hl, Tilemap_MainMenu_002_6dc4
     ld b, $14
     ld c, $0e
     call CopyTilemapRect
     xor a
     ldh [rVBK], a
-    ld hl, Data_002_6edc
+    ld hl, Gfx_MainMenu_002_6edc
     ld de, $8000
     ld bc, $04c0
     call DataTransfer
-    ld hl, Data_002_603c
+    ld hl, Gfx_MainMenu_002_603c
     ld de, $9000
     ld bc, $0800
     call DataTransfer
@@ -5380,7 +5380,7 @@ StateInit_MainMenu:
     ld a, $25
     ld de, $9880
 
-    ld hl, Data_002_6c5c
+    ld hl, Tilemap_MainMenu_002_6c5c
     ld b, $14
     ld c, $0e
     call CopyTilemapRect
@@ -6287,7 +6287,7 @@ StateInit_TitleScreen:
     call ChangeROMBank
     ld a, $01
     ldh [rVBK], a
-    ld hl, Data_007_4000
+    ld hl, Gfx_TitleScreen_007_4000
     ld de, $9000
     ld bc, $0800
     call DataTransfer
@@ -6301,7 +6301,7 @@ StateInit_TitleScreen:
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, Data_007_5dac
+    ld hl, Tilemap_TitleScreen_007_5dac
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -6309,7 +6309,7 @@ StateInit_TitleScreen:
     or a
     jr z, jr_000_25cf
 
-    ld hl, Data_007_5f14
+    ld hl, Tilemap_TitleScreen_007_5f14
     ld de, $9a20
     xor a
     ld b, $14
@@ -6341,20 +6341,20 @@ jr_000_25cf:
     dec a
     jr z, jr_000_2605
 
-    ld hl, Data_007_68f8
+    ld hl, Gfx_TitleScreen_007_68f8
 
 jr_000_2605:
     ld de, $8e20
     ld bc, $0140
     call DataTransfer
-    ld hl, Data_007_5f28
+    ld hl, Gfx_TitleScreen_007_5f28
     ld de, $8000
     ld bc, $0540
     call DataTransfer
     xor a
     ld [wMenuCursor], a
     ld de, $9800
-    ld hl, Data_007_5c30
+    ld hl, Tilemap_TitleScreen_007_5c30
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -6362,7 +6362,7 @@ jr_000_2605:
     or a
     jr z, jr_000_2640
 
-    ld hl, Data_007_5d98
+    ld hl, Tilemap_TitleScreen_007_5d98
     ld a, $e2
     ld de, $9a20
     ld b, $14
@@ -6437,7 +6437,7 @@ jr_000_2692:
     call ChangeROMBank
     ld a, $01
     ldh [rVBK], a
-    ld hl, Data_005_496c
+    ld hl, Gfx_GameOver_005_496c
     ld de, $9000
     ld bc, $0800
     call DataTransfer
@@ -6447,7 +6447,7 @@ jr_000_2692:
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, Data_005_63a4
+    ld hl, Tilemap_GameOver_005_63a4
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -6463,7 +6463,7 @@ jr_000_2692:
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, Data_005_623c
+    ld hl, Tilemap_GameOver_005_623c
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -9493,7 +9493,7 @@ StateInit_Pause:
     call ChangeROMBank
     ld a, $01
     ldh [rVBK], a
-    ld hl, Data_00e_48c1
+    ld hl, Gfx_Pause_00e_48c1
     ld de, $9000
     ld bc, $0800
     call DataTransfer
@@ -9503,7 +9503,7 @@ StateInit_Pause:
     call DataTransfer
     xor a
     ld de, $9c00
-    ld hl, Data_00e_62f9
+    ld hl, Tilemap_Pause_00e_62f9
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -9519,7 +9519,7 @@ StateInit_Pause:
     call DataTransfer
     xor a
     ld de, $9c00
-    ld hl, Data_00e_6191
+    ld hl, Tilemap_Pause_00e_6191
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -9562,7 +9562,7 @@ StateInit_DeveloperLogos:
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, Data_002_7df4
+    ld hl, Tilemap_DeveloperLogos_002_7df4
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -9579,7 +9579,7 @@ StateInit_DeveloperLogos:
     xor a
     ld [$dae1], a
     ld de, $9800
-    ld hl, Data_002_7c8c
+    ld hl, Tilemap_DeveloperLogos_002_7c8c
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -9620,23 +9620,23 @@ StateInit_PublisherLogo:
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, Data_003_5418
+    ld hl, Tilemap_PublisherLogo_003_5418
     ld b, $14
     ld c, $12
     call CopyTilemapRect
     xor a
     ldh [rVBK], a
-    ld hl, Data_003_4a20
+    ld hl, Gfx_PublisherLogo_003_4a20
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, Data_003_5220
+    ld hl, Gfx_PublisherLogo_003_5220
     ld de, $8800
     ld bc, $0090
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, Data_003_52b0
+    ld hl, Tilemap_PublisherLogo_003_52b0
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -9686,7 +9686,7 @@ StateInit_Credits:
     ldh [rVBK], a
     xor a
     ldh [rVBK], a
-    ld hl, Data_005_650c
+    ld hl, Gfx_Credits_005_650c
     ld de, $9000
     ld bc, $0800
     call DataTransfer
@@ -9903,14 +9903,14 @@ StateInit_LevelPassword:
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, Data_00c_577c
+    ld hl, Tilemap_LevelPassword_00c_577c
     ld b, $14
     ld c, $12
     call CopyTilemapRect
     xor a
     ld [$dae1], a
     ldh [rVBK], a
-    ld hl, Data_00c_4de4
+    ld hl, Gfx_LevelPassword_00c_4de4
     ld de, $9000
     ld bc, $0790
     call DataTransfer
@@ -9924,7 +9924,7 @@ StateInit_LevelPassword:
     call DataTransfer
     ld a, $26
     ld de, $9800
-    ld hl, Data_00c_5614
+    ld hl, Tilemap_LevelPassword_00c_5614
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -10088,7 +10088,7 @@ StateInit_LanguageSelect:
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, Data_00d_5150
+    ld hl, Tilemap_LanguageSelect_00d_5150
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -10097,7 +10097,7 @@ StateInit_LanguageSelect:
     ld [$defd], a
     ld [$defe], a
     ldh [rVBK], a
-    ld hl, Data_00d_49b8
+    ld hl, Gfx_LanguageSelect_00d_49b8
     ld de, $9000
     ld bc, $0630
     call DataTransfer
@@ -10181,19 +10181,19 @@ StateInit_Copyright:
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, Data_003_5e98
+    ld hl, Tilemap_Copyright_003_5e98
     ld b, $14
     ld c, $12
     call CopyTilemapRect
     xor a
     ldh [rVBK], a
-    ld hl, Data_003_5580
+    ld hl, Gfx_Copyright_003_5580
     ld de, $9000
     ld bc, $07b0
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, Data_003_5d30
+    ld hl, Tilemap_Copyright_003_5d30
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -10239,7 +10239,7 @@ StateInit_Ending:
     call ChangeROMBank
     ld a, $01
     ldh [rVBK], a
-    ld hl, Data_00e_674f
+    ld hl, Gfx_Ending_00e_674f
     ld de, $9000
     ld bc, $0800
     call DataTransfer
@@ -10249,7 +10249,7 @@ StateInit_Ending:
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, Data_00e_7e87
+    ld hl, Tilemap_Ending_00e_7e87
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -10265,7 +10265,7 @@ StateInit_Ending:
     call DataTransfer
     ld a, $09
     ld de, $9800
-    ld hl, Data_00e_7d1f
+    ld hl, Tilemap_Ending_00e_7d1f
     ld b, $14
     ld c, $09
     call CopyTilemapRect
