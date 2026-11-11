@@ -271,7 +271,7 @@ InstallInterruptHandlers:
     ld [ROM_BANK], a
     ld a, [hPaletteMode]
     or a
-    call nz, Call_00f_4000
+    call nz, SetUpRasterEffect
     ld a, $01
     ld [ROM_BANK], a
     ld a, $40
