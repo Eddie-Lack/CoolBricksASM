@@ -20,7 +20,9 @@ Without RGBDS, the checking assembler builds the ROM and compares its MD5:
 make check
 ```
 
-`tools/gbasm.py` supports only the syntax these sources use. It has no macros. The changes below were checked with it, not with RGBDS.
+`tools/gbasm.py` supports only the syntax these sources use. It has no macros.
+
+The sources build to the matching ROM with RGBDS 0.8.0 (`make`), with no warnings under `rgbasm -Wall`, and with `tools/gbasm.py` (`make check`). All 41 PNG files convert back to identical `.2bpp` files with `rgbgfx`.
 
 ## What has been done since the fork
 
@@ -51,6 +53,5 @@ make check
 - **Music.** Bank 6 holds the music driver and its data. Only the first routines are labelled.
 - **Unlabelled data.** `docs/ROM_MAP.md` shows the blocks with no meaningful name yet. Banks `$0B` and `$10`–`$13` (language graphics) and bank 9 are the largest.
 - **Filler.** Banks `$14`–`$1F` are 12 copies of one bank, bank `$20` is a copy of bank `$13`, and banks `$21`–`$3F` are empty.
-- **RGBDS.** All of this was checked with `tools/gbasm.py` only. It has not been assembled with RGBDS since the fork.
 
 The game's logic is described in [docs/RESEARCH.md](docs/RESEARCH.md).
