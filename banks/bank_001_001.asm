@@ -1537,25 +1537,82 @@ Text_German_LatestScoreData_001_5ae2:
     db $01, $18, $10, $31, $01, $20, $00, $3f, $01, $20, $08, $40, $01, $20, $10, $41
     db $01, $28, $00, $51, $01, $28, $08, $52
 
-Text_German_LatestScoreData_001_5b26:
-    db $01, $28, $10, $53, $01, $01, $98, $03
-    db $c1, $5b, $04, $98, $03, $af, $5b, $07, $98, $03, $9d, $5b, $0a, $98, $03, $8b
-    db $5b, $0d, $98, $03, $79, $5b
+TitleLetterTable_5b26:
+    db $01, $28, $10, $53, $01
+    dw $9801
+    db $03
+    dw TitleLetterTiles_5bc1
+    dw $9804
+    db $03
+    dw TitleLetterTiles_5baf
+    dw $9807
+    db $03
+    dw TitleLetterTiles_5b9d
+    dw $980a
+    db $03
+    dw TitleLetterTiles_5b8b
+    dw $980d
+    db $03
+    dw TitleLetterTiles_5b79
 
-Text_German_LatestScoreData_001_5b44:
-    db $10, $98, $03, $67, $5b, $01, $98, $03, $d3, $5b
-    db $04, $98, $03, $e5, $5b, $07, $98, $03, $e5, $5b, $0a, $98, $03, $e5, $5b, $0d
-    db $98, $03, $f7, $5b, $10, $98, $03, $d3, $5b, $0f, $10, $11, $20, $21, $11, $31
-    db $32, $33, $0f, $10, $11, $20, $21, $22, $32, $33, $34, $0c, $0d, $0e, $1d, $1e
-    db $1f, $2e, $2f, $30, $0c, $0d, $0e, $1d, $1e, $1f, $2f, $30, $31, $09, $0a, $0b
-    db $1b, $19, $1c, $2b, $2c, $2d, $09, $0a, $0b, $1a, $1b, $1c, $2c, $2d, $2e, $06
-    db $07, $08, $18, $19, $1a, $28, $29, $2a, $06, $07, $08, $18, $19, $18, $29, $2a
-    db $2b, $03, $04, $05, $15, $16, $17, $25, $26, $27, $03, $04, $05, $15, $16, $17
-    db $26, $27, $28, $00, $01, $02, $12, $13, $14, $22, $23, $24, $00, $01, $02, $12
-    db $13, $14, $23, $24, $25, $08, $08, $08, $08, $08, $08, $08, $08, $08, $04, $04
-    db $04, $04, $04, $04, $04, $04, $04, $0a, $0a, $0a, $0a, $0a, $0a, $0a, $0a, $0a
-    db $04, $04, $04, $04, $04, $04, $04, $04, $04, $0a, $08, $08, $0a, $08, $08, $0a
-    db $0a, $0a, $04, $04, $04, $04, $04, $04, $04, $04, $04
+TitleLetterTable_5b44:
+    dw $9810
+    db $03
+    dw TitleLetterTiles_5b67
+    dw $9801
+    db $03
+    dw TitleLetterTiles_5bd3
+    dw $9804
+    db $03
+    dw TitleLetterTiles_5be5
+    dw $9807
+    db $03
+    dw TitleLetterTiles_5be5
+    dw $980a
+    db $03
+    dw TitleLetterTiles_5be5
+    dw $980d
+    db $03
+    dw TitleLetterTiles_5bf7
+    dw $9810
+    db $03
+    dw TitleLetterTiles_5bd3
+TitleLetterTiles_5b67:
+    db $0f, $10, $11, $20, $21, $11, $31, $32, $33
+TitleLetterTiles_5b70:
+    db $0f, $10, $11, $20, $21, $22, $32, $33, $34
+TitleLetterTiles_5b79:
+    db $0c, $0d, $0e, $1d, $1e, $1f, $2e, $2f, $30
+TitleLetterTiles_5b82:
+    db $0c, $0d, $0e, $1d, $1e, $1f, $2f, $30, $31
+TitleLetterTiles_5b8b:
+    db $09, $0a, $0b, $1b, $19, $1c, $2b, $2c, $2d
+TitleLetterTiles_5b94:
+    db $09, $0a, $0b, $1a, $1b, $1c, $2c, $2d, $2e
+TitleLetterTiles_5b9d:
+    db $06, $07, $08, $18, $19, $1a, $28, $29, $2a
+TitleLetterTiles_5ba6:
+    db $06, $07, $08, $18, $19, $18, $29, $2a, $2b
+TitleLetterTiles_5baf:
+    db $03, $04, $05, $15, $16, $17, $25, $26, $27
+TitleLetterTiles_5bb8:
+    db $03, $04, $05, $15, $16, $17, $26, $27, $28
+TitleLetterTiles_5bc1:
+    db $00, $01, $02, $12, $13, $14, $22, $23, $24
+TitleLetterTiles_5bca:
+    db $00, $01, $02, $12, $13, $14, $23, $24, $25
+TitleLetterTiles_5bd3:
+    db $08, $08, $08, $08, $08, $08, $08, $08, $08
+TitleLetterTiles_5bdc:
+    db $04, $04, $04, $04, $04, $04, $04, $04, $04
+TitleLetterTiles_5be5:
+    db $0a, $0a, $0a, $0a, $0a, $0a, $0a, $0a, $0a
+TitleLetterTiles_5bee:
+    db $04, $04, $04, $04, $04, $04, $04, $04, $04
+TitleLetterTiles_5bf7:
+    db $0a, $08, $08, $0a, $08, $08, $0a, $0a, $0a
+TitleLetterTiles_5c00:
+    db $04, $04, $04, $04, $04, $04, $04, $04, $04
 
 LevelPassword_DrawBonus:
     ld a, [wUnk_df37]
@@ -3856,7 +3913,7 @@ TitleScreen_VBlank:
     add a
     ld l, a
     ld h, b
-    ld de, Text_German_LatestScoreData_001_5b44
+    ld de, TitleLetterTable_5b44
     add hl, de
     add hl, bc
     ld a, [hl+]
@@ -3880,7 +3937,7 @@ TitleScreen_VBlank:
     add a
     ld l, a
     ld h, b
-    ld de, Text_German_LatestScoreData_001_5b26
+    ld de, TitleLetterTable_5b26
     add hl, de
     add hl, bc
     ld a, [hl+]
@@ -4576,7 +4633,7 @@ LanguageTable_Italian:
     dw Text_Italian_StartLevel
     dw $98ec
     dw Text_Italian_HighScorePassword
-    dw $48b7
+    dw Text_Italian_Pause
     dw Text_Italian_GameOver
     dw Text_Italian_LatestScore
 
@@ -4618,7 +4675,7 @@ LanguageTable_English:
     dw Text_English_StartLevel
     dw $98eb
     dw Text_English_HighScorePassword
-    dw $488f
+    dw Text_English_Pause
     dw Text_English_GameOver
     dw Text_English_LatestScore
 
@@ -4660,7 +4717,7 @@ LanguageTable_Spanish:
     dw Text_Spanish_StartLevel
     dw $98ed
     dw Text_Spanish_HighScorePassword
-    dw $48a3
+    dw Text_Spanish_Pause
     dw Text_Spanish_GameOver
     dw Text_Spanish_LatestScore
 
@@ -4702,7 +4759,7 @@ LanguageTable_French:
     dw Text_French_StartLevel
     dw $98ec
     dw Text_French_HighScorePassword
-    dw $4899
+    dw Text_French_Pause
     dw Text_French_GameOver
     dw Text_French_LatestScore
 
@@ -4744,7 +4801,7 @@ LanguageTable_German:
     dw Text_German_StartLevel
     dw $98ed
     dw Text_German_HighScorePassword
-    dw $48ad
+    dw Text_German_Pause
     dw Text_German_GameOver
     dw Text_German_LatestScore
 
