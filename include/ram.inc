@@ -141,6 +141,28 @@ DEF wOamUsedLastFrame      EQU $c2b4 ; Extra sprites drawn in the previous frame
 DEF wOamUsed               EQU $c2b5 ; Extra sprites drawn so far this frame
 DEF wOamWritePtr           EQU $c2b6 ; Next free entry in wOamBuffer
 
+; Interrupt stubs in RAM
+DEF wStatJump              EQU $c35a ; jp instruction to the current LCD STAT handler
+DEF hOamDmaRoutine         EQU $ff80 ; OAM DMA routine, copied here by LoadOAMCode
+DEF hVBlankJump            EQU $ff92 ; jp instruction to the current VBlank handler
+
+; More variables
+DEF wLcdcFlags             EQU $c359 ; Extra LCDC bits for the current screen
+DEF wLevelTitleText        EQU $d72a ; The "LEVEL nnn" string shown at the start of a level
+DEF wBrickTileLeft         EQU $d8b8 ; Tile numbers for the brick being redrawn
+DEF wBrickTileRight        EQU $d8b9
+DEF wBrickRedrawCount      EQU $d9bd ; Brick tile changes queued this frame
+DEF wMenuDownHeld          EQU $dab6 ; 1 until down is released on the password screen
+DEF wMenuUpHeld            EQU $dab7 ; 1 until up is released on the password screen
+DEF wProjectileWork        EQU $dbe1 ; Working copy of the projectile being updated (9 bytes)
+DEF wBlobFrame             EQU $dc17 ; Blob animation frame
+DEF wBlobFrameTick         EQU $dc18 ; Counts frames between blob animation frames
+DEF hTemp                  EQU $ff8d ; Scratch bytes
+DEF hTemp2                 EQU $ff90 ; Scratch byte
+DEF hVBlankDone            EQU $ff95 ; Set to 1 by the VBlank handler; WaitVBlank waits for it
+DEF hPaletteMode           EQU $ff9c ; Selects how the palettes are loaded and faded
+DEF hResumeFromPause       EQU $ffa1 ; 1 when the level screen is entered from pause, so the level is not loaded again
+
 ; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
 DEF wLanguage              EQU $defc
 
@@ -193,3 +215,231 @@ DEF STATE_COLOR_ONLY         EQU 10 ; "Please use a Game Boy Color" screen on ol
 DEF STATE_LANGUAGE_SELECT    EQU 11 ; Language selection
 DEF STATE_PUBLISHER_LOGO     EQU 12 ; SCi logo
 DEF STATE_ENDING             EQU 13 ; Ending text after level 160
+
+; Variables whose purpose is not known yet
+DEF wUnk_c2b8 EQU $c2b8
+DEF wUnk_c954 EQU $c954
+DEF wUnk_c956 EQU $c956
+DEF wUnk_c957 EQU $c957
+DEF wUnk_c958 EQU $c958
+DEF wUnk_c959 EQU $c959
+DEF wUnk_c95a EQU $c95a
+DEF wUnk_c95b EQU $c95b
+DEF wUnk_c95c EQU $c95c
+DEF wUnk_cab5 EQU $cab5
+DEF wUnk_cab6 EQU $cab6
+DEF wUnk_cabb EQU $cabb
+DEF wUnk_cabc EQU $cabc
+DEF wUnk_caed EQU $caed
+DEF wUnk_caee EQU $caee
+DEF wUnk_caf1 EQU $caf1
+DEF wUnk_caf2 EQU $caf2
+DEF wUnk_caf3 EQU $caf3
+DEF wUnk_caf4 EQU $caf4
+DEF wUnk_caf7 EQU $caf7
+DEF wUnk_caf8 EQU $caf8
+DEF wUnk_caf9 EQU $caf9
+DEF wUnk_cafa EQU $cafa
+DEF wUnk_cafb EQU $cafb
+DEF wUnk_cafc EQU $cafc
+DEF wUnk_cb53 EQU $cb53
+DEF wUnk_cb54 EQU $cb54
+DEF wUnk_cb55 EQU $cb55
+DEF wUnk_cb56 EQU $cb56
+DEF wUnk_cb57 EQU $cb57
+DEF wUnk_cb58 EQU $cb58
+DEF wUnk_cb7c EQU $cb7c
+DEF wUnk_cb7d EQU $cb7d
+DEF wUnk_cb7e EQU $cb7e
+DEF wUnk_cb7f EQU $cb7f
+DEF wUnk_ccb4 EQU $ccb4
+DEF wUnk_ccb5 EQU $ccb5
+DEF wUnk_ccb6 EQU $ccb6
+DEF wUnk_ccb7 EQU $ccb7
+DEF wUnk_ccbb EQU $ccbb
+DEF wUnk_ccbc EQU $ccbc
+DEF wUnk_ccbd EQU $ccbd
+DEF wUnk_ccbe EQU $ccbe
+DEF wUnk_ccbf EQU $ccbf
+DEF wUnk_ccc0 EQU $ccc0
+DEF wUnk_ccc1 EQU $ccc1
+DEF wUnk_ccc2 EQU $ccc2
+DEF wUnk_ccc3 EQU $ccc3
+DEF wUnk_ccc4 EQU $ccc4
+DEF wUnk_ccc5 EQU $ccc5
+DEF wUnk_ccc6 EQU $ccc6
+DEF wUnk_ccc7 EQU $ccc7
+DEF wUnk_ccc8 EQU $ccc8
+DEF wUnk_ccc9 EQU $ccc9
+DEF wUnk_ccca EQU $ccca
+DEF wUnk_cccb EQU $cccb
+DEF wUnk_cccc EQU $cccc
+DEF wUnk_cccd EQU $cccd
+DEF wUnk_ccce EQU $ccce
+DEF wUnk_d000 EQU $d000
+DEF wUnk_d745 EQU $d745
+DEF wUnk_d746 EQU $d746
+DEF wUnk_d75e EQU $d75e
+DEF wUnk_d76c EQU $d76c
+DEF wUnk_d76d EQU $d76d
+DEF wUnk_d77e EQU $d77e
+DEF wUnk_d77f EQU $d77f
+DEF wUnk_d780 EQU $d780
+DEF wUnk_d783 EQU $d783
+DEF wUnk_d8a4 EQU $d8a4
+DEF wUnk_d8a7 EQU $d8a7
+DEF wUnk_d8ab EQU $d8ab
+DEF wUnk_d8ba EQU $d8ba
+DEF wUnk_d8bb EQU $d8bb
+DEF wUnk_d9bc EQU $d9bc
+DEF wUnk_d9be EQU $d9be
+DEF wUnk_daaf EQU $daaf
+DEF wUnk_dab0 EQU $dab0
+DEF wUnk_dab1 EQU $dab1
+DEF wUnk_dab2 EQU $dab2
+DEF wUnk_dab3 EQU $dab3
+DEF wUnk_dab4 EQU $dab4
+DEF wUnk_dab8 EQU $dab8
+DEF wUnk_dab9 EQU $dab9
+DEF wUnk_dad2 EQU $dad2
+DEF wUnk_dad3 EQU $dad3
+DEF wUnk_dad4 EQU $dad4
+DEF wUnk_dad5 EQU $dad5
+DEF wUnk_dae0 EQU $dae0
+DEF wUnk_dae1 EQU $dae1
+DEF wUnk_dae2 EQU $dae2
+DEF wUnk_db4f EQU $db4f
+DEF wUnk_db50 EQU $db50
+DEF wUnk_db5a EQU $db5a
+DEF wUnk_db5b EQU $db5b
+DEF wUnk_db5c EQU $db5c
+DEF wUnk_db5d EQU $db5d
+DEF wUnk_db5e EQU $db5e
+DEF wUnk_db5f EQU $db5f
+DEF wUnk_db60 EQU $db60
+DEF wUnk_db61 EQU $db61
+DEF wUnk_db62 EQU $db62
+DEF wUnk_db63 EQU $db63
+DEF wUnk_db64 EQU $db64
+DEF wUnk_db65 EQU $db65
+DEF wUnk_db66 EQU $db66
+DEF wUnk_db67 EQU $db67
+DEF wUnk_db68 EQU $db68
+DEF wUnk_db69 EQU $db69
+DEF wUnk_db6a EQU $db6a
+DEF wUnk_db6b EQU $db6b
+DEF wUnk_db6c EQU $db6c
+DEF wUnk_db6d EQU $db6d
+DEF wUnk_db70 EQU $db70
+DEF wUnk_dbd1 EQU $dbd1
+DEF wUnk_dbd2 EQU $dbd2
+DEF wUnk_dbd3 EQU $dbd3
+DEF wUnk_dbd4 EQU $dbd4
+DEF wUnk_dbd5 EQU $dbd5
+DEF wUnk_dbd6 EQU $dbd6
+DEF wUnk_dbd9 EQU $dbd9
+DEF wUnk_dbda EQU $dbda
+DEF wUnk_dbdb EQU $dbdb
+DEF wUnk_dbdc EQU $dbdc
+DEF wUnk_dbdd EQU $dbdd
+DEF wUnk_dbde EQU $dbde
+DEF wUnk_dbdf EQU $dbdf
+DEF wUnk_dbea EQU $dbea
+DEF wUnk_dbeb EQU $dbeb
+DEF wUnk_dbec EQU $dbec
+DEF wUnk_dc1e EQU $dc1e
+DEF wUnk_dc1f EQU $dc1f
+DEF wUnk_dc22 EQU $dc22
+DEF wUnk_dc2b EQU $dc2b
+DEF wUnk_dc2c EQU $dc2c
+DEF wUnk_dc2e EQU $dc2e
+DEF wUnk_dc32 EQU $dc32
+DEF wUnk_dc37 EQU $dc37
+DEF wUnk_dc38 EQU $dc38
+DEF wUnk_dc39 EQU $dc39
+DEF wUnk_dc3a EQU $dc3a
+DEF wUnk_dc3b EQU $dc3b
+DEF wUnk_dc3c EQU $dc3c
+DEF wUnk_dcd3 EQU $dcd3
+DEF wUnk_dcd4 EQU $dcd4
+DEF wUnk_dcf3 EQU $dcf3
+DEF wUnk_dcf4 EQU $dcf4
+DEF wUnk_dcf5 EQU $dcf5
+DEF wUnk_dcf7 EQU $dcf7
+DEF wUnk_dcf8 EQU $dcf8
+DEF wUnk_dcf9 EQU $dcf9
+DEF wUnk_dcfa EQU $dcfa
+DEF wUnk_dcfb EQU $dcfb
+DEF wUnk_dcfc EQU $dcfc
+DEF wUnk_dcfd EQU $dcfd
+DEF wUnk_dcff EQU $dcff
+DEF wUnk_dd00 EQU $dd00
+DEF wUnk_dd01 EQU $dd01
+DEF wUnk_dd02 EQU $dd02
+DEF wUnk_dd03 EQU $dd03
+DEF wUnk_dd07 EQU $dd07
+DEF wUnk_dd09 EQU $dd09
+DEF wUnk_dd0a EQU $dd0a
+DEF wUnk_dd49 EQU $dd49
+DEF wUnk_dd4a EQU $dd4a
+DEF wUnk_dd4b EQU $dd4b
+DEF wUnk_dd4c EQU $dd4c
+DEF wUnk_dd4d EQU $dd4d
+DEF wUnk_dd4e EQU $dd4e
+DEF wUnk_dd4f EQU $dd4f
+DEF wUnk_dd50 EQU $dd50
+DEF wUnk_dd53 EQU $dd53
+DEF wUnk_dd54 EQU $dd54
+DEF wUnk_dd55 EQU $dd55
+DEF wUnk_dd56 EQU $dd56
+DEF wUnk_dd57 EQU $dd57
+DEF wUnk_dd58 EQU $dd58
+DEF wUnk_dd59 EQU $dd59
+DEF wUnk_dd5a EQU $dd5a
+DEF wUnk_dd5b EQU $dd5b
+DEF wUnk_dd5c EQU $dd5c
+DEF wUnk_dd5d EQU $dd5d
+DEF wUnk_dd5e EQU $dd5e
+DEF wUnk_dd5f EQU $dd5f
+DEF wUnk_dd60 EQU $dd60
+DEF wUnk_dd61 EQU $dd61
+DEF wUnk_dd6d EQU $dd6d
+DEF wUnk_dd6e EQU $dd6e
+DEF wUnk_dd6f EQU $dd6f
+DEF wUnk_dd70 EQU $dd70
+DEF wUnk_dd7c EQU $dd7c
+DEF wUnk_dd7d EQU $dd7d
+DEF wUnk_dd7e EQU $dd7e
+DEF wUnk_dd7f EQU $dd7f
+DEF wUnk_dd8b EQU $dd8b
+DEF wUnk_dd8c EQU $dd8c
+DEF wUnk_de7d EQU $de7d
+DEF wUnk_de7e EQU $de7e
+DEF wUnk_de7f EQU $de7f
+DEF wUnk_de80 EQU $de80
+DEF wUnk_defa EQU $defa
+DEF wUnk_defb EQU $defb
+DEF wUnk_defd EQU $defd
+DEF wUnk_defe EQU $defe
+DEF wUnk_df35 EQU $df35
+DEF wUnk_df36 EQU $df36
+DEF wUnk_df37 EQU $df37
+DEF wUnk_df38 EQU $df38
+DEF wUnk_df39 EQU $df39
+DEF wUnk_df3a EQU $df3a
+DEF wUnk_df3b EQU $df3b
+DEF wUnk_df3c EQU $df3c
+DEF wUnk_df43 EQU $df43
+DEF wUnk_df45 EQU $df45
+DEF wUnk_df48 EQU $df48
+DEF wUnk_df49 EQU $df49
+DEF wUnk_df4c EQU $df4c
+DEF wUnk_df4d EQU $df4d
+DEF hUnk_ff8f EQU $ff8f
+DEF hUnk_ff91 EQU $ff91
+DEF hUnk_ff96 EQU $ff96
+DEF hUnk_ff97 EQU $ff97
+DEF hUnk_ff9a EQU $ff9a
+DEF hUnk_ff9b EQU $ff9b
+DEF hUnk_ff9d EQU $ff9d
+DEF hUnk_ff9e EQU $ff9e

@@ -36,7 +36,7 @@ ProgramStart:
     call UpdateSound
     call UpdateSound
     call UpdateSound
-    ld a, [$ffa1]
+    ld a, [hResumeFromPause]
     or a
     jr nz, jr_000_0184
 
@@ -46,12 +46,12 @@ ProgramStart:
 
 jr_000_0184:
     call RunStateInit
-    call Call_000_024b
-    ld a, [$ffa1]
+    call InstallInterruptHandlers
+    ld a, [hResumeFromPause]
     or a
     jr nz, jr_000_0199
 
-    ld a, [$c359]
+    ld a, [wLcdcFlags]
     ld b, a
     ld a, $83
     or b
@@ -138,12 +138,12 @@ jr_000_01cc:
 
 ; Copy a rectangle of B x C tiles from HL to the tile map at DE.
 CopyTilemapRect:
-    ld [$ff8d], a
+    ld [hTemp], a
 
 jr_000_01d7:
     push bc
     push de
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld c, a
 
 jr_000_01dd:
@@ -205,7 +205,7 @@ ChangeROMBank:
 
 LoadOAMCode:
     ; setup variables
-    ld bc, $ff80            ; this is supposed to be C = 80, this is gonna write to HRAM.
+    ld bc, hOamDmaRoutine            ; this is supposed to be C = 80, this is gonna write to HRAM.
     ld b, $0a               ; Data length
     ld hl, .OAMCode    ; Data source
 
@@ -253,53 +253,54 @@ ReadJoypad:
     ld [hJoypad], a
     ret
 
-Call_000_024b:
+; Write the VBlank and LCD STAT jump stubs to RAM from hVBlankHandler and hStatHandler.
+InstallInterruptHandlers:
     ld a, $c3
-    ld [$ff92], a
+    ld [hVBlankJump], a
     ld a, $c3
-    ld [$c35a], a
+    ld [wStatJump], a
     ld a, [hVBlankHandler]
-    ld [$ff93], a
+    ld [hVBlankJump + 1], a
     ld a, [hVBlankHandler + 1]
-    ld [$ff94], a
+    ld [hVBlankJump + 2], a
     ld a, [hStatHandler]
-    ld [$c35b], a
+    ld [wStatJump + 1], a
     ld a, [hStatHandler + 1]
-    ld [$c35c], a
+    ld [wStatJump + 2], a
     ld a, $0f
     ld [ROM_BANK], a
-    ld a, [$ff9c]
+    ld a, [hPaletteMode]
     or a
-    call nz, Call_00f_4000
+    call nz, SetUpRasterEffect
     ld a, $01
     ld [ROM_BANK], a
     ld a, $40
     ldh [rSTAT], a
-    ld a, [$ff9b]
+    ld a, [hUnk_ff9b]
     ldh [rLYC], a
-    ld a, [$ff9a]
+    ld a, [hUnk_ff9a]
     ldh [rIE], a
     ld hl, $c3b6
     ld a, l
-    ld [$c956], a
+    ld [wUnk_c956], a
     ld a, h
-    ld [$c957], a
+    ld [wUnk_c957], a
     ret
 
     push af
     push hl
-    ld a, [$dd01]
+    ld a, [wUnk_dd01]
     ld l, a
-    ld a, [$dd02]
+    ld a, [wUnk_dd02]
     ld h, a
     ld a, [hl+]
     ldh [rSCX], a
     ld a, [hl+]
     ldh [rLYC], a
     ld a, l
-    ld [$dd01], a
+    ld [wUnk_dd01], a
     ld a, h
-    ld [$dd02], a
+    ld [wUnk_dd02], a
     pop hl
     pop af
     reti
@@ -315,16 +316,16 @@ VBlank:
     push hl
     xor a
     ldh [rSVBK], a
-    call Call_001_6c8a
-    call $ff80
-    call Call_001_5cbe
+    call TitleScreen_VBlank
+    call hOamDmaRoutine
+    call LevelPassword_VBlank
     ld hl, $c3b6
     ld a, l
-    ld [$c956], a
+    ld [wUnk_c956], a
     ld a, h
-    ld [$c957], a
+    ld [wUnk_c957], a
     ld a, $01
-    ld [$ff95], a
+    ld [hVBlankDone], a
     pop hl
     ld a, h
     ldh [rSVBK], a
@@ -339,10 +340,10 @@ VBlank_InGame:
     push bc
     push de
     push hl
-    call $ff80
+    call hOamDmaRoutine
     xor a
     ldh [rVBK], a
-    ld a, [$d745]
+    ld a, [wUnk_d745]
     or a
     jr z, jr_000_0346
 
@@ -350,7 +351,7 @@ VBlank_InGame:
     jr nz, jr_000_0304
 
     dec a
-    ld [$d745], a
+    ld [wUnk_d745], a
     ld hl, $9800
     ld bc, $0014
     xor a
@@ -360,7 +361,7 @@ VBlank_InGame:
 
 jr_000_0304:
     dec a
-    ld [$d745], a
+    ld [wUnk_d745], a
     jr nz, jr_000_0317
 
     ld a, [wLangTextHud]
@@ -372,7 +373,7 @@ jr_000_0304:
 
 jr_000_0317:
     ld b, a
-    ld a, [$d746]
+    ld a, [wUnk_d746]
     and $01
     jr z, jr_000_0330
 
@@ -384,7 +385,7 @@ jr_000_0317:
     inc [hl]
 
 jr_000_0328:
-    ld hl, Data_001_745e
+    ld hl, VBlank_InGameData_001_745e
     call DrawString
     jr jr_000_0361
 
@@ -397,9 +398,9 @@ jr_000_0330:
     inc [hl]
 
 jr_000_0339:
-    ld hl, $d72a
+    ld hl, wLevelTitleText
     call DrawString
-    ld a, [$ff9d]
+    ld a, [hUnk_ff9d]
     ldh [rSCX], a
     jr jr_000_0361
 
@@ -425,7 +426,7 @@ jr_000_0346:
     ld [$9813], a
 
 jr_000_0361:
-    ld a, [$d9bd]
+    ld a, [wBrickRedrawCount]
     or a
     jr z, jr_000_0374
 
@@ -443,7 +444,7 @@ jr_000_036b:
     jr nz, jr_000_036b
 
 jr_000_0374:
-    ld a, [$d9be]
+    ld a, [wUnk_d9be]
     or a
     jr z, jr_000_038b
 
@@ -467,11 +468,11 @@ jr_000_0382:
 jr_000_038b:
     ld hl, $c3b6
     ld a, l
-    ld [$c956], a
+    ld [wUnk_c956], a
     ld a, h
-    ld [$c957], a
+    ld [wUnk_c957], a
     ld a, $01
-    ld [$ff95], a
+    ld [hVBlankDone], a
     ld hl, hFrameCounter
     inc [hl]
     pop hl
@@ -485,20 +486,20 @@ VBlankMenus:
     push hl
     push de
     push bc
-    call $ff80
+    call hOamDmaRoutine
     ld hl, $c3b6
     ld a, l
-    ld [$c956], a
+    ld [wUnk_c956], a
     ld a, h
-    ld [$c957], a
+    ld [wUnk_c957], a
     call StartHdmaTransfer
     ld a, $01
     ldh [rVBK], a
-    ld a, [$c959]
+    ld a, [wUnk_c959]
     or a
     jp nz, Jump_000_0505
 
-    ld a, [$ff9e]
+    ld a, [hUnk_ff9e]
     ldh [rSCY], a
     cp $88
     jr z, jr_000_0410
@@ -513,7 +514,7 @@ VBlankMenus:
     call ChangeROMBank
     xor a
     ld de, $9800
-    ld hl, Data_002_6d74
+    ld hl, Tilemap_VBlankMenus_002_6d74
     ld b, $14
     ld c, $04
     call CopyTilemapRect
@@ -530,7 +531,7 @@ jr_000_03ec:
     call ChangeROMBank
     ld a, $25
     ld de, $9800
-    ld hl, Data_002_6c0c
+    ld hl, Tilemap_VBlankMenus_002_6c0c
     ld b, $14
     ld c, $04
     call CopyTilemapRect
@@ -617,17 +618,17 @@ jr_000_0448:
 jr_000_048f:
     xor a
     ldh [rVBK], a
-    ld a, [$df48]
+    ld a, [wUnk_df48]
     ld l, a
-    ld a, [$df49]
+    ld a, [wUnk_df49]
     ld h, a
-    ld a, [$dad3]
+    ld a, [wUnk_dad3]
     sub $2f
     ld [hl+], a
-    ld a, [$dad4]
+    ld a, [wUnk_dad4]
     sub $2f
     ld [hl+], a
-    ld a, [$dad5]
+    ld a, [wUnk_dad5]
     sub $2f
     ld [hl], a
     ld de, $df40
@@ -638,9 +639,9 @@ jr_000_048f:
     ld de, $df3d
 
 jr_000_04b8:
-    ld a, [$df39]
+    ld a, [wUnk_df39]
     ld l, a
-    ld a, [$df3a]
+    ld a, [wUnk_df3a]
     ld h, a
     ld a, [de]
     ld [hl+], a
@@ -658,9 +659,9 @@ jr_000_04b8:
     ld de, $df3d
 
 jr_000_04d4:
-    ld a, [$df3b]
+    ld a, [wUnk_df3b]
     ld l, a
-    ld a, [$df3c]
+    ld a, [wUnk_df3c]
     ld h, a
     ld a, [de]
     ld [hl+], a
@@ -683,7 +684,7 @@ jr_000_04d4:
 Jump_000_04f7:
 jr_000_04f7:
     ld a, $01
-    ld [$ff95], a
+    ld [hVBlankDone], a
     ld hl, hFrameCounter
     inc [hl]
     pop bc
@@ -693,28 +694,28 @@ jr_000_04f7:
     reti
 
 Jump_000_0505:
-    ld a, [$c95c]
+    ld a, [wUnk_c95c]
     dec a
-    ld [$c95c], a
+    ld [wUnk_c95c], a
     jr nz, jr_000_0536
 
-    ld a, [$df45]
+    ld a, [wUnk_df45]
     ld b, a
-    ld a, [$c95b]
+    ld a, [wUnk_c95b]
     or a
     jr z, jr_000_0525
 
     xor a
-    ld [$c95b], a
+    ld [wUnk_c95b], a
     ld a, $28
-    ld [$c95c], a
+    ld [wUnk_c95c], a
     ld a, $04
     jr jr_000_052f
 
 jr_000_0525:
     ld a, $0f
-    ld [$c95c], a
-    ld [$c95b], a
+    ld [wUnk_c95c], a
+    ld [wUnk_c95b], a
     ld a, $02
 
 jr_000_052f:
@@ -726,9 +727,9 @@ jr_000_0532:
     jr nz, jr_000_0532
 
 jr_000_0536:
-    ld a, [$ccb4]
+    ld a, [wUnk_ccb4]
     ld l, a
-    ld a, [$ccb5]
+    ld a, [wUnk_ccb5]
     ld h, a
     or l
     jr z, jr_000_04f7
@@ -756,7 +757,7 @@ jr_000_054d:
     add $07
     ld l, a
     push hl
-    ld a, [$cccd]
+    ld a, [wUnk_cccd]
     or a
     jr nz, jr_000_0581
 
@@ -788,8 +789,8 @@ jr_000_0576:
 
 jr_000_0581:
     xor a
-    ld [$ccb4], a
-    ld [$ccb5], a
+    ld [wUnk_ccb4], a
+    ld [wUnk_ccb5], a
     ld a, $84
     ld b, $07
 
@@ -830,16 +831,16 @@ jr_000_05a1:
     ldh [rSVBK], a
     ld hl, $c3b6
     ld a, l
-    ld [$c956], a
+    ld [wUnk_c956], a
     ld a, h
-    ld [$c957], a
-    call $ff80
-    ld a, [$c95a]
+    ld [wUnk_c957], a
+    call hOamDmaRoutine
+    ld a, [wUnk_c95a]
     xor $01
-    ld [$c95a], a
+    ld [wUnk_c95a], a
     call z, UpdateCreditsScroll
     ld a, $01
-    ld [$ff95], a
+    ld [hVBlankDone], a
     pop af
     ldh [rSVBK], a
     pop bc
@@ -852,18 +853,18 @@ StateInit_HighScores:
     ld e, $06
     call PlayMusic
     ld a, $04
-    ld [$c359], a
+    ld [wLcdcFlags], a
     ld hl, $03a4
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
     ld [hVBlankHandler + 1], a
     ld a, $03
-    ld [$ff9c], a
+    ld [hPaletteMode], a
     xor a
-    ld [$ff9b], a
+    ld [hUnk_ff9b], a
     ld a, $01
-    ld [$ff9a], a
+    ld [hUnk_ff9a], a
     ld a, $fc
     ldh [rSCX], a
     ld de, Palettes_HighScores
@@ -887,7 +888,7 @@ StateInit_HighScores:
     call DrawHighScoreTable
     ld a, $0b
     call ChangeROMBank
-    ld hl, Data_00b_7d2c
+    ld hl, Gfx_HighScores_00b_7d2c
     ld de, $8b40
     ld bc, $0090
     call DataTransfer
@@ -895,88 +896,88 @@ StateInit_HighScores:
     call ChangeROMBank
     ld a, $26
     ld de, $9800
-    ld hl, Data_00b_7cc0
+    ld hl, Tilemap_HighScores_00b_7cc0
     ld b, $12
     ld c, $03
     call CopyTilemapRect
     ld a, $01
-    ld [$cb53], a
+    ld [wUnk_cb53], a
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, Data_00b_7cf6
+    ld hl, Tilemap_HighScores_00b_7cf6
     ld b, $12
     ld c, $03
     call CopyTilemapRect
     ld a, $02
-    ld [$c959], a
+    ld [wUnk_c959], a
     call ChangeROMBank
     ld a, $01
-    ld [$c959], a
+    ld [wUnk_c959], a
     call ChangeROMBank
-    call Call_001_78c8
-    call Call_001_78fd
+    call HighScores_InitSprites
+    call HighScores_MoveSprites
     ld a, $81
-    ld [$ccc2], a
+    ld [wUnk_ccc2], a
     xor a
-    ld [$dae1], a
-    ld [$cccd], a
-    ld [$cccc], a
+    ld [wUnk_dae1], a
+    ld [wUnk_cccd], a
+    ld [wUnk_cccc], a
     ld a, $41
-    ld [$ccbb], a
+    ld [wUnk_ccbb], a
     ld a, $5b
-    ld [$ccbc], a
-    ld [$ccbd], a
-    ld [$ccbe], a
-    ld [$ccbf], a
-    ld [$ccc0], a
-    ld [$ccc1], a
+    ld [wUnk_ccbc], a
+    ld [wUnk_ccbd], a
+    ld [wUnk_ccbe], a
+    ld [wUnk_ccbf], a
+    ld [wUnk_ccc0], a
+    ld [wUnk_ccc1], a
     ld a, $84
-    ld [$ccc3], a
-    ld [$ccc4], a
-    ld [$ccc5], a
-    ld [$ccc6], a
-    ld [$ccc7], a
-    ld [$ccc8], a
+    ld [wUnk_ccc3], a
+    ld [wUnk_ccc4], a
+    ld [wUnk_ccc5], a
+    ld [wUnk_ccc6], a
+    ld [wUnk_ccc7], a
+    ld [wUnk_ccc8], a
     xor a
-    ld [$cb54], a
+    ld [wUnk_cb54], a
     ld a, $40
-    ld [$cb55], a
-    ld hl, Data_001_79ba
+    ld [wUnk_cb55], a
+    ld hl, HighScoresData_001_79ba
     ld a, l
-    ld [$cb56], a
+    ld [wUnk_cb56], a
     ld a, h
-    ld [$cb57], a
+    ld [wUnk_cb57], a
     xor a
-    ld [$c95b], a
+    ld [wUnk_c95b], a
     ld a, $04
-    ld [$c95c], a
+    ld [wUnk_c95c], a
     ret
 
 HighScores_Update:
-    call Call_001_7899
-    call Call_001_78fd
-    ld a, [$ccb7]
+    call HighScores_Sub7899
+    call HighScores_MoveSprites
+    ld a, [wUnk_ccb7]
     cp $ff
     jr z, jr_000_06fd
 
-    ld a, [$ccce]
+    ld a, [wUnk_ccce]
     inc a
     and $03
-    ld [$ccce], a
+    ld [wUnk_ccce], a
     jr nz, jr_000_0708
 
-    ld a, [$ccb7]
+    ld a, [wUnk_ccb7]
     dec a
-    ld [$ccb7], a
+    ld [wUnk_ccb7], a
     jr z, jr_000_0710
 
     jr jr_000_0708
 
 jr_000_06fd:
-    ld a, [$ccb4]
+    ld a, [wUnk_ccb4]
     ld l, a
-    ld a, [$ccb5]
+    ld a, [wUnk_ccb5]
     ld h, a
     or l
     jr nz, jr_000_072c
@@ -993,10 +994,10 @@ jr_000_0710:
     cp $07
     ret nz
 
-    ld a, [$ccb6]
+    ld a, [wUnk_ccb6]
     ld [hGameState], a
     ld a, $01
-    ld [$cccd], a
+    ld [wUnk_cccd], a
     ld a, $1e
     ld [hStateTimer], a
     ld a, $1a
@@ -1008,7 +1009,7 @@ jr_000_072b:
 jr_000_072c:
     ld a, [hJoypad]
     ld b, a
-    ld a, [$cccc]
+    ld a, [wUnk_cccc]
     or a
     jr nz, jr_000_073b
 
@@ -1060,12 +1061,12 @@ jr_000_076f:
     bit 3, b
     jr z, jr_000_078f
 
-    ld a, [$ccca]
+    ld a, [wUnk_ccca]
     or a
     jr nz, jr_000_0793
 
     inc a
-    ld [$ccca], a
+    ld [wUnk_ccca], a
     ld a, $19
     call PlaySound
     push hl
@@ -1083,18 +1084,18 @@ jr_000_078c:
 
 jr_000_078f:
     xor a
-    ld [$ccca], a
+    ld [wUnk_ccca], a
 
 jr_000_0793:
     bit 2, b
     jr z, jr_000_07b3
 
-    ld a, [$ccc9]
+    ld a, [wUnk_ccc9]
     or a
     jr nz, jr_000_07b7
 
     inc a
-    ld [$ccc9], a
+    ld [wUnk_ccc9], a
     ld a, $19
     call PlaySound
     push hl
@@ -1112,7 +1113,7 @@ jr_000_07b0:
 
 jr_000_07b3:
     xor a
-    ld [$ccc9], a
+    ld [wUnk_ccc9], a
 
 jr_000_07b7:
     ld a, b
@@ -1120,15 +1121,15 @@ jr_000_07b7:
     or a
     jp z, Jump_000_0872
 
-    ld a, [$cccb]
+    ld a, [wUnk_cccb]
     or a
     ret nz
 
     ld a, $19
     call PlaySound
     ld a, $01
-    ld [$cccb], a
-    ld a, [$cccc]
+    ld [wUnk_cccb], a
+    ld a, [wUnk_cccc]
     bit 4, b
     jr z, jr_000_07d5
 
@@ -1174,14 +1175,14 @@ jr_000_07ef:
     dec a
 
 jr_000_07f7:
-    ld [$cccc], a
+    ld [wUnk_cccc], a
     or a
     jr nz, jr_000_0808
 
     ld a, $81
-    ld [$ccc2], a
+    ld [wUnk_ccc2], a
     ld a, $84
-    ld [$ccc3], a
+    ld [wUnk_ccc3], a
     ret
 
 jr_000_0808:
@@ -1190,10 +1191,10 @@ jr_000_0808:
 
     ld a, $81
 
-    ld [$ccc3], a
+    ld [wUnk_ccc3], a
     ld a, $84
-    ld [$ccc2], a
-    ld [$ccc4], a
+    ld [wUnk_ccc2], a
+    ld [wUnk_ccc4], a
     ret
 
 jr_000_081a:
@@ -1201,10 +1202,10 @@ jr_000_081a:
     jr nz, jr_000_082c
 
     ld a, $84
-    ld [$ccc3], a
-    ld [$ccc5], a
+    ld [wUnk_ccc3], a
+    ld [wUnk_ccc5], a
     ld a, $81
-    ld [$ccc4], a
+    ld [wUnk_ccc4], a
     ret
 
 jr_000_082c:
@@ -1212,10 +1213,10 @@ jr_000_082c:
     jr nz, jr_000_083e
 
     ld a, $84
-    ld [$ccc4], a
-    ld [$ccc6], a
+    ld [wUnk_ccc4], a
+    ld [wUnk_ccc6], a
     ld a, $81
-    ld [$ccc5], a
+    ld [wUnk_ccc5], a
     ret
 
 jr_000_083e:
@@ -1223,10 +1224,10 @@ jr_000_083e:
     jr nz, jr_000_0850
 
     ld a, $84
-    ld [$ccc5], a
-    ld [$ccc7], a
+    ld [wUnk_ccc5], a
+    ld [wUnk_ccc7], a
     ld a, $81
-    ld [$ccc6], a
+    ld [wUnk_ccc6], a
     ret
 
 jr_000_0850:
@@ -1234,10 +1235,10 @@ jr_000_0850:
     jr nz, jr_000_0862
 
     ld a, $84
-    ld [$ccc6], a
-    ld [$ccc8], a
+    ld [wUnk_ccc6], a
+    ld [wUnk_ccc8], a
     ld a, $81
-    ld [$ccc7], a
+    ld [wUnk_ccc7], a
     ret
 
 jr_000_0862:
@@ -1245,14 +1246,14 @@ jr_000_0862:
     jp nz, Jump_000_0710
 
     ld a, $84
-    ld [$ccc7], a
+    ld [wUnk_ccc7], a
     ld a, $81
-    ld [$ccc8], a
+    ld [wUnk_ccc8], a
     ret
 
 Jump_000_0872:
     xor a
-    ld [$cccb], a
+    ld [wUnk_cccb], a
     ret
 
 LoadHighScores:
@@ -1269,7 +1270,6 @@ LoadHighScores:
     call DataTransfer
     ld a, $01                               ; Switch ROM1 to Bank 1
 
-Call_000_0899:              ; this is NOT a function, it's just data that managed to make this address part of the decompiled code
     call ChangeROMBank
     ret
 
@@ -1290,7 +1290,8 @@ DrawHighScoreTable:
     call DrawString
     ret
 
-Call_000_08c8:
+; Turn the score digits into characters for the score display.
+BuildScoreText:
     ld hl, $d8ae
     ld de, $ccad
     ld b, $05
@@ -1305,8 +1306,8 @@ jr_000_08d0:
 
     call BuildLevelTitle
     xor a
-    ld [$ccb4], a
-    ld [$ccb5], a
+    ld [wUnk_ccb4], a
+    ld [wUnk_ccb5], a
     ld hl, $cb85
     ld b, $0a
 
@@ -1381,9 +1382,9 @@ jr_000_0921:
     inc hl
     inc hl
     ld a, l
-    ld [$ccb4], a
+    ld [wUnk_ccb4], a
     ld a, h
-    ld [$ccb5], a
+    ld [wUnk_ccb5], a
     ld a, $41
     ld [hl+], a
     ld a, $5b
@@ -1403,12 +1404,12 @@ jr_000_0921:
     inc hl
     inc hl
     inc hl
-    ld de, $d73b
+    ld de, wLevelTitleText + 17
     ld a, [wLanguage]
     cp $04
     jr nz, jr_000_095b
 
-    ld de, $d73c
+    ld de, wLevelTitleText + 18
 
 jr_000_095b:
     ld a, [de]
@@ -1429,7 +1430,8 @@ jr_000_095b:
     call DataTransfer
     ret
 
-Call_000_0974:
+; Read a 3-digit decimal number from the string at HL.
+ParseDecimal:
     ld a, $02
     call ChangeROMBank
     ld b, $00
@@ -1674,7 +1676,7 @@ jr_000_0aaa:
     ret
 
 StartHdmaTransfer:
-    ld a, [$cb53]
+    ld a, [wUnk_cb53]
     or a
     ret z
 
@@ -1686,9 +1688,9 @@ StartHdmaTransfer:
 
     ld a, [wLangGraphicsBank]
     ld [ROM_BANK], a
-    ld a, [$cb55]
+    ld a, [wUnk_cb55]
     ldh [rHDMA1], a
-    ld a, [$cb54]
+    ld a, [wUnk_cb54]
     ldh [rHDMA2], a
     jr jr_000_0ad6
 
@@ -1741,20 +1743,20 @@ jr_000_0aff:
 LoadLevel:
     call PlayLevelMusic
     ld a, $00
-    ld [$c359], a
+    ld [wLcdcFlags], a
     ld hl, $02e0
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
     ld [hVBlankHandler + 1], a
     ld a, $01
-    ld [$ff9c], a
+    ld [hPaletteMode], a
     ld a, $08
-    ld [$ff9b], a
+    ld [hUnk_ff9b], a
     ld a, $03
-    ld [$ff9a], a
+    ld [hUnk_ff9a], a
     ld a, $94
-    ld [$c958], a
+    ld [wUnk_c958], a
     ld a, [wCurrentLevel]
     ld l, a
     ld h, $00
@@ -1836,7 +1838,7 @@ jr_000_0b81:
     ld [wUfoHeight], a
     ld a, $01
     call ChangeROMBank
-    ld a, [$ffa1]
+    ld a, [hResumeFromPause]
     or a
     jp nz, Jump_000_0c40
 
@@ -1877,7 +1879,7 @@ jr_000_0b81:
     ld a, $01
     call ChangeROMBank
     xor a
-    ld [$dd00], a
+    ld [wUnk_dd00], a
     ld a, [wLevelsSincePassword]
     inc a
     ld [wLevelsSincePassword], a
@@ -1891,9 +1893,9 @@ jr_000_0b81:
     call ClearBrickHitQueue
     call ClearUnbreakableHitEffects
     xor a
-    ld [$d9bd], a
-    ld [$d9be], a
-    ld [$dab2], a
+    ld [wBrickRedrawCount], a
+    ld [wUnk_d9be], a
+    ld [wUnk_dab2], a
     ld [hLifeLostTimer], a
     jr jr_000_0c41
 
@@ -1901,16 +1903,16 @@ Jump_000_0c40:
     pop hl
 
 jr_000_0c41:
-    ld a, [$ffa1]
+    ld a, [hResumeFromPause]
     or a
     jr nz, jr_000_0c9a
 
     ld a, $01
-    ld [$dae1], a
+    ld [wUnk_dae1], a
     ldh [rVBK], a
     ld a, $03
     call ChangeROMBank
-    ld hl, Data_003_4000
+    ld hl, Tilemap_Level_003_4000
     ld a, $00
     ld de, $9841
     ld b, $12
@@ -1945,21 +1947,21 @@ jr_000_0c9a:
     ldh [rVBK], a
     ld a, $02
     call ChangeROMBank
-    ld hl, Data_002_4b2c
+    ld hl, Gfx_Level_002_4b2c
     ld de, $8000
     ld bc, $07f0
     call DataTransfer
-    ld hl, Data_002_5dec
+    ld hl, Gfx_Level_002_5dec
     ld de, $9000
     ld bc, $0250
     call DataTransfer
-    ld hl, Data_002_594c
+    ld hl, Gfx_Level_002_594c
     ld de, $9250
     ld bc, $04a0
     call DataTransfer
     ld a, $0b
     call ChangeROMBank
-    ld hl, Data_00b_7d2c
+    ld hl, Gfx_HighScores_00b_7d2c
     ld de, $96f0
     ld bc, $0110
     call DataTransfer
@@ -1987,7 +1989,7 @@ jr_000_0c9a:
     call DataTransfer
     ld a, $02
     call ChangeROMBank
-    ld hl, Data_002_531c
+    ld hl, Gfx_Level_002_531c
     ld de, $8000
     ld bc, $0630
     call DataTransfer
@@ -1995,25 +1997,25 @@ jr_000_0c9a:
     ldh [rVBK], a
     ld a, $01
     call ChangeROMBank
-    ld a, [$ffa1]
+    ld a, [hResumeFromPause]
     or a
     jp nz, Jump_000_0db5
 
     ld a, $25
     ld de, $9840
-    ld hl, Data_001_748b
+    ld hl, Tilemap_Level_001_748b
     ld b, $01
     ld c, $10
     call CopyTilemapRect
     ld a, $25
     ld de, $9853
-    ld hl, Data_001_748b
+    ld hl, Tilemap_Level_001_748b
     ld b, $01
     ld c, $10
     call CopyTilemapRect
     ld a, $25
     ld de, $9820
-    ld hl, Data_001_7477
+    ld hl, Tilemap_Level_001_7477
     ld b, $14
     ld c, $01
     call CopyTilemapRect
@@ -2048,14 +2050,14 @@ jr_000_0c9a:
     xor a
     call ClearRAM
     call BuildLevelTitle
-    ld hl, $d72a
+    ld hl, wLevelTitleText
     call DrawString
     xor a
-    ld [$d746], a
+    ld [wUnk_d746], a
     dec a
-    ld [$d745], a
+    ld [wUnk_d745], a
     ld a, $04
-    ld [$ff9d], a
+    ld [hUnk_ff9d], a
     call SetUpBricks
     xor a
     ldh [rVBK], a
@@ -2069,7 +2071,7 @@ jr_000_0c9a:
 Jump_000_0db5:
     pop hl
     xor a
-    ld [$ffa1], a
+    ld [hResumeFromPause], a
     ret
 
 ; Unpack (count, value) pairs from DE to HL until a count of 0.
@@ -2123,7 +2125,7 @@ BuildLevelTitle:
     ld l, a
     ld a, [wLangTextLevelTitle + 1]
     ld h, a
-    ld de, $d72a
+    ld de, wLevelTitleText
     ld bc, $001b
     call DataTransfer
     ld a, [wCurrentLevel]
@@ -2146,12 +2148,12 @@ jr_000_0df5:
     jr nz, jr_000_0e0e
 
     ld a, d
-    ld [$d73c], a
+    ld [wLevelTitleText + 18], a
     jr jr_000_0e12
 
 jr_000_0e0e:
     ld a, d
-    ld [$d73b], a
+    ld [wLevelTitleText + 17], a
 
 jr_000_0e12:
     ld a, b
@@ -2178,12 +2180,12 @@ jr_000_0e18:
     jr nz, jr_000_0e31
 
     ld a, d
-    ld [$d73d], a
+    ld [wLevelTitleText + 19], a
     jr jr_000_0e35
 
 jr_000_0e31:
     ld a, d
-    ld [$d73c], a
+    ld [wLevelTitleText + 18], a
 
 jr_000_0e35:
     ld a, b
@@ -2199,12 +2201,12 @@ jr_000_0e38:
     jr nz, jr_000_0e49
 
     ld a, d
-    ld [$d73e], a
+    ld [wLevelTitleText + 20], a
     jr jr_000_0e4d
 
 jr_000_0e49:
     ld a, d
-    ld [$d73d], a
+    ld [wLevelTitleText + 19], a
 
 jr_000_0e4d:
     ret
@@ -2348,29 +2350,29 @@ InitBall:
     ld a, $01
     ld [wBallCount], a
     ld a, $89
-    ld [$d77e], a
+    ld [wUnk_d77e], a
     ld a, [wBatWidth]
     srl a
     ld b, a
     ld a, [wBatX]
     sub $0c
     add b
-    ld [$d780], a
+    ld [wUnk_d780], a
     ld a, $10
     ld [wBalls + 4], a
     ld a, $83
     ld [wBalls + 5], a
     xor a
     ld [wBalls], a
-    ld [$d77f], a
-    ld [$d783], a
+    ld [wUnk_d77f], a
+    ld [wUnk_d783], a
     xor a
     ld [wMultiBallPending], a
     ld [wSleepyBallActive], a
     ld [wLaunchDirection], a
     ld [wAntigravityActive], a
     ld [wSlowBallActive], a
-    ld [$d8a4], a
+    ld [wUnk_d8a4], a
     ld [wNinjaActive], a
     ld [wRemoveBall], a
     inc a
@@ -2402,7 +2404,7 @@ Gameplay_Update:
     jr nz, jr_000_0f5d
 
     call NextLevelMusic
-    ld a, [$dcff]
+    ld a, [wUnk_dcff]
     or a
     jr nz, jr_000_0f5d
 
@@ -2801,12 +2803,12 @@ Gameplay_UpdateBalls:
     or a
     jp z, Gameplay_AfterBalls
 
-    ld [$d8a4], a
+    ld [wUnk_d8a4], a
     ld b, a
     ld hl, wBalls
     ld de, $d895
     xor a
-    ld [$ff90], a
+    ld [hTemp2], a
 
 Gameplay_BallLoop:
     push bc
@@ -2867,7 +2869,7 @@ jr_000_11d2:
     ld [wBatExplosionTimer], a
     ld a, [wBatY]
     sub $08
-    ld [$d76c], a
+    ld [wUnk_d76c], a
     ld b, $f8
     ld a, [wBatWidth]
     cp $20
@@ -2878,7 +2880,7 @@ jr_000_11d2:
 jr_000_11f8:
     ld a, [wBatX]
     add b
-    ld [$d76d], a
+    ld [wUnk_d76d], a
     xor a
 
     ld [wWeaponFlag], a
@@ -2930,9 +2932,9 @@ jr_000_122f:
 jr_000_1245:
     ld a, $ff
     ld [hl+], a
-    ld a, [$ff90]
+    ld a, [hTemp2]
     inc a
-    ld [$ff90], a
+    ld [hTemp2], a
     jr jr_000_126c
 
 Gameplay_StoreBall:
@@ -2956,7 +2958,7 @@ jr_000_126c:
     dec b
     jp nz, Gameplay_BallLoop
 
-    ld a, [$d8a4]
+    ld a, [wUnk_d8a4]
     or a
     jr nz, jr_000_127a
 
@@ -2964,7 +2966,7 @@ jr_000_126c:
     add hl, de
 
 jr_000_127a:
-    ld a, [$ff90]
+    ld a, [hTemp2]
     or a
     jr z, Gameplay_AfterBalls
 
@@ -3046,11 +3048,11 @@ jr_000_12d4:
     call UpdateUnbreakableHitEffects
     call DrawBatSprites
     xor a
-    ld [$d9be], a
-    ld [$d9bd], a
-    call Call_000_1950
+    ld [wUnk_d9be], a
+    ld [wBrickRedrawCount], a
+    call UpdateBatTiles
     call ProcessBrickHitQueue
-    call Call_000_1d7c
+    call FlushBrickRedraw
     ld a, [hLifeLostTimer]
     or a
     jr z, Gameplay_CheckPause
@@ -3083,7 +3085,7 @@ Gameplay_CheckPause:
     ld [hGameState], a
     ld a, $01
     ld [hStateTimer], a
-    ld [$ffa1], a
+    ld [hResumeFromPause], a
     ld a, $1a
     call PlaySound
     ld a, $1e
@@ -3107,19 +3109,19 @@ RestartAfterLifeLost:
     xor a
     ld [wOamUsed], a
     ld [hJoypad], a
-    call Call_001_6838
+    call FadePalettes
     call InitBatSprites
     call InitBat
     call InitBall
     xor a
-    ld [$d9be], a
-    ld [$d9bd], a
+    ld [wUnk_d9be], a
+    ld [wBrickRedrawCount], a
     inc a
-    ld [$d745], a
-    call Call_000_1def
-    call Call_000_1950
+    ld [wUnk_d745], a
+    call MarkBrickHitQueue
+    call UpdateBatTiles
     call ProcessBrickHitQueue
-    call Call_000_1d7c
+    call FlushBrickRedraw
     call ResetShots
     call ResetEnemies
     call ClearFallingPowerups
@@ -3138,7 +3140,7 @@ RestartAfterLifeLost:
     call DrawBatSprites
     ld b, $ff
     ld a, $20
-    call Call_001_6838
+    call FadePalettes
     call PlayLevelMusic
     ret
 
@@ -3159,7 +3161,7 @@ UpdateBall:
 jr_000_13c0:
     jr c, jr_000_1415
 
-    ld a, [$d8a7]
+    ld a, [wUnk_d8a7]
     and $1f
     ld d, $00
     cp $10
@@ -3310,7 +3312,7 @@ UpdateBall_Split:
 
     xor a
     ld [wMultiBallPending], a
-    ld a, [$d8a4]
+    ld a, [wUnk_d8a4]
     ld b, a
     ld hl, wBalls
     ld de, $0007
@@ -3320,7 +3322,7 @@ jr_000_14b9:
     dec a
     jr nz, jr_000_14b9
 
-    ld [$d8a4], a
+    ld [wUnk_d8a4], a
     ld a, b
     add $02
     ld [wBallCount], a
@@ -3489,7 +3491,7 @@ jr_000_15ae:
     ld a, h
     ld [wBallWorkY], a
     xor a
-    ld [$d8ab], a
+    ld [wUnk_d8ab], a
     call CollideBall
     ld a, [wBallSecondStep]
     or a
@@ -4005,7 +4007,7 @@ HitBrickAtBall:
     jp HitBrickWithBall
 
 jr_000_18af:
-    ld a, [$d8ab]
+    ld a, [wUnk_d8ab]
     or a
     call z, SpawnUnbreakableHitEffect
 
@@ -4087,14 +4089,14 @@ UpdateBatExplosion:
     ld h, a
     ld a, [de]
     inc de
-    ld [$ff8d], a
+    ld [hTemp], a
     ld b, a
     ld a, [wOamUsed]
     add b
     ld [wOamUsed], a
-    ld a, [$d76c]
+    ld a, [wUnk_d76c]
     ld b, a
-    ld a, [$d76d]
+    ld a, [wUnk_d76d]
     ld c, a
 
 jr_000_1930:
@@ -4112,9 +4114,9 @@ jr_000_1930:
     ld a, [de]
     inc de
     ld [hl+], a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     dec a
-    ld [$ff8d], a
+    ld [hTemp], a
     jr nz, jr_000_1930
 
     ld a, l
@@ -4123,7 +4125,7 @@ jr_000_1930:
     ld [wOamWritePtr + 1], a
     ret
 
-Call_000_1950:
+UpdateBatTiles:
     ld a, [wBatExplosionTimer]
     or a
     jr nz, jr_000_195d
@@ -4133,15 +4135,15 @@ Call_000_1950:
     jr nz, jr_000_19a6
 
 jr_000_195d:
-    ld a, [$dab2]
+    ld a, [wUnk_dab2]
     or a
     ret z
 
     xor a
-    ld [$dab2], a
+    ld [wUnk_dab2], a
     ld hl, $0200
     ld d, $00
-    ld a, [$dab1]
+    ld a, [wUnk_dab1]
     inc a
     ld e, a
     add hl, de
@@ -4181,13 +4183,13 @@ jr_000_1991:
     ld [hl+], a
     ld a, $08
     ld [hl], a
-    ld a, [$d9bd]
+    ld a, [wBrickRedrawCount]
     add $02
-    ld [$d9bd], a
+    ld [wBrickRedrawCount], a
     ret
 
 jr_000_19a6:
-    ld [$dab2], a
+    ld [wUnk_dab2], a
     ld hl, $0200
     ld a, [wBatX]
     sub $08
@@ -4196,7 +4198,7 @@ jr_000_19a6:
     sra a
     ld e, a
     ld d, $00
-    ld [$dab1], a
+    ld [wUnk_dab1], a
     add hl, de
     ld b, h
     ld c, l
@@ -4254,9 +4256,9 @@ jr_000_19de:
     ld [hl+], a
     ld a, $08
     ld [hl], a
-    ld a, [$d9bd]
+    ld a, [wBrickRedrawCount]
     add $04
-    ld [$d9bd], a
+    ld [wBrickRedrawCount], a
     ret
 
 ; A rocket, laser, grenade or plasma shot hit the brick at HL. A = its hit points.
@@ -4288,8 +4290,8 @@ jr_000_1a2b:
     cp $02
     jr nz, jr_000_1a58
 
-    ld a, [$d8bb]
-    ld [$d8ba], a
+    ld a, [wUnk_d8bb]
+    ld [wUnk_d8ba], a
     jr jr_000_1a5c
 
 ; The ball hit the brick at HL. A = its hit points.
@@ -4317,7 +4319,7 @@ HitBrickWithBall:
 
 jr_000_1a58:
     xor a
-    ld [$d8ba], a
+    ld [wUnk_d8ba], a
 
 jr_000_1a5c:
     ld a, l
@@ -4461,7 +4463,7 @@ jr_000_1af8:
     ld [hl+], a
     ld a, b
     ld [hl+], a
-    ld a, [$d8ba]
+    ld a, [wUnk_d8ba]
     ld [hl+], a
     ret
 
@@ -4484,7 +4486,7 @@ CountBrickDestroyed:
     jr nz, jr_000_1b3b
 
     call NextLevelMusic
-    ld a, [$dcff]
+    ld a, [wUnk_dcff]
     or a
     jr nz, jr_000_1b3b
 
@@ -4509,9 +4511,9 @@ jr_000_1b52:
 
 jr_000_1b55:
     ld a, h
-    ld [$ff8d], a
+    ld [hTemp], a
     ld a, l
-    ld [$ff8e], a
+    ld [hTemp + 1], a
     ld de, $981f
     add hl, de
     ld c, l
@@ -4539,18 +4541,17 @@ jr_000_1b70:
     ld l, a
     jp hl
 
-Call_000_1b7f:
-Jump_000_1b7f:
-    ld a, [$d9bd]
+BrickRedraw_1b7f:
+    ld a, [wBrickRedrawCount]
     add $02
-    ld [$d9bd], a
+    ld [wBrickRedrawCount], a
     ld a, c
     ld [hl+], a
     ld a, b
     ld [hl+], a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld d, a
-    ld a, [$ff8e]
+    ld a, [hTemp + 1]
     ld e, a
     push hl
     ld hl, $cf49
@@ -4574,18 +4575,17 @@ Jump_000_1b7f:
     ld [hl+], a
     ret
 
-Call_000_1bac:
-Jump_000_1bac:
-    ld a, [$d9bd]
+BrickRedraw_1bac:
+    ld a, [wBrickRedrawCount]
     add $02
-    ld [$d9bd], a
+    ld [wBrickRedrawCount], a
     ld a, c
     ld [hl+], a
     ld a, b
     ld [hl+], a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld d, a
-    ld a, [$ff8e]
+    ld a, [hTemp + 1]
     ld e, a
     push hl
     ld hl, $cf49
@@ -4609,19 +4609,18 @@ Jump_000_1bac:
     ld [hl+], a
     ret
 
-Call_000_1bd9:
-Jump_000_1bd9:
-    ld a, [$d9bd]
+BrickRedraw_1bd9:
+    ld a, [wBrickRedrawCount]
     add $02
-    ld [$d9bd], a
+    ld [wBrickRedrawCount], a
     ld a, c
     ld [hl+], a
     ld a, b
     ld [hl+], a
     ld a, d
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld d, a
-    ld a, [$ff8e]
+    ld a, [hTemp + 1]
     ld e, a
     push hl
     ld hl, $cf49
@@ -4641,19 +4640,18 @@ Jump_000_1bd9:
 
     db $22, $7a, $22, $3e, $0a, $22, $c9
 
-Call_000_1c07:
-Jump_000_1c07:
-    ld a, [$d9bd]
+BrickRedraw_1c07:
+    ld a, [wBrickRedrawCount]
     add $02
-    ld [$d9bd], a
+    ld [wBrickRedrawCount], a
     ld a, c
     ld [hl+], a
     ld a, b
 
     ld [hl+], a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld d, a
-    ld a, [$ff8e]
+    ld a, [hTemp + 1]
     ld e, a
     push hl
     ld hl, $cf49
@@ -4679,9 +4677,9 @@ Jump_000_1c07:
     ret
 
 Jump_000_1c34:
-    ld a, [$d9bd]
+    ld a, [wBrickRedrawCount]
     add $02
-    ld [$d9bd], a
+    ld [wBrickRedrawCount], a
     ld a, c
     add $20
     ld c, a
@@ -4694,9 +4692,9 @@ jr_000_1c43:
     ld a, b
     ld [hl+], a
 
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld d, a
-    ld a, [$ff8e]
+    ld a, [hTemp + 1]
     ld e, a
     push hl
     ld hl, $cf6a
@@ -4721,9 +4719,9 @@ jr_000_1c43:
     ret
 
 Jump_000_1c67:
-    ld a, [$d9bd]
+    ld a, [wBrickRedrawCount]
     add $02
-    ld [$d9bd], a
+    ld [wBrickRedrawCount], a
     ld a, c
     add $20
     ld c, a
@@ -4735,9 +4733,9 @@ jr_000_1c76:
     ld [hl+], a
     ld a, b
     ld [hl+], a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld d, a
-    ld a, [$ff8e]
+    ld a, [hTemp + 1]
     ld e, a
     push hl
     ld hl, $cf6a
@@ -4762,9 +4760,9 @@ jr_000_1c76:
     ret
 
 Jump_000_1c9a:
-    ld a, [$d9bd]
+    ld a, [wBrickRedrawCount]
     inc a
-    ld [$d9bd], a
+    ld [wBrickRedrawCount], a
     ld a, c
     add $21
     ld c, a
@@ -4776,9 +4774,9 @@ jr_000_1ca8:
     ld [hl+], a
     ld a, b
     ld [hl+], a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld d, a
-    ld a, [$ff8e]
+    ld a, [hTemp + 1]
     ld e, a
     push hl
     ld hl, $cf6b
@@ -4791,9 +4789,9 @@ jr_000_1ca8:
     ret
 
 Jump_000_1cbf:
-    ld a, [$d9bd]
+    ld a, [wBrickRedrawCount]
     inc a
-    ld [$d9bd], a
+    ld [wBrickRedrawCount], a
     ld a, c
     add $20
     ld c, a
@@ -4805,9 +4803,9 @@ jr_000_1ccd:
     ld [hl+], a
     ld a, b
     ld [hl+], a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld d, a
-    ld a, [$ff8e]
+    ld a, [hTemp + 1]
     ld e, a
     push hl
     ld hl, $cf6a
@@ -4820,9 +4818,9 @@ jr_000_1ccd:
     ret
 
 Jump_000_1ce4:
-    ld a, [$d9bd]
+    ld a, [wBrickRedrawCount]
     inc a
-    ld [$d9bd], a
+    ld [wBrickRedrawCount], a
     ld a, c
     add $20
     ld c, a
@@ -4834,9 +4832,9 @@ jr_000_1cf2:
     ld [hl+], a
     ld a, b
     ld [hl+], a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld d, a
-    ld a, [$ff8e]
+    ld a, [hTemp + 1]
     ld e, a
     push hl
     ld hl, $cf6a
@@ -4851,102 +4849,103 @@ jr_000_1cf2:
 
 Jump_000_1d0a:
     pop hl
-    call Call_000_1b7f
+    call BrickRedraw_1b7f
     jp Jump_000_1c34
 
 Jump_000_1d11:
     pop hl
-    call Call_000_1b7f
+    call BrickRedraw_1b7f
     jp Jump_000_1c9a
 
 Jump_000_1d18:
     pop hl
-    call Call_000_1b7f
+    call BrickRedraw_1b7f
     jp Jump_000_1cbf
 
 Jump_000_1d1f:
     pop hl
 
-    jp Jump_000_1b7f
+    jp BrickRedraw_1b7f
 
 Jump_000_1d23:
     pop hl
-    call Call_000_1bd9
+    call BrickRedraw_1bd9
     jp Jump_000_1c34
 
 Jump_000_1d2a:
     pop hl
-    call Call_000_1bd9
+    call BrickRedraw_1bd9
     jp Jump_000_1c9a
 
 Jump_000_1d31:
     pop hl
-    call Call_000_1bd9
+    call BrickRedraw_1bd9
     jp Jump_000_1cbf
 
 Jump_000_1d38:
     pop hl
-    jp Jump_000_1bd9
+    jp BrickRedraw_1bd9
 
 Jump_000_1d3c:
     pop hl
-    call Call_000_1c07
+    call BrickRedraw_1c07
     jp Jump_000_1c34
 
 Jump_000_1d43:
     pop hl
-    call Call_000_1c07
+    call BrickRedraw_1c07
     jp Jump_000_1c9a
 
 Jump_000_1d4a:
     pop hl
-    call Call_000_1c07
+    call BrickRedraw_1c07
     jp Jump_000_1cbf
 
 Jump_000_1d51:
     pop hl
-    jp Jump_000_1c07
+    jp BrickRedraw_1c07
 
 Jump_000_1d55:
     pop hl
-    call Call_000_1bac
+    call BrickRedraw_1bac
     jp Jump_000_1c34
 
 Jump_000_1d5c:
     pop hl
-    call Call_000_1bac
+    call BrickRedraw_1bac
     jp Jump_000_1c9a
 
 Jump_000_1d63:
     pop hl
-    call Call_000_1bac
+    call BrickRedraw_1bac
     jp Jump_000_1cbf
 
 Jump_000_1d6a:
     pop hl
-    jp Jump_000_1bac
+    jp BrickRedraw_1bac
 
 Jump_000_1d6e:
     pop hl
-    call Call_000_1bac
+    call BrickRedraw_1bac
     jp Jump_000_1c67
 
 Jump_000_1d75:
     pop hl
-    call Call_000_1bac
+    call BrickRedraw_1bac
     jp Jump_000_1ce4
 
-Call_000_1d7c:
-    ld a, [$d9bd]
+; Copy the queued brick tile changes to the buffer that VBlank writes to the screen.
+FlushBrickRedraw:
+    ld a, [wBrickRedrawCount]
     or a
     jr z, jr_000_1dae
 
-    ld [$ff8d], a
+    ld [hTemp], a
     ld hl, $d91c
     ld bc, $da37
-    ld a, [$daaf]
+    ld a, [wUnk_daaf]
     ld e, a
-    ld a, [$dab0]
+    ld a, [wUnk_dab0]
     ld d, a
 
 jr_000_1d93:
@@ -4968,17 +4967,17 @@ jr_000_1d93:
     ld a, [hl+]
     ld [bc], a
     inc bc
-    ld a, [$ff8d]
+    ld a, [hTemp]
     dec a
-    ld [$ff8d], a
+    ld [hTemp], a
     jr nz, jr_000_1d93
 
 jr_000_1dae:
     ld a, $09
     ld [ROM_BANK], a
-    ld a, [$dab3]
+    ld a, [wUnk_dab3]
     ld l, a
-    ld a, [$dab4]
+    ld a, [wUnk_dab4]
     ld h, a
     ld b, $0c
 
@@ -4987,7 +4986,7 @@ jr_000_1dbd:
     cp $ff
     jr nz, jr_000_1dc6
 
-    ld hl, Data_009_4000
+    ld hl, BrickRedrawData_009_4000
     ld a, [hl+]
 
 jr_000_1dc6:
@@ -5003,21 +5002,21 @@ jr_000_1dc6:
     jr nz, jr_000_1dbd
 
     ld a, l
-    ld [$dab3], a
+    ld [wUnk_dab3], a
     ld a, h
-    ld [$dab4], a
+    ld [wUnk_dab4], a
     ld a, $01
     ld [ROM_BANK], a
-    ld a, [$d9bd]
-    ld [$d9be], a
+    ld a, [wBrickRedrawCount]
+    ld [wUnk_d9be], a
     ld b, a
-    ld a, [$d9bc]
+    ld a, [wUnk_d9bc]
     add b
     add $0c
-    ld [$d9bd], a
+    ld [wBrickRedrawCount], a
     ret
 
-Call_000_1def:
+MarkBrickHitQueue:
     ld b, $01
     jr jr_000_1df5
 
@@ -5050,9 +5049,9 @@ jr_000_1e0c:
 
     ld hl, Palettes_Level
     ld a, l
-    ld [$dab3], a
+    ld [wUnk_dab3], a
     ld a, h
-    ld [$dab4], a
+    ld [wUnk_dab4], a
     ret
 
 ; Redraw hit bricks, remove destroyed ones and release power-ups.
@@ -5060,9 +5059,9 @@ ProcessBrickHitQueue:
     ld hl, wBrickHitQueue
     ld de, $d9bf
     xor a
-    ld [$d9bc], a
+    ld [wUnk_d9bc], a
     ld a, $0c
-    ld [$ff90], a
+    ld [hTemp2], a
 
 Jump_000_1e2a:
     ld a, [hl]
@@ -5138,10 +5137,10 @@ jr_000_1e7d:
 
     ld a, $48
     sub b
-    ld [$d8b8], a
+    ld [wBrickTileLeft], a
     ld a, $49
     sub b
-    ld [$d8b9], a
+    ld [wBrickTileRight], a
 
 jr_000_1e8d:
     cp $01
@@ -5149,10 +5148,10 @@ jr_000_1e8d:
 
     ld a, $4a
     sub b
-    ld [$d8b8], a
+    ld [wBrickTileLeft], a
     ld a, $49
     sub b
-    ld [$d8b9], a
+    ld [wBrickTileRight], a
 
 jr_000_1e9d:
     cp $02
@@ -5161,10 +5160,10 @@ jr_000_1e9d:
 jr_000_1ea1:
     ld a, $4a
     sub b
-    ld [$d8b8], a
+    ld [wBrickTileLeft], a
     ld a, $4b
     sub b
-    ld [$d8b9], a
+    ld [wBrickTileRight], a
     jr jr_000_1eb3
 
 jr_000_1eaf:
@@ -5180,7 +5179,7 @@ jr_000_1eb3:
     ld [de], a
     inc de
     ld b, a
-    ld a, [$d8b8]
+    ld a, [wBrickTileLeft]
     ld [de], a
     inc de
     inc c
@@ -5190,12 +5189,12 @@ jr_000_1eb3:
     ld a, b
     ld [de], a
     inc de
-    ld a, [$d8b9]
+    ld a, [wBrickTileRight]
     ld [de], a
     inc de
-    ld a, [$d9bc]
+    ld a, [wUnk_d9bc]
     add $02
-    ld [$d9bc], a
+    ld [wUnk_d9bc], a
     inc hl
     jp Jump_000_1f68
 
@@ -5241,10 +5240,10 @@ jr_000_1eff:
 
     ld a, $46
     sub b
-    ld [$d8b8], a
+    ld [wBrickTileLeft], a
     ld a, $47
     sub b
-    ld [$d8b9], a
+    ld [wBrickTileRight], a
 
 jr_000_1f0f:
     cp $01
@@ -5252,10 +5251,10 @@ jr_000_1f0f:
 
     ld a, $48
     sub b
-    ld [$d8b8], a
+    ld [wBrickTileLeft], a
     ld a, $47
     sub b
-    ld [$d8b9], a
+    ld [wBrickTileRight], a
 
 jr_000_1f1f:
     cp $02
@@ -5264,10 +5263,10 @@ jr_000_1f1f:
 jr_000_1f23:
     ld a, $48
     sub b
-    ld [$d8b8], a
+    ld [wBrickTileLeft], a
     ld a, $49
     sub b
-    ld [$d8b9], a
+    ld [wBrickTileRight], a
     jr jr_000_1f35
 
 jr_000_1f31:
@@ -5283,7 +5282,7 @@ jr_000_1f35:
     ld [de], a
     inc de
     ld b, a
-    ld a, [$d8b8]
+    ld a, [wBrickTileLeft]
     ld [de], a
     inc de
     inc c
@@ -5293,12 +5292,12 @@ jr_000_1f35:
     ld a, b
     ld [de], a
     inc de
-    ld a, [$d8b9]
+    ld a, [wBrickTileRight]
     ld [de], a
     inc de
-    ld a, [$d9bc]
+    ld a, [wUnk_d9bc]
     add $02
-    ld [$d9bc], a
+    ld [wUnk_d9bc], a
     call SpawnPowerup
     inc hl
     ld a, $02
@@ -5315,36 +5314,36 @@ Jump_000_1f61:
 
 Jump_000_1f68:
 jr_000_1f68:
-    ld a, [$ff90]
+    ld a, [hTemp2]
     dec a
-    ld [$ff90], a
+    ld [hTemp2], a
     jp nz, Jump_000_1e2a
 
     ld a, e
-    ld [$daaf], a
+    ld [wUnk_daaf], a
     ld a, d
-    ld [$dab0], a
+    ld [wUnk_dab0], a
     ret
 
 StateInit_MainMenu:
     ld e, $05
     call PlayMusic
     ld a, $04
-    ld [$c359], a
+    ld [wLcdcFlags], a
     ld hl, $03a4
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
     ld [hVBlankHandler + 1], a
     ld a, $01
-    ld [$ff9c], a
+    ld [hPaletteMode], a
     ld a, $01
-    ld [$ff9a], a
+    ld [hUnk_ff9a], a
     xor a
-    ld [$cb53], a
+    ld [wUnk_cb53], a
     ldh [rSCX], a
     ldh [rSCY], a
-    ld [$c959], a
+    ld [wUnk_c959], a
     ld de, Palettes_Level
     call LoadPalettes
     ld hl, $9800
@@ -5355,17 +5354,17 @@ StateInit_MainMenu:
     ldh [rVBK], a
     xor a
     ld de, $9880
-    ld hl, Data_002_6dc4
+    ld hl, Tilemap_MainMenu_002_6dc4
     ld b, $14
     ld c, $0e
     call CopyTilemapRect
     xor a
     ldh [rVBK], a
-    ld hl, Data_002_6edc
+    ld hl, Gfx_MainMenu_002_6edc
     ld de, $8000
     ld bc, $04c0
     call DataTransfer
-    ld hl, Data_002_603c
+    ld hl, Gfx_MainMenu_002_603c
     ld de, $9000
     ld bc, $0800
     call DataTransfer
@@ -5380,7 +5379,7 @@ StateInit_MainMenu:
     ld a, $25
     ld de, $9880
 
-    ld hl, Data_002_6c5c
+    ld hl, Tilemap_MainMenu_002_6c5c
     ld b, $14
     ld c, $0e
     call CopyTilemapRect
@@ -5394,8 +5393,8 @@ StateInit_MainMenu:
     ld bc, $0014
     call DataTransfer
 
-    ld a, [$df43]
-    ld [$dad2], a
+    ld a, [wUnk_df43]
+    ld [wUnk_dad2], a
     call FormatLevelNumber
     ld a, [wLangTextStartGame]
     ld l, a
@@ -5443,7 +5442,7 @@ jr_000_2074:
     or a
     jr z, jr_000_2083
 
-    ld hl, Data_00e_4000
+    ld hl, Text_Version
     call DrawString
 
 jr_000_2083:
@@ -5459,22 +5458,22 @@ jr_000_2083:
     ld a, $01
     call ChangeROMBank
     ld a, $fd
-    ld [$ccb7], a
+    ld [wUnk_ccb7], a
     xor a
-    ld [$dae1], a
+    ld [wUnk_dae1], a
     ld [wPasswordEntryActive], a
     ld [wLevelMusicIndex], a
     call InitMenuSparkles
     ld a, $90
-    ld [$ff9e], a
+    ld [hUnk_ff9e], a
     ret
 
 ; Write wStartLevel + 1 as 3 decimal digits.
 FormatLevelNumber:
     ld a, $30
-    ld [$dad3], a
-    ld [$dad4], a
-    ld [$dad5], a
+    ld [wUnk_dad3], a
+    ld [wUnk_dad4], a
+    ld [wUnk_dad5], a
     ld a, [wStartLevel]
     inc a
     ld c, $00
@@ -5489,7 +5488,7 @@ jr_000_20c4:
     jr z, jr_000_20d6
 
     add $30
-    ld [$dad3], a
+    ld [wUnk_dad3], a
     ld a, b
     or a
     jr z, jr_000_20f9
@@ -5509,7 +5508,7 @@ jr_000_20d9:
     jr z, jr_000_20eb
 
     add $30
-    ld [$dad4], a
+    ld [wUnk_dad4], a
     ld a, b
     or a
     jr z, jr_000_20f9
@@ -5517,7 +5516,7 @@ jr_000_20d9:
 jr_000_20eb:
     ld a, b
     add $30
-    ld [$dad5], a
+    ld [wUnk_dad5], a
     jr jr_000_20f9
 
 jr_000_20f3:
@@ -5533,7 +5532,7 @@ jr_000_20f9:
 
 MainMenu_Update:
     call UpdateMenuSparkles
-    ld a, [$ff9e]
+    ld a, [hUnk_ff9e]
     or a
     ret nz
 
@@ -5557,7 +5556,7 @@ MainMenu_PasswordEntry:
     jr z, jr_000_2126
 
     ld a, $fb
-    ld [$ccb7], a
+    ld [wUnk_ccb7], a
 
 jr_000_2126:
     ld a, [wPasswordCursor]
@@ -5591,12 +5590,12 @@ jr_000_214a:
     bit 3, b
     jr z, jr_000_217c
 
-    ld a, [$dab6]
+    ld a, [wMenuDownHeld]
     or a
     jr nz, jr_000_2180
 
     inc a
-    ld [$dab6], a
+    ld [wMenuDownHeld], a
     ld a, $19
     call PlaySound
     ld a, [hl]
@@ -5629,18 +5628,18 @@ jr_000_2179:
 
 jr_000_217c:
     xor a
-    ld [$dab6], a
+    ld [wMenuDownHeld], a
 
 jr_000_2180:
     bit 2, b
     jr z, jr_000_21ae
 
-    ld a, [$dab7]
+    ld a, [wMenuUpHeld]
     or a
     jr nz, jr_000_21b2
 
     inc a
-    ld [$dab7], a
+    ld [wMenuUpHeld], a
     ld a, $19
     call PlaySound
     ld a, [hl]
@@ -5670,7 +5669,7 @@ jr_000_21ab:
 
 jr_000_21ae:
     xor a
-    ld [$dab7], a
+    ld [wMenuUpHeld], a
 
 jr_000_21b2:
     ld a, b
@@ -5978,18 +5977,18 @@ jr_000_23a1:
     jr z, jr_000_23ad
 
     ld a, $fd
-    ld [$ccb7], a
+    ld [wUnk_ccb7], a
 
 jr_000_23ad:
     bit 3, b
     jr z, jr_000_23dd
 
-    ld a, [$dab6]
+    ld a, [wMenuDownHeld]
     or a
     jr nz, jr_000_23e1
 
     inc a
-    ld [$dab6], a
+    ld [wMenuDownHeld], a
     ld a, $19
     call PlaySound
     ld a, [wMenuCursor]
@@ -6018,18 +6017,18 @@ jr_000_23d8:
 
 jr_000_23dd:
     xor a
-    ld [$dab6], a
+    ld [wMenuDownHeld], a
 
 jr_000_23e1:
     bit 2, b
     jr z, jr_000_2412
 
-    ld a, [$dab7]
+    ld a, [wMenuUpHeld]
     or a
     jr nz, jr_000_2416
 
     inc a
-    ld [$dab7], a
+    ld [wMenuUpHeld], a
     ld a, $19
     call PlaySound
     ld a, [wMenuCursor]
@@ -6059,7 +6058,7 @@ jr_000_240d:
 
 jr_000_2412:
     xor a
-    ld [$dab7], a
+    ld [wMenuUpHeld], a
 
 jr_000_2416:
     ld a, [wMenuCursor]
@@ -6110,12 +6109,12 @@ jr_000_245c:
     bit 0, b
     jr z, jr_000_2494
 
-    ld a, [$dab8]
+    ld a, [wUnk_dab8]
     or a
     jr nz, jr_000_2498
 
     inc a
-    ld [$dab8], a
+    ld [wUnk_dab8], a
     ld a, $19
     call PlaySound
     ld a, [wMenuCursor]
@@ -6143,18 +6142,18 @@ jr_000_248a:
 
 jr_000_2494:
     xor a
-    ld [$dab8], a
+    ld [wUnk_dab8], a
 
 jr_000_2498:
     bit 1, b
     jr z, jr_000_24d0
 
-    ld a, [$dab9]
+    ld a, [wUnk_dab9]
     or a
     jr nz, jr_000_24d4
 
     inc a
-    ld [$dab9], a
+    ld [wUnk_dab9], a
     ld a, $19
     call PlaySound
     ld a, [wMenuCursor]
@@ -6182,31 +6181,31 @@ jr_000_24c6:
 
 jr_000_24d0:
     xor a
-    ld [$dab9], a
+    ld [wUnk_dab9], a
 
 Jump_000_24d4:
 jr_000_24d4:
-    ld a, [$dae0]
+    ld a, [wUnk_dae0]
     inc a
-    ld [$dae0], a
+    ld [wUnk_dae0], a
     and $01
     jr z, jr_000_251a
 
-    ld a, [$ccb7]
+    ld a, [wUnk_ccb7]
     cp $ff
     jr z, jr_000_251a
 
     dec a
-    ld [$ccb7], a
+    ld [wUnk_ccb7], a
     jr nz, jr_000_251a
 
     ld a, [hGameState]
     cp $01
     jr nz, jr_000_251a
 
-    ld a, [$dae2]
+    ld a, [wUnk_dae2]
     xor $01
-    ld [$dae2], a
+    ld [wUnk_dae2], a
     jr z, jr_000_2501
 
     ld a, $07
@@ -6220,9 +6219,9 @@ jr_000_2503:
     ld a, $28
     ld [hStateTimer], a
     ld a, $01
-    ld [$ccb6], a
+    ld [wUnk_ccb6], a
     ld a, $fe
-    ld [$ccb7], a
+    ld [wUnk_ccb7], a
     ld a, $1a
     call PlaySound
 
@@ -6234,7 +6233,7 @@ StartGame:
     call ResetScore
     xor a
     ld [wLevelsSincePassword], a
-    ld [$dcff], a
+    ld [wUnk_dcff], a
     ld a, $05
     ld [wLives], a
     ld a, b
@@ -6251,34 +6250,34 @@ jr_000_2535:
     ld [wCurrentLevel], a
     ld hl, $05dc
     ld a, l
-    ld [$dd4d], a
+    ld [wUnk_dd4d], a
     ld a, h
-    ld [$dd4e], a
+    ld [wUnk_dd4e], a
     ld hl, $0096
     ld a, l
-    ld [$dd4f], a
+    ld [wUnk_dd4f], a
     ld a, h
-    ld [$dd50], a
+    ld [wUnk_dd50], a
     ret
 
 StateInit_TitleScreen:
     ld e, $01
     call PlayMusic
     ld a, $00
-    ld [$c359], a
+    ld [wLcdcFlags], a
     ld hl, $02b3
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
     ld [hVBlankHandler + 1], a
     ld a, $04
-    ld [$ff9c], a
+    ld [hPaletteMode], a
     xor a
-    ld [$ff9b], a
+    ld [hUnk_ff9b], a
     ld a, $80
-    ld [$c958], a
+    ld [wUnk_c958], a
     ld a, $01
-    ld [$ff9a], a
+    ld [hUnk_ff9a], a
     xor a
     ldh [rSCX], a
     ld de, Palettes_TitleScreen
@@ -6287,7 +6286,7 @@ StateInit_TitleScreen:
     call ChangeROMBank
     ld a, $01
     ldh [rVBK], a
-    ld hl, Data_007_4000
+    ld hl, Gfx_TitleScreen_007_4000
     ld de, $9000
     ld bc, $0800
     call DataTransfer
@@ -6301,7 +6300,7 @@ StateInit_TitleScreen:
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, Data_007_5dac
+    ld hl, Tilemap_TitleScreen_007_5dac
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -6309,7 +6308,7 @@ StateInit_TitleScreen:
     or a
     jr z, jr_000_25cf
 
-    ld hl, Data_007_5f14
+    ld hl, Tilemap_TitleScreen_007_5f14
     ld de, $9a20
     xor a
     ld b, $14
@@ -6318,7 +6317,7 @@ StateInit_TitleScreen:
 
 jr_000_25cf:
     xor a
-    ld [$dae1], a
+    ld [wUnk_dae1], a
     ldh [rVBK], a
     ld hl, $4e10
     ld de, $9000
@@ -6329,32 +6328,32 @@ jr_000_25cf:
     ld bc, $0620
     call DataTransfer
     ld a, [wLanguage]
-    ld hl, Data_007_6538
+    ld hl, TitleScreenData_007_6538
     dec a
     jr z, jr_000_2605
 
-    ld hl, Data_007_67b8
+    ld hl, TitleScreenData_007_67b8
     dec a
     jr z, jr_000_2605
 
-    ld hl, Data_007_6678
+    ld hl, TitleScreenData_007_6678
     dec a
     jr z, jr_000_2605
 
-    ld hl, Data_007_68f8
+    ld hl, Gfx_TitleScreen_007_68f8
 
 jr_000_2605:
     ld de, $8e20
     ld bc, $0140
     call DataTransfer
-    ld hl, Data_007_5f28
+    ld hl, Gfx_TitleScreen_007_5f28
     ld de, $8000
     ld bc, $0540
     call DataTransfer
     xor a
     ld [wMenuCursor], a
     ld de, $9800
-    ld hl, Data_007_5c30
+    ld hl, Tilemap_TitleScreen_007_5c30
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -6362,7 +6361,7 @@ jr_000_2605:
     or a
     jr z, jr_000_2640
 
-    ld hl, Data_007_5d98
+    ld hl, Tilemap_TitleScreen_007_5d98
     ld a, $e2
     ld de, $9a20
     ld b, $14
@@ -6386,7 +6385,7 @@ jr_000_2640:
     ld [wMenuItemColours + 1], a
 
 jr_000_2661:
-    call Call_001_6e25
+    call TitleScreen_Init6e25
     ret
 
 TitleScreen_Update:
@@ -6407,7 +6406,7 @@ TitleScreen_Update:
     call PlaySound
 
 jr_000_2683:
-    call Call_001_6cd4
+    call TitleScreen_Sub6cd4
     ret
 
 StateInit_GameOver:
@@ -6425,11 +6424,11 @@ jr_000_2692:
     ld a, h
     ld [hVBlankHandler + 1], a
     xor a
-    ld [$ff9c], a
+    ld [hPaletteMode], a
     ld a, $01
-    ld [$ff9a], a
+    ld [hUnk_ff9a], a
     xor a
-    ld [$dae1], a
+    ld [wUnk_dae1], a
     ldh [rSCX], a
     ld de, Palettes_GameOver
     call LoadPalettes
@@ -6437,7 +6436,7 @@ jr_000_2692:
     call ChangeROMBank
     ld a, $01
     ldh [rVBK], a
-    ld hl, Data_005_496c
+    ld hl, Gfx_GameOver_005_496c
     ld de, $9000
     ld bc, $0800
     call DataTransfer
@@ -6447,7 +6446,7 @@ jr_000_2692:
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, Data_005_63a4
+    ld hl, Tilemap_GameOver_005_63a4
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -6463,7 +6462,7 @@ jr_000_2692:
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, Data_005_623c
+    ld hl, Tilemap_GameOver_005_623c
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -6484,22 +6483,22 @@ ResetEnemies:
     ld [wUfoFlying], a
     ld [wGhostActive], a
     ld [wBlobThrowCount], a
-    ld [$dbea], a
+    ld [wUnk_dbea], a
     ld [wUfoHits], a
-    ld [$dc2e], a
-    ld [$dc2b], a
+    ld [wUnk_dc2e], a
+    ld [wUnk_dc2b], a
     ld [wUfoBombActive], a
     dec a
     ld [wUfoWaitTimer], a
     ld a, $01
-    ld [$dc2c], a
+    ld [wUnk_dc2c], a
     ld b, $f0
     ld c, $32
     ld a, c
-    ld [$dc1e], a
+    ld [wUnk_dc1e], a
     ld a, $3c
     add b
-    ld [$dc1f], a
+    ld [wUnk_dc1f], a
     ld hl, BlobPath
     ld de, wBlob
     call InitEnemyObject
@@ -6534,13 +6533,13 @@ UpdateBlob:
     jr z, jr_000_27f3
 
     ld hl, BlobSprites_Throwing
-    ld a, [$dc17]
+    ld a, [wBlobFrame]
     and $01
     ld e, a
     or a
     jr nz, jr_000_279a
 
-    ld a, [$dc18]
+    ld a, [wBlobFrameTick]
     or a
     jr nz, jr_000_279a
 
@@ -6549,9 +6548,9 @@ UpdateBlob:
     ld [wBlobThrowCount], a
 
 jr_000_279a:
-    ld a, [$dc18]
+    ld a, [wBlobFrameTick]
     inc a
-    ld [$dc18], a
+    ld [wBlobFrameTick], a
     and $07
     jr nz, jr_000_2815
 
@@ -6560,14 +6559,14 @@ jr_000_279a:
     cp $02
     jr z, jr_000_27b0
 
-    ld [$dc17], a
+    ld [wBlobFrame], a
     jr jr_000_2815
 
 jr_000_27b0:
     xor a
     ld [wBlobThrowing], a
-    ld [$dc17], a
-    ld [$dc18], a
+    ld [wBlobFrame], a
+    ld [wBlobFrameTick], a
     ld a, [wBlobX]
     add $04
     ld b, a
@@ -6598,7 +6597,7 @@ jr_000_27e0:
     ld l, [hl]
     ld h, d
     ld a, $24
-    ld de, Data_001_4e6e
+    ld de, UpdateBlobData_001_4e6e
 
 jr_000_27eb:
     call SpawnProjectile
@@ -6614,18 +6613,18 @@ jr_000_27f3:
     ld hl, BlobSprites_Ghost
 
 jr_000_27ff:
-    ld a, [$dc17]
+    ld a, [wBlobFrame]
     and $03
     ld e, a
-    ld a, [$dc18]
+    ld a, [wBlobFrameTick]
     inc a
-    ld [$dc18], a
+    ld [wBlobFrameTick], a
     and $07
     jr nz, jr_000_2815
 
     ld a, e
     inc a
-    ld [$dc17], a
+    ld [wBlobFrame], a
 
 jr_000_2815:
     swap e
@@ -6642,7 +6641,7 @@ jr_000_2815:
     ld a, [wBlobX]
     ld c, a
     ld a, $04
-    ld [$ff8d], a
+    ld [hTemp], a
 
 jr_000_2831:
     ld a, [de]
@@ -6664,9 +6663,9 @@ jr_000_2831:
     add d
     pop de
     ld [hl+], a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     dec a
-    ld [$ff8d], a
+    ld [hTemp], a
     jr nz, jr_000_2831
 
     ld a, l
@@ -6739,66 +6738,66 @@ jr_000_2899:
     jr nz, jr_000_2899
 
     pop bc
-    ld a, [$dbdc]
+    ld a, [wUnk_dbdc]
     dec a
-    ld [$dbdc], a
+    ld [wUnk_dbdc], a
     jr nz, jr_000_2901
 
     ld h, a
-    ld a, [$dbd9]
+    ld a, [wUnk_dbd9]
     inc a
-    ld [$dbd9], a
+    ld [wUnk_dbd9], a
     ld l, a
     add hl, hl
-    ld a, [$dbda]
+    ld a, [wUnk_dbda]
     ld e, a
-    ld a, [$dbdb]
+    ld a, [wUnk_dbdb]
     ld d, a
     add hl, de
     ld a, [hl+]
     or a
     jr nz, jr_000_28fa
 
-    ld a, [$dbd5]
+    ld a, [wUnk_dbd5]
     dec a
-    ld [$dbd5], a
+    ld [wUnk_dbd5], a
     jr nz, jr_000_28ed
 
     ld h, a
-    ld a, [$dbd6]
+    ld a, [wUnk_dbd6]
     ld l, a
     add hl, hl
     add hl, hl
     add hl, bc
     ld a, [hl+]
-    ld [$dbd5], a
+    ld [wUnk_dbd5], a
     ld a, [hl+]
-    ld [$dbd6], a
+    ld [wUnk_dbd6], a
     ld a, [hl+]
-    ld [$dbda], a
+    ld [wUnk_dbda], a
     ld a, [hl+]
-    ld [$dbdb], a
-    ld a, [$dbdf]
-    ld [$dbd4], a
-    ld a, [$dbde]
-    ld [$dbd2], a
+    ld [wUnk_dbdb], a
+    ld a, [wUnk_dbdf]
+    ld [wUnk_dbd4], a
+    ld a, [wUnk_dbde]
+    ld [wUnk_dbd2], a
 
 jr_000_28ed:
-    ld a, [$dbda]
+    ld a, [wUnk_dbda]
     ld l, a
-    ld a, [$dbdb]
+    ld a, [wUnk_dbdb]
     ld h, a
     xor a
-    ld [$dbd9], a
+    ld [wUnk_dbd9], a
     ld a, [hl+]
 
 jr_000_28fa:
-    ld [$dbdc], a
+    ld [wUnk_dbdc], a
     ld a, [hl]
-    ld [$dbdd], a
+    ld [wUnk_dbdd], a
 
 jr_000_2901:
-    ld a, [$dbdd]
+    ld a, [wUnk_dbdd]
     ld h, $00
     ld l, a
     add hl, hl
@@ -6812,28 +6811,28 @@ jr_000_2901:
     ld a, [hl+]
     ld e, a
     ld d, [hl]
-    ld a, [$dbd3]
+    ld a, [wUnk_dbd3]
     ld l, a
-    ld a, [$dbd4]
+    ld a, [wUnk_dbd4]
     ld h, a
     sra b
     rr c
     add hl, bc
     ld a, l
-    ld [$dbd3], a
+    ld [wUnk_dbd3], a
     ld a, h
-    ld [$dbd4], a
-    ld a, [$dbd1]
+    ld [wUnk_dbd4], a
+    ld a, [wUnk_dbd1]
     ld l, a
-    ld a, [$dbd2]
+    ld a, [wUnk_dbd2]
     ld h, a
     sra d
     rr e
     add hl, de
     ld a, l
-    ld [$dbd1], a
+    ld [wUnk_dbd1], a
     ld a, h
-    ld [$dbd2], a
+    ld [wUnk_dbd2], a
     pop hl
     ld de, $dbd1
     ld c, $0f
@@ -6915,47 +6914,47 @@ jr_000_2989:
 
     push hl
     inc hl
-    ld [$dbe1], a
+    ld [wProjectileWork], a
     ld a, [hl+]
-    ld [$dbe2], a
+    ld [wProjectileWork + 1], a
     ld a, [hl+]
-    ld [$dbe3], a
+    ld [wProjectileWork + 2], a
     ld a, [hl+]
-    ld [$dbe4], a
+    ld [wProjectileWork + 3], a
     ld a, [hl+]
-    ld [$dbe5], a
+    ld [wProjectileWork + 4], a
     ld a, [hl+]
-    ld [$dbe8], a
+    ld [wProjectileWork + 7], a
     ld a, [hl+]
-    ld [$dbe9], a
+    ld [wProjectileWork + 8], a
     ld a, [hl+]
-    ld [$dbe6], a
+    ld [wProjectileWork + 5], a
     ld a, [hl]
-    ld [$dbe7], a
+    ld [wProjectileWork + 6], a
     push bc
     push de
     call UpdateProjectile
     pop de
     pop bc
     pop hl
-    ld a, [$dbe1]
+    ld a, [wProjectileWork]
     ld [hl+], a
-    ld a, [$dbe2]
+    ld a, [wProjectileWork + 1]
     ld [hl+], a
-    ld a, [$dbe3]
+    ld a, [wProjectileWork + 2]
     ld [hl+], a
-    ld a, [$dbe4]
+    ld a, [wProjectileWork + 3]
     ld [hl+], a
-    ld a, [$dbe5]
+    ld a, [wProjectileWork + 4]
     ld [hl+], a
-    ld a, [$dbe8]
+    ld a, [wProjectileWork + 7]
     ld [hl+], a
-    ld a, [$dbe9]
+    ld a, [wProjectileWork + 8]
     ld [hl+], a
 
-    ld a, [$dbe6]
+    ld a, [wProjectileWork + 5]
     ld [hl+], a
-    ld a, [$dbe7]
+    ld a, [wProjectileWork + 6]
     ld [hl+], a
     jr jr_000_29e1
 
@@ -6966,12 +6965,12 @@ jr_000_29e1:
     dec b
     jr nz, jr_000_2989
 
-    ld a, [$dbea]
+    ld a, [wUnk_dbea]
     or a
     jr z, jr_000_2a4a
 
     dec a
-    ld [$dbea], a
+    ld [wUnk_dbea], a
     jr nz, jr_000_29f5
 
     xor a
@@ -6990,10 +6989,10 @@ jr_000_29f5:
 jr_000_2a00:
     ld e, a
     ld d, $00
-    ld hl, Data_001_4b21
+    ld hl, UpdateProjectilesData_001_4b21
     add hl, de
     ld e, [hl]
-    ld hl, Data_001_4a68
+    ld hl, UpdateProjectilesData_001_4a68
     add hl, de
     ld d, h
     ld e, l
@@ -7003,15 +7002,15 @@ jr_000_2a00:
     ld h, a
     ld a, [de]
     inc de
-    ld [$ff8d], a
+    ld [hTemp], a
     ld b, a
     ld a, [wOamUsed]
     add b
 
     ld [wOamUsed], a
-    ld a, [$dbec]
+    ld a, [wUnk_dbec]
     ld b, a
-    ld a, [$dbeb]
+    ld a, [wUnk_dbeb]
     ld c, a
 
 jr_000_2a2b:
@@ -7029,9 +7028,9 @@ jr_000_2a2b:
     ld a, [de]
     inc de
     ld [hl+], a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     dec a
-    ld [$ff8d], a
+    ld [hTemp], a
     jr nz, jr_000_2a2b
 
     ld a, l
@@ -7043,7 +7042,7 @@ jr_000_2a4a:
     ret
 
 Jump_000_2a4b:
-    ld a, [$dbe9]
+    ld a, [wProjectileWork + 8]
     bit 7, a
     jr z, jr_000_2a59
 
@@ -7056,12 +7055,12 @@ jr_000_2a59:
     call PlaySound
 
 jr_000_2a5e:
-    ld a, [$dbe5]
+    ld a, [wProjectileWork + 4]
     cp $6d
     jr nc, jr_000_2a6c
 
     ld a, $24
-    ld hl, Data_001_4e6e
+    ld hl, UpdateBlobData_001_4e6e
     jr jr_000_2ab3
 
 jr_000_2a6c:
@@ -7117,73 +7116,73 @@ jr_000_2aae:
     ld hl, $4f16
 
 jr_000_2ab3:
-    ld [$dbe1], a
+    ld [wProjectileWork], a
     ld a, l
-    ld [$dbe6], a
+    ld [wProjectileWork + 5], a
     ld a, h
-    ld [$dbe7], a
+    ld [wProjectileWork + 6], a
     ret
 
 UpdateProjectile:
-    ld a, [$dbe1]
+    ld a, [wProjectileWork]
     dec a
-    ld [$dbe1], a
+    ld [wProjectileWork], a
     jp nz, Jump_000_2b81
 
-    ld a, [$dbe3]
+    ld a, [wProjectileWork + 2]
     ld c, a
-    ld a, [$dbe5]
+    ld a, [wProjectileWork + 4]
     call Projectile_CheckBrick
     jp nz, Jump_000_2a4b
 
-    ld a, [$dbe3]
+    ld a, [wProjectileWork + 2]
     add $07
     ld c, a
-    ld a, [$dbe5]
+    ld a, [wProjectileWork + 4]
     call Projectile_CheckBrick
     jp nz, Jump_000_2a4b
 
-    ld a, [$dbe3]
+    ld a, [wProjectileWork + 2]
     ld c, a
-    ld a, [$dbe5]
-    add $07
-    call Projectile_CheckBrick
-    jp nz, Jump_000_2a4b
-
-    ld a, [$dbe3]
-    add $07
-    ld c, a
-    ld a, [$dbe5]
+    ld a, [wProjectileWork + 4]
     add $07
     call Projectile_CheckBrick
     jp nz, Jump_000_2a4b
 
-    ld a, [$dbe9]
+    ld a, [wProjectileWork + 2]
+    add $07
+    ld c, a
+    ld a, [wProjectileWork + 4]
+    add $07
+    call Projectile_CheckBrick
+    jp nz, Jump_000_2a4b
+
+    ld a, [wProjectileWork + 8]
     bit 7, a
     jr z, jr_000_2b48
 
     ld a, $34
-    ld [$dbea], a
-    ld a, [$dbe3]
-    ld [$dbeb], a
+    ld [wUnk_dbea], a
+    ld a, [wProjectileWork + 2]
+    ld [wUnk_dbeb], a
     ld c, a
-    ld a, [$dbe5]
-    ld [$dbec], a
+    ld a, [wProjectileWork + 4]
+    ld [wUnk_dbec], a
     call Projectile_HitBrick
-    ld a, [$dbe3]
+    ld a, [wProjectileWork + 2]
     add $07
     ld c, a
-    ld a, [$dbe5]
+    ld a, [wProjectileWork + 4]
     call Projectile_HitBrick
-    ld a, [$dbe3]
+    ld a, [wProjectileWork + 2]
     ld c, a
-    ld a, [$dbe5]
+    ld a, [wProjectileWork + 4]
     add $07
     call Projectile_HitBrick
-    ld a, [$dbe3]
+    ld a, [wProjectileWork + 2]
     add $07
     ld c, a
-    ld a, [$dbe5]
+    ld a, [wProjectileWork + 4]
     add $07
     call Projectile_HitBrick
     ret
@@ -7192,7 +7191,7 @@ jr_000_2b48:
     ld a, [wBlobThrowCount]
     dec a
     ld [wBlobThrowCount], a
-    ld a, [$dbe5]
+    ld a, [wProjectileWork + 4]
     ld hl, wBalls
     ld a, [wBallCount]
     or a
@@ -7206,15 +7205,15 @@ jr_000_2b5e:
     jr nz, jr_000_2b5e
 
 jr_000_2b62:
-    ld a, [$dbe4]
+    ld a, [wProjectileWork + 3]
     ld [hl+], a
-    ld a, [$dbe5]
+    ld a, [wProjectileWork + 4]
     ld [hl+], a
-    ld a, [$dbe2]
+    ld a, [wProjectileWork + 1]
     ld [hl+], a
-    ld a, [$dbe3]
+    ld a, [wProjectileWork + 2]
     ld [hl+], a
-    ld a, [$dbe8]
+    ld a, [wProjectileWork + 7]
     ld [hl+], a
     xor a
     ld [hl+], a
@@ -7227,25 +7226,25 @@ jr_000_2b62:
 Jump_000_2b81:
     ld e, a
     ld d, $00
-    ld a, [$dbe6]
+    ld a, [wProjectileWork + 5]
     ld l, a
-    ld a, [$dbe7]
+    ld a, [wProjectileWork + 6]
     ld h, a
     add hl, de
     ld e, [hl]
-    ld hl, Data_001_49c0
-    ld a, [$dbe9]
+    ld hl, UpdateProjectileData_001_49c0
+    ld a, [wProjectileWork + 8]
     bit 7, a
     jr z, jr_000_2b9b
 
-    ld hl, Data_001_4a14
+    ld hl, UpdateProjectileData_001_4a14
 
 jr_000_2b9b:
     add hl, de
     ld d, h
     ld e, l
     push de
-    ld a, [$dbe8]
+    ld a, [wProjectileWork + 7]
     ld l, a
     ld h, $00
     add hl, hl
@@ -7259,48 +7258,48 @@ jr_000_2b9b:
     ld a, [hl+]
     ld e, a
     ld d, [hl]
-    ld a, [$dbe2]
-    ld [$dc39], a
+    ld a, [wProjectileWork + 1]
+    ld [wUnk_dc39], a
     ld l, a
-    ld a, [$dbe3]
-    ld [$dc3a], a
+    ld a, [wProjectileWork + 2]
+    ld [wUnk_dc3a], a
     ld h, a
     add hl, bc
     ld a, l
-    ld [$dbe2], a
+    ld [wProjectileWork + 1], a
     ld a, h
-    ld [$dbe3], a
-    ld a, [$dbe4]
-    ld [$dc3b], a
+    ld [wProjectileWork + 2], a
+    ld a, [wProjectileWork + 3]
+    ld [wUnk_dc3b], a
     ld l, a
-    ld a, [$dbe5]
-    ld [$dc3c], a
+    ld a, [wProjectileWork + 4]
+    ld [wUnk_dc3c], a
     ld h, a
     add hl, de
     ld a, l
-    ld [$dbe4], a
+    ld [wProjectileWork + 3], a
     ld a, h
-    ld [$dbe5], a
+    ld [wProjectileWork + 4], a
     pop de
     xor a
-    ld [$dc37], a
-    ld [$dc38], a
+    ld [wUnk_dc37], a
+    ld [wUnk_dc38], a
     ld a, [de]
     inc de
     ld b, a
-    ld a, [$dbe3]
+    ld a, [wProjectileWork + 2]
     add b
-    ld [$dbe3], a
+    ld [wProjectileWork + 2], a
     ld a, [de]
     inc de
     ld c, a
-    ld a, [$dbe5]
+    ld a, [wProjectileWork + 4]
     add c
-    ld [$dbe5], a
+    ld [wProjectileWork + 4], a
     push bc
-    ld a, [$dbe3]
+    ld a, [wProjectileWork + 2]
     ld c, a
-    ld a, [$dbe5]
+    ld a, [wProjectileWork + 4]
     ld b, a
     ld a, [de]
     inc de
@@ -7308,24 +7307,24 @@ jr_000_2b9b:
     call Projectile_CheckBrickKeepDE
     jr z, jr_000_2c20
 
-    ld a, [$dbe8]
+    ld a, [wProjectileWork + 7]
     ld l, a
     ld h, $00
     ld bc, BallReflectLeftTable
     add hl, bc
     ld a, [hl]
-    ld [$dbe8], a
+    ld [wProjectileWork + 7], a
     ld a, $01
-    ld [$dc37], a
+    ld [wUnk_dc37], a
 
 jr_000_2c20:
-    ld a, [$dbe3]
+    ld a, [wProjectileWork + 2]
     ld c, a
     ld a, [de]
     inc de
     add c
     ld c, a
-    ld a, [$dbe5]
+    ld a, [wProjectileWork + 4]
     ld b, a
     ld a, [de]
     inc de
@@ -7333,46 +7332,46 @@ jr_000_2c20:
     call Projectile_CheckBrickKeepDE
     jr z, jr_000_2c47
 
-    ld a, [$dbe8]
+    ld a, [wProjectileWork + 7]
     ld l, a
 
     ld h, $00
     ld bc, BallReflectRightTable
     add hl, bc
     ld a, [hl]
-    ld [$dbe8], a
+    ld [wProjectileWork + 7], a
     ld a, $01
-    ld [$dc37], a
+    ld [wUnk_dc37], a
 
 jr_000_2c47:
-    ld a, [$dbe3]
+    ld a, [wProjectileWork + 2]
     ld c, a
     ld a, [de]
     inc de
     add c
     ld c, a
-    ld a, [$dbe5]
+    ld a, [wProjectileWork + 4]
     call Projectile_CheckBrickKeepDE
     jr z, jr_000_2c6a
 
-    ld a, [$dbe8]
+    ld a, [wProjectileWork + 7]
     ld l, a
     ld h, $00
     ld bc, BallReflectTopTable
     add hl, bc
     ld a, [hl]
-    ld [$dbe8], a
+    ld [wProjectileWork + 7], a
     ld a, $01
-    ld [$dc38], a
+    ld [wUnk_dc38], a
 
 jr_000_2c6a:
-    ld a, [$dbe3]
+    ld a, [wProjectileWork + 2]
     ld c, a
     ld a, [de]
     inc de
     add c
     ld c, a
-    ld a, [$dbe5]
+    ld a, [wProjectileWork + 4]
     ld b, a
     ld a, [de]
     inc de
@@ -7380,43 +7379,43 @@ jr_000_2c6a:
     call Projectile_CheckBrickKeepDE
     jr z, jr_000_2c91
 
-    ld a, [$dbe8]
+    ld a, [wProjectileWork + 7]
     ld l, a
     ld h, $00
     ld bc, BallReflectBottomTable
     add hl, bc
     ld a, [hl]
-    ld [$dbe8], a
+    ld [wProjectileWork + 7], a
     ld a, $01
 
-    ld [$dc38], a
+    ld [wUnk_dc38], a
 
 jr_000_2c91:
     pop bc
-    ld a, [$dbe3]
+    ld a, [wProjectileWork + 2]
     sub b
-    ld [$dbe3], a
-    ld a, [$dbe5]
+    ld [wProjectileWork + 2], a
+    ld a, [wProjectileWork + 4]
     sub c
-    ld [$dbe5], a
-    ld a, [$dc37]
+    ld [wProjectileWork + 4], a
+    ld a, [wUnk_dc37]
     or a
     jr z, jr_000_2cb2
 
-    ld a, [$dc39]
-    ld [$dbe2], a
-    ld a, [$dc3a]
-    ld [$dbe3], a
+    ld a, [wUnk_dc39]
+    ld [wProjectileWork + 1], a
+    ld a, [wUnk_dc3a]
+    ld [wProjectileWork + 2], a
 
 jr_000_2cb2:
-    ld a, [$dc38]
+    ld a, [wUnk_dc38]
     or a
     jr z, jr_000_2cc4
 
-    ld a, [$dc3b]
-    ld [$dbe4], a
-    ld a, [$dc3c]
-    ld [$dbe5], a
+    ld a, [wUnk_dc3b]
+    ld [wProjectileWork + 3], a
+    ld a, [wUnk_dc3c]
+    ld [wProjectileWork + 4], a
 
 jr_000_2cc4:
     ld a, [wOamWritePtr]
@@ -7425,14 +7424,14 @@ jr_000_2cc4:
     ld h, a
     ld a, [de]
     inc de
-    ld [$ff8d], a
+    ld [hTemp], a
     ld b, a
     ld a, [wOamUsed]
     add b
     ld [wOamUsed], a
-    ld a, [$dbe5]
+    ld a, [wProjectileWork + 4]
     ld b, a
-    ld a, [$dbe3]
+    ld a, [wProjectileWork + 2]
     ld c, a
 
 jr_000_2ce1:
@@ -7450,9 +7449,9 @@ jr_000_2ce1:
     ld a, [de]
     inc de
     ld [hl+], a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     dec a
-    ld [$ff8d], a
+    ld [hTemp], a
     jr nz, jr_000_2ce1
 
     ld a, l
@@ -7555,11 +7554,11 @@ UpdateUfo:
     or a
     jr nz, jr_000_2dd6
 
-    ld a, [$dc2c]
+    ld a, [wUnk_dc2c]
     ld b, a
-    ld a, [$dc2b]
+    ld a, [wUnk_dc2b]
     inc a
-    ld [$dc2b], a
+    ld [wUnk_dc2b], a
     and b
     ret nz
 
@@ -7570,9 +7569,9 @@ UpdateUfo:
 
     inc a
     ld [wUfoFlying], a
-    ld a, [$dc2e]
+    ld a, [wUnk_dc2e]
     inc a
-    ld [$dc2e], a
+    ld [wUnk_dc2e], a
     and $07
     add a
     ld e, a
@@ -7637,7 +7636,7 @@ jr_000_2dd6:
     ld a, [wUfoHeight]
     add $10
     ld [wUfoBombY], a
-    ld [$dc32], a
+    ld [wUnk_dc32], a
     ld a, $01
     ld [wUfoBombActive], a
     ld a, $14
@@ -7674,7 +7673,7 @@ jr_000_2e24:
     ld b, a
     ld de, UfoSprites
     ld a, $05
-    ld [$ff8d], a
+    ld [hTemp], a
 
 jr_000_2e3a:
     ld a, [de]
@@ -7691,9 +7690,9 @@ jr_000_2e3a:
     ld a, [de]
     inc de
     ld [hl+], a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     dec a
-    ld [$ff8d], a
+    ld [hTemp], a
     jr nz, jr_000_2e3a
 
     ld a, l
@@ -8090,7 +8089,7 @@ UpdateUfoBomb:
     jr nc, jr_000_30bd
 
     inc d
-    ld a, [$dc32]
+    ld a, [wUnk_dc32]
     ld [hl+], a
     ld a, [wUfoBombX]
     ld [hl+], a
@@ -8178,7 +8177,7 @@ jr_000_30e7:
     ld [wBatExplosionTimer], a
     ld a, [wBatY]
     sub $08
-    ld [$d76c], a
+    ld [wUnk_d76c], a
     ld b, $f8
     ld a, [wBatWidth]
     cp $20
@@ -8189,7 +8188,7 @@ jr_000_30e7:
 jr_000_313d:
     ld a, [wBatX]
     add b
-    ld [$d76d], a
+    ld [wUnk_d76d], a
     xor a
     ld [wWeaponFlag], a
     xor a
@@ -8286,8 +8285,8 @@ CheckBlobCatch:
     jr c, jr_000_31d8
 
     xor a
-    ld [$dc17], a
-    ld [$dc18], a
+    ld [wBlobFrame], a
+    ld [wBlobFrameTick], a
     inc a
     ld [wBlobThrowing], a
     ld [wRemoveBall], a
@@ -8705,7 +8704,7 @@ UpdateShot0:
 jr_000_349c:
     ld bc, ShotSprite_Plasma
     ld a, [wShots]
-    ld [$d8bb], a
+    ld [wUnk_d8bb], a
 
 jr_000_34a5:
     ld a, [wShotActive]
@@ -8858,7 +8857,7 @@ UpdateShot1:
 jr_000_358e:
     ld bc, ShotSprite_Plasma
     ld a, [wShots + 4]
-    ld [$d8bb], a
+    ld [wUnk_d8bb], a
 
 jr_000_3597:
     ld a, [wShotActive + 1]
@@ -9481,11 +9480,11 @@ StateInit_Pause:
     ld a, h
     ld [hVBlankHandler + 1], a
     xor a
-    ld [$ff9c], a
+    ld [hPaletteMode], a
     ld a, $01
-    ld [$ff9a], a
+    ld [hUnk_ff9a], a
     xor a
-    ld [$dae1], a
+    ld [wUnk_dae1], a
     ldh [rSCX], a
     ld de, Palettes_Pause
     call LoadPalettes
@@ -9493,7 +9492,7 @@ StateInit_Pause:
     call ChangeROMBank
     ld a, $01
     ldh [rVBK], a
-    ld hl, Data_00e_48c1
+    ld hl, Gfx_Pause_00e_48c1
     ld de, $9000
     ld bc, $0800
     call DataTransfer
@@ -9503,7 +9502,7 @@ StateInit_Pause:
     call DataTransfer
     xor a
     ld de, $9c00
-    ld hl, Data_00e_62f9
+    ld hl, Tilemap_Pause_00e_62f9
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -9519,13 +9518,13 @@ StateInit_Pause:
     call DataTransfer
     xor a
     ld de, $9c00
-    ld hl, Data_00e_6191
+    ld hl, Tilemap_Pause_00e_6191
     ld b, $14
     ld c, $12
     call CopyTilemapRect
-    ld a, [$df4c]
+    ld a, [wUnk_df4c]
     ld l, a
-    ld a, [$df4d]
+    ld a, [wUnk_df4d]
     ld h, a
     call DrawString
     ld a, $01
@@ -9542,16 +9541,16 @@ jr_000_39ec:
 
 StateInit_DeveloperLogos:
     ld a, $46
-    ld [$ff91], a
+    ld [hUnk_ff91], a
     ld hl, $02b3
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
     ld [hVBlankHandler + 1], a
     xor a
-    ld [$ff9c], a
+    ld [hPaletteMode], a
     ld a, $01
-    ld [$ff9a], a
+    ld [hUnk_ff9a], a
     xor a
     ldh [rSCX], a
     ld de, Palettes_DeveloperLogos
@@ -9562,7 +9561,7 @@ StateInit_DeveloperLogos:
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, Data_002_7df4
+    ld hl, Tilemap_DeveloperLogos_002_7df4
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -9577,9 +9576,9 @@ StateInit_DeveloperLogos:
     ld bc, $00f0
     call DataTransfer
     xor a
-    ld [$dae1], a
+    ld [wUnk_dae1], a
     ld de, $9800
-    ld hl, Data_002_7c8c
+    ld hl, Tilemap_DeveloperLogos_002_7c8c
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -9599,17 +9598,17 @@ ClearCheatFlags:
 
 StateInit_PublisherLogo:
     ld a, $46
-    ld [$ff91], a
+    ld [hUnk_ff91], a
     ld hl, $02b3
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
     ld [hVBlankHandler + 1], a
     ld a, $01
-    ld [$ff9c], a
-    ld [$ff9b], a
+    ld [hPaletteMode], a
+    ld [hUnk_ff9b], a
     ld a, $01
-    ld [$ff9a], a
+    ld [hUnk_ff9a], a
     xor a
     ldh [rSCX], a
     ld de, Palettes_PublisherLogo
@@ -9620,23 +9619,23 @@ StateInit_PublisherLogo:
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, Data_003_5418
+    ld hl, Tilemap_PublisherLogo_003_5418
     ld b, $14
     ld c, $12
     call CopyTilemapRect
     xor a
     ldh [rVBK], a
-    ld hl, Data_003_4a20
+    ld hl, Gfx_PublisherLogo_003_4a20
     ld de, $9000
     ld bc, $0800
     call DataTransfer
-    ld hl, Data_003_5220
+    ld hl, Gfx_PublisherLogo_003_5220
     ld de, $8800
     ld bc, $0090
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, Data_003_52b0
+    ld hl, Tilemap_PublisherLogo_003_52b0
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -9645,12 +9644,12 @@ StateInit_PublisherLogo:
     ret
 
 PublisherLogo_Update:
-    ld a, [$ff91]
+    ld a, [hUnk_ff91]
     or a
     jr z, jr_000_3ae3
 
     dec a
-    ld [$ff91], a
+    ld [hUnk_ff91], a
     ret
 
 jr_000_3ae3:
@@ -9669,15 +9668,15 @@ StateInit_Credits:
     ld a, h
     ld [hVBlankHandler + 1], a
     xor a
-    ld [$ff9b], a
+    ld [hUnk_ff9b], a
     ld a, $03
-    ld [$ff9a], a
+    ld [hUnk_ff9a], a
     ld a, $80
-    ld [$c958], a
+    ld [wUnk_c958], a
     xor a
-    ld [$dae1], a
+    ld [wUnk_dae1], a
     ld a, $02
-    ld [$ff9c], a
+    ld [hPaletteMode], a
     ld hl, $9800
     call ClearTileMap
     ld a, $05
@@ -9686,7 +9685,7 @@ StateInit_Credits:
     ldh [rVBK], a
     xor a
     ldh [rVBK], a
-    ld hl, Data_005_650c
+    ld hl, Gfx_Credits_005_650c
     ld de, $9000
     ld bc, $0800
     call DataTransfer
@@ -9698,9 +9697,9 @@ StateInit_Credits:
     ld a, $01
     call ChangeROMBank
     xor a
-    ld [$dcf4], a
+    ld [wUnk_dcf4], a
     dec a
-    ld [$dcf5], a
+    ld [wUnk_dcf5], a
     ret
 
 ; Point the credits scroller at the list for the chosen language.
@@ -9726,40 +9725,40 @@ SelectCreditsText:
 
 jr_000_3b6e:
     ld a, l
-    ld [$dcfa], a
-    ld [$dcf8], a
+    ld [wUnk_dcfa], a
+    ld [wUnk_dcf8], a
     ld a, h
-    ld [$dcfb], a
-    ld [$dcf9], a
+    ld [wUnk_dcfb], a
+    ld [wUnk_dcf9], a
     xor a
-    ld [$dcf7], a
+    ld [wUnk_dcf7], a
     ld a, $9a
-    ld [$dcfd], a
+    ld [wUnk_dcfd], a
     ld a, $60
-    ld [$dcfc], a
+    ld [wUnk_dcfc], a
     ret
 
 UpdateCreditsScroll:
-    ld a, [$dcf5]
+    ld a, [wUnk_dcf5]
     inc a
     ret z
 
     ld a, $ff
-    ld [$dcf5], a
-    ld a, [$dcf7]
+    ld [wUnk_dcf5], a
+    ld a, [wUnk_dcf7]
     ldh [rSCY], a
     and $07
     jr nz, jr_000_3bfe
 
-    ld a, [$dcfc]
+    ld a, [wUnk_dcfc]
     ld e, a
-    ld a, [$dcfd]
+    ld a, [wUnk_dcfd]
     ld d, a
     ld a, $0f
     ld [ROM_BANK], a
-    ld a, [$dcfa]
+    ld a, [wUnk_dcfa]
     ld l, a
-    ld a, [$dcfb]
+    ld a, [wUnk_dcfb]
     ld h, a
     ld a, [hl+]
     or a
@@ -9790,19 +9789,19 @@ jr_000_3bcc:
     dec b
     jr nz, jr_000_3bbe
 
-    ld [$dcf4], a
+    ld [wUnk_dcf4], a
     ld a, l
-    ld [$dcfa], a
+    ld [wUnk_dcfa], a
     ld a, h
-    ld [$dcfb], a
+    ld [wUnk_dcfb], a
 
 Jump_000_3bdd:
-    ld a, [$dcfc]
+    ld a, [wUnk_dcfc]
     add $20
-    ld [$dcfc], a
+    ld [wUnk_dcfc], a
     jr nc, jr_000_3bf4
 
-    ld a, [$dcfd]
+    ld a, [wUnk_dcfd]
     inc a
     cp $9c
     jr nz, jr_000_3bf1
@@ -9810,7 +9809,7 @@ Jump_000_3bdd:
     ld a, $98
 
 jr_000_3bf1:
-    ld [$dcfd], a
+    ld [wUnk_dcfd], a
 
 jr_000_3bf4:
     ld a, $01
@@ -9824,7 +9823,7 @@ jr_000_3bfa:
 jr_000_3bfe:
     ld a, $fe
 
-    ld [$dcf4], a
+    ld [wUnk_dcf4], a
     ret
 
 jr_000_3c04:
@@ -9834,16 +9833,16 @@ jr_000_3c04:
     ld [hStateTimer], a
     ld a, $1a
     call PlaySound
-    ld a, [$dcf8]
+    ld a, [wUnk_dcf8]
     ld l, a
-    ld a, [$dcf9]
+    ld a, [wUnk_dcf9]
     ld h, a
 
 Jump_000_3c1b:
     ld a, l
-    ld [$dcfa], a
+    ld [wUnk_dcfa], a
     ld a, h
-    ld [$dcfb], a
+    ld [wUnk_dcfb], a
     ld h, d
     ld l, e
     ld b, $14
@@ -9855,7 +9854,7 @@ jr_000_3c28:
     jr nz, jr_000_3c28
 
     ld a, $fe
-    ld [$dcf4], a
+    ld [wUnk_dcf4], a
     jp Jump_000_3bdd
 
 ; Step wLevelMusicIndex (0, 1, 2, 0, ...) and restart the count of levels since the last password.
@@ -9875,7 +9874,7 @@ jr_000_3c3d:
 
 StateInit_LevelPassword:
     ld a, $00
-    ld [$c359], a
+    ld [wLcdcFlags], a
     ld hl, $02b3
     ld a, l
     ld [hVBlankHandler], a
@@ -9887,30 +9886,30 @@ StateInit_LevelPassword:
     ld a, h
     ld [hStatHandler + 1], a
     ld a, $1c
-    ld [$ff9b], a
+    ld [hUnk_ff9b], a
     xor a
-    ld [$ff9c], a
+    ld [hPaletteMode], a
     ld a, $01
-    ld [$ff9a], a
+    ld [hUnk_ff9a], a
     ld de, Palettes_LevelPassword
     call LoadPalettes
     ld a, $0c
     call ChangeROMBank
     xor a
-    ld [$defb], a
+    ld [wUnk_defb], a
     ld a, $01
-    ld [$dd00], a
+    ld [wUnk_dd00], a
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, Data_00c_577c
+    ld hl, Tilemap_LevelPassword_00c_577c
     ld b, $14
     ld c, $12
     call CopyTilemapRect
     xor a
-    ld [$dae1], a
+    ld [wUnk_dae1], a
     ldh [rVBK], a
-    ld hl, Data_00c_4de4
+    ld hl, Gfx_LevelPassword_00c_4de4
     ld de, $9000
     ld bc, $0790
     call DataTransfer
@@ -9924,11 +9923,11 @@ StateInit_LevelPassword:
     call DataTransfer
     ld a, $26
     ld de, $9800
-    ld hl, Data_00c_5614
+    ld hl, Tilemap_LevelPassword_00c_5614
     ld b, $14
     ld c, $12
     call CopyTilemapRect
-    ld hl, Data_00c_4ca8
+    ld hl, LevelPasswordData_00c_4ca8
     ld de, $dd03
     ld bc, $0006
     call DataTransfer
@@ -9942,80 +9941,80 @@ StateInit_LevelPassword:
     call DataTransfer
     ld a, $01
     call ChangeROMBank
-    ld hl, Data_001_6784
+    ld hl, LevelPasswordData_001_6784
     ld a, l
-    ld [$dd09], a
+    ld [wUnk_dd09], a
     ld a, h
-    ld [$dd0a], a
+    ld [wUnk_dd0a], a
     call BuildLevelTitle
     ld hl, $dd17
     ld a, [wLanguage]
     cp $04
     jr nz, jr_000_3d12
 
-    ld a, [$d73c]
+    ld a, [wLevelTitleText + 18]
     ld [hl+], a
-    ld a, [$d73d]
+    ld a, [wLevelTitleText + 19]
     ld [hl+], a
-    ld a, [$d73e]
+    ld a, [wLevelTitleText + 20]
     jr jr_000_3d1d
 
 jr_000_3d12:
-    ld a, [$d73b]
+    ld a, [wLevelTitleText + 17]
     ld [hl+], a
-    ld a, [$d73c]
+    ld a, [wLevelTitleText + 18]
     ld [hl+], a
-    ld a, [$d73d]
+    ld a, [wLevelTitleText + 19]
 
 jr_000_3d1d:
     ld [hl-], a
     dec hl
-    call Call_000_0974
-    ld a, [$df35]
+    call ParseDecimal
+    ld a, [wUnk_df35]
     ld l, a
-    ld a, [$df36]
+    ld a, [wUnk_df36]
     ld h, a
     ld de, $cce3
-    ld a, [$cb7c]
+    ld a, [wUnk_cb7c]
     ld [hl+], a
     ld [de], a
     inc de
-    ld a, [$cb7d]
+    ld a, [wUnk_cb7d]
     ld [hl+], a
     ld [de], a
     inc de
-    ld a, [$cb7e]
+    ld a, [wUnk_cb7e]
     ld [hl+], a
     ld [de], a
     inc de
-    ld a, [$cb7f]
+    ld a, [wUnk_cb7f]
     ld [hl+], a
     ld [de], a
-    ld a, [$dd4d]
+    ld a, [wUnk_dd4d]
     ld l, a
-    ld a, [$dd4e]
+    ld a, [wUnk_dd4e]
     ld h, a
     ld de, $01f4
     add hl, de
     ld a, l
-    ld [$dd4d], a
+    ld [wUnk_dd4d], a
     ld a, h
-    ld [$dd4e], a
+    ld [wUnk_dd4e], a
     ld a, l
-    ld [$dd49], a
+    ld [wUnk_dd49], a
     ld a, h
-    ld [$dd4a], a
-    call Call_001_5c09
-    ld a, [$dd4f]
+    ld [wUnk_dd4a], a
+    call LevelPassword_Sub5c09
+    ld a, [wUnk_dd4f]
     ld l, a
-    ld a, [$dd50]
+    ld a, [wUnk_dd50]
     ld h, a
     ld de, $0032
     add hl, de
     ld a, l
-    ld [$dd4f], a
+    ld [wUnk_dd4f], a
     ld a, h
-    ld [$dd50], a
+    ld [wUnk_dd50], a
     ld b, h
     ld c, l
     call AddScoreBC
@@ -10024,44 +10023,44 @@ jr_000_3d1d:
     call DrawString
     call DrawString
     ld a, $2d
-    ld [$dd4b], a
-    ld hl, Data_001_67ad
+    ld [wUnk_dd4b], a
+    ld hl, LevelPasswordData_001_67ad
     ld a, l
-    ld [$dd60], a
+    ld [wUnk_dd60], a
     ld a, h
-    ld [$dd61], a
-    ld hl, Data_001_67bc
+    ld [wUnk_dd61], a
+    ld hl, LevelPasswordData_001_67bc
     ld a, l
-    ld [$dd6f], a
+    ld [wUnk_dd6f], a
     ld a, h
-    ld [$dd70], a
-    ld hl, Data_001_67cb
+    ld [wUnk_dd70], a
+    ld hl, LevelPasswordData_001_67cb
     ld a, l
-    ld [$dd7e], a
+    ld [wUnk_dd7e], a
     ld a, h
-    ld [$dd7f], a
+    ld [wUnk_dd7f], a
     ld hl, $dd60
-    call Call_001_5d2e
+    call LevelPassword_Sub5d2e
     ld hl, $dd6f
-    call Call_001_5d2e
+    call LevelPassword_Sub5d2e
     ld hl, $dd7e
-    call Call_001_5d2e
+    call LevelPassword_Sub5d2e
     ld hl, $dd8d
     ld a, l
-    ld [$dd6d], a
+    ld [wUnk_dd6d], a
     ld a, h
-    ld [$dd6e], a
+    ld [wUnk_dd6e], a
     ld hl, $dddd
     ld a, l
-    ld [$dd7c], a
+    ld [wUnk_dd7c], a
     ld a, h
-    ld [$dd7d], a
+    ld [wUnk_dd7d], a
     ld hl, $de2d
     ld a, l
-    ld [$dd8b], a
+    ld [wUnk_dd8b], a
     ld a, h
-    ld [$dd8c], a
-    ld hl, Data_001_6543
+    ld [wUnk_dd8c], a
+    ld hl, LevelPasswordData_001_6543
     ld de, $de81
     ld bc, $0037
     call DataTransfer
@@ -10074,10 +10073,10 @@ StateInit_LanguageSelect:
     ld a, h
     ld [hVBlankHandler + 1], a
     ld a, $01
-    ld [$ff9c], a
-    ld [$ff9b], a
+    ld [hPaletteMode], a
+    ld [hUnk_ff9b], a
     ld a, $01
-    ld [$ff9a], a
+    ld [hUnk_ff9a], a
     xor a
     ldh [rSCX], a
     ld de, Palettes_LanguageSelect
@@ -10088,16 +10087,16 @@ StateInit_LanguageSelect:
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, Data_00d_5150
+    ld hl, Tilemap_LanguageSelect_00d_5150
     ld b, $14
     ld c, $12
     call CopyTilemapRect
     xor a
     ld [wLanguage], a
-    ld [$defd], a
-    ld [$defe], a
+    ld [wUnk_defd], a
+    ld [wUnk_defe], a
     ldh [rVBK], a
-    ld hl, Data_00d_49b8
+    ld hl, Gfx_LanguageSelect_00d_49b8
     ld de, $9000
     ld bc, $0630
     call DataTransfer
@@ -10160,17 +10159,17 @@ UpdateSound:
 
 StateInit_Copyright:
     ld a, $46
-    ld [$ff91], a
+    ld [hUnk_ff91], a
     ld hl, $02b3
     ld a, l
     ld [hVBlankHandler], a
     ld a, h
     ld [hVBlankHandler + 1], a
     ld a, $01
-    ld [$ff9c], a
-    ld [$ff9b], a
+    ld [hPaletteMode], a
+    ld [hUnk_ff9b], a
     ld a, $01
-    ld [$ff9a], a
+    ld [hUnk_ff9a], a
     xor a
     ldh [rSCX], a
     ld de, Palettes_Copyright
@@ -10181,19 +10180,19 @@ StateInit_Copyright:
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, Data_003_5e98
+    ld hl, Tilemap_Copyright_003_5e98
     ld b, $14
     ld c, $12
     call CopyTilemapRect
     xor a
     ldh [rVBK], a
-    ld hl, Data_003_5580
+    ld hl, Gfx_Copyright_003_5580
     ld de, $9000
     ld bc, $07b0
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, Data_003_5d30
+    ld hl, Tilemap_Copyright_003_5d30
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -10202,12 +10201,12 @@ StateInit_Copyright:
     ret
 
 Copyright_Update:
-    ld a, [$ff91]
+    ld a, [hUnk_ff91]
     or a
     jr z, jr_000_3ef8
 
     dec a
-    ld [$ff91], a
+    ld [hUnk_ff91], a
     ret
 
 jr_000_3ef8:
@@ -10228,18 +10227,18 @@ StateInit_Ending:
     ld a, h
     ld [hVBlankHandler + 1], a
     xor a
-    ld [$ff9c], a
+    ld [hPaletteMode], a
     ld [wLevelsSincePassword], a
     ld a, $01
-    ld [$ff9a], a
+    ld [hUnk_ff9a], a
     ld de, Palettes_Ending
     call LoadPalettes
     ld a, $0e
-    ld [$dcff], a
+    ld [wUnk_dcff], a
     call ChangeROMBank
     ld a, $01
     ldh [rVBK], a
-    ld hl, Data_00e_674f
+    ld hl, Gfx_Ending_00e_674f
     ld de, $9000
     ld bc, $0800
     call DataTransfer
@@ -10249,7 +10248,7 @@ StateInit_Ending:
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, Data_00e_7e87
+    ld hl, Tilemap_Ending_00e_7e87
     ld b, $14
     ld c, $12
     call CopyTilemapRect
@@ -10265,7 +10264,7 @@ StateInit_Ending:
     call DataTransfer
     ld a, $09
     ld de, $9800
-    ld hl, Data_00e_7d1f
+    ld hl, Tilemap_Ending_00e_7d1f
     ld b, $14
     ld c, $09
     call CopyTilemapRect
