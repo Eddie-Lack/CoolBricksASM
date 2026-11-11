@@ -3,7 +3,7 @@
 Usage: python tools/gbasm.py game.asm out.gbc [expected_md5]
 
 It exists so the disassembly can be checked without RGBDS installed. It supports
-SECTION (ROM0/ROMX with fixed address and bank), INCLUDE, INCBIN, DEF..EQU, db, dw, ds,
+SECTION (ROM0/ROMX with fixed address and bank), INCLUDE, INCBIN, DEF..EQU, ASSERT, db, dw, ds,
 global and local labels, and the expression operators the sources need. It does not
 support macros. `include/hardware.inc` is read for its DEF..EQU lines only.
 Unused space is filled with 0, as rgblink does.
@@ -246,6 +246,11 @@ class Asm:
                     m = re.search(r'(ROM0|ROMX)\s*\[([^\]]+)\](?:\s*,\s*BANK\s*\[([^\]]+)\])?', rest, re.I)
                     pc = self.evaluate(m.group(2))
                     bank = self.evaluate(m.group(3)) if m.group(3) else 0
+                    continue
+                if up == 'ASSERT':
+                    cond = self.split_args(rest)[0]
+                    if final and not self.evaluate(cond, True):
+                        raise ValueError('assertion failed: %s' % rest)
                     continue
                 if up == 'DEF':
                     m = re.match(r'(\w+)\s+EQU\s+(.+)$', rest.strip(), re.I)

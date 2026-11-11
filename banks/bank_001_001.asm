@@ -5356,7 +5356,7 @@ jr_001_75fc:
     ld d, $04
     call HighScores_Sub7929
     ld a, $02
-    ld [wUnk_cb53], a
+    ld [wHdmaMode], a
 
 jr_001_7615:
     call FrameLoop_Sub63fa
@@ -5395,7 +5395,7 @@ jr_001_7640:
     cp $03
     jr nz, jr_001_7665
 
-    ld [wUnk_cb53], a
+    ld [wHdmaMode], a
     ld d, $fc
     call HighScores_Sub7929
     call WaitVBlank
@@ -5766,25 +5766,25 @@ HighScores_Sub7899:
 
     xor a
     ld [wUnk_cb58], a
-    ld a, [wUnk_cb56]
+    ld a, [wHighScoreAnimPtr]
     ld l, a
-    ld a, [wUnk_cb57]
+    ld a, [wHighScoreAnimPtr + 1]
     ld h, a
     ld a, [hl]
     cp $01
     jr nz, jr_001_78b7
 
-    ld hl, SetUpBricksData_001_79b8
+    ld hl, HighScoreAnimFrames
 
 jr_001_78b7:
     ld a, [hl+]
-    ld [wUnk_cb54], a
+    ld [wHdmaSource], a
     ld a, [hl+]
-    ld [wUnk_cb55], a
+    ld [wHdmaSource + 1], a
     ld a, l
-    ld [wUnk_cb56], a
+    ld [wHighScoreAnimPtr], a
     ld a, h
-    ld [wUnk_cb57], a
+    ld [wHighScoreAnimPtr + 1], a
     ret
 
 HighScores_InitSprites:
@@ -5922,10 +5922,11 @@ SetUpBricksData_001_7990:
     db $4f, $e2, $4f, $f6, $67, $a6, $67, $ba, $67, $ce, $67, $e2, $67, $f6, $7f, $a6
     db $7f, $ba, $7f, $ce, $7f, $e2, $7f, $f6
 
-SetUpBricksData_001_79b8:
-    db $00, $40
+; Frames of the animated "HIGH SCORE" title, in the language graphics bank. A value of 1 restarts the list.
+HighScoreAnimFrames:
+    dw HighScoreAnim_00b_4000
 
-HighScoresData_001_79ba:
+HighScoreAnimFrames_Second:
     dw HighScoreAnim_00b_4360
     dw HighScoreAnim_00b_46c0
     dw HighScoreAnim_00b_4a20

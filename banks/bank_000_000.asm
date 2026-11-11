@@ -903,7 +903,7 @@ StateInit_HighScores:
     ld c, $03
     call CopyTilemapRect
     ld a, $01
-    ld [wUnk_cb53], a
+    ld [wHdmaMode], a
     ldh [rVBK], a
     xor a
     ld de, $9800
@@ -941,15 +941,18 @@ StateInit_HighScores:
     ld [wUnk_ccc6], a
     ld [wUnk_ccc7], a
     ld [wUnk_ccc8], a
+    ; Start address of the first animation frame, low byte then high byte.
+    ; The frames are sent with HDMA, which needs source addresses that are multiples of 16.
+    ASSERT LOW(HighScoreAnim_00b_4000) == 0, "the high score animation must start at an address ending in $00"
     xor a
-    ld [wUnk_cb54], a
-    ld a, $40
-    ld [wUnk_cb55], a
-    ld hl, HighScoresData_001_79ba
+    ld [wHdmaSource], a
+    ld a, HIGH(HighScoreAnim_00b_4000)
+    ld [wHdmaSource + 1], a
+    ld hl, HighScoreAnimFrames_Second
     ld a, l
-    ld [wUnk_cb56], a
+    ld [wHighScoreAnimPtr], a
     ld a, h
-    ld [wUnk_cb57], a
+    ld [wHighScoreAnimPtr + 1], a
     xor a
     ld [wUnk_c95b], a
     ld a, $04
@@ -1678,7 +1681,7 @@ jr_000_0aaa:
     ret
 
 StartHdmaTransfer:
-    ld a, [wUnk_cb53]
+    ld a, [wHdmaMode]
     or a
     ret z
 
@@ -1690,9 +1693,9 @@ StartHdmaTransfer:
 
     ld a, [wLangGraphicsBank]
     ld [ROM_BANK], a
-    ld a, [wUnk_cb55]
+    ld a, [wHdmaSource + 1]
     ldh [rHDMA1], a
-    ld a, [wUnk_cb54]
+    ld a, [wHdmaSource]
     ldh [rHDMA2], a
     jr jr_000_0ad6
 
@@ -5342,7 +5345,7 @@ StateInit_MainMenu:
     ld a, $01
     ld [hUnk_ff9a], a
     xor a
-    ld [wUnk_cb53], a
+    ld [wHdmaMode], a
     ldh [rSCX], a
     ldh [rSCY], a
     ld [wUnk_c959], a
