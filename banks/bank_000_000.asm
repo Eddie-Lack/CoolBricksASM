@@ -540,7 +540,7 @@ jr_000_03ec:
 
 jr_000_0410:
     ld hl, $98c4
-    ld a, [$dabd]
+    ld a, [wMenuItemColours]
     ld b, $0a
 
 jr_000_0418:
@@ -549,7 +549,7 @@ jr_000_0418:
     jr nz, jr_000_0418
 
     ld hl, $98e3
-    ld a, [$dabe]
+    ld a, [wMenuItemColours + 1]
     ld b, $0d
 
 jr_000_0424:
@@ -558,7 +558,7 @@ jr_000_0424:
     jr nz, jr_000_0424
 
     ld hl, $9923
-    ld a, [$dabf]
+    ld a, [wMenuItemColours + 2]
     ld b, $0e
 
 jr_000_0430:
@@ -567,7 +567,7 @@ jr_000_0430:
     jr nz, jr_000_0430
 
     ld hl, $9964
-    ld a, [$dac0]
+    ld a, [wMenuItemColours + 3]
     ld b, $0c
 
 jr_000_043c:
@@ -576,7 +576,7 @@ jr_000_043c:
     jr nz, jr_000_043c
 
     ld hl, $9984
-    ld a, [$dac1]
+    ld a, [wMenuItemColours + 4]
     ld b, $0b
 
 jr_000_0448:
@@ -584,18 +584,18 @@ jr_000_0448:
     dec b
     jr nz, jr_000_0448
 
-    ld a, [$dac2]
+    ld a, [wPasswordEntryActive]
     or a
     jr z, jr_000_048f
 
-    ld a, [$dadb]
+    ld a, [wPasswordLetterColours]
     ld [$9968], a
-    ld a, [$dadc]
+    ld a, [wPasswordLetterColours + 1]
     ld [$9969], a
-    ld a, [$dadd]
+    ld a, [wPasswordLetterColours + 2]
 
     ld [$996a], a
-    ld a, [$dade]
+    ld a, [wPasswordLetterColours + 3]
     ld [$996b], a
     xor a
     ldh [rVBK], a
@@ -5458,7 +5458,7 @@ jr_000_2083:
     ld [$ccb7], a
     xor a
     ld [$dae1], a
-    ld [$dac2], a
+    ld [wPasswordEntryActive], a
     ld [$db55], a
     call Call_001_71ef
     ld a, $90
@@ -5533,17 +5533,20 @@ MainMenu_Update:
     or a
     ret nz
 
-    ld a, [$dac2]
+    ld a, [wPasswordEntryActive]
     or a
-    jp z, Jump_000_226d
+    jp z, MainMenu_Navigate
 
+; Password entry. Up and down change the letter and skip the vowels.
+; A, Start or right moves on; B, Select or left moves back. After the fourth letter the password is submitted.
+MainMenu_PasswordEntry:
     xor a
-    ld [$dabd], a
-    ld [$dabe], a
-    ld [$dac0], a
-    ld [$dac1], a
+    ld [wMenuItemColours], a
+    ld [wMenuItemColours + 1], a
+    ld [wMenuItemColours + 3], a
+    ld [wMenuItemColours + 4], a
     inc a
-    ld [$dabf], a
+    ld [wMenuItemColours + 2], a
     ld a, [hJoypad]
     ld b, a
     or a
@@ -5553,7 +5556,7 @@ MainMenu_Update:
     ld [$ccb7], a
 
 jr_000_2126:
-    ld a, [$dadf]
+    ld a, [wPasswordCursor]
     or a
     jr nz, jr_000_2131
 
@@ -5671,15 +5674,15 @@ jr_000_21b2:
     or a
     jp z, Jump_000_2268
 
-    ld a, [$daba]
+    ld a, [wMenuButtonHeld]
     or a
     ret nz
 
     ld a, $19
     call PlaySound
     ld a, $01
-    ld [$daba], a
-    ld a, [$dadf]
+    ld [wMenuButtonHeld], a
+    ld a, [wPasswordCursor]
     bit 4, b
     jr z, jr_000_21d0
 
@@ -5725,24 +5728,24 @@ jr_000_21ea:
     dec a
 
 jr_000_21f2:
-    ld [$dadf], a
+    ld [wPasswordCursor], a
     or a
     jr nz, jr_000_2203
 
     ld a, $04
-    ld [$dadb], a
+    ld [wPasswordLetterColours], a
     ld a, $01
-    ld [$dadc], a
+    ld [wPasswordLetterColours + 1], a
     ret
 
 jr_000_2203:
     cp $01
     jr nz, jr_000_2213
 
-    ld [$dadb], a
-    ld [$dadd], a
+    ld [wPasswordLetterColours], a
+    ld [wPasswordLetterColours + 2], a
     ld a, $04
-    ld [$dadc], a
+    ld [wPasswordLetterColours + 1], a
     ret
 
 jr_000_2213:
@@ -5750,10 +5753,10 @@ jr_000_2213:
     jr nz, jr_000_2225
 
     ld a, $01
-    ld [$dadc], a
-    ld [$dade], a
+    ld [wPasswordLetterColours + 1], a
+    ld [wPasswordLetterColours + 3], a
     ld a, $04
-    ld [$dadd], a
+    ld [wPasswordLetterColours + 2], a
     ret
 
 jr_000_2225:
@@ -5761,9 +5764,9 @@ jr_000_2225:
     jr nz, SubmitPassword
 
     ld a, $01
-    ld [$dadd], a
+    ld [wPasswordLetterColours + 2], a
     ld a, $04
-    ld [$dade], a
+    ld [wPasswordLetterColours + 3], a
     ret
 
 ; Check the typed password and add the "START nnn" menu entry if it is a level password.
@@ -5794,31 +5797,32 @@ jr_000_225e:
     ld a, $01
     call ChangeROMBank
     xor a
-    ld [$dac2], a
+    ld [wPasswordEntryActive], a
     ret
 
 Jump_000_2268:
     xor a
-    ld [$daba], a
+    ld [wMenuButtonHeld], a
     ret
 
-Jump_000_226d:
-    ld a, [$dab5]
+; Menu navigation: wMenuCursor selects one of 5 items.
+MainMenu_Navigate:
+    ld a, [wMenuCursor]
     or a
     jr nz, jr_000_22b2
 
     ld a, $04
-    ld [$dabd], a
+    ld [wMenuItemColours], a
     ld a, $01
-    ld [$dabe], a
-    ld [$dabf], a
-    ld [$dac0], a
-    ld [$dac1], a
+    ld [wMenuItemColours + 1], a
+    ld [wMenuItemColours + 2], a
+    ld [wMenuItemColours + 3], a
+    ld [wMenuItemColours + 4], a
     ld a, [wStartLevel]
     or a
     jr nz, jr_000_228f
 
-    ld [$dabe], a
+    ld [wMenuItemColours + 1], a
 
 jr_000_228f:
     ld a, [hJoypad]
@@ -5837,25 +5841,25 @@ jr_000_228f:
     ld a, $28
     ld [hStateTimer], a
     ld b, $00
-    call Call_000_251b
+    call StartGame
 
 jr_000_22b2:
-    ld a, [$dab5]
+    ld a, [wMenuCursor]
     dec a
     jr nz, jr_000_22f7
 
     ld a, $04
-    ld [$dabe], a
+    ld [wMenuItemColours + 1], a
     ld a, $01
-    ld [$dabd], a
-    ld [$dabf], a
-    ld [$dac0], a
-    ld [$dac1], a
+    ld [wMenuItemColours], a
+    ld [wMenuItemColours + 2], a
+    ld [wMenuItemColours + 3], a
+    ld [wMenuItemColours + 4], a
     ld a, [wStartLevel]
     or a
     jr nz, jr_000_22d4
 
-    ld [$dabe], a
+    ld [wMenuItemColours + 1], a
 
 jr_000_22d4:
     ld a, [hJoypad]
@@ -5874,25 +5878,25 @@ jr_000_22d4:
     ld a, $28
     ld [hStateTimer], a
     ld b, $01
-    call Call_000_251b
+    call StartGame
 
 jr_000_22f7:
-    ld a, [$dab5]
+    ld a, [wMenuCursor]
     cp $02
     jr nz, jr_000_235b
 
     ld a, $04
-    ld [$dabf], a
+    ld [wMenuItemColours + 2], a
     ld a, $01
-    ld [$dabd], a
-    ld [$dabe], a
-    ld [$dac0], a
-    ld [$dac1], a
+    ld [wMenuItemColours], a
+    ld [wMenuItemColours + 1], a
+    ld [wMenuItemColours + 3], a
+    ld [wMenuItemColours + 4], a
     ld a, [wStartLevel]
     or a
     jr nz, jr_000_231a
 
-    ld [$dabe], a
+    ld [wMenuItemColours + 1], a
 
 jr_000_231a:
     ld a, [hJoypad]
@@ -5900,68 +5904,68 @@ jr_000_231a:
     or a
     jr z, jr_000_2357
 
-    ld a, [$daba]
+    ld a, [wMenuButtonHeld]
     or a
     jr nz, jr_000_235b
 
     ld a, $1a
     call PlaySound
     ld a, $01
-    ld [$dac2], a
-    ld [$daba], a
-    ld [$dadc], a
-    ld [$dadd], a
-    ld [$dade], a
+    ld [wPasswordEntryActive], a
+    ld [wMenuButtonHeld], a
+    ld [wPasswordLetterColours + 1], a
+    ld [wPasswordLetterColours + 2], a
+    ld [wPasswordLetterColours + 3], a
     dec a
-    ld [$dadf], a
+    ld [wPasswordCursor], a
     ld a, $42
     ld [wPasswordEntry], a
     ld [wPasswordEntry + 1], a
     ld [wPasswordEntry + 2], a
     ld [wPasswordEntry + 3], a
     ld a, $04
-    ld [$dadb], a
+    ld [wPasswordLetterColours], a
     jr jr_000_235b
 
 jr_000_2357:
     xor a
-    ld [$daba], a
+    ld [wMenuButtonHeld], a
 
 jr_000_235b:
-    ld a, [$dab5]
+    ld a, [wMenuCursor]
     cp $03
     jr nz, jr_000_237e
 
     ld a, $04
-    ld [$dac0], a
+    ld [wMenuItemColours + 3], a
     ld a, $01
-    ld [$dabd], a
-    ld [$dabe], a
-    ld [$dabf], a
-    ld [$dac1], a
+    ld [wMenuItemColours], a
+    ld [wMenuItemColours + 1], a
+    ld [wMenuItemColours + 2], a
+    ld [wMenuItemColours + 4], a
     ld a, [wStartLevel]
     or a
     jr nz, jr_000_237e
 
-    ld [$dabe], a
+    ld [wMenuItemColours + 1], a
 
 jr_000_237e:
-    ld a, [$dab5]
+    ld a, [wMenuCursor]
     cp $04
     jr nz, jr_000_23a1
 
     ld a, $04
-    ld [$dac1], a
+    ld [wMenuItemColours + 4], a
     ld a, $01
-    ld [$dabd], a
-    ld [$dabe], a
-    ld [$dabf], a
-    ld [$dac0], a
+    ld [wMenuItemColours], a
+    ld [wMenuItemColours + 1], a
+    ld [wMenuItemColours + 2], a
+    ld [wMenuItemColours + 3], a
     ld a, [wStartLevel]
     or a
     jr nz, jr_000_23a1
 
-    ld [$dabe], a
+    ld [wMenuItemColours + 1], a
 
 jr_000_23a1:
     ld a, [hJoypad]
@@ -5984,7 +5988,7 @@ jr_000_23ad:
     ld [$dab6], a
     ld a, $19
     call PlaySound
-    ld a, [$dab5]
+    ld a, [wMenuCursor]
     inc a
     cp $05
     jr nz, jr_000_23cb
@@ -6005,7 +6009,7 @@ jr_000_23cb:
     inc a
 
 jr_000_23d8:
-    ld [$dab5], a
+    ld [wMenuCursor], a
     jr jr_000_23e1
 
 jr_000_23dd:
@@ -6024,7 +6028,7 @@ jr_000_23e1:
     ld [$dab7], a
     ld a, $19
     call PlaySound
-    ld a, [$dab5]
+    ld a, [wMenuCursor]
     dec a
     cp $ff
     jr nz, jr_000_2400
@@ -6046,7 +6050,7 @@ jr_000_2400:
     dec a
 
 jr_000_240d:
-    ld [$dab5], a
+    ld [wMenuCursor], a
     jr jr_000_2416
 
 jr_000_2412:
@@ -6054,7 +6058,7 @@ jr_000_2412:
     ld [$dab7], a
 
 jr_000_2416:
-    ld a, [$dab5]
+    ld a, [wMenuCursor]
     cp $03
     jp c, Jump_000_24d4
 
@@ -6063,15 +6067,15 @@ jr_000_2416:
     or a
     jr z, jr_000_2458
 
-    ld a, [$daba]
+    ld a, [wMenuButtonHeld]
     or a
     jr nz, jr_000_245c
 
     inc a
-    ld [$daba], a
+    ld [wMenuButtonHeld], a
     ld a, $19
     call PlaySound
-    ld a, [$dab5]
+    ld a, [wMenuCursor]
     cp $03
     jr nz, jr_000_244e
 
@@ -6096,7 +6100,7 @@ jr_000_244e:
 
 jr_000_2458:
     xor a
-    ld [$daba], a
+    ld [wMenuButtonHeld], a
 
 jr_000_245c:
     bit 0, b
@@ -6110,7 +6114,7 @@ jr_000_245c:
     ld [$dab8], a
     ld a, $19
     call PlaySound
-    ld a, [$dab5]
+    ld a, [wMenuCursor]
     cp $03
     jr nz, jr_000_248a
 
@@ -6149,7 +6153,7 @@ jr_000_2498:
     ld [$dab9], a
     ld a, $19
     call PlaySound
-    ld a, [$dab5]
+    ld a, [wMenuCursor]
     cp $03
     jr nz, jr_000_24c6
 
@@ -6221,8 +6225,9 @@ jr_000_2503:
 jr_000_251a:
     ret
 
-Call_000_251b:
-    call Call_001_7c2d
+; Begin a new game. B = 0 starts at level 1, B = 1 at the password level (wStartLevel).
+StartGame:
+    call ResetScore
     xor a
     ld [wLevelsSincePassword], a
     ld [$dcff], a
@@ -6343,7 +6348,7 @@ jr_000_2605:
     ld bc, $0540
     call DataTransfer
     xor a
-    ld [$dab5], a
+    ld [wMenuCursor], a
     ld de, $9800
     ld hl, Data_007_5c30
     ld b, $14
@@ -6364,17 +6369,17 @@ jr_000_2640:
     ld a, $01
     call ChangeROMBank
     ld a, $04
-    ld [$dabd], a
+    ld [wMenuItemColours], a
     ld a, $01
-    ld [$dabe], a
-    ld [$dabf], a
-    ld [$dac0], a
-    ld [$dac1], a
+    ld [wMenuItemColours + 1], a
+    ld [wMenuItemColours + 2], a
+    ld [wMenuItemColours + 3], a
+    ld [wMenuItemColours + 4], a
     ld a, [wStartLevel]
     or a
     jr nz, jr_000_2661
 
-    ld [$dabe], a
+    ld [wMenuItemColours + 1], a
 
 jr_000_2661:
     call Call_001_6e25

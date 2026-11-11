@@ -6026,7 +6026,7 @@ Pause_Update:
 jr_001_7c2c:
     ret
 
-Call_001_7c2d:
+ResetScore:
     ld hl, wScoreDigits
     ld a, $01
     ld [hl+], a
