@@ -6,7 +6,6 @@ RST_00::
 ShowMessageBankE:
     ld a, $0e
 
-Call_000_0003:
     ld [ROM_BANK], a
 
 ; Like ShowMessageBankE, but the message is in the current bank.
@@ -20,24 +19,23 @@ RST_08::
     ld h, [hl]
     ld l, a
     ld a, [hl+]
-    ld [$ff9d], a
+    ld [hUnk_ff9d], a
 
 RST_10::
     xor a
-    ld [$d746], a
-    ld [$d75e], a
+    ld [wUnk_d746], a
+    ld [wUnk_d75e], a
     dec a
 
 RST_18::
-    ld [$d745], a
-    ld de, $d72a
+    ld [wUnk_d745], a
+    ld de, wLevelTitleText
     xor a
     ld [de], a
 
 RST_20::
     inc de
 
-Jump_000_0021:
     ld a, $98
     ld [de], a
     inc de
@@ -49,7 +47,6 @@ RST_28::
     ld a, $04
     ld [de], a
 
-Call_000_002b:
     inc de
     call DataTransfer
     db $3e
@@ -67,16 +64,14 @@ RST_38::
     nop
     nop
 
-Jump_000_003c:
     nop
     nop
     nop
 
-Jump_000_003f:
     nop
 
 VBlankInterrupt::
-    jp $ff92
+    jp hVBlankJump
 
     nop
     nop
@@ -85,7 +80,7 @@ VBlankInterrupt::
     nop
 
 LCDCInterrupt::
-    jp $c35a
+    jp wStatJump
 
     nop
     nop
@@ -122,7 +117,7 @@ JoypadTransitionInterrupt::
 LoadPalettes:
     ld hl, $c9dd
     ld b, $10
-    ld a, [$ff9c]
+    ld a, [hPaletteMode]
     cp $02
     jr nz, jr_000_0076
 
@@ -142,14 +137,10 @@ jr_000_0079:
     ld a, [de]
     inc de
 
-Jump_000_007f:
     and $e0
 
-Call_000_0081:
-Jump_000_0081:
     ld c, a
 
-Call_000_0082:
     ld a, [de]
     and $03
     or c
@@ -164,9 +155,8 @@ Call_000_0082:
     dec b
     jr nz, jr_000_0079
 
-    ld a, [$ff9c]
+    ld a, [hPaletteMode]
 
-Jump_000_0098:
     cp $02
     jr nz, jr_000_009e
 
@@ -185,42 +175,38 @@ jr_000_009e:
 StateInit_ColorOnly:
     ld hl, $02b3
     ld a, l
-    ld [$ff96], a
+    ld [hUnk_ff96], a
     ld a, h
-    ld [$ff97], a
+    ld [hUnk_ff97], a
     ld a, $01
-    ld [$ff9c], a
-    ld [$ff9b], a
+    ld [hPaletteMode], a
+    ld [hUnk_ff9b], a
     ld a, $01
-    ld [$ff9a], a
+    ld [hUnk_ff9a], a
     ld a, $e4
 
-Call_000_00c0:
     ldh [rBGP], a
     xor a
 
-Jump_000_00c3:
     ldh [rSCX], a
     ld a, $0d
     call ChangeROMBank
-    ld hl, Data_00d_4000
+    ld hl, Gfx_ColorOnly_00d_4000
     ld de, $9000
     ld bc, $0800
 
-Jump_000_00d3:
     call DataTransfer
-    ld hl, Data_00d_4800
+    ld hl, Gfx_ColorOnly_00d_4800
     ld de, $8800
     ld bc, $0050
     call DataTransfer
     xor a
     ld de, $9800
-    ld hl, Data_00d_4850
+    ld hl, Tilemap_ColorOnly_00d_4850
     ld b, $14
     ld c, $12
     call CopyTilemapRect
 
-Call_000_00f0:
     ld a, $01
     call ChangeROMBank
     ret
@@ -228,19 +214,14 @@ Call_000_00f0:
     nop
     nop
 
-Call_000_00f8:
     nop
     nop
 
-Jump_000_00fa:
     nop
 
-Call_000_00fb:
     nop
     nop
     nop
     nop
 
-Call_000_00ff:
-Jump_000_00ff:
     nop
