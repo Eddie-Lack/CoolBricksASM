@@ -71,7 +71,7 @@ RST_38::
     nop
 
 VBlankInterrupt::
-    jp $ff92
+    jp hVBlankJump
 
     nop
     nop
@@ -80,7 +80,7 @@ VBlankInterrupt::
     nop
 
 LCDCInterrupt::
-    jp $c35a
+    jp wStatJump
 
     nop
     nop
