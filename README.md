@@ -39,6 +39,7 @@ The sources build to the matching ROM with RGBDS 0.8.0 (`make`), with no warning
    - `LevelTable` (bank 5) points to `Background_*`, `LevelHeader_*`, `BrickLayout_Level*` (bank 8) and `PowerupMap_Level*` (bank `$0C`).
    - Bank 1 has `PowerupHandlers`, `PowerupSprites`, `StateInitHandlers`, `StateUpdateHandlers` and `BrickRedrawHandlers`.
    - Calls from bank 0 into banks 1, 6 and `$0F` use labels where the bank is known.
+   - Bank 6 has `SongHeaders`, `SfxTable`, `PatternPointers`, `InstrumentPointers` and `NoiseInstrumentPointers`. Every pointer inside the song, instrument and sound effect data is a label too.
 5. **Level data is structured.** Brick layouts and power-up maps are written as (count, value) pairs, one labelled block per level.
    - Tile maps are written one screen row per line and named `Tilemap_<screen>`. Graphics blocks are named `Gfx_<screen>`.
    - `docs/ROM_MAP.md` lists what every part of each bank holds. `python tools/rom_map.py` rebuilds it.
@@ -46,17 +47,20 @@ The sources build to the matching ROM with RGBDS 0.8.0 (`make`), with no warning
 
 ## What is left
 
-- **Names inside routines.** Every subroutine and every `jp` target in banks 0, 1 and `$0F` has a name. About 710 `jr_` labels inside routines are still automatic.
-- **RAM.** `include/ram.inc` has 251 real names. Another 108 variables have placeholder names (`wUnk_xxxx`, `hUnk_xxxx`). Code in banks 0 and 1 no longer contains raw work RAM addresses.
+- **Names inside routines.** Every subroutine and every `jp` target in banks 0, 1 and `$0F` has a name. About 710 `jr_` labels inside routines are still automatic. Bank 6 has no automatic labels left.
+- **RAM.** `include/ram.inc` has 325 real names. Another 107 variables have placeholder names (`wUnk_xxxx`, `hUnk_xxxx`). Code in banks 0, 1 and 6 no longer contains raw work RAM addresses.
 - **Relocation.** `tools/relocation_test.py` shifts a bank by 3 bytes, rebuilds, and compares a scripted play-through with the original. The session covers the menus, the high score and credits screens that appear when the menu idles, every level load, pause, the password screens, the ending and game over.
   - In English, banks 0, 1, 2, 3, 5, 7, 8, 9, `$0A`, `$0C`, `$0D`, `$0E` and `$0F` pass.
   - In Spanish, French, German and Italian, banks 0, 1, 5, `$0C` and `$0E` pass. These hold the language tables and text. Bank `$0F` (credits) also passes in French.
   - The language graphics banks (`$0B`, `$10`–`$13`) share one layout and must stay identical in structure. They cannot be shifted by a few bytes: the "HIGH SCORE" animation is sent with HDMA and must stay 16-byte aligned. An `ASSERT` checks this for bank `$0B`.
-  - Bank 6 (music) fails. Its data has pointers that are still numbers.
+  - Bank 6 (music and sound) passes the screen test. `tools/sound_relocation_test.py` also compares its sound. It plays all 10 songs and all 30 sound effects and records every write to the sound registers and the driver's variables in every frame.
+    - With the bank moved in two parts (3 bytes at the start, 256 bytes from `PitchSlide_00` on) the sound is identical. This is the default of the test.
+    - Two faults in the original data tie the sound to two address bytes, so a plain shift is not identical. With 3 bytes, the values written to `NR43` by the silent noise instrument change. With 256 bytes, the pitch of a few single frames of sound effect 22 changes. [docs/RESEARCH.md](docs/RESEARCH.md) explains both. They cannot be removed without changing the ROM.
+    - The first fault reads its `NR43` values from bank 0, so moving code in bank 0 changes these silent writes too.
   - Bank 4 ends with an image and cannot be tested this way.
-  - Only the screen is compared, not sound.
+  - For all other banks only the screen is compared, not sound.
 - **Graphics.** Tile data is in `gfx/*.2bpp`. Every file has a PNG. Some images are loaded in two parts but stored as one file.
-- **Music.** Bank 6 holds the music driver and its data. Only the first routines are labelled.
+- **Music.** The driver in bank 6 is named, commented and described in [docs/RESEARCH.md](docs/RESEARCH.md). Songs, patterns, instruments and sound effects have labels, but the rows are plain `db` and `dw` lines. Sound effects have numbers, not names.
 - **Unlabelled data.** `docs/ROM_MAP.md` shows the blocks with no meaningful name yet. Banks `$0B` and `$10`–`$13` (language graphics) and bank 9 are the largest.
 - **Filler.** Banks `$14`–`$1F` are 12 copies of one bank, bank `$20` is a copy of bank `$13`, and banks `$21`–`$3F` are empty.
 
