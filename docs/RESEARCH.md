@@ -230,7 +230,7 @@ One of the four corner cases has a mistake in the original code. For an exact di
   - Rocket: cooldown 30 frames, at most 3 on screen (slots 0 to 2), 1 pixel per frame.
   - Laser: cooldown 8 frames, at most 6 on screen (slots 0 to 5), 2 pixels per frame.
   - A shot starts at the bat and flies straight up. It ends at the top of the playfield, on an unbreakable brick, or on the first brick it hits.
-- **Shot slots differ.** Slots 0 and 1 hit bricks with `HitBrickWithShot`. Slots 2 to 5 use `HitBrickWithBall`, the ball's routine. So while Ninja is active, a shot from slots 2 to 5 sets a brick to 1 hit point as the ball would, and a shot from slots 0 and 1 removes 1 hit point as usual.
+- **Shot slots differ.** Slots 0 and 1 hit bricks with `HitBrickWithShot`. Slots 2 to 5 use `HitBrickWithBall`, the ball's routine. So while Ninja is active, a shot from slots 2 to 5 sets a brick to 1 hit point as the ball would, and a shot from slots 0 and 1 removes 1 hit point as usual. This was confirmed in the emulator for slots 0 to 3: with Ninja active, a shot from slot 2 or 3 took a 4-hit-point brick straight to 1 and released its power-up, and a shot from slot 0 or 1 took it to 3.
 - **Plasma:** A fires when no shot is in flight. Firing sets `wPlasmaState` to 2 and clears `wWeaponFlag`. The plasma shot uses slot 0 and passes through the bricks it hits.
 
 ## Score and effects
