@@ -3,6 +3,7 @@
 Usage:
     python tools/relocation_test.py ORIGINAL_ROM BANK [BANK ...]
     python tools/relocation_test.py ORIGINAL_ROM --bisect BANK
+    python tools/relocation_test.py ORIGINAL_ROM --lang 2 BANK [BANK ...]
 
 Needs RGBDS on the PATH and PyBoy (pip install pyboy).
 
@@ -14,7 +15,7 @@ address in that bank by number.
 --bisect inserts the bytes before each label in turn and reports the last label for which the
 play-through still differs. A raw pointer then targets that label's block.
 
-The session uses English only, so the other language tables and banks $10-$13 are not exercised.
+--lang picks the language (0 English, 1 Spanish, 2 French, 3 German, 4 Italian). The default is English.
 Bank 4 ends with an image and cannot be shortened, so it cannot be tested this way.
 """
 import glob
@@ -42,7 +43,7 @@ class Done(Exception):
     pass
 
 
-def session(rom, limit=None):
+def session(rom, limit=None, language=0):
     """Play a fixed session and return a short hash of the screen every 20 frames."""
     pb = PyBoy(rom, window='null', sound_emulated=False)
     pb.set_emulation_speed(0)
@@ -78,8 +79,14 @@ def session(rom, limit=None):
     rnd = random.Random(7)
     try:
         run(1200)
+        for _ in range(language):   # 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
+            press('down')
         press('a', after=200)       # language
         press('start', after=160)   # title
+        run(900)                    # idle on the menu: high scores appear
+        press('a', after=120)
+        run(1500)                   # idle again: credits appear and scroll
+        press('a', after=200)
         for b in ('down', 'down', 'a', 'down', 'a', 'up', 'up', 'up'):
             press(b)                # toggle music and sound effects
         password('TDNZ', True)      # lives refill on pause
@@ -170,8 +177,13 @@ def main():
     args = sys.argv[1:]
     original = args.pop(0)
     bisect = '--bisect' in args
+    language = 0
+    if '--lang' in args:
+        i = args.index('--lang')
+        language = int(args[i + 1])
+        del args[i:i + 2]
     banks = [int(a, 16) for a in args if a != '--bisect']
-    base = session(original)
+    base = session(original, language=language)
     with tempfile.TemporaryDirectory() as tmp:
         work = os.path.join(tmp, 'src')
         for bank in banks:
@@ -179,7 +191,7 @@ def main():
             if not rom:
                 print('bank %02X: could not be shifted' % bank)
                 continue
-            bad = differences(base, session(rom))
+            bad = differences(base, session(rom, language=language))
             if not bad:
                 print('bank %02X: identical' % bank)
                 continue
@@ -192,7 +204,7 @@ def main():
             while hi - lo > 1:
                 mid = (lo + hi) // 2
                 rom = build_shifted(bank, work, labels[mid])
-                if rom and differences(base, session(rom, limit)):
+                if rom and differences(base, session(rom, limit, language)):
                     lo = mid
                 else:
                     hi = mid

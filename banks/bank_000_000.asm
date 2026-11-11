@@ -962,7 +962,7 @@ StateInit_HighScores:
 HighScores_Update:
     call HighScores_Sub7899
     call HighScores_MoveSprites
-    ld a, [wUnk_ccb7]
+    ld a, [wMenuIdleTimer]
     cp $ff
     jr z, jr_000_06fd
 
@@ -972,9 +972,9 @@ HighScores_Update:
     ld [wUnk_ccce], a
     jr nz, jr_000_0708
 
-    ld a, [wUnk_ccb7]
+    ld a, [wMenuIdleTimer]
     dec a
-    ld [wUnk_ccb7], a
+    ld [wMenuIdleTimer], a
     jr z, jr_000_0710
 
     jr jr_000_0708
@@ -5463,7 +5463,7 @@ jr_000_2083:
     ld a, $01
     call ChangeROMBank
     ld a, $fd
-    ld [wUnk_ccb7], a
+    ld [wMenuIdleTimer], a
     xor a
     ld [wUnk_dae1], a
     ld [wPasswordEntryActive], a
@@ -5561,7 +5561,7 @@ MainMenu_PasswordEntry:
     jr z, jr_000_2126
 
     ld a, $fb
-    ld [wUnk_ccb7], a
+    ld [wMenuIdleTimer], a
 
 jr_000_2126:
     ld a, [wPasswordCursor]
@@ -5982,7 +5982,7 @@ jr_000_23a1:
     jr z, jr_000_23ad
 
     ld a, $fd
-    ld [wUnk_ccb7], a
+    ld [wMenuIdleTimer], a
 
 jr_000_23ad:
     bit 3, b
@@ -6190,27 +6190,27 @@ jr_000_24d0:
 
 Jump_000_24d4:
 jr_000_24d4:
-    ld a, [wUnk_dae0]
+    ld a, [wMenuTick]
     inc a
-    ld [wUnk_dae0], a
+    ld [wMenuTick], a
     and $01
     jr z, jr_000_251a
 
-    ld a, [wUnk_ccb7]
+    ld a, [wMenuIdleTimer]
     cp $ff
     jr z, jr_000_251a
 
     dec a
-    ld [wUnk_ccb7], a
+    ld [wMenuIdleTimer], a
     jr nz, jr_000_251a
 
     ld a, [hGameState]
     cp $01
     jr nz, jr_000_251a
 
-    ld a, [wUnk_dae2]
+    ld a, [wAttractToggle]
     xor $01
-    ld [wUnk_dae2], a
+    ld [wAttractToggle], a
     jr z, jr_000_2501
 
     ld a, $07
@@ -6226,7 +6226,7 @@ jr_000_2503:
     ld a, $01
     ld [wUnk_ccb6], a
     ld a, $fe
-    ld [wUnk_ccb7], a
+    ld [wMenuIdleTimer], a
     ld a, $1a
     call PlaySound
 
