@@ -5,17 +5,17 @@ DEF wBatY                  EQU $c200 ; Bat Y: the y of the first sprite in wOamB
 DEF wBatX                  EQU $c201 ; Bat X: the x of the first sprite in wOamBuffer
 DEF wPasswordByteX         EQU $ccb8 ; Password decoding work bytes
 DEF wPasswordByteY         EQU $ccb9 ; 
-DEF wStartLevel            EQU $ccba ; Level the "START nnn" menu entry begins on (0-based)
+DEF wStartLevel            EQU $ccba ; Level the "START nnn" menu entry begins on (0-based). 0 = no such entry (the entry is hidden). EncodeLevelPassword also overwrites it on the level password screen; an invalid or cheat password leaves it unchanged
 DEF wBricksLeft            EQU $cce7 ; Breakable bricks left in the level
 DEF wCurrentLevel          EQU $cce8 ; Current level (0-based)
-DEF wBrickMap              EQU $ccea ; Brick hit points, 16 bytes per row, 9 bricks from column 1
+DEF wBrickMap              EQU $ccea ; Brick hit points (1 to 4), 16 bytes per row, 9 bricks from column 1. $0e = unbreakable brick, $0f = wall (column 0 and columns 10 to 15)
 DEF wPowerupMap            EQU $ce0a ; Power-up ids, same layout as wBrickMap. Bit 7 is set while a hit is being processed
-DEF wBallSticks            EQU $d763 ; 1 = the ball sticks to the bat. Set at level start and by Magnet
+DEF wBallSticks            EQU $d763 ; 1 = the ball sticks to the bat. Set by InitBat (level start and after every lost life) and by Magnet, cleared when the held ball is launched
 DEF wBatWidth              EQU $d764 ; Bat width in pixels ($20 normal, $28 with Milk)
 DEF wNinjaActive           EQU $d76e ; Not 0 while Ninja is active
 DEF wBallCount             EQU $d77c ; Balls in play
 DEF wLives                 EQU $d8ac ; Lives
-DEF wHitRedrawIndex        EQU $d8b4 ; Index into BrickRedrawHandlers
+DEF wHitRedrawIndex        EQU $d8b4 ; While a hit is queued: tile variant 0 to 3 (bit 0 = brick to the left is wall $0f, bit 1 = brick above is wall), used by ProcessBrickHitQueue for a brick that survives. For a destroyed brick GetBrickNeighbourMask overwrites it with the byte index into BrickRedrawHandlers (neighbour mask * 2, up to $7e)
 DEF wHitNewValue           EQU $d8b5 ; Hit points of the brick after the hit
 DEF wHitPowerupPtr         EQU $d8b6 ; Address of the hit brick in wPowerupMap
 DEF wBrickHitQueue         EQU $d8bc ; Queue of brick hits, 8 bytes per entry
@@ -26,11 +26,11 @@ DEF wCheatPhotoBackground  EQU $db53 ; TNRZ: photo background
 DEF wCheatShowVersion      EQU $db54 ; NXRZ: show "VER 23 02" on the title menu
 DEF wHitPowerupId          EQU $db6e ; Power-up id of the brick being processed
 DEF wHitBrickValue         EQU $db6f ; Its hit points after the hit
-DEF wFallingPowerups       EQU $db71 ; 8 falling power-ups, 12 bytes each: active, y, x, type, 4 x (tile, attribute)
+DEF wFallingPowerups       EQU $db71 ; 8 falling power-ups, 12 bytes each: y fraction (not 0 = slot in use), y, x, type, 4 x (tile, attribute)
 DEF wUfoHeight             EQU $dc27 ; UFO flight height
 DEF wLevelType             EQU $dc35 ; 1 = UFO level, 2 = blob level
 DEF wBlobPalette          EQU $dc36 ; High nibble of the level type byte: the sprite palette added to the blob's sprites
-DEF wWeaponFlag            EQU $dc3d ; 1 after Rocket, Plasma, Laser or Grenade. A Clock brick drops a Clock only while this is 1
+DEF wWeaponFlag            EQU $dc3d ; 1 after Rocket, Plasma, Laser or Grenade. Cleared by Poison, Milk, Magnet, Reverse, the plasma shot, the last grenade thrown, a lost life and ResetShots. A Clock brick (id 7) drops a Clock only while this is 1, otherwise it drops Slowball. The fixed Clock brick (id 18) ignores it
 DEF wShotReloadDelay       EQU $dc45 ; Cooldown set after a shot: 30 frames for a rocket, 8 for a laser
 DEF wPlasmaState           EQU $dc47 ; 1 = plasma bat, 2 = plasma shot in flight
 DEF wGrenadeCount          EQU $dc48 ; Grenades left
@@ -62,10 +62,10 @@ DEF wBallWorkXSub          EQU $d777 ; X fraction
 DEF wBallWorkX             EQU $d778 ; X
 DEF wBallWorkDirection     EQU $d779 ; Direction, 0-$1f
 DEF wBallWorkSpeed         EQU $d77a ; Speed. Bit 7 is set while the ball sits on the bat
-DEF wBallWorkFlags         EQU $d77b ; Flags. $ff marks a removed ball
+DEF wBallWorkFlags         EQU $d77b ; Bounce counter, not flags: counts hits on unbreakable bricks and walls since the last bat bounce or breakable brick hit (0 to $14), then bit 7 is set and a 1 to 7 counter runs. When it wraps to 0, UpdateBall_Move turns the ball one direction step to break endless loops. $ff marks a removed ball
 DEF wBalls                 EQU $d77d ; The balls, 7 bytes each, in the same layout as wBallWork
-DEF wBatDeltaX             EQU $d89f ; Bat movement this frame
-DEF wLaunchDirection       EQU $d8a0 ; Direction for a ball launched this frame, or 0
+DEF wBatDeltaX             EQU $d89f ; Bat movement this frame with the sign reversed: negative when the bat moved right, positive when it moved left (UpdateBall subtracts it from the ball X while the ball rides the bat)
+DEF wLaunchDirection       EQU $d8a0 ; Direction ($01 or $1f) for the ball held on the bat that is launched this frame, or 0. The value 4 is not a direction: it is set when a ball not held at its start is released (Multi ball, Magnet) and by the Ninja pick-up. The ball then keeps its direction and only takes its speed from the bat bounce table
 DEF wMultiBallPending      EQU $d8a1 ; Set by Multi ball until the ball splits
 DEF wAntigravityActive     EQU $d8a2 ; Not 0 while Antigravity (Pepper) is active
 DEF wSlowBallActive       EQU $d8a3 ; Set by Slow ball. Selects the slower half of the bat bounce tables
@@ -75,14 +75,14 @@ DEF wBallOnBat             EQU $d8a8 ; Not 0 while a ball is held on the bat
 DEF wAntigravityCancel     EQU $d8a9 ; Set when another power-up ends Antigravity early
 DEF wRemoveBall            EQU $d8aa ; Set to remove the ball being updated
 DEF hLastDirection         EQU $ff8b ; Left/right bits of the last frame
-DEF hStateTimer            EQU $ffa0 ; Counts down before a game state change; gameplay input is ignored while it is not 0
+DEF hStateTimer            EQU $ffa0 ; Counts down once per frame in FrameLoop. At 0 the frame loop ends and the state in hGameState starts. While it is not 0 the B level skip, Start pause, losing a life and RestartAfterLifeLost are held off, but the bat and balls keep moving
 DEF hLifeLostTimer         EQU $ffa2 ; Counts up to $28 after a lost life, then the bat and ball restart
 
 ; Gameplay: weapons
-DEF wShotActive            EQU $dc3e ; 6 shot slots, not 0 while the shot is in flight
+DEF wShotActive            EQU $dc3e ; 6 shot slots. 0 = free, otherwise the frames since firing (1 to 4 only draw the flash at the bat, 5 and up fly)
 DEF wRocketLaserBat        EQU $dc46 ; 1 with a Rocket or Laser bat
 DEF wGrenadePower          EQU $dc49 ; Throw power, grows while A is held
-DEF wGrenadeDelay          EQU $dc4b ; Delay after a throw
+DEF wGrenadeDelay          EQU $dc4b ; Set to 4 when a grenade is thrown. It is not counted down: UpdateProjectiles clears it when the explosion ends. While it is not 0, no grenade can be charged or thrown, so it works as a busy flag
 DEF wLaserBat              EQU $dc4c ; 1 = Laser bat, 0 = Rocket bat
 
 ; Gameplay: ball movement, enemies and projectiles
@@ -103,16 +103,16 @@ DEF wUfoX                  EQU $dc26 ; UFO X position
 DEF wUfoSpeed              EQU $dc28 ; UFO speed, +$80 or -$80 fractions per frame
 DEF wUfoWaitTimer          EQU $dc2a ; Time until the next UFO pass
 DEF wUfoFlying             EQU $dc2d ; Not 0 while the UFO crosses the screen
-DEF wUfoBombActive         EQU $dc2f ; Not 0 while a UFO bomb falls
+DEF wUfoBombActive         EQU $dc2f ; Not 0 while a UFO bomb is active. Counts up each frame: 1 to 4 = release sprite drawn at wUfoBombStartY, 5 and up = falling
 DEF wUfoBombX              EQU $dc30
 DEF wUfoBombY              EQU $dc31
 DEF wUfoDropX              EQU $dc33 ; X position where the UFO drops its bomb, taken from the frame counter
 
 ; Gameplay: score, Ghost and effects
-DEF wScoreDigits           EQU $d8ad ; Score, 6 digits
+DEF wScoreDigits           EQU $d8ad ; Score in units of 10 points: 6 bytes, each digit stored as value + 1 ($01 to $0a). Byte 0 is a carry sink that AddScoreBC sets to 0 on every add; only bytes 1 to 5 are shown and used by BuildScoreText
 DEF wGhostActive           EQU $dc20 ; Not 0 while Ghost is active: the blob cannot catch the ball
 DEF wGhostTimer            EQU $dc21 ; Time left for Ghost
-DEF wBlobActive            EQU $dc23 ; Not 0 while the blob is on screen
+DEF wBlobActive            EQU $dc23 ; Set to 1 by ResetEnemies on every level, blob level or not. It only lets CheckBlobCatch run. The blob is updated and drawn only when wLevelType has bit 1 set
 DEF wBrickBreakEffects     EQU $dc63 ; 14 effect slots, 6 bytes each
 DEF wPickupEffects         EQU $dcb7 ; 4 effect slots, 4 bytes each
 DEF wUnbreakableHitEffects EQU $dcd5 ; 10 effect slots
@@ -120,21 +120,21 @@ DEF wUnbreakableHitEffects EQU $dcd5 ; 10 effect slots
 ; Main menu and password entry
 DEF wMenuCursor            EQU $dab5 ; Selected menu item: 0 start, 1 start at password level, 2 enter password, 3 music, 4 sound effects
 DEF wMenuButtonHeld        EQU $daba ; 1 until the buttons are released
-DEF wMenuItemColours       EQU $dabd ; Palette of each of the 5 menu items: 4 = selected, 1 = normal
+DEF wMenuItemColours       EQU $dabd ; Palette of each of the 5 menu items: 4 = selected, 1 = normal, 0 = hidden (item 1 while wStartLevel is 0, all items except the third while a password is typed)
 DEF wPasswordEntryActive   EQU $dac2 ; 1 while the password is being typed
 DEF wPasswordLetterColours EQU $dadb ; Palette of each password letter: 4 = selected, 1 = normal
-DEF wPasswordCursor        EQU $dadf ; Letter being edited, 0-3
+DEF wPasswordCursor        EQU $dadf ; Letter being edited, 0-3. Becomes 4 when the fourth letter is confirmed, which submits the password, and stays 4 until the next password entry starts
 
 ; Gameplay: shot positions
 DEF wShotCooldown          EQU $dc44 ; Frames until the next rocket or laser can be fired
 DEF wFireLatch             EQU $dc4d ; Not 0 until A is released; each shot needs a new press
-DEF wShots                 EQU $dc4e ; 6 shots, 4 bytes each: x, y, y when fired, 1 for a laser
+DEF wShots                 EQU $dc4e ; 21 bytes. Slots 0 to 2 have 4 bytes each (x, y, y when fired, 1 for a laser). Slots 3 to 5 (laser only) have 3 bytes each (x, y, y when fired), at +12, +15 and +18
 
 ; Gameplay: UFO hits
-DEF wUfoHits               EQU $dc34 ; Times the ball has hit the UFO in this level. The UFO is gone at 5
+DEF wUfoHits               EQU $dc34 ; Times the UFO has been hit by the ball or a shot in this level. The UFO is gone at 5
 
 ; Music
-DEF wLevelMusicIndex       EQU $db55 ; 0-2: which of the three level songs plays. Steps when the password screen appears
+DEF wLevelMusicIndex       EQU $db55 ; 0-2: which of the three level songs plays. NextLevelMusic steps it by 1 (2 goes back to 0) when a level is finished with wLevelsSincePassword = 4, also when the password screen is skipped after the ending. It is reset to 0 when the main menu starts
 
 ; Sound driver (bank 6). Channels 1 and 2 are the pulse channels, 3 is the wave channel, 4 is the noise channel.
 ; Pointers are 2 bytes. The instrument tables are described in docs/RESEARCH.md.
@@ -211,7 +211,7 @@ DEF wSfxPriority           EQU $c063 ; Priority of the sound effect that plays
 DEF wWaveAnimCount         EQU $c064 ; Frames left in the current wave animation step
 DEF wWaveAnimPtr           EQU $c065 ; Current wave animation step
 DEF wCh3FreqLow            EQU $c067 ; Last value written to NR33
-DEF wCh3FreqHigh           EQU $c068 ; Last value written to NR34
+DEF wCh3FreqHigh           EQU $c068 ; Bits 0-2 of the last frequency written to NR34 by Channel3Effects (bit 7 is clear). UpdateWaveAnim writes NR34 again with this value XOR $80, which sets bit 7 and restarts the channel
 
 ; Sprites
 DEF wOamUsedLastFrame      EQU $c2b4 ; Extra sprites drawn in the previous frame
@@ -229,8 +229,8 @@ DEF wLevelTitleText        EQU $d72a ; The "LEVEL nnn" string shown at the start
 DEF wBrickTileLeft         EQU $d8b8 ; Tile numbers for the brick being redrawn
 DEF wBrickTileRight        EQU $d8b9
 DEF wBrickRedrawCount      EQU $d9bd ; Brick tile changes queued this frame
-DEF wMenuDownHeld          EQU $dab6 ; 1 until down is released on the password screen
-DEF wMenuUpHeld            EQU $dab7 ; 1 until up is released on the password screen
+DEF wMenuDownHeld          EQU $dab6 ; 1 until down is released, on the main menu and on the password entry
+DEF wMenuUpHeld            EQU $dab7 ; 1 until up is released, on the main menu and on the password entry
 DEF wProjectileWork        EQU $dbe1 ; Working copy of the projectile being updated (9 bytes)
 DEF wBlobFrame             EQU $dc17 ; Blob animation frame
 DEF wBlobFrameTick         EQU $dc18 ; Counts frames between blob animation frames
@@ -252,7 +252,7 @@ DEF wObjPalettes           EQU $c99d ; Sprite palettes of the level
 DEF wPaletteBuffer         EQU $c9dd ; Palettes unpacked by LoadPalettes
 DEF wUfoTick               EQU $dc2b ; Counts frames on UFO levels
 DEF wUfoTickMask           EQU $dc2c ; The UFO wait timer only counts down on frames where wUfoTick AND this is 0
-DEF wUfoPassIndex          EQU $dc2e ; Which UFO pass comes next (index into UfoPassTable)
+DEF wUfoPassIndex          EQU $dc2e ; Entry of UfoPassTable used by the pass that has just started (increased before the lookup, wraps at 8). It starts at 0, so the first pass uses entry 1
 DEF hLogoTimer             EQU $ff91 ; Counts down while a logo screen is shown
 DEF wBrickShinePtr         EQU $dab3 ; Position in BrickShineAnimation (bank 9), the shine that sweeps over the bricks
 
@@ -263,7 +263,7 @@ DEF wHighScoreAnimPtr      EQU $cb56 ; Position in HighScoreAnimFrames
 DEF wBatExplosionY         EQU $d76c ; Position of the bat explosion
 DEF wBatExplosionX         EQU $d76d
 DEF wRemovedBallPtrs       EQU $d895 ; Addresses of ball slots freed this frame
-DEF wBallEffectTick        EQU $d8a7 ; Frame counter for wBallEffectTimer
+DEF wBallEffectTick        EQU $d8a7 ; Frame counter for wBallEffectTimer while Sleepy ball or Ninja is active (they count down once every 2 frames), also used for the Sleepy ball animation. Antigravity does not use it
 DEF wBackgroundTilemap    EQU $cf2a ; Copy of the level background tilemap, laid out like the screen at $9800
 DEF wLevelTilemapCopy     EQU $d32a ; Copy of the tilemap at $9800, taken after the bricks are drawn
 DEF wVBlankTileWrites     EQU $d9bf ; Tile changes for VBlank, 3 bytes each: address, tile. wBrickRedrawCount is their number
@@ -322,7 +322,7 @@ DEF wStackTop                 EQU $c1fe ; Initial stack pointer; the stack grows
 DEF wNinjaBallFrame           EQU $c2b8 ; Ball animation frame while Ninja is active: 0, 1, 2 select tiles $13, $14, $15
 DEF wExtraSprites             EQU $c2b9 ; List of extra sprites (y, x, tile, attribute) built during the frame through wOamWritePtr, then copied into wOamBuffer after the bat sprites
 DEF wRasterObjPaletteIndex    EQU $c958 ; Value AnimatePalettes writes to rOCPS each frame before the raster handler runs: $94 in a level, $80 on the title screen and credits
-DEF wHighScoresVBlankFlag     EQU $c959 ; Not 0 on the high score screen: VBlankMenus then jumps to VBlankMenus_BlinkRow instead of scrolling the menu. Cleared by the main menu
+DEF wHighScoresVBlankFlag     EQU $c959 ; Not 0 from the high score screen on: VBlankMenus then jumps to VBlankMenus_BlinkRow instead of scrolling the menu. It stays set after the screen is left (still 1 during the title picture that follows game over) and is cleared only by StateInit_MainMenu
 DEF wCreditsFrameToggle       EQU $c95a ; Flips between 0 and 1 every VBlank on the credits; UpdateCreditsScroll runs when it becomes 0, so every second frame
 DEF wFadedPalettes            EQU $ca9d ; Palettes after fading, 2 bytes per colour: 8 background palettes here and 8 sprite palettes at + $40
 DEF wFadedObjPalettes         EQU $cadd ; Sprite palettes after the fade step, 64 bytes of packed 15-bit colours that CopyPalettesToHardware writes to rOCPD
@@ -339,7 +339,7 @@ DEF wHighScoresIdleTick       EQU $ccce ; Frame counter 0-3 on the high score sc
 DEF wRasterPaletteBuffer      EQU $d000 ; WRAM bank 2: the $90 palettes unpacked by LoadPalettes when hPaletteMode is 2, 3 bytes per colour ($6c0 bytes)
 DEF wRasterPalettesFaded      EQU $d6c0 ; WRAM bank 2: the $90 palettes of wRasterPaletteBuffer after the fade step, as 2-byte GBC colours ($480 bytes)
 DEF wMessageUnused            EQU $d75e ; Set to 0 by ShowMessage together with wLevelTitleBlink; never read
-DEF wUnbreakableHitSpawned    EQU $d8ab ; Cleared before each CollideBall call and set to 1 by SpawnUnbreakableHitEffect, so one ball step starts at most one unbreakable-brick hit effect
+DEF wUnbreakableHitSpawned    EQU $d8ab ; Cleared once per ball update, before the first CollideBall in UpdateBall_Move (the second step of the same update does not clear it), and set to 1 by SpawnUnbreakableHitEffect, so one ball update starts at most one unbreakable-brick hit effect
 DEF wHitEffectX               EQU $d8ba ; Last byte of the wBrickHitQueue entry being built: the X of the brick break effect to start when the brick is destroyed (the plasma shot's X), or 0 for no effect
 DEF wPlasmaShotX              EQU $d8bb ; X of the plasma shot in flight, copied from the shot's x each frame by UpdateShot0 and UpdateShot1; HitBrickWithShot passes it on as wHitEffectX
 DEF wBatTilesColumn           EQU $dab1 ; Tilemap column, (wBatX - 8) / 8, where UpdateBatTiles last drew the background tiles under the wide bat
@@ -357,15 +357,15 @@ DEF wGrenadeBlastX            EQU $dbeb ; X position of the grenade explosion be
 DEF wGrenadeBlastY            EQU $dbec ; Y position of the grenade explosion being drawn (copied from the grenade's Y when it lands)
 DEF wGhostTick                EQU $dc22 ; Frame counter for Ghost: wGhostTimer counts down once every 8 frames
 DEF wUfoBombStartY            EQU $dc32 ; Y position where the UFO bomb was released (UFO height + 16); the release sprite is drawn here for the first frames of the drop
-DEF wProjectileBouncedX       EQU $dc37 ; 1 when the projectile hit a brick on its left or right side in this step; its X position is then put back to the old value
-DEF wProjectileBouncedY       EQU $dc38 ; 1 when the projectile hit a brick above or below in this step; its Y position is then put back to the old value
+DEF wProjectileBouncedX       EQU $dc37 ; 1 when the projectile hit a wall ($0f) on its left or right side in this step; its X position is then put back to the old value
+DEF wProjectileBouncedY       EQU $dc38 ; 1 when the projectile hit a wall ($0f) above or below in this step; its Y position is then put back to the old value
 DEF wProjectileOldXSub        EQU $dc39 ; Projectile X position before the move, fraction byte
 DEF wProjectileOldX           EQU $dc3a ; Projectile X position before the move, used to undo the move after a side bounce
 DEF wProjectileOldYSub        EQU $dc3b ; Projectile Y position before the move, fraction byte
 DEF wProjectileOldY           EQU $dc3c ; Projectile Y position before the move, used to undo the move after a top or bottom bounce
 DEF wUnbreakableHitEffectPtr  EQU $dcd3 ; Address of the slot in wUnbreakableHitEffects that the next effect will use; goes back to the first slot at the $ff end marker
 DEF wUnbreakableHitEffectsEnd EQU $dcf3 ; $ff end marker right after the 10 three-byte slots of wUnbreakableHitEffects; the spawn pointer wraps to the first slot when it reaches it
-DEF wBonusCountdownPaused     EQU $dd4c ; When 1, the bonus countdown on the level password screen is not reduced; no code that writes it was found
+DEF wBonusCountdownPaused     EQU $dd4c ; Never written by any code and always 0, so the countdown on the level password screen always runs and the pause branch in LevelPassword_Update is dead
 DEF wLevelPasswordUnused      EQU $defb ; Set to 0 when the level password screen is set up; no code that reads it was found
 DEF wLanguageDownHeld         EQU $defd ; Not 0 while Down is held on the language selection screen, so one press moves the choice one step
 DEF wLanguageUpHeld           EQU $defe ; Not 0 while Up is held on the language selection screen, so one press moves the choice one step
@@ -378,12 +378,12 @@ DEF hMenuSparkleTick          EQU $ff8f ; Goes up by 1 on each call of UpdateMen
 DEF wBrickRedrawQueue      EQU $d91c ; Brick tile changes waiting to be drawn, 4 bytes each
 DEF wStartLevelText        EQU $dad3 ; The three digits of "START nnn" on the menu
 DEF wMenuSparkles          EQU $dae3 ; The sparkles on the menu screens
-DEF wMenuIdleTimer         EQU $ccb7 ; Counts down every second frame on the menu; any button resets it. At 0 the high scores or the credits appear
+DEF wMenuIdleTimer         EQU $ccb7 ; Counts down every second frame on the menu (every fourth frame on the high score screen). A button on the menu resets it to $FD ($FB while typing a password). $FF = no countdown (set by game over and by the idle switch for name entry). At 0 the high scores or the credits appear
 DEF wMenuTick              EQU $dae0 ; Counts frames on the menu
 DEF wAttractToggle         EQU $dae2 ; Alternates between the high scores and the credits each time the menu idles
 
 ; Selected language: 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
-DEF wLanguage              EQU $defc
+DEF wLanguage              EQU $defc ; 0 English, 1 Spanish, 2 French, 3 German, 4 Italian
 
 ; Copy of the chosen LanguageTable_*
 DEF wLangTable             EQU $df01

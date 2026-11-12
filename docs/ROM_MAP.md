@@ -48,7 +48,7 @@ Runs of labels with the same prefix are shown as one row.
 | `$03A4` | 517 | code | `VBlankMenus` to `VBlankMenus_BlinkRow` (3 labels) |
 | `$05A9` | 48 | code | `VBlank_Credits` |
 | `$05D9` | 257 | code | `StateInit_HighScores` |
-| `$06DA` | 413 | code | `HighScores_Update` to `HighScores_ButtonsReleased` (3 labels) |
+| `$06DA` | 413 | code | `HighScores_Update` to `HighScores_ButtonsReleased` (4 labels) |
 | `$0877` | 38 | code | `LoadHighScores` |
 | `$089D` | 43 | code | `DrawHighScoreTable` |
 | `$08C8` | 172 | code | `BuildScoreText` |
@@ -103,7 +103,7 @@ Runs of labels with the same prefix are shown as one row.
 | `$20B3` | 71 | code | `FormatLevelNumber` |
 | `$20FA` | 314 | code | `MainMenu_Update` to `MainMenu_PasswordEntry` (2 labels) |
 | `$2234` | 52 | code | `SubmitPassword` |
-| `$2268` | 5 | code | `SubmitPassword_ButtonsReleased` |
+| `$2268` | 5 | code | `MainMenu_PasswordEntry_ButtonsReleased` |
 | `$226D` | 686 | code | `MainMenu_Navigate` to `MainMenu_IdleTick` (2 labels) |
 | `$251B` | 52 | code | `StartGame` |
 | `$254F` | 278 | code | `StateInit_TitleScreen` |
@@ -166,11 +166,9 @@ Runs of labels with the same prefix are shown as one row.
 | `$4B21` | 52 | data | `GrenadeExplosionSequence` |
 | `$4B55` | 339 | data | `ThrowPath_4b55` to `ThrowPath_4c8d` (4 labels) |
 | `$4CA8` | 61 | data | `ColorOnlyData_001_4ca8` |
-| `$4CE5` | 152 | data | `ThrowPath_4ce5` to `ThrowPath_4d35` (2 labels) |
-| `$4D7D` | 64 | data | `BlobThrowData_Left` |
-| `$4DBD` | 213 | data | `ThrowPath_4dbd` to `ThrowPath_4e6e` (5 labels) |
+| `$4CE5` | 429 | data | `ThrowPath_4ce5` to `ThrowPath_4e6e` (8 labels) |
 | `$4E92` | 140 | data | `ProjectileBounceArc_1` to `ProjectileBounceArc_7` (7 labels) |
-| `$4F1E` | 16 | data | `BlobThrowDirections_Left` to `BlobThrowDirections_Right` (2 labels) |
+| `$4F1E` | 16 | data | `BlobThrowDirections_Upper` to `BlobThrowDirections_Lower` (2 labels) |
 | `$4F2E` | 29 | data | `BlobPathSegments_1` to `BlobPathSegments_3` (3 labels) |
 | `$4F4B` | 12 | data | `BlobPath` |
 | `$4F57` | 160 | data | `BlobSprites` to `BlobSprites_Throwing` (3 labels) |

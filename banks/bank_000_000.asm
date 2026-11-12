@@ -1010,7 +1010,7 @@ HighScores_Update:
     ld a, [wNameEntryAddress + 1]
     ld h, a
     or l
-    jr nz, HighScores_Leave.nameEntryInput
+    jr nz, HighScores_NameEntry
 
 .checkButtons:
     ld a, [hJoypad]
@@ -1038,7 +1038,9 @@ HighScores_Leave:
 .done:
     ret
 
-.nameEntryInput:
+; Reads the buttons on the high score screen while a name is typed: up and down change the letter at wNameEntryCursor, left and right move the cursor.
+; Reached from HighScores_Update when wNameEntryAddress is not 0 and wMenuIdleTimer is $ff. Leaves through HighScores_Leave when the cursor moves past the last letter.
+HighScores_NameEntry:
     ld a, [hJoypad]
     ld b, a
     ld a, [wNameEntryCursor]
@@ -4065,7 +4067,7 @@ HitBrickAtBall:
     ret z
 
     cp $0f
-    jr z, .countUnbreakableHit
+    jr z, .countSolidHit
 
     cp $0e
     jr z, .brickIs0e
@@ -4081,7 +4083,7 @@ HitBrickAtBall:
     or a
     call z, SpawnUnbreakableHitEffect
 
-.countUnbreakableHit:
+.countSolidHit:
     ld a, [wBallWorkFlags]
     bit 7, a
     jr nz, .advanceBit7Counter
@@ -4334,8 +4336,9 @@ UpdateBatTiles:
     ld [wBrickRedrawCount], a
     ret
 
-; A rocket, laser, grenade or plasma shot hit the brick at HL. A = its hit points.
-; A plasma shot (wPlasmaState = 2) removes 2 hit points.
+; A rocket, laser or plasma shot in slot 0 or 1 hit the brick at HL. A = its hit points.
+; Shots in slots 2 to 5 and grenade blasts use HitBrickWithBall instead.
+; A plasma shot (wPlasmaState = 2) sets a brick that survives to 1 hit point, like Ninja does for the ball.
 HitBrickWithShot:
     and $0f
     ld c, l
@@ -5818,7 +5821,7 @@ MainMenu_PasswordEntry:
     ld a, b
     and $f3
     or a
-    jp z, SubmitPassword_ButtonsReleased
+    jp z, MainMenu_PasswordEntry_ButtonsReleased
 
     ld a, [wMenuButtonHeld]
     or a
@@ -5948,7 +5951,7 @@ SubmitPassword:
 
 ; Clears wMenuButtonHeld so the next button press is accepted again.
 ; Reached during password entry when no button other than up or down is held.
-SubmitPassword_ButtonsReleased:
+MainMenu_PasswordEntry_ButtonsReleased:
     xor a
     ld [wMenuButtonHeld], a
     ret
@@ -6734,20 +6737,20 @@ UpdateBlob:
     ld e, a
     ld a, c
     cp $68
-    jr nc, .useRightTable
+    jr nc, .useLowerTable
 
-    ld hl, BlobThrowDirections_Left
+    ld hl, BlobThrowDirections_Upper
     add hl, de
     ld l, [hl]
     ld h, d
     ld a, $40
 
-    ld de, BlobThrowData_Left
+    ld de, ThrowPath_4d7d
 
     jr .spawnThrow
 
-.useRightTable:
-    ld hl, BlobThrowDirections_Right
+.useLowerTable:
+    ld hl, BlobThrowDirections_Lower
     add hl, de
     ld l, [hl]
     ld h, d
@@ -7021,7 +7024,9 @@ ClearProjectiles:
     ret
 
 ; Start a projectile in a free slot of wProjectiles. Used for grenades and by the blob.
-; A = type, B = x, C = y, HL = direction, DE = data pointer.
+; A = flight time in frames (the slot counts it down, 0 marks a free slot), B = x, C = y,
+; L = direction (index into BallVelocityTable), H = $80 for a grenade and 0 for a blob ball,
+; DE = pointer to the flight path (frame offsets, one byte per frame).
 SpawnProjectile:
     push hl
     push af
@@ -7289,7 +7294,7 @@ UpdateProjectile_HitBrick:
     ret
 
 ; Updates the projectile in wProjectileWork. While its timer runs, it only moves it.
-; When the timer ends it checks the 4 corners for a brick and bounces off one.
+; When the timer ends it checks the 4 corners for an unbreakable brick ($0e) and bounces off one.
 ; Otherwise a grenade explodes and hits bricks, and a thrown ball becomes a ball in wBalls.
 UpdateProjectile:
     ld a, [wProjectileWork]
@@ -7392,7 +7397,7 @@ UpdateProjectile:
     ret
 
 ; Moves the thrown blob or grenade for one frame while its flight timer in wProjectileWork is still running. A = the timer after its decrement.
-; Adds the velocity from BallVelocityTable to the position. Probes four sides for bricks and changes the direction for each side that is solid.
+; Adds the velocity from BallVelocityTable to the position. Probes four sides for walls ($0f) and changes the direction for each side that is a wall.
 ; Puts the position back on an axis that bounced, then writes the sprites to OAM.
 UpdateProjectile_Move:
     ld e, a
@@ -7810,6 +7815,7 @@ UpdateUfo:
     cp c
     jr nz, .checkPassEnd
 
+    ; The UFO moves half a pixel per frame, so wUfoX equals wUfoDropX on two frames in a row. The bomb is started twice and the second start restarts the release.
     add $0a
     ld [wUfoBombX], a
     ld a, [wUfoHeight]
@@ -8115,6 +8121,7 @@ UpdateUfo:
     call UfoHit
 
 .checkShot4:
+    ; Slots 3 to 5 are 3 bytes each (no laser flag), so slot 4 is at wShots + 15 and slot 5 at wShots + 18.
     ld a, [wShotActive + 4]
     or a
     jr z, .checkShot5
@@ -8229,7 +8236,7 @@ UpdateUfo:
     call UfoHit
     ret
 
-; The ball hit the UFO: count the hit, show the score effect and add the score from UfoHitScores.
+; The ball or a shot hit the UFO: count the hit, show the score effect and add the score from UfoHitScores.
 UfoHit:
     ld hl, UfoHitScores
     ld a, [wUfoHits]
@@ -9958,7 +9965,7 @@ SelectCreditsText:
     ld [wCreditsRowAddress], a
     ret
 
-; Called during the credits whenever wCreditsScrollDone is not $ff. Applies wCreditsScrollY to rSCY.
+; Called by VBlank_Credits on every second frame. Returns at once when wCreditsScrollDone is $ff, otherwise sets it to $ff and applies wCreditsScrollY to rSCY.
 ; On each new 8 pixel row it copies the next 20 tile line of credits text to the background map at wCreditsRowAddress.
 ; A text line starting with 0 gives a blank row. The end marker $ff plays a sound, sets hGameState to 1 and restarts the text.
 UpdateCreditsScroll:
