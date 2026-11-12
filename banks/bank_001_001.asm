@@ -568,6 +568,8 @@ UfoPassTable:
 
     db $c8, $01, $32, $00, $e6, $01, $0a, $00, $be, $01, $64, $01
 
+; Empties all 8 slots of wFallingPowerups, so no power-up is falling.
+; Called when a level is set up.
 ClearFallingPowerups:
     ld hl, wFallingPowerups
     ld c, $08
@@ -727,7 +729,7 @@ SpawnPowerup:
     ld [hl+], a
     ld a, [bc]
     ld [hl+], a
-    ld a, $05
+    ld a, SFX_POWERUP_SPAWN
     call PlaySound
     pop de
     pop hl
@@ -848,7 +850,7 @@ UpdateFallingPowerups:
     ret nz
 
     ld [wGhostActive], a
-    ld a, $18
+    ld a, SFX_GHOST_END
     call PlaySound
     ret
 
@@ -925,6 +927,8 @@ CheckPowerupCaught:
     pop hl
     ret
 
+; Slow ball power-up. Sets wSlowBallActive and clears the low nibble of byte 5 in every wBalls record.
+; Switches off Sleepy ball, Antigravity and Ninja, shows the message and ends the pick-up.
 Powerup_Slowball:
     ld a, [wBallCount]
     or a
@@ -960,6 +964,8 @@ Powerup_Slowball:
     call ShowMessageBankE
     jp PowerupCollected
 
+; Rocket bat power-up. Sets wShotReloadDelay to 30 frames and clears wLaserBat, then shows the message.
+; Falls through to Powerup_ShotBatCommon.
 Powerup_Rocket:
     ld a, $1e
     ld [wShotReloadDelay], a
@@ -968,12 +974,16 @@ Powerup_Rocket:
     ld hl, wLangTextRocketBat
     call ShowMessageBankE
 
+; Shared part of the Rocket and Laser bats. Sets wRocketLaserBat and clears wGrenadeCount.
+; Falls through to Powerup_WeaponCommon.
 Powerup_ShotBatCommon:
     ld a, $01
     ld [wRocketLaserBat], a
     xor a
     ld [wGrenadeCount], a
 
+; Shared part of the weapon power-ups. Ends the plasma bat and sets wWeaponFlag.
+; Clears the sticky, stun and reverse effects, shrinks a big bat to normal width and ends the pick-up.
 Powerup_WeaponCommon:
     ld a, [wPlasmaState]
     cp $01
@@ -1037,6 +1047,8 @@ Powerup_Smiley:
     ld b, $32
     jp PowerupCollected_AddScore
 
+; Plasma bat power-up. Clears the rocket, laser and grenade state, shows the message, sets wPlasmaState to 1.
+; Continues in Powerup_WeaponCommon without ending the plasma bat.
 Powerup_Plasma:
     xor a
     ld [wRocketLaserBat], a
@@ -1048,6 +1060,8 @@ Powerup_Plasma:
     ld [wPlasmaState], a
     jr Powerup_WeaponCommon.clearBatEffects
 
+; Stun bat power-up. Starts wBatEffectTimer and sets wStunActive and wStunWobble.
+; Clears the sticky, weapon and reverse effects, shrinks a big bat to normal width and ends the pick-up.
 Powerup_Poison:
     ld a, $50
     ld [wBatEffectTimer], a
@@ -1071,6 +1085,8 @@ Powerup_Poison:
     ld [wBatWidth], a
     jp PowerupCollected
 
+; Big bat power-up. Sets wBatWidth to $28 and moves wBatX 4 to the left, kept between $17 and $81.
+; Clears the sticky, weapon, stun and reverse effects, shows the message and ends the pick-up.
 Powerup_Milk:
     ld a, [wBatX]
     sub $04
@@ -1100,6 +1116,8 @@ Powerup_Milk:
     call ShowMessageBankE
     jp PowerupCollected
 
+; Sleepy ball power-up. Starts wBallEffectTimer and sets wSleepyBallActive.
+; Cancels Antigravity, Slow ball and Ninja, shows the message and ends the pick-up.
 Powerup_Clock:
     ld a, [wAntigravityActive]
     or a
@@ -1119,6 +1137,8 @@ Powerup_Clock:
     call ShowMessageBankE
     jp PowerupCollected
 
+; Antigravity ball power-up. Starts wBallEffectTimer and sets wAntigravityActive.
+; Switches off Sleepy ball, Slow ball and Ninja, shows the message and ends the pick-up.
 Powerup_Pepper:
     ld a, $a0
     ld [wBallEffectTimer], a
@@ -1131,6 +1151,8 @@ Powerup_Pepper:
     call ShowMessageBankE
     jp PowerupCollected
 
+; Magnetic bat power-up. Sets wBallSticks so the ball sticks to the bat.
+; Clears the stun, weapon and reverse effects, shrinks a big bat to normal width and ends the pick-up.
 Powerup_Magnet:
     ld a, $01
     ld [wBallSticks], a
@@ -1152,6 +1174,8 @@ Powerup_Magnet:
     ld [wBatWidth], a
     jp PowerupCollected
 
+; Multi ball power-up. Sets wMultiBallPending, which stays set until the ball splits.
+; Cancels Antigravity, Sleepy ball, Slow ball and Ninja, shows the message and ends the pick-up.
 Powerup_TripleBall:
     ld a, [wAntigravityActive]
     or a
@@ -1171,6 +1195,8 @@ Powerup_TripleBall:
     call ShowMessageBankE
     jp PowerupCollected
 
+; Extra life power-up. Adds 1 to wLives and shows the message.
+; If wLives would reach 10, it stays as it is, no message is shown and the player gets a score bonus.
 Powerup_ExtraLife:
     ld hl, wLangTextExtraLife
     ld a, [wLives]
@@ -1186,6 +1212,8 @@ Powerup_ExtraLife:
     call ShowMessageBankE
     jp PowerupCollected
 
+; Laser bat power-up. Sets wShotReloadDelay to 8 frames and wLaserBat to 1, then shows the message.
+; Continues in Powerup_ShotBatCommon.
 Powerup_Laser:
     ld a, $08
     ld [wShotReloadDelay], a
@@ -1195,6 +1223,8 @@ Powerup_Laser:
     call ShowMessageBankE
     jp Powerup_ShotBatCommon
 
+; Reverse bat power-up. Starts wBatEffectTimer and sets wReverseActive.
+; Clears the stun, weapon and sticky effects, shrinks a big bat to normal width and ends the pick-up.
 Powerup_Reverse:
     ld a, $50
     ld [wBatEffectTimer], a
@@ -1217,6 +1247,8 @@ Powerup_Reverse:
     ld [wBatWidth], a
     jr PowerupCollected
 
+; Ninja ball power-up. Starts wBallEffectTimer, sets wNinjaActive and sets wLaunchDirection to 4.
+; Cancels the other ball effects, shows the message and ends the pick-up.
 Powerup_Ninja:
     ld a, [wAntigravityActive]
     or a
@@ -1239,6 +1271,8 @@ Powerup_Ninja:
     call ShowMessageBankE
     jr PowerupCollected
 
+; Ghost power-up. Sets wGhostActive and starts wGhostTimer at $FF.
+; Shows the message and ends the pick-up.
 Powerup_Ghost:
     ld a, $01
     ld [wGhostActive], a
@@ -1248,6 +1282,8 @@ Powerup_Ghost:
     call ShowMessageBankE
     jr PowerupCollected
 
+; Grenade bat power-up. Clears the laser and rocket state, shows the message and adds 4 to wGrenadeCount.
+; Continues in Powerup_WeaponCommon.
 Powerup_Grenade:
     xor a
     ld [wLaserBat], a
@@ -1264,6 +1300,8 @@ Powerup_Grenade:
 PowerupCollected:
     ld b, $0a
 
+; Ends a power-up pick-up. B = score passed to AddScore.
+; Starts the pick-up effect, plays sound 8, restores the registers saved by the catch check and returns A = 1.
 PowerupCollected_AddScore:
     call AddScore
     pop de
@@ -1273,7 +1311,7 @@ PowerupCollected_AddScore:
     ld e, $00
     call SpawnPickupEffect
     pop de
-    ld a, $08
+    ld a, SFX_POWERUP_COLLECTED
     call PlaySound
     ld a, $01
     or a
@@ -1634,6 +1672,8 @@ TitleLetterTiles_5bf7:
 TitleLetterTiles_5c00:
     db $04, $04, $04, $04, $04, $04, $04, $04, $04
 
+; Writes the bonus as five digit characters to the buffer whose address is stored at wLangTable + $36.
+; HL = the bonus value. Used on the level password screen to show the bonus.
 LevelPassword_DrawBonus:
     ld a, [wLangTable + $36]
     ld c, a
@@ -1712,6 +1752,9 @@ LevelPassword_DrawBonus:
     inc a
     jr .tenThousandsLoop
 
+; Called once per frame on the level password screen. Resets wLevelsSincePassword.
+; Updates fireworks and twinkles, then counts wBonusCountdown down by 50 per frame once wBonusDelay is 0.
+; Holding A, B, Select or Start starts the next game state.
 LevelPassword_Update:
     xor a
     ld [wLevelsSincePassword], a
@@ -1763,12 +1806,15 @@ LevelPassword_Update:
     ld [hGameState], a
     ld a, $28
     ld [hStateTimer], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
 
 .done:
     ret
 
+; Runs in VBlank once the level password screen is set up (wLevelPasswordReady).
+; Sets rIE, draws text from wLevelPasswordText and writes pending twinkle tiles from wTwinkleWrites.
+; Sways the logo through wScrollSplits and sets rSCX and rLYC.
 LevelPassword_VBlank:
     ld a, [wLevelPasswordReady]
     or a
@@ -2103,7 +2149,7 @@ Firework_Fly:
     cp $02
     jr z, .initSparkLoop
 
-    ld a, $1c
+    ld a, SFX_FIREWORK_BURST
     call PlaySound
 
 .initSparkLoop:
@@ -2135,7 +2181,7 @@ Firework_Fly:
     cp $02
     jr z, .storeSparkFrame
 
-    ld a, $1b
+    ld a, SFX_FIREWORK_SPARK
     call PlaySound
 
 .storeSparkFrame:
@@ -2618,6 +2664,8 @@ BallReflectLeftTable:
 
     db $01
 
+; Empties all 14 slots of wBrickBreakEffects.
+; Called when a level is set up.
 ClearBrickBreakEffects:
     ld c, $0e
     xor a
@@ -2632,6 +2680,9 @@ ClearBrickBreakEffects:
 
     ret
 
+; Starts a brick break effect in the first free slot of wBrickBreakEffects.
+; A = X position of the effect, BC = tilemap address of the brick (its row gives the Y position).
+; Called when a plasma shot destroys a brick. Changes C only; HL, DE and AF are kept.
 SpawnBrickBreakEffect:
     push hl
     push de
@@ -2673,6 +2724,9 @@ SpawnBrickBreakEffect:
     pop hl
     ret
 
+; Starts a brick break effect in the first free slot of wBrickBreakEffects at Y = B and X = C + 4.
+; A = 0 gives the effect no speed, otherwise it moves upward.
+; Called by UpdatePickupEffects. Keeps HL and AF, changes DE.
 FindFreeBrickBreakEffect:
     push hl
     push af
@@ -2715,6 +2769,9 @@ FindFreeBrickBreakEffect:
     pop hl
     ret
 
+; Called once per frame while a level is played.
+; Counts down each active entry of wBrickBreakEffects, moves it vertically, and adds one sprite for it to the OAM buffer.
+; The sprite tile comes from BrickBreakEffectFrames.
 UpdateBrickBreakEffects:
     ld hl, wBrickBreakEffects
     ld c, $0e
@@ -2786,6 +2843,8 @@ UpdateBrickBreakEffects:
 
     ret
 
+; Writes 0 to the first byte (the counter) at four positions, 4 bytes apart, starting at wPickupEffects.
+; Called when a level starts and after a life is lost.
 ClearPickupEffects:
     ld c, $04
     xor a
@@ -2855,6 +2914,9 @@ SpawnPickupEffect:
     pop bc
     ret
 
+; Called once per frame while a level is played.
+; Counts down each active entry of wPickupEffects, moves it, and draws it as two sprites.
+; When the counter reaches $0f it also starts a brick break effect at its position.
 UpdatePickupEffects:
     ld hl, wPickupEffects
     ld c, $04
@@ -2968,6 +3030,9 @@ SweepBricks:
     ld hl, $99d1
     ld de, BrickSweepLengths
 
+; Starts one diagonal of the sweep shown when a level appears.
+; Waits three frames, clears wBrickRedrawCount, and reads the length of the diagonal from BrickSweepLengths.
+; HL = tilemap address where the diagonal starts, B = diagonals left, DE = next entry of BrickSweepLengths.
 SweepBricks_Diagonal:
     push de
     call WaitVBlank
@@ -2983,6 +3048,9 @@ SweepBricks_Diagonal:
     ld de, wVBlankTileWrites
     push hl
 
+; Handles one cell of the current diagonal of the sweep.
+; Queues the sweep tiles in wVBlankTileWrites when the tile in wLevelTilemapCopy is $27, $29, $4c or $51.
+; Also queues the tiles of the row below from wLevelTilemapCopy, then moves to the next cell.
 SweepBricks_Cell:
     push bc
     push hl
@@ -3116,6 +3184,9 @@ SweepBricks_Cell:
 
     ret
 
+; Writes the $ff end marker after wUnbreakableHitEffects and points wUnbreakableHitEffectPtr at the first slot.
+; Does not clear the slots themselves.
+; Called when a level starts and after a life is lost.
 ClearUnbreakableHitEffects:
     ld a, $ff
     ld [wUnbreakableHitEffectsEnd], a
@@ -3153,6 +3224,8 @@ SpawnUnbreakableHitEffect:
     ld [wUnbreakableHitSpawned], a
     ret
 
+; Called once per frame while a level is played.
+; Counts down each active entry of wUnbreakableHitEffects and draws a sprite for it from UnbreakableHitEffectFrames.
 UpdateUnbreakableHitEffects:
     ld hl, wUnbreakableHitEffects
     ld a, $0a
@@ -3353,6 +3426,9 @@ FireworkScript_2:
     db $2a, $e0, $69, $0d, $20, $fa, $c9, $3e, $80, $e0, $6a, $0e, $40
     db $2a, $e0, $6b, $0d, $20, $fa, $c9
 
+; Writes 64 bytes of background palettes and 64 bytes of sprite palettes to the colour registers.
+; HL = background palette data, DE = sprite palette data.
+; FadePalettes_Step calls it after waiting for VBlank.
 CopyPalettesToHardware:
     ld a, $80
     ldh [rBCPS], a
@@ -3370,6 +3446,9 @@ CopyPalettesToHardware:
 
     ret
 
+; Copies 8 bytes per row for 144 rows from wRasterPalettesFaded into wRasterTable, skipping 2 bytes between rows.
+; The source is read from WRAM bank 2.
+; Used by the palette fades when hPaletteMode is 2.
 CopyPaletteBuffer:
     ld de, wRasterTable
     ld hl, wRasterPalettesFaded
@@ -3418,6 +3497,9 @@ CopyPaletteBuffer:
 FadePalettes:
     ld c, $20
 
+; Runs a fade in steps. A = start value, B = amount added to it each step, C = number of steps.
+; Each step adds the current value to every colour component of the palettes, limits the result to 31, and shows it.
+; Uses the raster palettes when hPaletteMode is 2, otherwise the normal palettes.
 FadePalettes_Step:
     add b
     push af
@@ -3521,6 +3603,9 @@ FadePalettes_Step:
     ld c, $10
     jr FadePalettes2_Step
 
+; Fades the raster palettes in 8 steps. A = start value, B = 1 changes the value by +4 each step, any other B by -4.
+; Each step subtracts the current value from every colour component, limits the result to 0, and shows it.
+; FrameLoop calls it when hPaletteMode is 4, when a screen appears or disappears.
 FadePalettes2:
     ld h, a
     ld c, $08
@@ -3534,6 +3619,9 @@ FadePalettes2:
 .directionChosen:
     ld a, h
 
+; Fades the palettes of wRasterPaletteBuffer (3 bytes per colour) into wRasterPalettesFaded (2-byte colours), then copies them with CopyPaletteBuffer.
+; A = fade level, B = signed step added to the level before each pass, C = number of passes.
+; Each pass subtracts the level from every colour component (minimum 0) and waits for VBlank before the copy. Used for fades in palette mode 2.
 FadePalettes2_Step:
     add b
     push af
@@ -3608,6 +3696,9 @@ FadePalettes2_Step:
     call WaitVBlank
     ret
 
+; Gathers nine records of three colours in wRasterColours from the faded palettes and copies them into wRasterTable.
+; Sets the palette index registers for the raster effect. Does nothing when hPaletteMode is 0, 3 or 4.
+; Called by the palette fade step after the faded palettes are copied to the hardware.
 AnimatePalettes:
     ld a, [hPaletteMode]
     or a
@@ -3777,6 +3868,9 @@ AnimatePalettes:
 
     ret
 
+; Frame handler of the language selection screen. Highlights the row of the chosen language in the screen's colour attributes.
+; Down and Up move wLanguage by one step per press (limited to the five languages) and play a sound.
+; A, B, Select or Start confirms the choice and copies its language table, unless hGameState is already 5.
 LanguageSelect_Update:
     ld a, $01
     ldh [rVBK], a
@@ -3853,7 +3947,7 @@ LanguageSelect_Update:
 
     inc a
     ld [wLanguage], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     jr .checkPrevKey
 
@@ -3880,7 +3974,7 @@ LanguageSelect_Update:
 
     dec a
     ld [wLanguage], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     jr .checkConfirm
 
@@ -3920,6 +4014,9 @@ LanguageSelect_Update:
 
     ld hl, LanguageTable_Italian
 
+; HL = language table of the chosen language. Copies its texts into wLangTextStartGame, wHighScoreTable and wLatestScoreText,
+; and writes the level letter of that language into the ten high score entries.
+; Then plays a sound, sets hGameState to 5 and starts hStateTimer.
 LanguageSelect_CopyTable:
     ld de, wLangTextStartGame
     ld bc, $0051
@@ -3949,13 +4046,14 @@ LanguageSelect_CopyTable:
     dec b
     jr nz, .fillLoop
 
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
     ld a, $05
     ld [hGameState], a
     ld a, $28
     ld [hStateTimer], a
 
+; Exit of LanguageSelect_Update when no action button is pressed, and the end of LanguageSelect_CopyTable.
 LanguageSelect_Done:
     ret
 
@@ -3999,6 +4097,9 @@ Text_German_LatestScore:
     dw $99fc
     db $00, $84, "       LETZTE ", $00, $81, "000000", $ff
 
+; Called on every VBlank. When wTitleLetterArrived is not 0, draws that title letter on the background.
+; Writes its colour attributes in VRAM bank 1 and its tiles in bank 0, using TitleLetterAttrTable and TitleLetterTileTable.
+; Sets wTitleLetterArrived back to 0 so each letter is drawn once.
 TitleScreen_VBlank:
     ld a, [wTitleLetterArrived]
     or a
@@ -4279,6 +4380,9 @@ TitleScreen_DrawLetterSprites:
 
     ret
 
+; Prepares the title letter animation. Sets the X offset of all six letters in wTitleLetterX to $a8
+; and points each entry of wTitleLetterPathPtrs to the start of its path. Sets wTitleLetterSliding to 1 so the first letter starts to slide in.
+; Called once when the title screen is set up.
 TitleScreen_InitLetters:
     ld a, $a8
     ld [wTitleLetterX], a
@@ -4375,6 +4479,9 @@ InitBatSprites:
     ld [wOamWritePtr + 1], a
     ret
 
+; Writes the bat sprites, the queued sprites from wExtraSprites, the balls and the falling power-ups into wOamBuffer.
+; Skips the bat sprites while wBatExplosionTimer is not 0. Stores the sprite count in wOamUsedLastFrame.
+; Called once per frame while a level is played, after the objects have moved, and once when a level is set up.
 DrawBatSprites:
     ld hl, wOamBuffer + 4
     ld a, [wOamUsedLastFrame]
@@ -4904,6 +5011,8 @@ LanguageTable_German:
     dw Text_German_GameOver
     dw Text_German_LatestScore
 
+; Copies the start positions of the five BOING letters, their bob curve pointers and the 11 twinkle records into RAM.
+; Also points wMenuScrollStepPtr at MenuSlideInSteps. Called once when the main menu is entered.
 InitMenuSparkles:
     ld hl, wMenuSparkles
     ld de, BoingLetterStartPositions
@@ -4964,6 +5073,9 @@ InitMenuSparkles:
     ld [wMenuScrollStepPtr + 1], a
     ret
 
+; Draws the five BOING letter sprites and moves them along their bob curves.
+; While hMenuScrollY is not 0 it adds the next slide-in step to it and stops. Otherwise it redraws the twinkle sprites.
+; Called once per frame by the main menu.
 UpdateMenuSparkles:
     ld hl, wOamBuffer
     ld de, BoingLetterSprites
@@ -5357,6 +5469,8 @@ RunStateUpdate:
     ld l, a
     jp hl
 
+; Runs the code at the address in HL and returns to the caller of this routine.
+; Called by FrameLoop with HL = the handler stored in hFrameHandler.
 CallHL:
     jp hl
 
@@ -5412,7 +5526,7 @@ FrameLoop:
     ld [hStateTimer], a
     jr nz, .frameLoop
 
-    ld e, $00
+    ld e, SONG_SILENCE
     call StartSong
     xor a
     call PlaySound
@@ -5468,58 +5582,86 @@ SetFrameHandler:
     ld [hFrameHandler + 1], a
     jp FrameLoop
 
+; Makes Gameplay_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 2 (playing a level).
 StateUpdate_Gameplay:
     ld hl, Gameplay_Update
     jp SetFrameHandler
 
+; Makes TitleScreen_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 5 (title picture).
 StateUpdate_TitleScreen:
     ld hl, TitleScreen_Update
     jp SetFrameHandler
 
+; Makes GameOver_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 3 (game over).
 StateUpdate_GameOver:
     ld hl, GameOver_Update
     jp SetFrameHandler
 
+; Makes Pause_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 4 (pause).
 StateUpdate_Pause:
     ld hl, Pause_Update
     jp SetFrameHandler
 
+; Makes DeveloperLogos_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 6 ("Developed by" logos).
 StateUpdate_DeveloperLogos:
     ld hl, DeveloperLogos_Update
     jp SetFrameHandler
 
+; Makes PublisherLogo_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 12 (SCi logo).
 StateUpdate_PublisherLogo:
     ld hl, PublisherLogo_Update
     jp SetFrameHandler
 
+; Makes HighScores_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 7 (high score table).
 StateUpdate_HighScores:
     ld hl, HighScores_Update
     jp SetFrameHandler
 
+; Makes MainMenu_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 1 (main menu and password entry).
 StateUpdate_MainMenu:
     ld hl, MainMenu_Update
     jp SetFrameHandler
 
+; Makes Credits_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 8 (credits).
 StateUpdate_Credits:
     ld hl, Credits_Update
     jp SetFrameHandler
 
+; Makes LevelPassword_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 9 (password screen after every fourth level).
 StateUpdate_LevelPassword:
     ld hl, LevelPassword_Update
     jp SetFrameHandler
 
+; Makes ColorOnly_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 10 ("Please use a Game Boy Color" screen).
 StateUpdate_ColorOnly:
     ld hl, ColorOnly_Update
     jp SetFrameHandler
 
+; Makes LanguageSelect_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 11 (language selection).
 StateUpdate_LanguageSelect:
     ld hl, LanguageSelect_Update
     jp SetFrameHandler
 
+; Makes Copyright_Update the per-frame handler.
+; Reached through StateUpdateHandlers when the state changes to the copyright screen.
 StateUpdate_Copyright:
     ld hl, Copyright_Update
     jp SetFrameHandler
 
+; Makes Ending_Update the per-frame handler.
+; Reached through StateUpdateHandlers when the state changes to the ending screen.
 StateUpdate_Ending:
     ld hl, Ending_Update
     jp SetFrameHandler
@@ -5628,9 +5770,14 @@ SetUpBricks:
     ld de, wBrickMap + $11
     ld b, $10
 
+; Starts one of the 16 brick rows of SetUpBricks. B = rows left.
+; Sets C to 9, the number of cells in the row, then draws the cells.
 SetUpBricks_Row:
     ld c, $09
 
+; Draws one cell of wBrickMap. DE = its map entry, HL = its tile map address.
+; Removes the palette nibble from the entry and counts every brick that is not unbreakable in wBricksLeft.
+; Empty cells only get shadow graphics next to a brick.
 SetUpBricks_Cell:
     ld a, [de]
     or a
@@ -5824,6 +5971,9 @@ HighScores_AdvanceAnim:
     ld [wHighScoreAnimPtr + 1], a
     ret
 
+; Sets up the 20 sprite pairs of the high score screen in wOamBuffer from HighScoreSpritePositions.
+; Also fills wHighScoreSpriteFrames with the starting animation step of each sprite.
+; Called once when the high score screen is built.
 HighScores_InitSprites:
     ld b, $14
     ld hl, wOamBuffer
@@ -5873,6 +6023,9 @@ HighScores_InitSprites:
 
     ret
 
+; Advances the animation of all 20 high score sprite pairs by one step, wrapping at 32 steps.
+; Writes the new tile numbers from HighScoreSpriteTiles into wOamBuffer.
+; Called once after the sprites are set up, once per frame by HighScores_Update and by HighScores_SlideSprites.
 HighScores_MoveSprites:
     ld a, $14
     ld de, wHighScoreSpriteFrames
@@ -6056,6 +6209,9 @@ BrickRedrawHandlers:
     dw BrickRedrawCase_Shadow_BelowLeftShadow
     dw BrickRedrawCase_Shadow
 
+; Called once per frame on the credits screen. Does nothing while wCreditsRowColour is $ff.
+; Scrolls the credits one pixel by increasing wCreditsScrollY and moving the raster table entries up one row.
+; Any button press sets wCreditsScrollDone, plays a sound and returns to the main menu state.
 Credits_Update:
     ld hl, wCreditsRowColour
     ld a, [hl]
@@ -6116,7 +6272,7 @@ Credits_Update:
     ld [hGameState], a
     ld a, $28
     ld [hStateTimer], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
 
 .noButton:
@@ -6261,6 +6417,9 @@ StateUpdateHandlers:
     dw StateUpdate_PublisherLogo
     dw StateUpdate_Ending
 
+; Called once per frame on the game over screen.
+; Any button press builds the score text, plays a sound and changes the state to the high score screen.
+; wHighScoresNextState is set so that screen leads on to the title picture.
 GameOver_Update:
     ld a, [hGameState]
     cp $07
@@ -6280,12 +6439,15 @@ GameOver_Update:
     ld a, $ff
     ld [wMenuIdleTimer], a
     call BuildScoreText
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
 
 .noButton:
     ret
 
+; Called once per frame while the game is paused.
+; Start returns to the playing state, plays a sound and clears the joypad and bat movement flags.
+; hStateTimer is set to $28 so gameplay input is ignored for a short time.
 Pause_Update:
     ld a, [hGameState]
     cp $02
@@ -6304,12 +6466,14 @@ Pause_Update:
     ld [hLastDirection], a
     ld [wBatMovingRight], a
     ld [wBatMovingLeft], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
 
 .startNotPressed:
     ret
 
+; Sets all 6 digits of wScoreDigits to 1, which is the value for a zero digit.
+; Called by StartGame when a new game begins.
 ResetScore:
     ld hl, wScoreDigits
     ld a, $01
@@ -6373,6 +6537,9 @@ WaitVBlank:
     ld [hVBlankDone], a
     ret
 
+; Called once per frame on the ending screen shown after the last level.
+; Any button press plays a sound and changes the state to 2, the playing state.
+; hStateTimer is set to $28.
 Ending_Update:
     ld a, [hGameState]
     cp $02
@@ -6387,12 +6554,15 @@ Ending_Update:
     ld [hGameState], a
     ld a, $28
     ld [hStateTimer], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
 
 .noButtonPressed:
     ret
 
+; Called once per frame while the developer logos are shown.
+; Counts down hLogoTimer.
+; When it reaches 0 the state changes to $0B, the language select screen.
 DeveloperLogos_Update:
     ld a, [hLogoTimer]
     or a
@@ -6409,6 +6579,8 @@ DeveloperLogos_Update:
     ld [hStateTimer], a
     ret
 
+; Frame handler of the screen shown on a console that is not a Game Boy Color.
+; Loops on itself, so the game stays on this screen.
 ColorOnly_Update:
     jr ColorOnly_Update
 

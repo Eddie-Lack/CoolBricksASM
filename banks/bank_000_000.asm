@@ -8,6 +8,9 @@ INCLUDE "src/interrupts.asm"
 INCLUDE "src/header.asm"
 
 SECTION "FIXED BANK ROM", ROM0[$0150]
+; Entry point after the header. Sets the stack and checks the hardware.
+; Then loops: waits for VBlank, turns the LCD off, resets the sound, runs RunStateInit, installs the interrupt
+; handlers, turns the LCD on and runs RunStateUpdate. When that returns, the loop starts again.
 ProgramStart:
     di                      ; disable interrupts
     ld hl, wStackTop            ; setup stack pointer
@@ -28,7 +31,7 @@ ProgramStart:
     ; Disabling the display outside of the VBlank period may damage the hardware by burning in a black horizontal line.
     ; This appears to be a serious issue. Nintendo is reported to reject any games not following this rule.
 
-    ld e, $00
+    ld e, SONG_SILENCE
     call StartSong
     xor a
     call PlaySound
@@ -229,6 +232,8 @@ LoadOAMCode:
         ; jr nz, .DMALoop
         ; ret
 
+; Reads the D-pad and the buttons from rP1 and stores them in hJoypad.
+; Bits 0 to 3 are right, left, up, down. Bits 4 to 7 are A, B, Select, Start. A set bit means held.
 ReadJoypad:
     ld a, $20
     ldh [rP1], a
@@ -287,6 +292,8 @@ InstallInterruptHandlers:
     ld [wRasterPtr + 1], a
     ret
 
+; LCD STAT handler used for the scroll split effect.
+; Reads the next SCX value and the next LYC line from wScrollSplitPtr, applies them and advances the pointer.
 Stat_Default:
     push af
     push hl
@@ -336,6 +343,9 @@ VBlank:
     pop af
     reti
 
+; VBlank handler while a level is played. Starts the OAM DMA.
+; Shows the level title with blinking while wLevelTitleTimer runs, otherwise draws the score and lives.
+; Then flushes the queued tile and attribute writes, resets wRasterPtr, sets hVBlankDone and counts hFrameCounter.
 VBlank_InGame:
     push af
     push bc
@@ -482,6 +492,10 @@ VBlank_InGame:
     pop af
     reti
 
+; VBlank handler for the menu screens. Starts the OAM DMA and the HDMA transfer and resets wRasterPtr.
+; Applies hMenuScrollY and, at some scroll positions, copies a tile map strip. At rest it draws the menu item
+; colours, then the password letters or the start level digits and the music and sound On or Off text.
+; If wHighScoresVBlankFlag is set, it jumps to VBlankMenus_BlinkRow instead.
 VBlankMenus:
     push af
     push hl
@@ -682,6 +696,8 @@ VBlankMenus:
     ld a, [hl]
     ld [$996b], a
 
+; Common exit of the menu VBlank handlers.
+; Sets hVBlankDone, increments hFrameCounter, restores the registers and returns from the interrupt.
 VBlankMenus_Done:
     ld a, $01
     ld [hVBlankDone], a
@@ -693,6 +709,9 @@ VBlankMenus_Done:
     pop af
     reti
 
+; High score part of the menu VBlank handler. Counts down wBlinkTimer and, when it ends,
+; switches the colour of the blinking row. If wNameEntryAddress is set, it copies the name in wNameEntry
+; and its colours to the tile map there. When wNameEntryDone is set it writes the final name and clears that address.
 VBlankMenus_BlinkRow:
     ld a, [wBlinkTimer]
     dec a
@@ -821,6 +840,8 @@ VBlankMenus_BlinkRow:
 
     jp VBlankMenus_Done
 
+; VBlank handler for the credits screen. Resets wRasterPtr and starts the OAM DMA.
+; Calls UpdateCreditsScroll on every second frame (wCreditsFrameToggle), then sets hVBlankDone.
 VBlank_Credits:
     push af
     push hl
@@ -850,8 +871,10 @@ VBlank_Credits:
     pop af
     reti
 
+; Sets up the high score screen: music, palettes, VBlank handler, graphics, tilemaps and the score table.
+; Also resets the name entry fields and prepares wHdmaSource and the animation pointer for the animated title.
 StateInit_HighScores:
-    ld e, $06
+    ld e, SONG_HIGH_SCORES
     call PlayMusic
     ld a, $04
     ld [wLcdcFlags], a
@@ -958,6 +981,9 @@ StateInit_HighScores:
     ld [wBlinkTimer], a
     ret
 
+; Called once per frame while the high score screen is shown. Advances the animation and moves the sprites.
+; Counts down wMenuIdleTimer every fourth frame and leaves the screen at 0, or when a button is pressed.
+; When the timer is $FF and a name is being entered, it handles name entry input instead.
 HighScores_Update:
     call HighScores_AdvanceAnim
     call HighScores_MoveSprites
@@ -992,6 +1018,9 @@ HighScores_Update:
     or a
     jr z, HighScores_Leave.done
 
+; Ends the high score screen by setting hGameState to wHighScoresNextState and wNameEntryDone to 1.
+; Does nothing unless hGameState is $07. Starts hStateTimer and plays a sound.
+; Also reached when the name entry cursor moves past the last letter.
 HighScores_Leave:
     ld a, [hGameState]
     cp $07
@@ -1003,7 +1032,7 @@ HighScores_Leave:
     ld [wNameEntryDone], a
     ld a, $1e
     ld [hStateTimer], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
 
 .done:
@@ -1070,7 +1099,7 @@ HighScores_Leave:
 
     inc a
     ld [wNameEntryDownHeld], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     push hl
     pop hl
@@ -1099,7 +1128,7 @@ HighScores_Leave:
 
     inc a
     ld [wNameEntryUpHeld], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     push hl
     pop hl
@@ -1128,7 +1157,7 @@ HighScores_Leave:
     or a
     ret nz
 
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     ld a, $01
     ld [wNameEntryButtonHeld], a
@@ -1254,11 +1283,15 @@ HighScores_Leave:
     ld [wNameEntryColours + 6], a
     ret
 
+; Called during name entry when none of the cursor buttons are held.
+; Clears wNameEntryButtonHeld so the next press moves the cursor again.
 HighScores_ButtonsReleased:
     xor a
     ld [wNameEntryButtonHeld], a
     ret
 
+; Copies the default high score data from ROM bank 2 into wHighScoreTable, then switches back to ROM bank 1.
+; Called once at start-up.
 LoadHighScores:
     ld a, $02                               ; Load ROM Bank 2
     ld [ROM_BANK], a
@@ -1276,6 +1309,8 @@ LoadHighScores:
     call ChangeROMBank
     ret
 
+; Draws the 13 strings stored at wHighScoreTable, one after another.
+; Called while setting up the high score screen.
 DrawHighScoreTable:
     ld hl, wHighScoreTable
     call DrawString
@@ -1679,6 +1714,9 @@ CheckPassword:
     xor a
     ret
 
+; Copies 864 bytes of animation graphics to VRAM bank 0 at $9260 with HDMA. Does nothing when wHdmaMode is 0 or 1.
+; Mode 3 reads from $4000 in ROM bank $0C. Other modes read from wHdmaSource in the language graphics bank.
+; Called from the VBlank handler of the menu screens.
 StartHdmaTransfer:
     ld a, [wHdmaMode]
     or a
@@ -1725,19 +1763,19 @@ PlayLevelMusic:
     or a
     jr nz, .checkIndex1
 
-    ld e, $02
+    ld e, SONG_LEVEL_1
 
 .checkIndex1:
     cp $01
     jr nz, .checkIndex2
 
-    ld e, $03
+    ld e, SONG_LEVEL_2
 
 .checkIndex2:
     cp $02
     jr nz, .playSong
 
-    ld e, $04
+    ld e, SONG_LEVEL_3
 
 .playSong:
     call PlayMusic
@@ -1903,6 +1941,9 @@ LoadLevel:
     ld [hLifeLostTimer], a
     jr LoadLevel_SkipTilemap.drawAttrMapUnlessResuming
 
+; Second half of level loading. HL = level data pointer, taken from the stack.
+; Draws the attribute map unless hResumeFromPause is set, then loads the level graphics into VRAM.
+; On a fresh start it also draws the borders, title and bricks, and copies the screen to wLevelTilemapCopy.
 LoadLevel_SkipTilemap:
     pop hl
 
@@ -2072,6 +2113,8 @@ LoadLevel_SkipTilemap:
     call InitBatSprites
     ret
 
+; Ends level loading when the game is resuming from pause.
+; Drops the saved level data pointer and clears hResumeFromPause. The level title and bricks are not redrawn.
 LoadLevel_ResumeDone:
     pop hl
     xor a
@@ -2350,6 +2393,9 @@ InitBat:
     ld [wBatWidth], a
     ret
 
+; Sets up a single ball resting on the middle of the bat.
+; Sets wBallCount to 1, places the ball from wBatX and wBatWidth, and sets wBallOnBat.
+; Clears the ball effect flags such as wMultiBallPending, wSleepyBallActive and wAntigravityActive.
 InitBall:
     ld a, $01
     ld [wBallCount], a
@@ -2441,7 +2487,7 @@ Gameplay_UpdateStun:
     and $07
     jr nz, .skipSound
 
-    ld a, $0f
+    ld a, SFX_BAT_STUNNED
     call PlaySound
 
 .skipSound:
@@ -2542,6 +2588,9 @@ Gameplay_MoveBat:
     or a
     jp nz, Gameplay_MoveBat_Left
 
+; Moves the bat one step to the right. HL = pointer into the bat speed table, moved to the next faster entry.
+; Sets wBatMovingRight, saves HL in wBatSpeedPtr and adds the speed and wStunWobble to wBatX.
+; Stops at the right edge of the playfield and stores the move in wBatDeltaX.
 Gameplay_MoveBat_Right:
     inc hl
     ld a, [hl]
@@ -2662,6 +2711,9 @@ Gameplay_MoveBat_Right:
     or a
     jr z, Gameplay_MoveBat_Left.applyStunWobble
 
+; Slows the bat down while it is still moving left and left is not held.
+; HL = pointer into the bat speed table, moved to the previous slower entry. A nonzero speed still moves the bat left.
+; At zero it clears wBatMovingLeft, then moves right if right is held, otherwise it applies the stun wobble.
 Gameplay_MoveBat_Left:
     dec hl
     ld b, [hl]
@@ -2751,7 +2803,7 @@ Gameplay_AntigravitySteering:
     dec b
     jr nz, .resetBallLoop
 
-    ld a, $17
+    ld a, SFX_ANTIGRAVITY_END
     call PlaySound
 
 ; Launch the ball from the bat with A, or split it when Multi ball was picked up.
@@ -2814,6 +2866,9 @@ Gameplay_UpdateBalls:
     xor a
     ld [hTemp2], a
 
+; Loop body that updates one ball per pass, with B = balls left to process and HL = ball in wBalls.
+; Copies the ball into the wBallWork variables and calls UpdateBall.
+; A ball flagged by wRemoveBall or below the screen is dropped, and losing the last ball costs a life.
 Gameplay_BallLoop:
     push bc
     push hl
@@ -2888,7 +2943,7 @@ Gameplay_BallLoop:
     xor a
 
     ld [wWeaponFlag], a
-    ld a, $0a
+    ld a, SFX_BAT_DESTROYED
     call PlaySound
     ld a, [wLives]
     dec a
@@ -2941,6 +2996,8 @@ Gameplay_BallLoop:
     ld [hTemp2], a
     jr Gameplay_StoreBall.nextBall
 
+; Writes the updated ball from the wBallWork variables back into wBalls.
+; Then moves on to the next ball. After the last ball, it moves balls into the slots of removed balls.
 Gameplay_StoreBall:
     ld a, [wBallWorkYSub]
     ld [hl+], a
@@ -3040,7 +3097,7 @@ Gameplay_AfterBalls:
     xor a
     ld [wBallSticks], a
     ld [wBallOnBat], a
-    ld a, $07
+    ld a, SFX_BALL_LAUNCH
     call PlaySound
 
 .updateObjects:
@@ -3068,7 +3125,7 @@ Gameplay_AfterBalls:
 
     xor a
     ld [hLifeLostTimer], a
-    ld e, $00
+    ld e, SONG_SILENCE
     call StartSong
     xor a
     call PlaySound
@@ -3076,6 +3133,9 @@ Gameplay_AfterBalls:
     call UpdateSound
     call RestartAfterLifeLost
 
+; Runs at the end of each gameplay frame.
+; If Start is pressed and hStateTimer is 0, it switches hGameState to the pause state.
+; It sets hResumeFromPause, plays the pause sound and waits about 30 frames.
 Gameplay_CheckPause:
     ld a, [hJoypad]
     bit 7, a
@@ -3090,7 +3150,7 @@ Gameplay_CheckPause:
     ld a, $01
     ld [hStateTimer], a
     ld [hResumeFromPause], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
     ld a, $1e
 
@@ -3104,6 +3164,9 @@ Gameplay_CheckPause:
 
     ret
 
+; Called when the life lost timer expires, so the player can try again.
+; Does nothing while hStateTimer is nonzero. Otherwise it fades out, resets bat, ball, enemies,
+; shots and effects, redraws the bricks and bat, then fades in and restarts the level music.
 RestartAfterLifeLost:
     ld a, [hStateTimer]
     or a
@@ -3158,7 +3221,7 @@ UpdateBall:
     cp $18
     jr nz, .effectTimerNot18
 
-    ld a, $16
+    ld a, SFX_BALL_WAKES_UP
     call PlaySound
     jr .checkSticking
 
@@ -3257,7 +3320,7 @@ UpdateBall:
     cp c
     jr c, UpdateBall_Split
 
-    ld a, $06
+    ld a, SFX_BALL_STICKS
     call PlaySound
 
 .ballOnBat:
@@ -3626,6 +3689,9 @@ CollideBall:
     call ReflectBallTop
     ret
 
+; Tests four corner points of the ball against the bricks with CollideBallPoint. Runs after the side checks, unless Antigravity is active.
+; On a hit it sets wBallBounced. The position inside the tile decides if the ball is reflected left or right, or top or bottom.
+; An exact diagonal hit uses both reflect tables, except at the top left corner, where the direction stays unchanged.
 CollideBall_Corners:
     ld a, [wBallWorkX]
     inc a
@@ -3967,7 +4033,7 @@ CollideBallPoint:
     ld [wBallWorkSpeed], a
     ld a, $01
     ld [wBallBounced], a
-    ld a, $01
+    ld a, SFX_BAT_BOUNCE
     call PlaySound
 
 .clearFlagsReturnHit:
@@ -4038,7 +4104,7 @@ HitBrickAtBall:
     ld [wBallWorkFlags], a
 
 .playSound4ReturnNz:
-    ld a, $04
+    ld a, SFX_WALL_BOUNCE
     call PlaySound
     ld a, $01
     or a
@@ -4129,6 +4195,9 @@ UpdateBatExplosion:
     ld [wOamWritePtr + 1], a
     ret
 
+; Called once per frame while a level is played. Keeps the background tiles under the bat in step with the bat width.
+; If wBatWidth is not the normal $20, it queues two bat tiles and the background tiles beside them in wBrickRedrawQueue and stores the column in wBatTilesColumn.
+; Otherwise, or while the bat explodes, it queues the saved background tiles once to restore them.
 UpdateBatTiles:
     ld a, [wBatExplosionTimer]
     or a
@@ -4875,83 +4944,117 @@ BrickRedrawCase_Lit_Below:
     call BrickRedraw_Lit
     jp BrickRedraw_BelowLit
 
+; Entry of BrickRedrawHandlers. Redraws both brick tiles lit.
+; Then redraws the lit tile below the right half.
 BrickRedrawCase_Lit_BelowRight:
     pop hl
     call BrickRedraw_Lit
     jp BrickRedraw_BelowRightLit
 
+; Entry of BrickRedrawHandlers. Redraws both brick tiles lit.
+; Then redraws the lit tile below the left half.
 BrickRedrawCase_Lit_BelowLeft:
     pop hl
     call BrickRedraw_Lit
     jp BrickRedraw_BelowLeftLit
 
+; Entry of BrickRedrawHandlers. Redraws both brick tiles lit.
+; Nothing below the brick needs to change.
 BrickRedrawCase_Lit:
     pop hl
 
     jp BrickRedraw_Lit
 
+; Entry of BrickRedrawHandlers. Redraws the left brick tile lit and the right one in shadow.
+; Then redraws both lit tiles below it.
 BrickRedrawCase_ShadowRight_Below:
     pop hl
     call BrickRedraw_ShadowRight
     jp BrickRedraw_BelowLit
 
+; Entry of BrickRedrawHandlers. Redraws the left brick tile lit and the right one in shadow.
+; Then redraws the lit tile below the right half.
 BrickRedrawCase_ShadowRight_BelowRight:
     pop hl
     call BrickRedraw_ShadowRight
     jp BrickRedraw_BelowRightLit
 
+; Entry of BrickRedrawHandlers. Redraws the left brick tile lit and the right one in shadow.
+; Then redraws the lit tile below the left half.
 BrickRedrawCase_ShadowRight_BelowLeft:
     pop hl
     call BrickRedraw_ShadowRight
     jp BrickRedraw_BelowLeftLit
 
+; Entry of BrickRedrawHandlers. Redraws the left brick tile lit and the right one in shadow.
+; Nothing below the brick needs to change.
 BrickRedrawCase_ShadowRight:
     pop hl
     jp BrickRedraw_ShadowRight
 
+; Entry of BrickRedrawHandlers. Redraws the left brick tile in shadow and the right one lit.
+; Then redraws both lit tiles below it.
 BrickRedrawCase_ShadowLeft_Below:
     pop hl
     call BrickRedraw_ShadowLeft
     jp BrickRedraw_BelowLit
 
+; Entry of BrickRedrawHandlers. Redraws the left brick tile in shadow and the right one lit.
+; Then redraws the lit tile below the right half.
 BrickRedrawCase_ShadowLeft_BelowRight:
     pop hl
     call BrickRedraw_ShadowLeft
     jp BrickRedraw_BelowRightLit
 
+; Entry of BrickRedrawHandlers. Redraws the left brick tile in shadow and the right one lit.
+; Then redraws the lit tile below the left half.
 BrickRedrawCase_ShadowLeft_BelowLeft:
     pop hl
     call BrickRedraw_ShadowLeft
     jp BrickRedraw_BelowLeftLit
 
+; Entry of BrickRedrawHandlers. Redraws the left brick tile in shadow and the right one lit.
+; Nothing below the brick needs to change.
 BrickRedrawCase_ShadowLeft:
     pop hl
     jp BrickRedraw_ShadowLeft
 
+; Entry of BrickRedrawHandlers. Redraws both brick tiles in shadow.
+; Then redraws both lit tiles below it.
 BrickRedrawCase_Shadow_Below:
     pop hl
     call BrickRedraw_Shadow
     jp BrickRedraw_BelowLit
 
+; Entry of BrickRedrawHandlers. Redraws both brick tiles in shadow.
+; Then redraws the lit tile below the right half.
 BrickRedrawCase_Shadow_BelowRight:
     pop hl
     call BrickRedraw_Shadow
     jp BrickRedraw_BelowRightLit
 
+; Entry of BrickRedrawHandlers. Redraws both brick tiles in shadow.
+; Then redraws the lit tile below the left half.
 BrickRedrawCase_Shadow_BelowLeft:
     pop hl
     call BrickRedraw_Shadow
     jp BrickRedraw_BelowLeftLit
 
+; Entry of BrickRedrawHandlers. Redraws both brick tiles in shadow.
+; Nothing below the brick needs to change.
 BrickRedrawCase_Shadow:
     pop hl
     jp BrickRedraw_Shadow
 
+; Entry of BrickRedrawHandlers. Redraws both brick tiles in shadow.
+; Then redraws both tiles below it: the left one in shadow, the right one lit.
 BrickRedrawCase_Shadow_BelowHalfShadow:
     pop hl
     call BrickRedraw_Shadow
     jp BrickRedraw_BelowHalfShadow
 
+; Entry of BrickRedrawHandlers. Redraws both brick tiles in shadow.
+; Then redraws only the tile below the left half, in shadow.
 BrickRedrawCase_Shadow_BelowLeftShadow:
     pop hl
     call BrickRedraw_Shadow
@@ -5039,10 +5142,15 @@ FlushBrickRedraw:
     ld [wBrickRedrawCount], a
     ret
 
+; Sets every used entry of wBrickHitQueue to 1, so the next ProcessBrickHitQueue finishes it at once.
+; It also clears the entry's break effect X and restarts the brick shine animation.
+; Called when play restarts after a lost life.
 MarkBrickHitQueue:
     ld b, $01
     jr ClearBrickHitQueue.setActiveEntries
 
+; Empties every used entry of wBrickHitQueue and clears its break effect X.
+; Also restarts the brick shine animation. Called while a level is loaded.
 ClearBrickHitQueue:
     ld b, $00
 
@@ -5086,6 +5194,9 @@ ProcessBrickHitQueue:
     ld a, $0c
     ld [hTemp2], a
 
+; Handles one of the 12 entries of wBrickHitQueue. HL = the entry, DE = the next VBlank tile write.
+; An empty entry is skipped. A new hit draws the damaged brick, spawns its power-up and plays a sound.
+; An older entry counts down. Then it either removes the brick, starting a break effect if one is set, or draws the brick again.
 ProcessBrickHitQueue_Entry:
     ld a, [hl]
     or a
@@ -5126,7 +5237,7 @@ ProcessBrickHitQueue_Entry:
     ld a, [hl+]
     or a
     call nz, SpawnBrickBreakEffect
-    ld a, $03
+    ld a, SFX_BRICK_BROKEN
     call PlaySound
     jp ProcessBrickHitQueue_Next
 
@@ -5221,6 +5332,8 @@ ProcessBrickHitQueue_Entry:
     inc hl
     jp ProcessBrickHitQueue_Next
 
+; Handles a queue entry whose timer has just been set to 5. HL = the entry.
+; Stores the brick's power-up id and value, queues the brick's tile pair for the VBlank writes, calls SpawnPowerup and plays a sound.
 ProcessBrickHitQueue_NewHit:
     dec a
     ld [hl+], a
@@ -5323,10 +5436,11 @@ ProcessBrickHitQueue_NewHit:
     ld [wHitTileWriteCount], a
     call SpawnPowerup
     inc hl
-    ld a, $02
+    ld a, SFX_BRICK_HIT
     call PlaySound
     jr ProcessBrickHitQueue_Next
 
+; Used for an empty entry or one whose timer is still running. HL = start of the entry; moves HL to the start of the next entry.
 ProcessBrickHitQueue_SkipEntry:
     ld a, l
     add $08
@@ -5335,6 +5449,8 @@ ProcessBrickHitQueue_SkipEntry:
 
     inc h
 
+; Moves on to the next of the 12 queue entries.
+; After the last entry it stores the end of the queued tile writes in wVBlankTileWritePtr and returns.
 ProcessBrickHitQueue_Next:
     ld a, [hTemp2]
     dec a
@@ -5347,8 +5463,11 @@ ProcessBrickHitQueue_Next:
     ld [wVBlankTileWritePtr + 1], a
     ret
 
+; Runs once when the main menu state starts. Starts the menu music and the menu VBlank handler.
+; Loads the palettes, graphics and tilemap and draws the menu texts in the current language, including the music and sound on or off texts.
+; Resets the password entry and idle timer and sets hMenuScrollY so the menu scrolls in.
 StateInit_MainMenu:
-    ld e, $05
+    ld e, SONG_MAIN_MENU
     call PlayMusic
     ld a, $04
     ld [wLcdcFlags], a
@@ -5552,6 +5671,8 @@ FormatLevelNumber:
 .done:
     ret
 
+; Called once per frame while the main menu is shown. Updates the sparkles and does nothing more while the menu is still scrolling in.
+; Then runs password entry if it is active, otherwise the menu navigation.
 MainMenu_Update:
     call UpdateMenuSparkles
     ld a, [hMenuScrollY]
@@ -5618,7 +5739,7 @@ MainMenu_PasswordEntry:
 
     inc a
     ld [wMenuDownHeld], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     ld a, [hl]
 
@@ -5662,7 +5783,7 @@ MainMenu_PasswordEntry:
 
     inc a
     ld [wMenuUpHeld], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     ld a, [hl]
 
@@ -5703,7 +5824,7 @@ MainMenu_PasswordEntry:
     or a
     ret nz
 
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     ld a, $01
     ld [wMenuButtonHeld], a
@@ -5815,7 +5936,7 @@ SubmitPassword:
     ld [hl+], a
     ld a, [wPasswordEntry + 3]
     ld [hl], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
 
 .restoreBank:
@@ -5825,6 +5946,8 @@ SubmitPassword:
     ld [wPasswordEntryActive], a
     ret
 
+; Clears wMenuButtonHeld so the next button press is accepted again.
+; Reached during password entry when no button other than up or down is held.
 SubmitPassword_ButtonsReleased:
     xor a
     ld [wMenuButtonHeld], a
@@ -5859,7 +5982,7 @@ MainMenu_Navigate:
     cp $02
     jr z, .checkItem1
 
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
     ld a, $02
     ld [hGameState], a
@@ -5896,7 +6019,7 @@ MainMenu_Navigate:
     cp $02
     jr z, .checkItem2
 
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
     ld a, $02
     ld [hGameState], a
@@ -5933,7 +6056,7 @@ MainMenu_Navigate:
     or a
     jr nz, .checkItem3
 
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
     ld a, $01
     ld [wPasswordEntryActive], a
@@ -6011,7 +6134,7 @@ MainMenu_Navigate:
 
     inc a
     ld [wMenuDownHeld], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     ld a, [wMenuCursor]
     inc a
@@ -6051,7 +6174,7 @@ MainMenu_Navigate:
 
     inc a
     ld [wMenuUpHeld], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     ld a, [wMenuCursor]
     dec a
@@ -6098,7 +6221,7 @@ MainMenu_Navigate:
 
     inc a
     ld [wMenuButtonHeld], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     ld a, [wMenuCursor]
     cp $03
@@ -6107,11 +6230,11 @@ MainMenu_Navigate:
     ld a, [wMusicOff]
     xor $01
     ld [wMusicOff], a
-    ld e, $05
+    ld e, SONG_MAIN_MENU
     or a
     jr z, .buttonStartSong
 
-    ld e, $00
+    ld e, SONG_SILENCE
 
 .buttonStartSong:
     call StartSong
@@ -6137,7 +6260,7 @@ MainMenu_Navigate:
 
     inc a
     ld [wMenuRightHeld], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     ld a, [wMenuCursor]
     cp $03
@@ -6146,11 +6269,11 @@ MainMenu_Navigate:
     ld a, [wMusicOff]
     xor $01
     ld [wMusicOff], a
-    ld e, $05
+    ld e, SONG_MAIN_MENU
     or a
     jr z, .bit0StartSong
 
-    ld e, $00
+    ld e, SONG_SILENCE
 
 .bit0StartSong:
     call StartSong
@@ -6176,7 +6299,7 @@ MainMenu_Navigate:
 
     inc a
     ld [wMenuLeftHeld], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     ld a, [wMenuCursor]
     cp $03
@@ -6185,11 +6308,11 @@ MainMenu_Navigate:
     ld a, [wMusicOff]
     xor $01
     ld [wMusicOff], a
-    ld e, $05
+    ld e, SONG_MAIN_MENU
     or a
     jr z, .bit1StartSong
 
-    ld e, $00
+    ld e, SONG_SILENCE
 
 .bit1StartSong:
     call StartSong
@@ -6205,6 +6328,8 @@ MainMenu_Navigate:
     xor a
     ld [wMenuLeftHeld], a
 
+; Runs at the end of each menu update. Counts wMenuTick and on every second frame counts down wMenuIdleTimer.
+; When the timer runs out on the menu, it switches to the high score or credits screen (hGameState 7 or 8, chosen by wAttractToggle) and plays a sound.
 MainMenu_IdleTick:
     ld a, [wMenuTick]
     inc a
@@ -6243,7 +6368,7 @@ MainMenu_IdleTick:
     ld [wHighScoresNextState], a
     ld a, $fe
     ld [wMenuIdleTimer], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
 
 .done:
@@ -6281,8 +6406,10 @@ StartGame:
     ld [wLevelBonusUnits + 1], a
     ret
 
+; Runs once when the title screen state starts. Starts the title music and loads the palettes, graphics and tilemaps.
+; Picks the licensed-by graphics for the current language, sets wMenuItemColours and calls TitleScreen_InitLetters.
 StateInit_TitleScreen:
-    ld e, $01
+    ld e, SONG_TITLE
     call PlayMusic
     ld a, $00
     ld [wLcdcFlags], a
@@ -6409,6 +6536,8 @@ StateInit_TitleScreen:
     call TitleScreen_InitLetters
     ret
 
+; Called once per frame while the title screen is shown. If hGameState is not 1 yet and a button is pressed, it plays a sound and sets hGameState to 1 with hStateTimer set to $1e.
+; Always calls TitleScreen_SlideLetters.
 TitleScreen_Update:
     ld a, [hGameState]
     cp $01
@@ -6423,19 +6552,21 @@ TitleScreen_Update:
     ld [hGameState], a
     ld a, $1e
     ld [hStateTimer], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
 
 .slideLetters:
     call TitleScreen_SlideLetters
     ret
 
+; Runs once when the game over state starts. Starts the game over song unless wSfxOff is set.
+; Loads the game over palettes, graphics and tilemaps and draws the game over text in the current language.
 StateInit_GameOver:
     ld a, [wSfxOff]
     or a
     jr nz, .skipSong
 
-    ld e, $07
+    ld e, SONG_GAME_OVER
     call StartSong
 
 .skipSong:
@@ -6548,6 +6679,9 @@ UpdateEnemies:
 .done:
     ret
 
+; Called once per frame on blob levels, from UpdateEnemies.
+; Plays the blob's animation. When wBlobThrowing is set, it throws a projectile as the throw ends.
+; Writes the blob's 4 sprites to OAM, then moves it along BlobPath.
 UpdateBlob:
     ld a, [wBlobThrowing]
     or a
@@ -6622,7 +6756,7 @@ UpdateBlob:
 
 .spawnThrow:
     call SpawnProjectile
-    ld a, $0e
+    ld a, SFX_BLOB_THROW
     call PlaySound
 
 .notThrowing:
@@ -6701,6 +6835,9 @@ UpdateBlob:
     call UpdateEnemyPath
     ret
 
+; Sets up the 15-byte enemy object at DE from the path data at HL.
+; B and C = start position. Clears the position fractions and the step counters. Leaves the last 2 bytes alone.
+; Used by ResetEnemies to start the blob on BlobPath.
 InitEnemyObject:
     xor a
     ld [de], a
@@ -6867,6 +7004,8 @@ UpdateEnemyPath:
 
     ret
 
+; Marks all 4 slots of wProjectiles as free.
+; Called by ResetEnemies at level start and after a lost life.
 ClearProjectiles:
     ld hl, wProjectiles
     ld de, $0009
@@ -6923,6 +7062,9 @@ SpawnProjectile:
     ld [hl], a
     ret
 
+; Called once per frame from UpdateEnemies. Runs UpdateProjectile for each active slot of wProjectiles.
+; Each slot is copied to wProjectileWork and written back afterwards.
+; Then counts down wGrenadeBlastTimer and draws the grenade explosion.
 UpdateProjectiles:
     ld hl, wProjectiles
     ld de, $0009
@@ -7003,7 +7145,7 @@ UpdateProjectiles:
     jr nz, .drawTimedSprites
 
     ld e, a
-    ld a, $0b
+    ld a, SFX_GRENADE_BLAST
     call PlaySound
     ld a, e
 
@@ -7062,17 +7204,19 @@ UpdateProjectiles:
 .done:
     ret
 
+; Runs when UpdateProjectile finds a brick under the projectile. Plays sound $0c for a grenade and $09 for a thrown ball.
+; Picks a bounce arc and a new timer in wProjectileWork from the projectile's Y position.
 UpdateProjectile_HitBrick:
     ld a, [wProjectileWork + 8]
     bit 7, a
     jr z, .playSound09
 
-    ld a, $0c
+    ld a, SFX_GRENADE_BOUNCE
     call PlaySound
     jr .pickDataByPos
 
 .playSound09:
-    ld a, $09
+    ld a, SFX_BLOB_BALL_BOUNCE
     call PlaySound
 
 .pickDataByPos:
@@ -7144,6 +7288,9 @@ UpdateProjectile_HitBrick:
     ld [wProjectileWork + 6], a
     ret
 
+; Updates the projectile in wProjectileWork. While its timer runs, it only moves it.
+; When the timer ends it checks the 4 corners for a brick and bounces off one.
+; Otherwise a grenade explodes and hits bricks, and a thrown ball becomes a ball in wBalls.
 UpdateProjectile:
     ld a, [wProjectileWork]
     dec a
@@ -7244,6 +7391,9 @@ UpdateProjectile:
     ld [wBallCount], a
     ret
 
+; Moves the thrown blob or grenade for one frame while its flight timer in wProjectileWork is still running. A = the timer after its decrement.
+; Adds the velocity from BallVelocityTable to the position. Probes four sides for bricks and changes the direction for each side that is solid.
+; Puts the position back on an axis that bounced, then writes the sprites to OAM.
 UpdateProjectile_Move:
     ld e, a
     ld d, $00
@@ -7481,6 +7631,9 @@ UpdateProjectile_Move:
     ld [wOamWritePtr + 1], a
     ret
 
+; Looks up the brick at A = y, C = x. Returns nz only if the brick type is $0f, and plays a sound then.
+; An empty cell or any other brick type returns z. Keeps DE. Changes HL and BC.
+; Called for each side probe in UpdateProjectile_Move.
 Projectile_CheckBrickKeepDE:
     push de
     and $f8
@@ -7507,12 +7660,15 @@ Projectile_CheckBrickKeepDE:
     ret
 
 .brickIs0f:
-    ld a, $04
+    ld a, SFX_WALL_BOUNCE
     call PlaySound
     ld a, $01
     or a
     ret
 
+; Looks up the brick at A = y, C = x. Returns nz only if the brick type is $0e, and plays a sound then.
+; An empty cell or any other brick type returns z. Changes DE and HL.
+; Called for the four corners in UpdateProjectile when the flight timer reaches zero.
 Projectile_CheckBrick:
     and $f8
     ld l, a
@@ -7537,7 +7693,7 @@ Projectile_CheckBrick:
     ret
 
 .brickIs0e:
-    ld a, $04
+    ld a, SFX_WALL_BOUNCE
     call PlaySound
     ld a, $01
     or a
@@ -7563,6 +7719,8 @@ Projectile_HitBrick:
 
     jp HitBrickWithBall
 
+; Called once per frame on UFO levels. Moves the UFO across the screen in timed passes and drops a bomb at wUfoDropX.
+; Draws the UFO while it flies and calls UfoHit when a shot touches it. Still updates the bomb after wUfoHits reaches 5.
 UpdateUfo:
     ld a, [wUfoBombActive]
     or a
@@ -7660,7 +7818,7 @@ UpdateUfo:
     ld [wUfoBombStartY], a
     ld a, $01
     ld [wUfoBombActive], a
-    ld a, $14
+    ld a, SFX_UFO_BOMB
     call PlaySound
 
 .checkPassEnd:
@@ -7779,7 +7937,7 @@ UpdateUfo:
     ld [wShotCooldown], a
 
 .shot0HitUfo:
-    ld a, $15
+    ld a, SFX_UFO_HIT
     call PlaySound
     call UfoHit
 
@@ -7840,7 +7998,7 @@ UpdateUfo:
     ld [wShotCooldown], a
 
 .shot1HitUfo:
-    ld a, $15
+    ld a, SFX_UFO_HIT
     call PlaySound
     call UfoHit
 
@@ -7896,7 +8054,7 @@ UpdateUfo:
     ld [wShotCooldown], a
 
 .shot2HitUfo:
-    ld a, $15
+    ld a, SFX_UFO_HIT
     call PlaySound
     call UfoHit
 
@@ -7952,7 +8110,7 @@ UpdateUfo:
     ld [wShotCooldown], a
 
 .shot3HitUfo:
-    ld a, $15
+    ld a, SFX_UFO_HIT
     call PlaySound
     call UfoHit
 
@@ -8008,7 +8166,7 @@ UpdateUfo:
     ld [wShotCooldown], a
 
 .shot4HitUfo:
-    ld a, $15
+    ld a, SFX_UFO_HIT
     call PlaySound
     call UfoHit
 
@@ -8066,7 +8224,7 @@ UpdateUfo:
     ld [wShotCooldown], a
 
 .shot5HitUfo:
-    ld a, $15
+    ld a, SFX_UFO_HIT
     call PlaySound
     call UfoHit
     ret
@@ -8214,7 +8372,7 @@ UpdateUfoBomb:
     ld [wWeaponFlag], a
     xor a
     ld [wUfoBombActive], a
-    ld a, $0a
+    ld a, SFX_BAT_DESTROYED
     call PlaySound
     ld a, [wLives]
     dec a
@@ -8260,7 +8418,7 @@ CheckUfoHit:
     push bc
     call UfoHit
     pop bc
-    ld a, $15
+    ld a, SFX_UFO_HIT
     call PlaySound
     ld a, $01
     or a
@@ -8311,7 +8469,7 @@ CheckBlobCatch:
     inc a
     ld [wBlobThrowing], a
     ld [wRemoveBall], a
-    ld a, $0d
+    ld a, SFX_BLOB_CATCH
     call PlaySound
 
 .returnZero:
@@ -8345,26 +8503,36 @@ UpdateShots:
     or a
     jp nz, UpdateShot0
 
+; Updates shot 1 if wShotActive + 1 is set, then continues with shot 2.
+; UpdateShot0 jumps here when it finishes.
 UpdateShots_Shot1:
     ld a, [wShotActive + 1]
     or a
     jp nz, UpdateShot1
 
+; Updates shot 2 if wShotActive + 2 is set, then continues with shot 3.
+; UpdateShot1 jumps here when it finishes.
 UpdateShots_Shot2:
     ld a, [wShotActive + 2]
     or a
     jp nz, UpdateShot2
 
+; Updates shot 3 if wShotActive + 3 is set, then continues with shot 4.
+; UpdateShot2 jumps here when it finishes.
 UpdateShots_Shot3:
     ld a, [wShotActive + 3]
     or a
     jp nz, UpdateShot3
 
+; Updates shot 4 if wShotActive + 4 is set, then continues with shot 5.
+; UpdateShot3 jumps here when it finishes. One exit path each in UpdateShot4 and UpdateShot5 also lands here.
 UpdateShots_Shot4:
     ld a, [wShotActive + 4]
     or a
     jp nz, UpdateShot4
 
+; Updates shot 5 if wShotActive + 5 is set, then continues with Shots_HandleFire.
+; UpdateShot4 jumps here when it finishes.
 UpdateShots_Shot5:
     ld a, [wShotActive + 5]
     or a
@@ -8476,10 +8644,12 @@ Shots_HandleFire:
     ld d, [hl]
     pop hl
     call SpawnProjectile
-    ld a, $10
+    ld a, SFX_GRENADE_THROW
     call PlaySound
     ret
 
+; Called by Shots_HandleFire when wGrenadeCount is 0. With wRocketLaserBat clear, a press of A fires plasma if shot slots 0 and 1 are free.
+; Otherwise it continues with Shots_FireRocketOrLaser.
 Shots_FireRocketLaserPlasma:
     ld a, [wRocketLaserBat]
     or a
@@ -8515,10 +8685,13 @@ Shots_FireRocketLaserPlasma:
     ld a, $01
     ld [wShotActive], a
     ld [wShotActive + 1], a
-    ld a, $11
+    ld a, SFX_PLASMA_SHOT
     call PlaySound
     ret
 
+; Fires a rocket or a laser from the bat when A is pressed. Called once per frame while a Rocket or Laser bat is active.
+; It waits for wShotCooldown to run out and needs a fresh A press (wFireLatch). It uses the first free slot in wShotActive.
+; Slots 0 to 2 serve both bats. Slots 3 to 5 are used only with the Laser bat. The shot starts at wBatX and a sound plays.
 Shots_FireRocketOrLaser:
     ld a, [wShotCooldown]
     or a
@@ -8547,13 +8720,13 @@ Shots_FireRocketOrLaser:
     jr nz, .trySlot1
 
     ld [wShots + 3], a
-    ld b, $12
+    ld b, SFX_ROCKET_SHOT
     ld a, [wLaserBat]
     or a
     jr z, .fireSlot0
 
     ld [wShots + 3], a
-    ld b, $13
+    ld b, SFX_LASER_SHOT
 
 .fireSlot0:
     ld a, b
@@ -8578,13 +8751,13 @@ Shots_FireRocketOrLaser:
     jr nz, .trySlot2
 
     ld [wShots + 7], a
-    ld b, $12
+    ld b, SFX_ROCKET_SHOT
     ld a, [wLaserBat]
     or a
     jr z, .fireSlot1
 
     ld [wShots + 7], a
-    ld b, $13
+    ld b, SFX_LASER_SHOT
 
 .fireSlot1:
     ld a, b
@@ -8609,13 +8782,13 @@ Shots_FireRocketOrLaser:
     jr nz, .tryLaserSlot3
 
     ld [wShots + 11], a
-    ld b, $12
+    ld b, SFX_ROCKET_SHOT
     ld a, [wLaserBat]
     or a
     jr z, .fireSlot2
 
     ld [wShots + 11], a
-    ld b, $13
+    ld b, SFX_LASER_SHOT
 
 .fireSlot2:
     ld a, b
@@ -8643,7 +8816,7 @@ Shots_FireRocketOrLaser:
     or a
     jr nz, .tryLaserSlot4
 
-    ld a, $13
+    ld a, SFX_LASER_SHOT
     call PlaySound
     ld a, [wShotReloadDelay]
     ld [wFireLatch], a
@@ -8664,7 +8837,7 @@ Shots_FireRocketOrLaser:
     or a
     jr nz, .tryLaserSlot5
 
-    ld a, $13
+    ld a, SFX_LASER_SHOT
     call PlaySound
     ld a, [wShotReloadDelay]
     ld [wFireLatch], a
@@ -8685,7 +8858,7 @@ Shots_FireRocketOrLaser:
     or a
     ret nz
 
-    ld a, $13
+    ld a, SFX_LASER_SHOT
     call PlaySound
     ld a, [wShotReloadDelay]
     ld [wFireLatch], a
@@ -8855,6 +9028,9 @@ UpdateShot0:
     ld [wShotCooldown], a
     jp UpdateShots_Shot1
 
+; Updates shot slot 1 while it is in flight. Called once per frame from the shot update chain when wShotActive + 1 is not 0.
+; It writes the shot sprite to OAM and moves it up, 1 pixel for a rocket and 2 for a laser. It then checks the brick under it and calls HitBrickWithShot.
+; The shot ends at the top of the field or on an unbreakable brick. A plasma shot keeps flying through bricks. The next slot is updated afterwards.
 UpdateShot1:
     ld d, $00
     ld a, [wOamWritePtr]
@@ -9137,6 +9313,9 @@ UpdateShot2:
     ld [wShotCooldown], a
     jp UpdateShots_Shot3
 
+; Updates shot slot 3, which is only used by the Laser bat. Called once per frame from the shot update chain when wShotActive + 3 is not 0.
+; It writes the laser sprite to OAM and moves it up 2 pixels. It then checks the brick under it and calls HitBrickWithBall.
+; The shot ends at the top of the field, on an unbreakable brick or after a hit. The next slot is updated afterwards.
 UpdateShot3:
     ld d, $00
     ld a, [wOamWritePtr]
@@ -9256,6 +9435,9 @@ UpdateShot3:
     ld [wShotCooldown], a
     jp UpdateShots_Shot4
 
+; Updates shot slot 4, which is only used by the Laser bat. Called once per frame from the shot update chain when wShotActive + 4 is not 0.
+; It writes the laser sprite to OAM and moves it up 2 pixels. It then checks the brick under it and calls HitBrickWithBall.
+; The shot ends at the top of the field, on an unbreakable brick or after a hit. The next slot is updated afterwards.
 UpdateShot4:
     ld d, $00
     ld a, [wOamWritePtr]
@@ -9375,6 +9557,9 @@ UpdateShot4:
     ld [wShotCooldown], a
     jp UpdateShots_Shot4
 
+; Updates the sixth laser shot (wShotActive + 5) once per frame while it is active.
+; It stays at the paddle for its first frames, then moves up 2 pixels a frame as a two-part sprite.
+; It ends at the top of the field or at a brick cell, which is hit with HitBrickWithBall. Clears wShotCooldown when no shot is left.
 UpdateShot5:
     ld d, $00
     ld a, [wOamWritePtr]
@@ -9494,6 +9679,9 @@ UpdateShot5:
     ld [wShotCooldown], a
     jp UpdateShots_Shot4
 
+; Sets up the pause screen when the pause state starts.
+; Loads the pause palettes, graphics and tilemaps (tiles and attributes) and draws the pause text for the current language.
+; Sets wLives to 9 if wCheatLivesRefill is set.
 StateInit_Pause:
     ld hl, VBlank
     ld a, l
@@ -9560,6 +9748,9 @@ StateInit_Pause:
 .skipLivesRefill:
     ret
 
+; Sets up the developer logos screen at start-up and starts hLogoTimer.
+; Loads its palettes, tilemaps and graphics and clears wLevelSweepPending.
+; Falls through into ClearCheatFlags.
 StateInit_DeveloperLogos:
     ld a, $46
     ld [hLogoTimer], a
@@ -9606,6 +9797,8 @@ StateInit_DeveloperLogos:
     ld a, $01
     call ChangeROMBank
 
+; Sets all four cheat flags to 0: lives refill, level skip, photo background and show version.
+; Runs at the end of the developer logos set-up, so every start-up begins with the cheats off.
 ClearCheatFlags:
     ld a, $00
     ld [wCheatLivesRefill], a
@@ -9617,6 +9810,8 @@ ClearCheatFlags:
     ld [wCheatShowVersion], a
     ret
 
+; Sets up the publisher logo screen and starts hLogoTimer.
+; Loads its palettes, tilemaps and graphics, and sets hPaletteMode to 1.
 StateInit_PublisherLogo:
     ld a, $46
     ld [hLogoTimer], a
@@ -9664,6 +9859,8 @@ StateInit_PublisherLogo:
     call ChangeROMBank
     ret
 
+; Called once per frame while the publisher logo is shown.
+; Counts hLogoTimer down. At 0 it sets hGameState to 6 (developer logos) and hStateTimer to 1.
 PublisherLogo_Update:
     ld a, [hLogoTimer]
     or a
@@ -9680,8 +9877,10 @@ PublisherLogo_Update:
     ld [hStateTimer], a
     ret
 
+; Sets up the credits screen. Starts the credits music, installs VBlank_Credits and loads the credits graphics.
+; Clears the background map, picks the credits text for the current language and sets wCreditsRowColour to 0 and wCreditsScrollDone to $ff.
 StateInit_Credits:
-    ld e, $09
+    ld e, SONG_CREDITS
     call PlayMusic
     ld hl, VBlank_Credits
     ld a, l
@@ -9759,6 +9958,9 @@ SelectCreditsText:
     ld [wCreditsRowAddress], a
     ret
 
+; Called during the credits whenever wCreditsScrollDone is not $ff. Applies wCreditsScrollY to rSCY.
+; On each new 8 pixel row it copies the next 20 tile line of credits text to the background map at wCreditsRowAddress.
+; A text line starting with 0 gives a blank row. The end marker $ff plays a sound, sets hGameState to 1 and restarts the text.
 UpdateCreditsScroll:
     ld a, [wCreditsScrollDone]
     inc a
@@ -9816,6 +10018,8 @@ UpdateCreditsScroll:
     ld a, h
     ld [wCreditsTextPtr + 1], a
 
+; Moves wCreditsRowAddress to the next background map row, wrapping from $9c00 back to $9800.
+; Then switches back to ROM bank 1 and returns. Also holds the exits used by UpdateCreditsScroll.
 UpdateCreditsScroll_AdvanceRow:
     ld a, [wCreditsRowAddress]
     add $20
@@ -9852,13 +10056,15 @@ UpdateCreditsScroll_AdvanceRow:
     ld [hGameState], a
     ld a, $28
     ld [hStateTimer], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
     ld a, [wCreditsTextStart]
     ld l, a
     ld a, [wCreditsTextStart + 1]
     ld h, a
 
+; HL = new wCreditsTextPtr, DE = address of the map row to blank.
+; Fills the 20 tiles of that row with 0 and sets wCreditsRowColour to $fe. Then continues into UpdateCreditsScroll_AdvanceRow.
 UpdateCreditsScroll_BlankRow:
     ld a, l
     ld [wCreditsTextPtr], a
@@ -9893,6 +10099,9 @@ NextLevelMusic:
     ld [wLevelsSincePassword], a
     ret
 
+; Sets up the level password screen when that game state starts.
+; Loads its palettes, graphics and text, and builds the password from the level title with EncodeLevelPassword.
+; Adds 500 to wLevelBonus and 50 to wLevelBonusUnits, adds wLevelBonusUnits to the score, then starts the fireworks and twinkles.
 StateInit_LevelPassword:
     ld a, $00
     ld [wLcdcFlags], a
@@ -10087,6 +10296,8 @@ StateInit_LevelPassword:
     call DataTransfer
     ret
 
+; Sets up the language selection screen when that game state starts.
+; Loads its palettes, graphics and tilemaps, and resets wLanguage and the up and down held flags.
 StateInit_LanguageSelect:
     ld hl, VBlank
     ld a, l
@@ -10178,6 +10389,8 @@ UpdateSound:
     ld [ROM_BANK], a
     ret
 
+; Sets up the copyright screen when that game state starts.
+; Loads its palettes, graphics and tilemaps, and sets hLogoTimer to $46 frames.
 StateInit_Copyright:
     ld a, $46
     ld [hLogoTimer], a
@@ -10221,6 +10434,8 @@ StateInit_Copyright:
     call ChangeROMBank
     ret
 
+; Called once per frame while the copyright screen is shown.
+; Counts hLogoTimer down. Once it is zero, sets hGameState to $0c and hStateTimer to 1.
 Copyright_Update:
     ld a, [hLogoTimer]
     or a
@@ -10237,8 +10452,11 @@ Copyright_Update:
     ld [hStateTimer], a
     ret
 
+; Sets up the ending screen when that game state starts.
+; Starts the ending music, loads its palettes, graphics and tilemaps, draws the ending text, and sets wEndingSeen.
+; Also clears wLevelsSincePassword and sets wLives to 1.
 StateInit_Ending:
-    ld e, $08
+    ld e, SONG_ENDING
     call PlayMusic
     xor a
     ldh [rSCX], a

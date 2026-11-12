@@ -1823,91 +1823,91 @@ NoteFrequencies:
 SfxTable:
 ; Priority, data pointer, channel (2 = pulse channel 2, anything else = noise channel).
     db $7f ; 0
-    dw Sfx_00
+    dw Sfx_Silence
     db $03
     db $0a ; 1
-    dw Sfx_01
+    dw Sfx_BatBounce
     db $02
     db $0a ; 2
-    dw Sfx_02
+    dw Sfx_BrickHit
     db $02
     db $0a ; 3
-    dw Sfx_03
+    dw Sfx_BrickBroken
     db $02
     db $0a ; 4
-    dw Sfx_04
+    dw Sfx_WallBounce
     db $02
     db $14 ; 5
-    dw Sfx_05
+    dw Sfx_PowerupSpawn
     db $02
     db $32 ; 6
-    dw Sfx_06
+    dw Sfx_BallSticks
     db $02
     db $32 ; 7
-    dw Sfx_07
+    dw Sfx_BallLaunch
     db $02
     db $14 ; 8
-    dw Sfx_08
+    dw Sfx_PowerupCollected
     db $02
     db $1e ; 9
-    dw Sfx_09
+    dw Sfx_BlobBallBounce
     db $02
     db $3c ; 10
-    dw Sfx_10
+    dw Sfx_BatDestroyed
     db $03
     db $28 ; 11
-    dw Sfx_11
+    dw Sfx_GrenadeBlast
     db $03
     db $14 ; 12
-    dw Sfx_12
+    dw Sfx_GrenadeBounce
     db $02
     db $14 ; 13
-    dw Sfx_13
+    dw Sfx_BlobCatch
     db $03
     db $14 ; 14
-    dw Sfx_14
+    dw Sfx_BlobThrow
     db $03
     db $15 ; 15
-    dw Sfx_15
+    dw Sfx_BatStunned
     db $02
     db $28 ; 16
-    dw Sfx_16
+    dw Sfx_GrenadeThrow
     db $02
     db $28 ; 17
-    dw Sfx_17
+    dw Sfx_PlasmaShot
     db $03
     db $28 ; 18
-    dw Sfx_18
+    dw Sfx_RocketShot
     db $03
     db $28 ; 19
-    dw Sfx_19
+    dw Sfx_LaserShot
     db $02
     db $28 ; 20
-    dw Sfx_20
+    dw Sfx_UfoBomb
     db $03
     db $28 ; 21
-    dw Sfx_21
+    dw Sfx_UfoHit
     db $02
     db $32 ; 22
-    dw Sfx_22
+    dw Sfx_BallWakesUp
     db $02
     db $32 ; 23
-    dw Sfx_23
+    dw Sfx_AntigravityEnd
     db $02
     db $32 ; 24
-    dw Sfx_24
+    dw Sfx_GhostEnd
     db $02
     db $3c ; 25
-    dw Sfx_25
+    dw Sfx_MenuMove
     db $03
     db $64 ; 26
-    dw Sfx_26
+    dw Sfx_MenuSelect
     db $02
     db $64 ; 27
-    dw Sfx_27
+    dw Sfx_FireworkSpark
     db $03
     db $64 ; 28
-    dw Sfx_28
+    dw Sfx_FireworkBurst
     db $03
     db $50 ; 29
     dw Sfx_29
@@ -2023,29 +2023,29 @@ PatternPointers:
 ; Not in the instrument tables.
 InstrumentPointers:
     dw Instrument_00, Instrument_01, Instrument_02, Instrument_03 ; $00
-    dw Instrument_04, Instrument_05, Instrument_06, Instrument_07 ; $04
+    dw Instrument_04, Instrument_05, Instrument_PulseSnare, Instrument_07 ; $04
     dw Instrument_08, Instrument_09, Instrument_0A, Instrument_0B ; $08
     dw Instrument_0C, Instrument_0D, Instrument_0E, Instrument_0F ; $0c
-    dw Instrument_10, Instrument_11, Instrument_12, Instrument_13 ; $10
+    dw Instrument_Silent, Instrument_WaveSilent, Instrument_12, Instrument_13 ; $10
     dw Instrument_14, Instrument_15, Instrument_16, Instrument_17 ; $14
     dw Instrument_18, Instrument_19, Instrument_1A, Instrument_1B ; $18
-    dw Instrument_1C, Instrument_1D, Instrument_1E, Instrument_1F ; $1c
+    dw Instrument_1C, Instrument_1D, Instrument_PulseKick, Instrument_1F ; $1c
     dw Instrument_20, Instrument_21, Instrument_22, Instrument_23 ; $20
     dw Instrument_22, Instrument_25, Instrument_26, Instrument_27 ; $24
-    dw Instrument_28, Instrument_0E, Instrument_2A, Instrument_2B ; $28
-    dw Instrument_2C, Instrument_2D, Instrument_2E, Instrument_2F ; $2c
-    dw Instrument_30, Instrument_31, Instrument_32, Instrument_33 ; $30
-    dw Instrument_34, Instrument_35, Instrument_36, Instrument_37 ; $34
-    dw Instrument_38, Instrument_39, Instrument_3A, Instrument_3B ; $38
+    dw Instrument_28, Instrument_0E, Instrument_SfxBatBounce, Instrument_SfxBrickHit ; $28
+    dw Instrument_SfxBrickBroken, Instrument_SfxWallBounce, Instrument_SfxPowerupSpawn, Instrument_SfxBallSticks ; $2c
+    dw Instrument_SfxBallLaunch, Instrument_SfxPowerupCollected, Instrument_SfxBlobBallBounce, Instrument_SfxGrenadeBounce ; $30
+    dw Instrument_SfxBatStunned, Instrument_SfxBallWakesUp, Instrument_SfxGrenadeThrow, Instrument_SfxUfoHit ; $34
+    dw Instrument_SfxLaserShot, Instrument_SfxAntigravityEnd, Instrument_SfxGhostEnd, Instrument_SfxMenuSelect ; $38
     dw Instrument_3C ; $3c
 
 NoiseInstrumentPointers:
-    dw NoiseInstrument_00, NoiseInstrument_01, NoiseInstrument_02, NoiseInstrument_03 ; $00
+    dw NoiseInstrument_00, NoiseInstrument_Snare, NoiseInstrument_Kick, NoiseInstrument_03 ; $00
     dw NoiseInstrument_04, NoiseInstrument_00, NoiseInstrument_00, NoiseInstrument_00 ; $04
-    dw NoiseInstrument_00, NoiseInstrument_00, NoiseInstrument_0A, NoiseInstrument_0B ; $08
-    dw NoiseInstrument_0C, NoiseInstrument_0D, NoiseInstrument_0E, NoiseInstrument_0F ; $0c
-    dw NoiseInstrument_10, NoiseInstrument_11, NoiseInstrument_12, NoiseInstrument_13 ; $10
-    dw NoiseInstrument_14, NoiseInstrument_15 ; $14
+    dw NoiseInstrument_00, NoiseInstrument_00, NoiseInstrument_0A, NoiseInstrument_SfxGrenadeBlast ; $08
+    dw NoiseInstrument_SfxBlobCatch, NoiseInstrument_SfxBatDestroyed, NoiseInstrument_SfxBlobThrow, NoiseInstrument_SfxPlasmaShot ; $0c
+    dw NoiseInstrument_SfxRocketShot, NoiseInstrument_SfxUfoBomb, NoiseInstrument_SfxFireworkBurst, NoiseInstrument_SfxMenuMove ; $10
+    dw NoiseInstrument_SfxFireworkSpark, NoiseInstrument_15 ; $14
 
 Song_Title_Ch1:
     db $00, $01
@@ -2797,473 +2797,473 @@ Pattern_00:
 
 ; Channel 1.
 Pattern_01:
-    db $04, $0c, $13
-    db $04, $18, $13
-    db $04, $16, $13
-    db $04, $13, $13
+    db $04, NOTE_C3, INSTR_13
+    db $04, NOTE_C4, INSTR_13
+    db $04, NOTE_As3, INSTR_13
+    db $04, NOTE_G3, INSTR_13
     db PATTERN_END
 
 ; Channel 2.
 Pattern_02:
     db $02, ROW_HOLD
-    db $04, $0c, $13
-    db $04, $13, $13
-    db $04, $15, $13
-    db $02, $0f, $13
+    db $04, NOTE_C3, INSTR_13
+    db $04, NOTE_G3, INSTR_13
+    db $04, NOTE_A3, INSTR_13
+    db $02, NOTE_Ds3, INSTR_13
     db PATTERN_END
 
 ; Channel 3.
 Pattern_03:
-    db $10, $24, $02
+    db $10, NOTE_C5, INSTR_02
     db PATTERN_END
 
 ; Channel 1.
 Pattern_04:
-    db $02, $0c, $13
-    db $02, $0c, $13
-    db $02, $18, $13
-    db $02, $13, $13
-    db $02, $16, $13
-    db $02, $15, $13
-    db $02, $13, $13
-    db $02, $0f, $13
+    db $02, NOTE_C3, INSTR_13
+    db $02, NOTE_C3, INSTR_13
+    db $02, NOTE_C4, INSTR_13
+    db $02, NOTE_G3, INSTR_13
+    db $02, NOTE_As3, INSTR_13
+    db $02, NOTE_A3, INSTR_13
+    db $02, NOTE_G3, INSTR_13
+    db $02, NOTE_Ds3, INSTR_13
     db PATTERN_END
 
 ; Channel 2.
 Pattern_05:
-    db $02, $07, $1e
-    db $01, $24, $03
-    db $01, $24, $03
-    db $02, $1a, $06
-    db $02, $24, $03
-    db $02, $07, $1e
-    db $02, $24, $03
-    db $02, $1a, $06
-    db $02, $24, $03
+    db $02, NOTE_G2, INSTR_PULSE_KICK
+    db $01, NOTE_C5, INSTR_03
+    db $01, NOTE_C5, INSTR_03
+    db $02, NOTE_D4, INSTR_PULSE_SNARE
+    db $02, NOTE_C5, INSTR_03
+    db $02, NOTE_G2, INSTR_PULSE_KICK
+    db $02, NOTE_C5, INSTR_03
+    db $02, NOTE_D4, INSTR_PULSE_SNARE
+    db $02, NOTE_C5, INSTR_03
     db PATTERN_END
 
 ; Channel 2.
 Pattern_06:
-    db $02, $07, $1e
-    db $01, $24, $03
-    db $01, $24, $03
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $02, $24, $03
-    db $02, $07, $1e
-    db $02, $24, $03
-    db $01, $1a, $06
-    db $01, $1a, $06
-    db $01, $1a, $06
-    db $01, $1a, $06
+    db $02, NOTE_G2, INSTR_PULSE_KICK
+    db $01, NOTE_C5, INSTR_03
+    db $01, NOTE_C5, INSTR_03
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_C5, INSTR_03
+    db $02, NOTE_G2, INSTR_PULSE_KICK
+    db $02, NOTE_C5, INSTR_03
+    db $01, NOTE_D4, INSTR_PULSE_SNARE
+    db $01, NOTE_D4, INSTR_PULSE_SNARE
+    db $01, NOTE_D4, INSTR_PULSE_SNARE
+    db $01, NOTE_D4, INSTR_PULSE_SNARE
     db PATTERN_END
 
 ; Channel 2.
 Pattern_07:
-    db $02, $07, $1e
-    db $01, $24, $04
-    db $01, $24, $04
-    db $02, $1a, $06
-    db $02, $24, $04
-    db $02, $07, $1e
-    db $02, $24, $04
-    db $02, $1a, $06
-    db $02, $24, $04
+    db $02, NOTE_G2, INSTR_PULSE_KICK
+    db $01, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
+    db $02, NOTE_D4, INSTR_PULSE_SNARE
+    db $02, NOTE_C5, INSTR_04
+    db $02, NOTE_G2, INSTR_PULSE_KICK
+    db $02, NOTE_C5, INSTR_04
+    db $02, NOTE_D4, INSTR_PULSE_SNARE
+    db $02, NOTE_C5, INSTR_04
     db PATTERN_END
 
 ; Channel 2.
 Pattern_08:
-    db $02, $07, $1e
-    db $01, $24, $04
-    db $01, $24, $04
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $02, $24, $04
-    db $02, $07, $1e
-    db $02, $24, $04
-    db $01, $1a, $06
-    db $01, $1a, $06
-    db $01, $1a, $06
-    db $01, $1a, $06
+    db $02, NOTE_G2, INSTR_PULSE_KICK
+    db $01, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_C5, INSTR_04
+    db $02, NOTE_G2, INSTR_PULSE_KICK
+    db $02, NOTE_C5, INSTR_04
+    db $01, NOTE_D4, INSTR_PULSE_SNARE
+    db $01, NOTE_D4, INSTR_PULSE_SNARE
+    db $01, NOTE_D4, INSTR_PULSE_SNARE
+    db $01, NOTE_D4, INSTR_PULSE_SNARE
     db PATTERN_END
 
 ; Channel 3.
 Pattern_09:
-    db $02, $18, $02
-    db $02, $24, $02
-    db $02, $18, $02
-    db $02, $24, $02
-    db $02, $22, $02
-    db $02, $21, $02
-    db $02, $1f, $02
-    db $02, $1b, $02
+    db $02, NOTE_C4, INSTR_02
+    db $02, NOTE_C5, INSTR_02
+    db $02, NOTE_C4, INSTR_02
+    db $02, NOTE_C5, INSTR_02
+    db $02, NOTE_As4, INSTR_02
+    db $02, NOTE_A4, INSTR_02
+    db $02, NOTE_G4, INSTR_02
+    db $02, NOTE_Ds4, INSTR_02
     db PATTERN_END
 
 ; Channel 1.
 Pattern_0A:
-    db $02, $24, $03
-    db $01, $24, $03
-    db $01, $24, $03
-    db $01, $24, $03
-    db $01, $24, $03
-    db $02, $24, $03
-    db $01, $24, $03
-    db $02, $24, $03
-    db $02, $24, $03
-    db $01, $24, $03
-    db $01, $24, $03
-    db $01, $24, $03
+    db $02, NOTE_C5, INSTR_03
+    db $01, NOTE_C5, INSTR_03
+    db $01, NOTE_C5, INSTR_03
+    db $01, NOTE_C5, INSTR_03
+    db $01, NOTE_C5, INSTR_03
+    db $02, NOTE_C5, INSTR_03
+    db $01, NOTE_C5, INSTR_03
+    db $02, NOTE_C5, INSTR_03
+    db $02, NOTE_C5, INSTR_03
+    db $01, NOTE_C5, INSTR_03
+    db $01, NOTE_C5, INSTR_03
+    db $01, NOTE_C5, INSTR_03
     db PATTERN_END
 
 ; Channel 1.
 Pattern_0B:
-    db $02, $24, $04
-    db $01, $24, $04
-    db $01, $24, $04
-    db $01, $24, $04
-    db $01, $24, $04
-    db $02, $24, $04
-    db $01, $24, $04
-    db $02, $24, $04
-    db $02, $24, $04
-    db $01, $24, $04
-    db $01, $24, $04
-    db $01, $24, $04
+    db $02, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
+    db $02, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
+    db $02, NOTE_C5, INSTR_04
+    db $02, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
     db PATTERN_END
 
 ; Channel 3.
 Pattern_0C:
-    db $10, $24, $0e
+    db $10, NOTE_C5, INSTR_0E
     db PATTERN_END
 
 ; Channel 4.
 Pattern_0D:
-    db $04, $07, $02
-    db $04, $07, $01
-    db $04, $07, $02
-    db $04, $1a, $01
-    db $04, $07, $02
-    db $04, $07, $01
-    db $04, $07, $02
-    db $04, $1a, $01
-    db $04, $07, $02
-    db $04, $07, $01
-    db $04, $07, $02
-    db $04, $1a, $01
-    db $04, $00, $02
-    db $01, $1c, $01
-    db $03, $1c, $01
-    db $04, $07, $02
-    db $01, $1a, $01
-    db $01, $1a, $01
-    db $01, $1a, $01
-    db $01, $1a, $01
+    db $04, $07, NOISE_INSTR_KICK
+    db $04, $07, NOISE_INSTR_SNARE
+    db $04, $07, NOISE_INSTR_KICK
+    db $04, $1a, NOISE_INSTR_SNARE
+    db $04, $07, NOISE_INSTR_KICK
+    db $04, $07, NOISE_INSTR_SNARE
+    db $04, $07, NOISE_INSTR_KICK
+    db $04, $1a, NOISE_INSTR_SNARE
+    db $04, $07, NOISE_INSTR_KICK
+    db $04, $07, NOISE_INSTR_SNARE
+    db $04, $07, NOISE_INSTR_KICK
+    db $04, $1a, NOISE_INSTR_SNARE
+    db $04, $00, NOISE_INSTR_KICK
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $03, $1c, NOISE_INSTR_SNARE
+    db $04, $07, NOISE_INSTR_KICK
+    db $01, $1a, NOISE_INSTR_SNARE
+    db $01, $1a, NOISE_INSTR_SNARE
+    db $01, $1a, NOISE_INSTR_SNARE
+    db $01, $1a, NOISE_INSTR_SNARE
     db PATTERN_JUMP
     dw Song_Title_Ch4
 
 ; Channel 1.
 Pattern_0E:
-    db $02, $24, $04
-    db $01, $24, $04
-    db $01, $24, $04
-    db $01, $24, $04
-    db $01, $24, $04
-    db $02, $24, $04
-    db $01, $24, $04
-    db $02, $24, $04
-    db $02, $24, $04
-    db $01, $24, $04
-    db $01, $24, $04
-    db $01, $24, $04
+    db $02, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
+    db $02, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
+    db $02, NOTE_C5, INSTR_04
+    db $02, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
     db PATTERN_JUMP
     dw Song_Title_Ch1
 
 ; Channel 2.
 Pattern_0F:
-    db $02, $07, $1e
-    db $01, $24, $04
-    db $01, $24, $04
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $02, $24, $04
-    db $02, $07, $1e
-    db $02, $24, $04
-    db $01, $1a, $06
-    db $01, $1a, $06
-    db $01, $1a, $06
-    db $01, $1a, $06
+    db $02, NOTE_G2, INSTR_PULSE_KICK
+    db $01, NOTE_C5, INSTR_04
+    db $01, NOTE_C5, INSTR_04
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_C5, INSTR_04
+    db $02, NOTE_G2, INSTR_PULSE_KICK
+    db $02, NOTE_C5, INSTR_04
+    db $01, NOTE_D4, INSTR_PULSE_SNARE
+    db $01, NOTE_D4, INSTR_PULSE_SNARE
+    db $01, NOTE_D4, INSTR_PULSE_SNARE
+    db $01, NOTE_D4, INSTR_PULSE_SNARE
     db PATTERN_JUMP
     dw Song_Title_Ch2
 
 ; Channel 3.
 Pattern_10:
-    db $02, $18, $02
-    db $02, $24, $02
-    db $02, $18, $02
-    db $02, $24, $02
-    db $02, $22, $02
-    db $02, $21, $02
-    db $02, $1f, $02
-    db $02, $1b, $02
+    db $02, NOTE_C4, INSTR_02
+    db $02, NOTE_C5, INSTR_02
+    db $02, NOTE_C4, INSTR_02
+    db $02, NOTE_C5, INSTR_02
+    db $02, NOTE_As4, INSTR_02
+    db $02, NOTE_A4, INSTR_02
+    db $02, NOTE_G4, INSTR_02
+    db $02, NOTE_Ds4, INSTR_02
     db PATTERN_JUMP
     dw Song_Title_Ch3
 
 ; Channel 3.
 Pattern_11:
-    db $10, $00, $11
+    db $10, NOTE_C2, INSTR_WAVE_SILENT
     db PATTERN_END
 
 ; Channel 1.
 Pattern_12:
-    db $01, $0c, $01
-    db $01, $29, $19
-    db $01, $2b, $19
-    db $01, $0c, $01
-    db $02, $1c, $06
-    db $02, $0c, $01
-    db $02, $16, $01
-    db $01, $2b, $19
-    db $01, $29, $19
-    db $02, $1c, $06
-    db $02, $11, $01
+    db $01, NOTE_C3, INSTR_01
+    db $01, NOTE_F5, INSTR_19
+    db $01, NOTE_G5, INSTR_19
+    db $01, NOTE_C3, INSTR_01
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_C3, INSTR_01
+    db $02, NOTE_As3, INSTR_01
+    db $01, NOTE_G5, INSTR_19
+    db $01, NOTE_F5, INSTR_19
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_F3, INSTR_01
     db PATTERN_END
 
 ; Channel 1.
 Pattern_13:
-    db $01, $0c, $01
-    db $01, $29, $19
-    db $01, $2b, $19
-    db $01, $0c, $01
-    db $02, $1c, $06
-    db $02, $0c, $01
-    db $02, $16, $01
-    db $01, $2b, $19
-    db $01, $15, $01
-    db $02, $1c, $06
-    db $02, $11, $01
+    db $01, NOTE_C3, INSTR_01
+    db $01, NOTE_F5, INSTR_19
+    db $01, NOTE_G5, INSTR_19
+    db $01, NOTE_C3, INSTR_01
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_C3, INSTR_01
+    db $02, NOTE_As3, INSTR_01
+    db $01, NOTE_G5, INSTR_19
+    db $01, NOTE_A3, INSTR_01
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_F3, INSTR_01
     db PATTERN_END
 
 ; Channel 1.
 Pattern_14:
-    db $01, $0c, $01
-    db $01, $29, $19
-    db $01, $2b, $19
-    db $01, $0c, $01
-    db $02, $1c, $06
-    db $02, $0c, $01
-    db $02, $16, $01
-    db $01, $2b, $19
-    db $01, $15, $01
-    db $02, $1c, $06
-    db $01, $0a, $01
-    db $01, $11, $01
+    db $01, NOTE_C3, INSTR_01
+    db $01, NOTE_F5, INSTR_19
+    db $01, NOTE_G5, INSTR_19
+    db $01, NOTE_C3, INSTR_01
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_C3, INSTR_01
+    db $02, NOTE_As3, INSTR_01
+    db $01, NOTE_G5, INSTR_19
+    db $01, NOTE_A3, INSTR_01
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_As2, INSTR_01
+    db $01, NOTE_F3, INSTR_01
     db PATTERN_END
 
 ; Channel 3.
 Pattern_15:
-    db $03, $34, $07
-    db $03, $34, $07
-    db $02, $35, $08
-    db $03, $35, $09
-    db $03, $35, $08
-    db $02, $32, $07
+    db $03, NOTE_E6, INSTR_07
+    db $03, NOTE_E6, INSTR_07
+    db $02, NOTE_F6, INSTR_08
+    db $03, NOTE_F6, INSTR_09
+    db $03, NOTE_F6, INSTR_08
+    db $02, NOTE_D6, INSTR_07
     db PATTERN_END
 
 ; Channel 3.
 Pattern_16:
-    db $03, $34, $07
-    db $03, $30, $08
-    db $02, $2b, $09
-    db $03, $2e, $08
-    db $05, $29, $09
+    db $03, NOTE_E6, INSTR_07
+    db $03, NOTE_C6, INSTR_08
+    db $02, NOTE_G5, INSTR_09
+    db $03, NOTE_As5, INSTR_08
+    db $05, NOTE_F5, INSTR_09
     db PATTERN_END
 
 ; Channel 3.
 Pattern_17:
-    db $03, $34, $07
-    db $03, $30, $08
-    db $02, $2b, $09
-    db $08, $2e, $08
+    db $03, NOTE_E6, INSTR_07
+    db $03, NOTE_C6, INSTR_08
+    db $02, NOTE_G5, INSTR_09
+    db $08, NOTE_As5, INSTR_08
     db PATTERN_END
 
 ; Channel 2.
 Pattern_1D:
     db $02, ROW_HOLD
-    db $04, $24, $14
-    db $03, $24, $14
-    db $01, $24, $14
-    db $04, $24, $14
-    db $02, $24, $14
+    db $04, NOTE_C5, INSTR_14
+    db $03, NOTE_C5, INSTR_14
+    db $01, NOTE_C5, INSTR_14
+    db $04, NOTE_C5, INSTR_14
+    db $02, NOTE_C5, INSTR_14
     db PATTERN_END
 
 ; Channel 2.
 Pattern_29:
     db $02, ROW_HOLD
-    db $04, $24, $14
-    db $03, $24, $14
-    db $01, $24, $14
-    db $04, $24, $14
-    db $02, $24, $14
+    db $04, NOTE_C5, INSTR_14
+    db $03, NOTE_C5, INSTR_14
+    db $01, NOTE_C5, INSTR_14
+    db $04, NOTE_C5, INSTR_14
+    db $02, NOTE_C5, INSTR_14
     db PATTERN_JUMP
     dw Song_Level1_Ch2
 
 ; Channel 1.
 Pattern_1E:
-    db $03, $05, $01
-    db $01, $05, $01
-    db $02, $1f, $06
-    db $02, $05, $01
-    db $03, $07, $01
-    db $01, $07, $01
-    db $02, $1f, $06
-    db $02, $07, $01
+    db $03, NOTE_F2, INSTR_01
+    db $01, NOTE_F2, INSTR_01
+    db $02, NOTE_G4, INSTR_PULSE_SNARE
+    db $02, NOTE_F2, INSTR_01
+    db $03, NOTE_G2, INSTR_01
+    db $01, NOTE_G2, INSTR_01
+    db $02, NOTE_G4, INSTR_PULSE_SNARE
+    db $02, NOTE_G2, INSTR_01
     db PATTERN_END
 
 ; Channel 1.
 Pattern_1F:
-    db $03, $08, $01
-    db $01, $08, $01
-    db $02, $1f, $06
-    db $02, $08, $01
-    db $03, $0a, $01
-    db $01, $0a, $01
-    db $02, $1f, $06
-    db $01, $1f, $06
-    db $01, $1f, $06
+    db $03, NOTE_Gs2, INSTR_01
+    db $01, NOTE_Gs2, INSTR_01
+    db $02, NOTE_G4, INSTR_PULSE_SNARE
+    db $02, NOTE_Gs2, INSTR_01
+    db $03, NOTE_As2, INSTR_01
+    db $01, NOTE_As2, INSTR_01
+    db $02, NOTE_G4, INSTR_PULSE_SNARE
+    db $01, NOTE_G4, INSTR_PULSE_SNARE
+    db $01, NOTE_G4, INSTR_PULSE_SNARE
     db PATTERN_END
 
 ; Channel 3.
 Pattern_20:
-    db $03, $2d, $0c
-    db $03, $2d, $0c
-    db $02, $2d, $0c
-    db $03, $2b, $0c
-    db $03, $2b, $0c
-    db $02, $2b, $0c
+    db $03, NOTE_A5, INSTR_0C
+    db $03, NOTE_A5, INSTR_0C
+    db $02, NOTE_A5, INSTR_0C
+    db $03, NOTE_G5, INSTR_0C
+    db $03, NOTE_G5, INSTR_0C
+    db $02, NOTE_G5, INSTR_0C
     db PATTERN_END
 
 ; Channel 3.
 Pattern_21:
-    db $03, $27, $0d
-    db $03, $27, $0d
-    db $02, $27, $0d
-    db $03, $25, $0d
-    db $03, $29, $0c
-    db $02, $29, $0c
+    db $03, NOTE_Ds5, INSTR_0D
+    db $03, NOTE_Ds5, INSTR_0D
+    db $02, NOTE_Ds5, INSTR_0D
+    db $03, NOTE_Cs5, INSTR_0D
+    db $03, NOTE_F5, INSTR_0C
+    db $02, NOTE_F5, INSTR_0C
     db PATTERN_END
 
 ; Channel 3.
 Pattern_22:
-    db $03, $2b, $09
-    db $03, $2b, $09
-    db $02, $2b, $09
-    db $03, $2b, $0b
-    db $03, $2b, $0b
-    db $02, $2b, $0b
+    db $03, NOTE_G5, INSTR_09
+    db $03, NOTE_G5, INSTR_09
+    db $02, NOTE_G5, INSTR_09
+    db $03, NOTE_G5, INSTR_0B
+    db $03, NOTE_G5, INSTR_0B
+    db $02, NOTE_G5, INSTR_0B
     db PATTERN_END
 
 ; Channel 3.
 Pattern_23:
-    db $03, $2b, $0c
-    db $03, $2b, $0c
-    db $02, $2b, $0c
-    db $03, $2b, $0d
-    db $03, $2b, $0d
-    db $02, $2b, $0d
+    db $03, NOTE_G5, INSTR_0C
+    db $03, NOTE_G5, INSTR_0C
+    db $02, NOTE_G5, INSTR_0C
+    db $03, NOTE_G5, INSTR_0D
+    db $03, NOTE_G5, INSTR_0D
+    db $02, NOTE_G5, INSTR_0D
     db PATTERN_END
 
 ; Channel 3.
 Pattern_2A:
-    db $03, $2b, $0c
-    db $03, $2b, $0c
-    db $02, $2b, $0c
-    db $03, $2b, $0d
-    db $03, $2b, $0d
-    db $02, $2b, $0d
+    db $03, NOTE_G5, INSTR_0C
+    db $03, NOTE_G5, INSTR_0C
+    db $02, NOTE_G5, INSTR_0C
+    db $03, NOTE_G5, INSTR_0D
+    db $03, NOTE_G5, INSTR_0D
+    db $02, NOTE_G5, INSTR_0D
     db PATTERN_JUMP
     dw Song_Level1_Ch3
 
 ; Channel 3.
 Pattern_2B:
     db $02, ROW_HOLD
-    db $02, $30, $08
+    db $02, NOTE_C6, INSTR_08
     db $02, ROW_HOLD
-    db $02, $30, $08
+    db $02, NOTE_C6, INSTR_08
     db $02, ROW_HOLD
-    db $02, $2e, $08
+    db $02, NOTE_As5, INSTR_08
     db $02, ROW_HOLD
-    db $02, $2e, $08
+    db $02, NOTE_As5, INSTR_08
     db PATTERN_END
 
 ; Not used by any song.
 Pattern_24:
-    db $03, $0c, $01
-    db $03, $0c, $01
-    db $02, $0c, $01
-    db $03, $0e, $01
-    db $03, $0e, $01
-    db $02, $0e, $01
+    db $03, NOTE_C3, INSTR_01
+    db $03, NOTE_C3, INSTR_01
+    db $02, NOTE_C3, INSTR_01
+    db $03, NOTE_D3, INSTR_01
+    db $03, NOTE_D3, INSTR_01
+    db $02, NOTE_D3, INSTR_01
     db PATTERN_END
 
 ; Not used by any song.
 Pattern_25:
-    db $03, $0e, $01
-    db $03, $14, $01
-    db $02, $14, $01
-    db $03, $13, $01
-    db $03, $10, $01
-    db $02, $10, $01
+    db $03, NOTE_D3, INSTR_01
+    db $03, NOTE_Gs3, INSTR_01
+    db $02, NOTE_Gs3, INSTR_01
+    db $03, NOTE_G3, INSTR_01
+    db $03, NOTE_E3, INSTR_01
+    db $02, NOTE_E3, INSTR_01
     db PATTERN_END
 
 ; Channel 1.
 Pattern_26:
-    db $03, $0d, $01
-    db $01, $0d, $01
-    db $02, $1f, $06
-    db $02, $0d, $01
-    db $03, $0c, $01
-    db $01, $0c, $01
-    db $02, $1f, $06
-    db $02, $0c, $01
+    db $03, NOTE_Cs3, INSTR_01
+    db $01, NOTE_Cs3, INSTR_01
+    db $02, NOTE_G4, INSTR_PULSE_SNARE
+    db $02, NOTE_Cs3, INSTR_01
+    db $03, NOTE_C3, INSTR_01
+    db $01, NOTE_C3, INSTR_01
+    db $02, NOTE_G4, INSTR_PULSE_SNARE
+    db $02, NOTE_C3, INSTR_01
     db PATTERN_END
 
 ; Channel 1.
 Pattern_28:
-    db $03, $0d, $01
-    db $01, $0d, $01
-    db $02, $1f, $06
-    db $02, $0d, $01
-    db $03, $0c, $01
-    db $01, $0c, $01
-    db $02, $1f, $06
-    db $02, $0c, $01
+    db $03, NOTE_Cs3, INSTR_01
+    db $01, NOTE_Cs3, INSTR_01
+    db $02, NOTE_G4, INSTR_PULSE_SNARE
+    db $02, NOTE_Cs3, INSTR_01
+    db $03, NOTE_C3, INSTR_01
+    db $01, NOTE_C3, INSTR_01
+    db $02, NOTE_G4, INSTR_PULSE_SNARE
+    db $02, NOTE_C3, INSTR_01
     db PATTERN_JUMP
     dw Song_Level1_Ch1
 
 ; Channel 4.
 Pattern_27:
-    db $04, $24, $03
-    db $04, $24, $01
-    db $04, $24, $03
-    db $04, $24, $01
+    db $04, $24, NOISE_INSTR_03
+    db $04, $24, NOISE_INSTR_SNARE
+    db $04, $24, NOISE_INSTR_03
+    db $04, $24, NOISE_INSTR_SNARE
     db PATTERN_JUMP
     dw Song_Level1_Ch4
 
 ; Channel 1, 2.
 Pattern_18:
-    db $10, $00, $10
+    db $10, NOTE_C2, INSTR_SILENT
     db PATTERN_JUMP
     dw Order_Silence
 
 ; Channel 3.
 Pattern_19:
-    db $10, $00, $11
+    db $10, NOTE_C2, INSTR_WAVE_SILENT
     db PATTERN_JUMP
     dw Order_Silence
 
 ; Channel 4.
 Pattern_1A:
-    db $10, $00, $00
+    db $10, $00, NOISE_INSTR_SILENT
     db PATTERN_JUMP
     dw Order_Silence
 
@@ -3275,508 +3275,508 @@ Pattern_1B:
 
 ; Not used by any song.
 Pattern_1C:
-    db $04, $24, $02
-    db $02, $24, $03
-    db $02, $24, $01
+    db $04, $24, NOISE_INSTR_KICK
+    db $02, $24, NOISE_INSTR_03
+    db $02, $24, NOISE_INSTR_SNARE
     db PATTERN_JUMP
     dw Song_Title_Ch4
 
 ; Channel 3.
 Pattern_2C:
-    db $02, $18, $15
-    db $02, $30, $08
-    db $02, $13, $15
-    db $02, $30, $08
-    db $02, $14, $15
-    db $02, $30, $07
-    db $02, $0f, $15
-    db $02, $30, $07
+    db $02, NOTE_C4, INSTR_15
+    db $02, NOTE_C6, INSTR_08
+    db $02, NOTE_G3, INSTR_15
+    db $02, NOTE_C6, INSTR_08
+    db $02, NOTE_Gs3, INSTR_15
+    db $02, NOTE_C6, INSTR_07
+    db $02, NOTE_Ds3, INSTR_15
+    db $02, NOTE_C6, INSTR_07
     db PATTERN_END
 
 ; Channel 1.
 Pattern_2D:
-    db $04, $0c, $1e
-    db $04, $1f, $06
-    db $04, $0c, $1e
-    db $02, $1f, $06
-    db $02, $0c, $1e
+    db $04, NOTE_C3, INSTR_PULSE_KICK
+    db $04, NOTE_G4, INSTR_PULSE_SNARE
+    db $04, NOTE_C3, INSTR_PULSE_KICK
+    db $02, NOTE_G4, INSTR_PULSE_SNARE
+    db $02, NOTE_C3, INSTR_PULSE_KICK
     db PATTERN_END
 
 ; Channel 2.
 Pattern_2E:
-    db $01, $1c, $19
-    db $01, $1a, $19
-    db $02, $18, $19
-    db $01, $1c, $19
-    db $01, $1a, $19
-    db $02, $18, $19
-    db $01, $18, $19
-    db $01, $1a, $19
-    db $02, $1b, $19
-    db $01, $18, $19
-    db $01, $1a, $19
-    db $02, $1b, $19
+    db $01, NOTE_E4, INSTR_19
+    db $01, NOTE_D4, INSTR_19
+    db $02, NOTE_C4, INSTR_19
+    db $01, NOTE_E4, INSTR_19
+    db $01, NOTE_D4, INSTR_19
+    db $02, NOTE_C4, INSTR_19
+    db $01, NOTE_C4, INSTR_19
+    db $01, NOTE_D4, INSTR_19
+    db $02, NOTE_Ds4, INSTR_19
+    db $01, NOTE_C4, INSTR_19
+    db $01, NOTE_D4, INSTR_19
+    db $02, NOTE_Ds4, INSTR_19
     db PATTERN_END
 
 ; Channel 1.
 Pattern_2F:
-    db $01, $29, $18
-    db $01, $2a, $18
-    db $02, $26, $18
-    db $04, $28, $06
-    db $01, $22, $18
-    db $01, $24, $18
-    db $02, $26, $18
-    db $04, $28, $06
+    db $01, NOTE_F5, INSTR_18
+    db $01, NOTE_Fs5, INSTR_18
+    db $02, NOTE_D5, INSTR_18
+    db $04, NOTE_E5, INSTR_PULSE_SNARE
+    db $01, NOTE_As4, INSTR_18
+    db $01, NOTE_C5, INSTR_18
+    db $02, NOTE_D5, INSTR_18
+    db $04, NOTE_E5, INSTR_PULSE_SNARE
     db PATTERN_END
 
 ; Channel 1.
 Pattern_30:
-    db $01, $29, $18
-    db $01, $2a, $18
-    db $02, $26, $18
-    db $04, $28, $06
-    db $01, $29, $18
-    db $01, $28, $18
-    db $02, $26, $18
-    db $04, $28, $06
+    db $01, NOTE_F5, INSTR_18
+    db $01, NOTE_Fs5, INSTR_18
+    db $02, NOTE_D5, INSTR_18
+    db $04, NOTE_E5, INSTR_PULSE_SNARE
+    db $01, NOTE_F5, INSTR_18
+    db $01, NOTE_E5, INSTR_18
+    db $02, NOTE_D5, INSTR_18
+    db $04, NOTE_E5, INSTR_PULSE_SNARE
     db PATTERN_END
 
 ; Channel 1.
 Pattern_31:
-    db $01, $29, $18
-    db $01, $2a, $18
-    db $02, $26, $18
-    db $02, $28, $06
-    db $02, $21, $18
-    db $04, $22, $18
-    db $04, $28, $06
+    db $01, NOTE_F5, INSTR_18
+    db $01, NOTE_Fs5, INSTR_18
+    db $02, NOTE_D5, INSTR_18
+    db $02, NOTE_E5, INSTR_PULSE_SNARE
+    db $02, NOTE_A4, INSTR_18
+    db $04, NOTE_As4, INSTR_18
+    db $04, NOTE_E5, INSTR_PULSE_SNARE
     db PATTERN_END
 
 ; Channel 1.
 Pattern_32:
-    db $01, $28, $18
-    db $01, $26, $18
-    db $01, $24, $18
-    db $01, $1f, $18
-    db $01, $28, $18
-    db $01, $26, $18
-    db $01, $24, $18
-    db $01, $1f, $18
-    db $01, $27, $18
-    db $01, $26, $18
-    db $01, $24, $18
-    db $01, $20, $18
-    db $01, $27, $18
-    db $01, $26, $18
-    db $01, $24, $18
-    db $01, $20, $18
+    db $01, NOTE_E5, INSTR_18
+    db $01, NOTE_D5, INSTR_18
+    db $01, NOTE_C5, INSTR_18
+    db $01, NOTE_G4, INSTR_18
+    db $01, NOTE_E5, INSTR_18
+    db $01, NOTE_D5, INSTR_18
+    db $01, NOTE_C5, INSTR_18
+    db $01, NOTE_G4, INSTR_18
+    db $01, NOTE_Ds5, INSTR_18
+    db $01, NOTE_D5, INSTR_18
+    db $01, NOTE_C5, INSTR_18
+    db $01, NOTE_Gs4, INSTR_18
+    db $01, NOTE_Ds5, INSTR_18
+    db $01, NOTE_D5, INSTR_18
+    db $01, NOTE_C5, INSTR_18
+    db $01, NOTE_Gs4, INSTR_18
     db PATTERN_END
 
 ; Channel 1.
 Pattern_33:
-    db $01, $28, $18
-    db $01, $26, $18
-    db $01, $24, $18
-    db $01, $1f, $18
-    db $01, $28, $18
-    db $01, $26, $18
-    db $01, $24, $18
-    db $01, $1f, $18
-    db $08, $27, $18
+    db $01, NOTE_E5, INSTR_18
+    db $01, NOTE_D5, INSTR_18
+    db $01, NOTE_C5, INSTR_18
+    db $01, NOTE_G4, INSTR_18
+    db $01, NOTE_E5, INSTR_18
+    db $01, NOTE_D5, INSTR_18
+    db $01, NOTE_C5, INSTR_18
+    db $01, NOTE_G4, INSTR_18
+    db $08, NOTE_Ds5, INSTR_18
     db PATTERN_END
 
 ; Channel 1.
 Pattern_34:
-    db $01, $28, $18
-    db $01, $26, $18
-    db $01, $24, $18
-    db $01, $1f, $18
-    db $01, $28, $18
-    db $01, $26, $18
-    db $01, $24, $18
-    db $01, $1f, $18
-    db $08, $27, $18
+    db $01, NOTE_E5, INSTR_18
+    db $01, NOTE_D5, INSTR_18
+    db $01, NOTE_C5, INSTR_18
+    db $01, NOTE_G4, INSTR_18
+    db $01, NOTE_E5, INSTR_18
+    db $01, NOTE_D5, INSTR_18
+    db $01, NOTE_C5, INSTR_18
+    db $01, NOTE_G4, INSTR_18
+    db $08, NOTE_Ds5, INSTR_18
     db PATTERN_JUMP
     dw Song_Level2_Ch1
 
 ; Channel 2.
 Pattern_35:
-    db $01, $1c, $19
-    db $01, $1a, $19
-    db $02, $18, $19
-    db $01, $1c, $19
-    db $01, $1a, $19
-    db $02, $18, $19
-    db $01, $18, $19
-    db $01, $1a, $19
-    db $02, $1b, $19
-    db $01, $18, $19
-    db $01, $1a, $19
-    db $02, $1b, $19
+    db $01, NOTE_E4, INSTR_19
+    db $01, NOTE_D4, INSTR_19
+    db $02, NOTE_C4, INSTR_19
+    db $01, NOTE_E4, INSTR_19
+    db $01, NOTE_D4, INSTR_19
+    db $02, NOTE_C4, INSTR_19
+    db $01, NOTE_C4, INSTR_19
+    db $01, NOTE_D4, INSTR_19
+    db $02, NOTE_Ds4, INSTR_19
+    db $01, NOTE_C4, INSTR_19
+    db $01, NOTE_D4, INSTR_19
+    db $02, NOTE_Ds4, INSTR_19
     db PATTERN_JUMP
     dw Song_Level2_Ch2
 
 ; Channel 3.
 Pattern_36:
-    db $02, $18, $15
-    db $02, $30, $08
-    db $02, $13, $15
-    db $02, $30, $08
-    db $02, $14, $15
-    db $02, $30, $07
-    db $02, $0f, $15
-    db $02, $30, $07
+    db $02, NOTE_C4, INSTR_15
+    db $02, NOTE_C6, INSTR_08
+    db $02, NOTE_G3, INSTR_15
+    db $02, NOTE_C6, INSTR_08
+    db $02, NOTE_Gs3, INSTR_15
+    db $02, NOTE_C6, INSTR_07
+    db $02, NOTE_Ds3, INSTR_15
+    db $02, NOTE_C6, INSTR_07
     db PATTERN_JUMP
     dw Song_Level2_Ch3
 
 ; Channel 1.
 Pattern_37:
-    db $04, $0c, $1e
-    db $04, $1c, $06
-    db $04, $0c, $1e
-    db $03, $1c, $06
-    db $01, $0c, $1e
+    db $04, NOTE_C3, INSTR_PULSE_KICK
+    db $04, NOTE_E4, INSTR_PULSE_SNARE
+    db $04, NOTE_C3, INSTR_PULSE_KICK
+    db $03, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_C3, INSTR_PULSE_KICK
     db PATTERN_END
 
 ; Channel 1.
 Pattern_38:
-    db $02, $0c, $1e
-    db $02, $0c, $1e
-    db $03, $1c, $06
-    db $01, $0c, $1e
-    db $04, $0c, $1e
-    db $03, $1c, $06
-    db $01, $0c, $1e
+    db $02, NOTE_C3, INSTR_PULSE_KICK
+    db $02, NOTE_C3, INSTR_PULSE_KICK
+    db $03, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $04, NOTE_C3, INSTR_PULSE_KICK
+    db $03, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_C3, INSTR_PULSE_KICK
     db PATTERN_END
 
 ; Channel 1.
 Pattern_39:
-    db $02, $0c, $1e
-    db $02, $0c, $1e
-    db $03, $1c, $06
-    db $01, $0c, $1e
-    db $04, $0c, $1e
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
+    db $02, NOTE_C3, INSTR_PULSE_KICK
+    db $02, NOTE_C3, INSTR_PULSE_KICK
+    db $03, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $04, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
     db PATTERN_END
 
 ; Channel 1.
 Pattern_3A:
-    db $02, $0c, $1e
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $01, $1c, $06
-    db $02, $0c, $1e
-    db $02, $0c, $1e
-    db $01, $0c, $1e
-    db $02, $0c, $1e
-    db $03, $1c, $06
-    db $01, $0c, $1e
+    db $02, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_C3, INSTR_PULSE_KICK
+    db $02, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $02, NOTE_C3, INSTR_PULSE_KICK
+    db $03, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_C3, INSTR_PULSE_KICK
     db PATTERN_END
 
 ; Channel 1.
 Pattern_3B:
-    db $02, $0c, $1e
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $01, $1c, $06
-    db $02, $0c, $1e
-    db $02, $0c, $1e
-    db $01, $0c, $1e
-    db $02, $0c, $1e
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $02, $1c, $06
+    db $02, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_C3, INSTR_PULSE_KICK
+    db $02, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $02, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
     db PATTERN_END
 
 ; Channel 1.
 Pattern_3C:
-    db $02, $0c, $1e
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $01, $1c, $06
-    db $02, $0c, $1e
-    db $01, $0c, $1e
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
+    db $02, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
     db PATTERN_END
 
 ; Channel 3.
 Pattern_3D:
-    db $01, $0b, $15
+    db $01, NOTE_B2, INSTR_15
     db $01, ROW_RELEASE
-    db $01, $0b, $15
+    db $01, NOTE_B2, INSTR_15
     db $01, ROW_RELEASE
-    db $02, $0e, $15
+    db $02, NOTE_D3, INSTR_15
     db $01, ROW_RELEASE
-    db $02, $11, $15
+    db $02, NOTE_F3, INSTR_15
     db $01, ROW_RELEASE
-    db $01, $0e, $15
+    db $01, NOTE_D3, INSTR_15
     db $05, ROW_RELEASE
     db PATTERN_END
 
 ; Channel 3.
 Pattern_4D:
-    db $01, $0b, $15
+    db $01, NOTE_B2, INSTR_15
     db $01, ROW_RELEASE
-    db $01, $0b, $15
+    db $01, NOTE_B2, INSTR_15
     db $01, ROW_RELEASE
-    db $02, $0e, $15
+    db $02, NOTE_D3, INSTR_15
     db $01, ROW_RELEASE
-    db $02, $11, $15
+    db $02, NOTE_F3, INSTR_15
     db $01, ROW_RELEASE
-    db $01, $0e, $15
+    db $01, NOTE_D3, INSTR_15
     db $05, ROW_RELEASE
     db PATTERN_JUMP
     dw Song_Level3_Ch3
 
 ; Channel 2.
 Pattern_3E:
-    db $01, $1e, $19
-    db $01, $1d, $19
-    db $07, $23, $19
-    db $01, $1d, $19
-    db $01, $1e, $19
-    db $02, $23, $19
-    db $01, $1d, $19
-    db $01, $1e, $19
-    db $01, $23, $19
+    db $01, NOTE_Fs4, INSTR_19
+    db $01, NOTE_F4, INSTR_19
+    db $07, NOTE_B4, INSTR_19
+    db $01, NOTE_F4, INSTR_19
+    db $01, NOTE_Fs4, INSTR_19
+    db $02, NOTE_B4, INSTR_19
+    db $01, NOTE_F4, INSTR_19
+    db $01, NOTE_Fs4, INSTR_19
+    db $01, NOTE_B4, INSTR_19
     db PATTERN_END
 
 ; Channel 1.
 Pattern_3F:
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $02, $0c, $1e
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $02, $1c, $06
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $02, $1c, $06
-    db $01, $0c, $1e
-    db $01, $1c, $06
-    db $01, $1c, $06
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $02, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
     db PATTERN_END
 
 ; Channel 1.
 Pattern_40:
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $02, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $02, $1c, $06
-    db $01, $0c, $1e
-    db $01, $1c, $06
-    db $01, $1c, $06
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
     db PATTERN_END
 
 ; Channel 1.
 Pattern_41:
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $02, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
     db PATTERN_END
 
 ; Channel 1.
 Pattern_4B:
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $02, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $01, $0c, $1e
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
-    db $01, $1c, $06
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_C3, INSTR_PULSE_KICK
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
+    db $01, NOTE_E4, INSTR_PULSE_SNARE
     db PATTERN_JUMP
     dw Song_Level3_Ch1
 
 ; Channel 4.
 Pattern_42:
-    db $04, $0c, $02
-    db $04, $1c, $01
-    db $04, $0c, $02
-    db $03, $1c, $01
-    db $01, $0c, $02
+    db $04, $0c, NOISE_INSTR_KICK
+    db $04, $1c, NOISE_INSTR_SNARE
+    db $04, $0c, NOISE_INSTR_KICK
+    db $03, $1c, NOISE_INSTR_SNARE
+    db $01, $0c, NOISE_INSTR_KICK
     db PATTERN_END
 
 ; Channel 4.
 Pattern_43:
-    db $02, $0c, $02
-    db $02, $0c, $02
-    db $03, $1c, $01
-    db $01, $0c, $02
-    db $04, $0c, $02
-    db $03, $1c, $01
-    db $01, $0c, $02
+    db $02, $0c, NOISE_INSTR_KICK
+    db $02, $0c, NOISE_INSTR_KICK
+    db $03, $1c, NOISE_INSTR_SNARE
+    db $01, $0c, NOISE_INSTR_KICK
+    db $04, $0c, NOISE_INSTR_KICK
+    db $03, $1c, NOISE_INSTR_SNARE
+    db $01, $0c, NOISE_INSTR_KICK
     db PATTERN_END
 
 ; Channel 4.
 Pattern_44:
-    db $02, $0c, $02
-    db $02, $0c, $02
-    db $03, $1c, $01
-    db $01, $0c, $02
-    db $04, $0c, $02
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
+    db $02, $0c, NOISE_INSTR_KICK
+    db $02, $0c, NOISE_INSTR_KICK
+    db $03, $1c, NOISE_INSTR_SNARE
+    db $01, $0c, NOISE_INSTR_KICK
+    db $04, $0c, NOISE_INSTR_KICK
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
     db PATTERN_END
 
 ; Channel 4.
 Pattern_45:
-    db $02, $0c, $02
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $01, $1c, $01
-    db $02, $0c, $02
-    db $02, $0c, $02
-    db $01, $0c, $02
-    db $02, $0c, $02
-    db $03, $1c, $01
-    db $01, $0c, $02
+    db $02, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $02, $0c, NOISE_INSTR_KICK
+    db $02, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $02, $0c, NOISE_INSTR_KICK
+    db $03, $1c, NOISE_INSTR_SNARE
+    db $01, $0c, NOISE_INSTR_KICK
     db PATTERN_END
 
 ; Channel 4.
 Pattern_46:
-    db $02, $0c, $02
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $01, $1c, $01
-    db $02, $0c, $02
-    db $02, $0c, $02
-    db $01, $0c, $02
-    db $02, $0c, $02
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $02, $1c, $01
+    db $02, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $02, $0c, NOISE_INSTR_KICK
+    db $02, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $02, $0c, NOISE_INSTR_KICK
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $02, $1c, NOISE_INSTR_SNARE
     db PATTERN_END
 
 ; Channel 4.
 Pattern_47:
-    db $02, $0c, $02
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $01, $1c, $01
-    db $02, $0c, $02
-    db $01, $0c, $02
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
+    db $02, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $02, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
     db PATTERN_END
 
 ; Channel 4.
 Pattern_48:
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $02, $0c, $02
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $02, $1c, $01
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $02, $1c, $01
-    db $01, $0c, $02
-    db $01, $1c, $01
-    db $01, $1c, $01
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $02, $0c, NOISE_INSTR_KICK
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $02, $1c, NOISE_INSTR_SNARE
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $02, $1c, NOISE_INSTR_SNARE
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
     db PATTERN_END
 
 ; Channel 4.
 Pattern_49:
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $02, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $02, $1c, $01
-    db $01, $0c, $02
-    db $01, $1c, $01
-    db $01, $1c, $01
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $02, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $02, $1c, NOISE_INSTR_SNARE
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
     db PATTERN_END
 
 ; Channel 4.
 Pattern_4A:
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $02, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $02, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
     db PATTERN_END
 
 ; Channel 4.
 Pattern_4E:
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $02, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $01, $0c, $02
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
-    db $01, $1c, $01
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $02, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $0c, NOISE_INSTR_KICK
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
+    db $01, $1c, NOISE_INSTR_SNARE
     db PATTERN_JUMP
     dw Song_Level3_Ch4
 
@@ -3788,137 +3788,137 @@ Pattern_4C:
 
 ; Channel 3.
 Pattern_4F:
-    db $01, $30, $07
-    db $03, $30, $07
-    db $03, $30, $07
-    db $02, $30, $07
-    db $01, $30, $07
-    db $02, $30, $07
-    db $02, $30, $07
-    db $02, $30, $07
+    db $01, NOTE_C6, INSTR_07
+    db $03, NOTE_C6, INSTR_07
+    db $03, NOTE_C6, INSTR_07
+    db $02, NOTE_C6, INSTR_07
+    db $01, NOTE_C6, INSTR_07
+    db $02, NOTE_C6, INSTR_07
+    db $02, NOTE_C6, INSTR_07
+    db $02, NOTE_C6, INSTR_07
     db PATTERN_END
 
 ; Channel 3.
 Pattern_50:
-    db $01, $33, $08
-    db $03, $33, $08
-    db $03, $33, $08
-    db $02, $33, $08
-    db $01, $33, $08
-    db $02, $33, $08
-    db $02, $33, $08
-    db $02, $33, $08
+    db $01, NOTE_Ds6, INSTR_08
+    db $03, NOTE_Ds6, INSTR_08
+    db $03, NOTE_Ds6, INSTR_08
+    db $02, NOTE_Ds6, INSTR_08
+    db $01, NOTE_Ds6, INSTR_08
+    db $02, NOTE_Ds6, INSTR_08
+    db $02, NOTE_Ds6, INSTR_08
+    db $02, NOTE_Ds6, INSTR_08
     db PATTERN_END
 
 ; Channel 1.
 Pattern_51:
-    db $03, $08, $01
-    db $01, $08, $01
-    db $02, $1c, $06
-    db $03, $08, $01
-    db $03, $08, $01
-    db $02, $1c, $06
-    db $02, $03, $01
+    db $03, NOTE_Gs2, INSTR_01
+    db $01, NOTE_Gs2, INSTR_01
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $03, NOTE_Gs2, INSTR_01
+    db $03, NOTE_Gs2, INSTR_01
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_Ds2, INSTR_01
     db PATTERN_END
 
 ; Channel 2.
 Pattern_52:
-    db $01, $24, $19
-    db $01, $24, $19
-    db $01, $25, $19
-    db $01, $27, $19
-    db $01, $24, $19
-    db $01, $25, $19
-    db $01, $27, $19
-    db $01, $24, $19
-    db $01, $25, $19
-    db $01, $27, $19
-    db $01, $24, $19
-    db $01, $25, $19
-    db $01, $27, $19
-    db $01, $24, $19
-    db $01, $25, $19
-    db $01, $27, $19
+    db $01, NOTE_C5, INSTR_19
+    db $01, NOTE_C5, INSTR_19
+    db $01, NOTE_Cs5, INSTR_19
+    db $01, NOTE_Ds5, INSTR_19
+    db $01, NOTE_C5, INSTR_19
+    db $01, NOTE_Cs5, INSTR_19
+    db $01, NOTE_Ds5, INSTR_19
+    db $01, NOTE_C5, INSTR_19
+    db $01, NOTE_Cs5, INSTR_19
+    db $01, NOTE_Ds5, INSTR_19
+    db $01, NOTE_C5, INSTR_19
+    db $01, NOTE_Cs5, INSTR_19
+    db $01, NOTE_Ds5, INSTR_19
+    db $01, NOTE_C5, INSTR_19
+    db $01, NOTE_Cs5, INSTR_19
+    db $01, NOTE_Ds5, INSTR_19
     db PATTERN_END
 
 ; Channel 1.
 Pattern_53:
-    db $03, $08, $01
-    db $01, $08, $01
-    db $02, $1c, $06
-    db $03, $08, $01
-    db $03, $08, $01
-    db $02, $1c, $06
-    db $02, $03, $01
+    db $03, NOTE_Gs2, INSTR_01
+    db $01, NOTE_Gs2, INSTR_01
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $03, NOTE_Gs2, INSTR_01
+    db $03, NOTE_Gs2, INSTR_01
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_Ds2, INSTR_01
     db PATTERN_JUMP
     dw Song_MainMenu_Ch1
 
 ; Channel 2.
 Pattern_54:
-    db $01, $24, $19
-    db $01, $24, $19
-    db $01, $25, $19
-    db $01, $27, $19
-    db $01, $24, $19
-    db $01, $25, $19
-    db $01, $27, $19
-    db $01, $24, $19
-    db $01, $25, $19
-    db $01, $27, $19
-    db $01, $24, $19
-    db $01, $25, $19
-    db $01, $27, $19
-    db $01, $24, $19
-    db $01, $25, $19
-    db $01, $27, $19
+    db $01, NOTE_C5, INSTR_19
+    db $01, NOTE_C5, INSTR_19
+    db $01, NOTE_Cs5, INSTR_19
+    db $01, NOTE_Ds5, INSTR_19
+    db $01, NOTE_C5, INSTR_19
+    db $01, NOTE_Cs5, INSTR_19
+    db $01, NOTE_Ds5, INSTR_19
+    db $01, NOTE_C5, INSTR_19
+    db $01, NOTE_Cs5, INSTR_19
+    db $01, NOTE_Ds5, INSTR_19
+    db $01, NOTE_C5, INSTR_19
+    db $01, NOTE_Cs5, INSTR_19
+    db $01, NOTE_Ds5, INSTR_19
+    db $01, NOTE_C5, INSTR_19
+    db $01, NOTE_Cs5, INSTR_19
+    db $01, NOTE_Ds5, INSTR_19
     db PATTERN_JUMP
     dw Song_MainMenu_Ch2
 
 ; Channel 3.
 Pattern_55:
-    db $01, $30, $07
-    db $03, $30, $07
-    db $03, $30, $07
-    db $02, $30, $07
-    db $01, $30, $07
-    db $02, $30, $07
-    db $02, $30, $07
-    db $02, $30, $07
+    db $01, NOTE_C6, INSTR_07
+    db $03, NOTE_C6, INSTR_07
+    db $03, NOTE_C6, INSTR_07
+    db $02, NOTE_C6, INSTR_07
+    db $01, NOTE_C6, INSTR_07
+    db $02, NOTE_C6, INSTR_07
+    db $02, NOTE_C6, INSTR_07
+    db $02, NOTE_C6, INSTR_07
     db PATTERN_JUMP
     dw Song_MainMenu_Ch3
 
 ; Channel 2.
 Pattern_56:
-    db $10, $20, $23
+    db $10, NOTE_Gs4, INSTR_23
     db PATTERN_END
 
 ; Channel 2.
 Pattern_57:
     db $04, ROW_HOLD
     db $02, ROW_RELEASE
-    db $02, $1b, $23
-    db $02, $20, $23
-    db $02, $22, $23
-    db $04, $24, $23
+    db $02, NOTE_Ds4, INSTR_23
+    db $02, NOTE_Gs4, INSTR_23
+    db $02, NOTE_As4, INSTR_23
+    db $04, NOTE_C5, INSTR_23
     db PATTERN_END
 
 ; Channel 2.
 Pattern_58:
-    db $04, $22, $23
-    db $01, $1b, $23
-    db $01, $1d, $23
-    db $0a, $1b, $23
+    db $04, NOTE_As4, INSTR_23
+    db $01, NOTE_Ds4, INSTR_23
+    db $01, NOTE_F4, INSTR_23
+    db $0a, NOTE_Ds4, INSTR_23
     db PATTERN_END
 
 ; Channel 2.
 Pattern_59:
     db $04, ROW_HOLD
     db $02, ROW_RELEASE
-    db $02, $1f, $23
-    db $02, $1f, $24
-    db $02, $1d, $23
-    db $02, $1b, $23
-    db $02, $1e, $23
+    db $02, NOTE_G4, INSTR_23
+    db $02, NOTE_G4, INSTR_24
+    db $02, NOTE_F4, INSTR_23
+    db $02, NOTE_Ds4, INSTR_23
+    db $02, NOTE_Fs4, INSTR_23
     db PATTERN_END
 
 ; Channel 2.
@@ -3929,16 +3929,16 @@ Pattern_5A:
 
 ; Channel 2.
 Pattern_5B:
-    db $06, $1e, $23
-    db $01, $1d, $23
-    db $01, $1b, $23
-    db $04, $17, $23
-    db $04, $1e, $23
+    db $06, NOTE_Fs4, INSTR_23
+    db $01, NOTE_F4, INSTR_23
+    db $01, NOTE_Ds4, INSTR_23
+    db $04, NOTE_B3, INSTR_23
+    db $04, NOTE_Fs4, INSTR_23
     db PATTERN_END
 
 ; Channel 2.
 Pattern_5C:
-    db $10, $1f, $24
+    db $10, NOTE_G4, INSTR_24
     db PATTERN_END
 
 ; Channel 2.
@@ -3948,57 +3948,57 @@ Pattern_5D:
 
 ; Channel 2.
 Pattern_5E:
-    db $04, $23, $23
+    db $04, NOTE_B4, INSTR_23
     db $02, ROW_RELEASE
-    db $02, $1e, $23
-    db $08, $27, $23
+    db $02, NOTE_Fs4, INSTR_23
+    db $08, NOTE_Ds5, INSTR_23
     db PATTERN_END
 
 ; Channel 2.
 Pattern_5F:
     db $04, ROW_HOLD
-    db $04, $23, $23
-    db $04, $2a, $23
-    db $04, $2f, $24
+    db $04, NOTE_B4, INSTR_23
+    db $04, NOTE_Fs5, INSTR_23
+    db $04, NOTE_B5, INSTR_24
     db PATTERN_END
 
 ; Channel 2.
 Pattern_60:
-    db $01, $2e, $23
-    db $01, $2a, $23
-    db $01, $29, $23
-    db $0d, $27, $23
+    db $01, NOTE_As5, INSTR_23
+    db $01, NOTE_Fs5, INSTR_23
+    db $01, NOTE_F5, INSTR_23
+    db $0d, NOTE_Ds5, INSTR_23
     db PATTERN_END
 
 ; Channel 2.
 Pattern_61:
     db $04, ROW_RELEASE
-    db $04, $22, $24
-    db $04, $20, $23
-    db $04, $1e, $23
+    db $04, NOTE_As4, INSTR_24
+    db $04, NOTE_Gs4, INSTR_23
+    db $04, NOTE_Fs4, INSTR_23
     db PATTERN_END
 
 ; Channel 2.
 Pattern_62:
-    db $0e, $1e, $23
+    db $0e, NOTE_Fs4, INSTR_23
     db $02, ROW_RELEASE
     db PATTERN_END
 
 ; Channel 2.
 Pattern_63:
-    db $01, $21, $23
-    db $01, $20, $23
-    db $04, $1e, $23
+    db $01, NOTE_A4, INSTR_23
+    db $01, NOTE_Gs4, INSTR_23
+    db $04, NOTE_Fs4, INSTR_23
     db $02, ROW_RELEASE
-    db $03, $21, $23
+    db $03, NOTE_A4, INSTR_23
     db $01, ROW_RELEASE
-    db $03, $2a, $23
+    db $03, NOTE_Fs5, INSTR_23
     db $01, ROW_RELEASE
     db PATTERN_END
 
 ; Channel 2.
 Pattern_64:
-    db $10, $28, $24
+    db $10, NOTE_E5, INSTR_24
     db PATTERN_END
 
 ; Channel 2.
@@ -4010,31 +4010,31 @@ Pattern_65:
 
 ; Channel 1, 2.
 Pattern_66:
-    db $01, $24, $25
-    db $01, $23, $25
-    db $01, $22, $25
-    db $01, $21, $25
-    db $01, $20, $25
-    db $01, $1f, $25
-    db $01, $1e, $25
-    db $01, $1d, $25
-    db $01, $1c, $25
-    db $01, $1b, $25
-    db $01, $1a, $25
-    db $01, $19, $25
-    db $01, $18, $25
-    db $01, $17, $25
-    db $01, $16, $25
-    db $01, $15, $25
-    db $01, $14, $25
-    db $01, $13, $25
-    db $01, $12, $25
-    db $01, $11, $25
-    db $01, $10, $25
-    db $01, $0f, $25
-    db $01, $0e, $25
-    db $01, $0d, $25
-    db $10, $0c, $25
+    db $01, NOTE_C5, INSTR_25
+    db $01, NOTE_B4, INSTR_25
+    db $01, NOTE_As4, INSTR_25
+    db $01, NOTE_A4, INSTR_25
+    db $01, NOTE_Gs4, INSTR_25
+    db $01, NOTE_G4, INSTR_25
+    db $01, NOTE_Fs4, INSTR_25
+    db $01, NOTE_F4, INSTR_25
+    db $01, NOTE_E4, INSTR_25
+    db $01, NOTE_Ds4, INSTR_25
+    db $01, NOTE_D4, INSTR_25
+    db $01, NOTE_Cs4, INSTR_25
+    db $01, NOTE_C4, INSTR_25
+    db $01, NOTE_B3, INSTR_25
+    db $01, NOTE_As3, INSTR_25
+    db $01, NOTE_A3, INSTR_25
+    db $01, NOTE_Gs3, INSTR_25
+    db $01, NOTE_G3, INSTR_25
+    db $01, NOTE_Fs3, INSTR_25
+    db $01, NOTE_F3, INSTR_25
+    db $01, NOTE_E3, INSTR_25
+    db $01, NOTE_Ds3, INSTR_25
+    db $01, NOTE_D3, INSTR_25
+    db $01, NOTE_Cs3, INSTR_25
+    db $10, NOTE_C3, INSTR_25
     db $0c, ROW_RELEASE
     db PATTERN_JUMP
     dw Song_Silence_Ch2
@@ -4046,7 +4046,7 @@ Pattern_67:
 
 ; Channel 1.
 Pattern_68:
-    db $02, $1f, $05
+    db $02, NOTE_G4, INSTR_05
     db $02, ROW_RETRIGGER
     db $02, ROW_RETRIGGER
     db $02, ROW_RETRIGGER
@@ -4058,7 +4058,7 @@ Pattern_68:
 
 ; Channel 1.
 Pattern_76:
-    db $02, $1f, $05
+    db $02, NOTE_G4, INSTR_05
     db $02, ROW_RETRIGGER
     db $02, ROW_RETRIGGER
     db $02, ROW_RETRIGGER
@@ -4071,248 +4071,248 @@ Pattern_76:
 
 ; Channel 3.
 Pattern_69:
-    db $02, $28, $02
-    db $02, $18, $15
-    db $02, $29, $02
-    db $02, $18, $15
-    db $02, $2b, $02
-    db $02, $18, $15
-    db $02, $28, $02
-    db $02, $18, $15
+    db $02, NOTE_E5, INSTR_02
+    db $02, NOTE_C4, INSTR_15
+    db $02, NOTE_F5, INSTR_02
+    db $02, NOTE_C4, INSTR_15
+    db $02, NOTE_G5, INSTR_02
+    db $02, NOTE_C4, INSTR_15
+    db $02, NOTE_E5, INSTR_02
+    db $02, NOTE_C4, INSTR_15
     db PATTERN_END
 
 ; Channel 3.
 Pattern_6A:
-    db $02, $2b, $02
-    db $02, $18, $15
-    db $02, $29, $02
-    db $02, $18, $15
-    db $02, $28, $02
-    db $02, $18, $15
-    db $02, $2b, $02
-    db $02, $18, $15
+    db $02, NOTE_G5, INSTR_02
+    db $02, NOTE_C4, INSTR_15
+    db $02, NOTE_F5, INSTR_02
+    db $02, NOTE_C4, INSTR_15
+    db $02, NOTE_E5, INSTR_02
+    db $02, NOTE_C4, INSTR_15
+    db $02, NOTE_G5, INSTR_02
+    db $02, NOTE_C4, INSTR_15
     db PATTERN_END
 
 ; Channel 2.
 Pattern_6B:
-    db $04, $1c, $24
+    db $04, NOTE_E4, INSTR_24
     db $02, ROW_RELEASE
-    db $02, $18, $23
-    db $08, $1f, $23
+    db $02, NOTE_C4, INSTR_23
+    db $08, NOTE_G4, INSTR_23
     db PATTERN_END
 
 ; Channel 2.
 Pattern_6C:
     db $04, ROW_HOLD
     db $02, ROW_RELEASE
-    db $01, $1c, $23
-    db $01, $1d, $23
-    db $02, $1f, $23
-    db $02, $1d, $23
-    db $02, $1c, $23
-    db $02, $1a, $23
+    db $01, NOTE_E4, INSTR_23
+    db $01, NOTE_F4, INSTR_23
+    db $02, NOTE_G4, INSTR_23
+    db $02, NOTE_F4, INSTR_23
+    db $02, NOTE_E4, INSTR_23
+    db $02, NOTE_D4, INSTR_23
     db PATTERN_END
 
 ; Channel 2.
 Pattern_6D:
     db $06, ROW_HOLD
     db $02, ROW_RELEASE
-    db $08, $1f, $23
+    db $08, NOTE_G4, INSTR_23
     db PATTERN_END
 
 ; Channel 2.
 Pattern_6E:
     db $04, ROW_HOLD
-    db $04, $1f, $24
-    db $04, $21, $23
-    db $04, $23, $23
+    db $04, NOTE_G4, INSTR_24
+    db $04, NOTE_A4, INSTR_23
+    db $04, NOTE_B4, INSTR_23
     db PATTERN_END
 
 ; Channel 2.
 Pattern_6F:
-    db $06, $24, $24
-    db $01, $23, $23
-    db $01, $24, $23
-    db $08, $21, $23
+    db $06, NOTE_C5, INSTR_24
+    db $01, NOTE_B4, INSTR_23
+    db $01, NOTE_C5, INSTR_23
+    db $08, NOTE_A4, INSTR_23
     db PATTERN_END
 
 ; Channel 2.
 Pattern_70:
     db $06, ROW_HOLD
     db $02, ROW_RELEASE
-    db $08, $1d, $23
+    db $08, NOTE_F4, INSTR_23
     db PATTERN_END
 
 ; Channel 2.
 Pattern_71:
-    db $01, $1c, $23
-    db $01, $1d, $23
-    db $0a, $1f, $23
+    db $01, NOTE_E4, INSTR_23
+    db $01, NOTE_F4, INSTR_23
+    db $0a, NOTE_G4, INSTR_23
     db $02, ROW_RELEASE
-    db $01, $1d, $23
-    db $01, $1c, $23
+    db $01, NOTE_F4, INSTR_23
+    db $01, NOTE_E4, INSTR_23
     db PATTERN_END
 
 ; Channel 2.
 Pattern_72:
-    db $0c, $1a, $23
+    db $0c, NOTE_D4, INSTR_23
     db $04, ROW_RELEASE
     db PATTERN_END
 
 ; Channel 2.
 Pattern_73:
-    db $04, $17, $23
-    db $04, $18, $23
-    db $04, $1a, $23
-    db $04, $1f, $24
+    db $04, NOTE_B3, INSTR_23
+    db $04, NOTE_C4, INSTR_23
+    db $04, NOTE_D4, INSTR_23
+    db $04, NOTE_G4, INSTR_24
     db PATTERN_END
 
 ; Channel 2.
 Pattern_74:
-    db $01, $2b, $23
-    db $01, $26, $23
-    db $02, $23, $23
-    db $01, $26, $23
-    db $01, $23, $23
-    db $02, $1f, $23
-    db $01, $23, $23
-    db $01, $1f, $23
-    db $02, $1a, $23
-    db $01, $1f, $23
-    db $01, $1a, $23
-    db $02, $17, $23
+    db $01, NOTE_G5, INSTR_23
+    db $01, NOTE_D5, INSTR_23
+    db $02, NOTE_B4, INSTR_23
+    db $01, NOTE_D5, INSTR_23
+    db $01, NOTE_B4, INSTR_23
+    db $02, NOTE_G4, INSTR_23
+    db $01, NOTE_B4, INSTR_23
+    db $01, NOTE_G4, INSTR_23
+    db $02, NOTE_D4, INSTR_23
+    db $01, NOTE_G4, INSTR_23
+    db $01, NOTE_D4, INSTR_23
+    db $02, NOTE_B3, INSTR_23
     db PATTERN_END
 
 ; Channel 2.
 Pattern_77:
-    db $01, $2b, $23
-    db $01, $26, $23
-    db $02, $23, $23
-    db $01, $26, $23
-    db $01, $23, $23
-    db $02, $1f, $23
-    db $01, $23, $23
-    db $01, $1f, $23
-    db $02, $1a, $23
-    db $01, $1f, $23
-    db $01, $1a, $23
-    db $02, $17, $23
+    db $01, NOTE_G5, INSTR_23
+    db $01, NOTE_D5, INSTR_23
+    db $02, NOTE_B4, INSTR_23
+    db $01, NOTE_D5, INSTR_23
+    db $01, NOTE_B4, INSTR_23
+    db $02, NOTE_G4, INSTR_23
+    db $01, NOTE_B4, INSTR_23
+    db $01, NOTE_G4, INSTR_23
+    db $02, NOTE_D4, INSTR_23
+    db $01, NOTE_G4, INSTR_23
+    db $01, NOTE_D4, INSTR_23
+    db $02, NOTE_B3, INSTR_23
     db PATTERN_JUMP
     dw Song_Ending_Ch2
 
 ; Channel 3.
 Pattern_75:
-    db $02, $24, $02
-    db $02, $18, $15
-    db $02, $1f, $02
-    db $02, $18, $15
-    db $02, $1c, $02
-    db $02, $18, $15
-    db $02, $18, $02
-    db $02, $18, $15
+    db $02, NOTE_C5, INSTR_02
+    db $02, NOTE_C4, INSTR_15
+    db $02, NOTE_G4, INSTR_02
+    db $02, NOTE_C4, INSTR_15
+    db $02, NOTE_E4, INSTR_02
+    db $02, NOTE_C4, INSTR_15
+    db $02, NOTE_C4, INSTR_02
+    db $02, NOTE_C4, INSTR_15
     db PATTERN_END
 
 ; Channel 3.
 Pattern_78:
-    db $02, $2b, $02
-    db $02, $18, $15
-    db $02, $29, $02
-    db $02, $18, $15
-    db $02, $28, $02
-    db $02, $18, $15
-    db $02, $2b, $02
-    db $02, $18, $15
+    db $02, NOTE_G5, INSTR_02
+    db $02, NOTE_C4, INSTR_15
+    db $02, NOTE_F5, INSTR_02
+    db $02, NOTE_C4, INSTR_15
+    db $02, NOTE_E5, INSTR_02
+    db $02, NOTE_C4, INSTR_15
+    db $02, NOTE_G5, INSTR_02
+    db $02, NOTE_C4, INSTR_15
     db PATTERN_JUMP
     dw Song_Ending_Ch3
 
 ; Channel 3.
 Pattern_79:
-    db $02, $30, $08
-    db $02, $30, $08
-    db $02, $30, $09
-    db $02, $30, $09
-    db $02, $30, $0a
-    db $02, $30, $0a
-    db $02, $30, $0b
-    db $02, $30, $0b
+    db $02, NOTE_C6, INSTR_08
+    db $02, NOTE_C6, INSTR_08
+    db $02, NOTE_C6, INSTR_09
+    db $02, NOTE_C6, INSTR_09
+    db $02, NOTE_C6, INSTR_0A
+    db $02, NOTE_C6, INSTR_0A
+    db $02, NOTE_C6, INSTR_0B
+    db $02, NOTE_C6, INSTR_0B
     db PATTERN_END
 
 ; Channel 3.
 Pattern_7A:
-    db $02, $30, $0a
-    db $02, $30, $0a
-    db $02, $30, $09
-    db $02, $30, $09
-    db $02, $30, $08
-    db $02, $30, $08
-    db $02, $30, $07
-    db $02, $30, $07
+    db $02, NOTE_C6, INSTR_0A
+    db $02, NOTE_C6, INSTR_0A
+    db $02, NOTE_C6, INSTR_09
+    db $02, NOTE_C6, INSTR_09
+    db $02, NOTE_C6, INSTR_08
+    db $02, NOTE_C6, INSTR_08
+    db $02, NOTE_C6, INSTR_07
+    db $02, NOTE_C6, INSTR_07
     db PATTERN_END
 
 ; Channel 1.
 Pattern_7B:
-    db $02, $0c, $01
-    db $01, $0c, $01
+    db $02, NOTE_C3, INSTR_01
+    db $01, NOTE_C3, INSTR_01
     db $01, ROW_RELEASE
-    db $02, $1c, $06
-    db $02, $0c, $01
-    db $02, $0b, $01
-    db $01, $0c, $01
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_C3, INSTR_01
+    db $02, NOTE_B2, INSTR_01
+    db $01, NOTE_C3, INSTR_01
     db $01, ROW_RELEASE
-    db $02, $1c, $06
-    db $02, $00, $01
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_C2, INSTR_01
     db PATTERN_END
 
 ; Channel 2.
 Pattern_7C:
-    db $01, $18, $23
+    db $01, NOTE_C4, INSTR_23
     db $03, ROW_RELEASE
-    db $04, $24, $23
-    db $01, $16, $23
-    db $01, $17, $23
-    db $02, $18, $23
-    db $02, $13, $23
-    db $02, $0c, $23
+    db $04, NOTE_C5, INSTR_23
+    db $01, NOTE_As3, INSTR_23
+    db $01, NOTE_B3, INSTR_23
+    db $02, NOTE_C4, INSTR_23
+    db $02, NOTE_G3, INSTR_23
+    db $02, NOTE_C3, INSTR_23
     db PATTERN_END
 
 ; Channel 1.
 Pattern_7D:
-    db $02, $0c, $01
-    db $01, $0c, $01
+    db $02, NOTE_C3, INSTR_01
+    db $01, NOTE_C3, INSTR_01
     db $01, ROW_RELEASE
-    db $02, $1c, $06
-    db $02, $0c, $01
-    db $02, $0b, $01
-    db $01, $0c, $01
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_C3, INSTR_01
+    db $02, NOTE_B2, INSTR_01
+    db $01, NOTE_C3, INSTR_01
     db $01, ROW_RELEASE
-    db $02, $1c, $06
-    db $02, $00, $01
+    db $02, NOTE_E4, INSTR_PULSE_SNARE
+    db $02, NOTE_C2, INSTR_01
     db PATTERN_JUMP
     dw Song_Credits_Ch1
 
 ; Channel 2.
 Pattern_7E:
-    db $01, $18, $23
+    db $01, NOTE_C4, INSTR_23
     db $03, ROW_RELEASE
-    db $04, $24, $23
-    db $01, $16, $23
-    db $01, $17, $23
-    db $02, $18, $23
-    db $02, $13, $23
-    db $02, $0c, $23
+    db $04, NOTE_C5, INSTR_23
+    db $01, NOTE_As3, INSTR_23
+    db $01, NOTE_B3, INSTR_23
+    db $02, NOTE_C4, INSTR_23
+    db $02, NOTE_G3, INSTR_23
+    db $02, NOTE_C3, INSTR_23
     db PATTERN_JUMP
     dw Song_Credits_Ch2
 
 ; Channel 3.
 Pattern_7F:
-    db $02, $30, $0a
-    db $02, $30, $0a
-    db $02, $30, $09
-    db $02, $30, $09
-    db $02, $30, $08
-    db $02, $30, $08
-    db $02, $30, $07
-    db $02, $30, $07
+    db $02, NOTE_C6, INSTR_0A
+    db $02, NOTE_C6, INSTR_0A
+    db $02, NOTE_C6, INSTR_09
+    db $02, NOTE_C6, INSTR_09
+    db $02, NOTE_C6, INSTR_08
+    db $02, NOTE_C6, INSTR_08
+    db $02, NOTE_C6, INSTR_07
+    db $02, NOTE_C6, INSTR_07
     db PATTERN_JUMP
     dw Song_Credits_Ch3
 
@@ -4322,191 +4322,221 @@ Sfx_Unused_5ce6:
     db $01, ROW_RELEASE
     db SFX_END, $00, $00
 
-; Sound effect 1: priority 10, pulse channel 2.
-Sfx_01:
-    db $05, $24, $2a
+; Sound effect 1, the ball bounces off the bat.
+; Priority 10, pulse channel 2.
+Sfx_BatBounce:
+    db $05, NOTE_C5, INSTR_SFX_BAT_BOUNCE
     db SFX_END, $00, $00
 
-; Sound effect 2: priority 10, pulse channel 2.
-Sfx_02:
-    db $07, $2b, $2b
+; Sound effect 2, a brick is hit.
+; Priority 10, pulse channel 2.
+Sfx_BrickHit:
+    db $07, NOTE_G5, INSTR_SFX_BRICK_HIT
     db SFX_END, $00, $00
 
-; Sound effect 3: priority 10, pulse channel 2.
-Sfx_03:
-    db $05, $2b, $2c
+; Sound effect 3, a brick breaks.
+; Priority 10, pulse channel 2.
+Sfx_BrickBroken:
+    db $05, NOTE_G5, INSTR_SFX_BRICK_BROKEN
     db SFX_END, $00, $00
 
-; Sound effect 4: priority 10, pulse channel 2.
-Sfx_04:
-    db $04, $24, $2d
+; Sound effect 4, the ball or a projectile hits a wall or an unbreakable brick.
+; Priority 10, pulse channel 2.
+Sfx_WallBounce:
+    db $04, NOTE_C5, INSTR_SFX_WALL_BOUNCE
     db SFX_END, $00, $00
 
-; Sound effect 5: priority 20, pulse channel 2.
-Sfx_05:
-    db $03, $24, $2e
+; Sound effect 5, a power-up appears.
+; Priority 20, pulse channel 2.
+Sfx_PowerupSpawn:
+    db $03, NOTE_C5, INSTR_SFX_POWERUP_SPAWN
     db $03, ROW_RELEASE
     db SFX_END, $00, $00
 
-; Sound effect 6: priority 50, pulse channel 2.
-Sfx_06:
-    db $08, $28, $2f
+; Sound effect 6, the sticky bat catches the ball.
+; Priority 50, pulse channel 2.
+Sfx_BallSticks:
+    db $08, NOTE_E5, INSTR_SFX_BALL_STICKS
     db SFX_END, $00, $00
 
-; Sound effect 7: priority 50, pulse channel 2.
-Sfx_07:
-    db $08, $28, $30
+; Sound effect 7, the ball is launched from the bat.
+; Priority 50, pulse channel 2.
+Sfx_BallLaunch:
+    db $08, NOTE_E5, INSTR_SFX_BALL_LAUNCH
     db SFX_END, $00, $00
 
-; Sound effect 11: priority 40, noise channel.
-Sfx_11:
-    db $0a, $24, $0b
+; Sound effect 11, a grenade explodes.
+; Priority 40, noise channel.
+Sfx_GrenadeBlast:
+    db $0a, $24, NOISE_INSTR_SFX_GRENADE_BLAST
     db SFX_END, $00, $00
 
-; Sound effect 13: priority 20, noise channel.
-Sfx_13:
-    db $02, $24, $0c
+; Sound effect 13, the blob catches the ball.
+; Priority 20, noise channel.
+Sfx_BlobCatch:
+    db $02, $24, NOISE_INSTR_SFX_BLOB_CATCH
     db $06, ROW_RELEASE
     db SFX_END, $00, $00
 
-; Sound effect 8: priority 20, pulse channel 2.
-Sfx_08:
-    db $0c, $28, $31
+; Sound effect 8, a power-up is collected.
+; Priority 20, pulse channel 2.
+Sfx_PowerupCollected:
+    db $0c, NOTE_E5, INSTR_SFX_POWERUP_COLLECTED
     db SFX_END, $00, $00
 
-; Sound effect 9: priority 30, pulse channel 2.
-Sfx_09:
-    db $02, $1f, $32
+; Sound effect 9, a ball thrown by the blob bounces off an unbreakable brick.
+; Priority 30, pulse channel 2.
+Sfx_BlobBallBounce:
+    db $02, NOTE_G4, INSTR_SFX_BLOB_BALL_BOUNCE
     db SFX_END, $00, $00
 
-; Sound effect 12: priority 20, pulse channel 2.
-Sfx_12:
-    db $01, $30, $33
+; Sound effect 12, a grenade bounces off an unbreakable brick.
+; Priority 20, pulse channel 2.
+Sfx_GrenadeBounce:
+    db $01, NOTE_C6, INSTR_SFX_GRENADE_BOUNCE
     db $01, ROW_RELEASE
     db SFX_END, $00, $00
 
-; Sound effect 15: priority 21, pulse channel 2.
-Sfx_15:
-    db $03, $29, $34
+; Sound effect 15, the bat shakes while stunned.
+; Priority 21, pulse channel 2.
+Sfx_BatStunned:
+    db $03, NOTE_F5, INSTR_SFX_BAT_STUNNED
     db SFX_END, $00, $00
 
-; Sound effect 22: priority 50, pulse channel 2.
-Sfx_22:
-    db $01, $3c, $35
+; Sound effect 22, the sleeping ball wakes up.
+; Priority 50, pulse channel 2.
+Sfx_BallWakesUp:
+    db $01, NOTE_C7, INSTR_SFX_BALL_WAKES_UP
     db $01, ROW_HOLD
-    db $01, $3c, $35
+    db $01, NOTE_C7, INSTR_SFX_BALL_WAKES_UP
     db $01, ROW_HOLD
-    db $01, $3c, $35
+    db $01, NOTE_C7, INSTR_SFX_BALL_WAKES_UP
     db $01, ROW_HOLD
-    db $01, $3c, $35
+    db $01, NOTE_C7, INSTR_SFX_BALL_WAKES_UP
     db $01, ROW_HOLD
-    db $01, $3c, $35
+    db $01, NOTE_C7, INSTR_SFX_BALL_WAKES_UP
     db $01, ROW_HOLD
-    db $01, $3c, $35
+    db $01, NOTE_C7, INSTR_SFX_BALL_WAKES_UP
     db $01, ROW_HOLD
     db SFX_END, $00, $00
 
-; Sound effect 16: priority 40, pulse channel 2.
-Sfx_16:
-    db $01, $2b, $36
+; Sound effect 16, a grenade is thrown.
+; Priority 40, pulse channel 2.
+Sfx_GrenadeThrow:
+    db $01, NOTE_G5, INSTR_SFX_GRENADE_THROW
     db $02, ROW_RELEASE
     db SFX_END, $00, $00
 
-; Sound effect 10: priority 60, noise channel.
-Sfx_10:
-    db $0a, $24, $0d
+; Sound effect 10, the bat is destroyed or a UFO bomb hits it.
+; Priority 60, noise channel.
+Sfx_BatDestroyed:
+    db $0a, $24, NOISE_INSTR_SFX_BAT_DESTROYED
     db SFX_END, $00, $00
 
-; Sound effect 14: priority 20, noise channel.
-Sfx_14:
-    db $06, $24, $0e
+; Sound effect 14, the blob throws the ball back.
+; Priority 20, noise channel.
+Sfx_BlobThrow:
+    db $06, $24, NOISE_INSTR_SFX_BLOB_THROW
     db SFX_END, $00, $00
 
-; Sound effect 17: priority 40, noise channel.
-Sfx_17:
-    db $08, $24, $0f
+; Sound effect 17, a plasma shot.
+; Priority 40, noise channel.
+Sfx_PlasmaShot:
+    db $08, $24, NOISE_INSTR_SFX_PLASMA_SHOT
     db SFX_END, $00, $00
 
-; Sound effect 18: priority 40, noise channel.
-Sfx_18:
-    db $04, $18, $10
+; Sound effect 18, a rocket shot.
+; Priority 40, noise channel.
+Sfx_RocketShot:
+    db $04, $18, NOISE_INSTR_SFX_ROCKET_SHOT
     db $02, ROW_RELEASE
     db SFX_END, $00, $00
 
-; Sound effect 20: priority 40, noise channel.
-Sfx_20:
-    db $06, $24, $11
+; Sound effect 20, the UFO drops a bomb.
+; Priority 40, noise channel.
+Sfx_UfoBomb:
+    db $06, $24, NOISE_INSTR_SFX_UFO_BOMB
     db SFX_END, $00, $00
 
-; Sound effect 21: priority 40, pulse channel 2.
-Sfx_21:
-    db $0a, $21, $37
+; Sound effect 21, the ball or a shot hits the UFO.
+; Priority 40, pulse channel 2.
+Sfx_UfoHit:
+    db $0a, NOTE_A4, INSTR_SFX_UFO_HIT
     db SFX_END, $00, $00
 
-; Sound effect 19: priority 40, pulse channel 2.
-Sfx_19:
-    db $05, $37, $38
+; Sound effect 19, a laser shot.
+; Priority 40, pulse channel 2.
+Sfx_LaserShot:
+    db $05, NOTE_G6, INSTR_SFX_LASER_SHOT
     db SFX_END, $00, $00
 
-; Sound effect 28: priority 100, noise channel.
-Sfx_28:
-    db $0d, $30, $12
+; Sound effect 28, a firework rocket bursts.
+; Priority 100, noise channel.
+Sfx_FireworkBurst:
+    db $0d, $30, NOISE_INSTR_SFX_FIREWORK_BURST
     db SFX_END, $00, $00
 
-; Sound effect 23: priority 50, pulse channel 2.
-Sfx_23:
-    db $06, $2d, $39
+; Sound effect 23, Antigravity ends.
+; Priority 50, pulse channel 2.
+Sfx_AntigravityEnd:
+    db $06, NOTE_A5, INSTR_SFX_ANTIGRAVITY_END
     db $05, ROW_RELEASE
     db SFX_END, $00, $00
 
-; Sound effect 24: priority 50, pulse channel 2.
-Sfx_24:
-    db $06, $2b, $3a
+; Sound effect 24, Ghost ends.
+; Priority 50, pulse channel 2.
+Sfx_GhostEnd:
+    db $06, NOTE_G5, INSTR_SFX_GHOST_END
     db $06, ROW_RELEASE
     db SFX_END, $00, $00
 
-; Sound effect 25: priority 60, noise channel.
-Sfx_25:
-    db $01, $24, $13
+; Sound effect 25, the cursor moves or a value changes in a menu.
+; Priority 60, noise channel.
+Sfx_MenuMove:
+    db $01, $24, NOISE_INSTR_SFX_MENU_MOVE
     db SFX_END, $00, $00
 
-; Sound effect 26: priority 100, pulse channel 2.
-Sfx_26:
-    db $0a, $29, $3b
+; Sound effect 26, a menu choice or a screen is confirmed.
+; Priority 100, pulse channel 2.
+Sfx_MenuSelect:
+    db $0a, NOTE_F5, INSTR_SFX_MENU_SELECT
     db SFX_END, $00, $00
 
-; Sound effect 27: priority 100, noise channel.
-Sfx_27:
-    db $0a, $24, $14
+; Sound effect 27, a firework spark.
+; Priority 100, noise channel.
+Sfx_FireworkSpark:
+    db $0a, $24, NOISE_INSTR_SFX_FIREWORK_SPARK
     db $09, ROW_RELEASE
     db SFX_END, $00, $00
 
-; Sound effect 0: priority 127, noise channel.
-Sfx_00:
-    db $01, $24, $00
+; Sound effect 0, a silent effect that stops any other effect.
+; Priority 127, noise channel.
+Sfx_Silence:
+    db $01, $24, NOISE_INSTR_SILENT
     db SFX_END, $00, $00
 
-; Sound effect 29: priority 80, pulse channel 2.
+; Sound effect 29, not played by the game.
+; Priority 80, pulse channel 2.
 Sfx_29:
-    db $03, $24, $3c
+    db $03, NOTE_C5, INSTR_3C
     db $01, ROW_RELEASE
-    db $03, $25, $3c
+    db $03, NOTE_Cs5, INSTR_3C
     db $01, ROW_RELEASE
-    db $03, $24, $3c
+    db $03, NOTE_C5, INSTR_3C
     db $01, ROW_RELEASE
-    db $03, $25, $3c
+    db $03, NOTE_Cs5, INSTR_3C
     db $01, ROW_RELEASE
-    db $03, $24, $3c
+    db $03, NOTE_C5, INSTR_3C
     db $01, ROW_RELEASE
-    db $03, $25, $3c
+    db $03, NOTE_Cs5, INSTR_3C
     db $01, ROW_RELEASE
-    db $03, $24, $3c
+    db $03, NOTE_C5, INSTR_3C
     db $01, ROW_RELEASE
-    db $03, $25, $3c
+    db $03, NOTE_Cs5, INSTR_3C
     db $01, ROW_RELEASE
-    db $03, $24, $3c
+    db $03, NOTE_C5, INSTR_3C
     db $01, ROW_RELEASE
-    db $03, $25, $3c
+    db $03, NOTE_Cs5, INSTR_3C
     db $01, ROW_RELEASE
     db SFX_END, $00, $00
 
@@ -4522,25 +4552,25 @@ PitchMode_00:
     db TABLE_END
     dw PitchMode_00
 
-PitchMode_01:
+PitchMode_Offset:
     db $ff, $00
     db TABLE_END
-    dw PitchMode_01
+    dw PitchMode_Offset
 
-PitchMode_02:
+PitchMode_Note:
     db $ff, $01
     db TABLE_END
-    dw PitchMode_02
+    dw PitchMode_Note
 
-PitchMode_03:
+PitchMode_NoteOffset:
     db $ff, $02
     db TABLE_END
-    dw PitchMode_03
+    dw PitchMode_NoteOffset
 
-Arpeggio_00:
+Arpeggio_None:
     db $ff, $00
     db TABLE_END
-    dw Arpeggio_00
+    dw Arpeggio_None
 
 PitchSlide_00:
     db $ff, $00, $00
@@ -4602,12 +4632,12 @@ PitchSlide_05:
 ; Pulse instrument $00, not used.
 Instrument_00:
     db $80, $01, $00
-    dw Arpeggio_00 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
-; Noise instrument $02.
-NoiseInstrument_02:
+; Noise instrument $02, a kick drum: low noise with a fast decay, played with the pulse kick.
+NoiseInstrument_Kick:
     db $00, $51, $91
-    dw NoiseShape_00 - 1, Arpeggio_00 - 1
+    dw NoiseShape_00 - 1, Arpeggio_None - 1
 
 NoiseShape_00:
     db $ff, $44
@@ -4617,7 +4647,7 @@ NoiseShape_00:
 ; Noise instrument $04, not used.
 NoiseInstrument_04:
     db $00, $47, $01
-    dw NoiseShape_01 - 1, Arpeggio_00 - 1
+    dw NoiseShape_01 - 1, Arpeggio_None - 1
 
 ; Noise instrument $03.
 NoiseInstrument_03:
@@ -4629,10 +4659,10 @@ NoiseShape_01:
     db TABLE_END
     dw NoiseShape_01
 
-; Noise instrument $01.
-NoiseInstrument_01:
+; Noise instrument $01, a snare drum: noise with a slower decay, played with the pulse snare.
+NoiseInstrument_Snare:
     db $80, $44, $01
-    dw NoiseShape_02 - 1, Arpeggio_00 - 1
+    dw NoiseShape_02 - 1, Arpeggio_None - 1
 
 NoiseShape_02:
     db $ff, $32
@@ -4642,7 +4672,7 @@ NoiseShape_02:
 ; Wave instrument $02.
 Instrument_02:
     dw WaveVolume_00 - 1, WaveVolume_Silent - 1
-    dw Arpeggio_00 - 1, PitchSlide_16.entry - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_16.entry - 2, PitchMode_NoteOffset - 1
 
 WaveVolume_00:
     db $04, $20
@@ -4654,12 +4684,12 @@ WaveVolume_00:
 Instrument_0E:
 Instrument_29:
     dw WaveVolume_02.loop - 1, WaveVolume_Silent - 1
-    dw Arpeggio_00 - 1, PitchSlide_16 - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_16 - 2, PitchMode_NoteOffset - 1
 
 ; Wave instrument $1f, not used.
 Instrument_1F:
     dw WaveVolume_02.loop - 1, WaveVolume_Silent - 1
-    dw Arpeggio_01 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_01 - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_01:
     db $01, $0c
@@ -4670,12 +4700,12 @@ Arpeggio_01:
 ; Wave instrument $1b, not used.
 Instrument_1B:
     dw WaveVolume_02.loop - 1, WaveVolume_Silent - 1
-    dw Arpeggio_00 - 1, PitchSlide_05 - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_05 - 2, PitchMode_NoteOffset - 1
 
 ; Wave instrument $26, not used.
 Instrument_26:
     dw WaveVolume_02.loop - 1, WaveVolume_Silent - 1
-    dw Arpeggio_00 - 1, PitchSlide_06 - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_06 - 2, PitchMode_NoteOffset - 1
 
 PitchSlide_06:
     db $03, $02, $00
@@ -4710,7 +4740,7 @@ PitchSlide_06:
 ; Wave instrument $1a, not used.
 Instrument_1A:
     dw WaveVolume_01 - 1, WaveVolume_Silent - 1
-    dw Arpeggio_00 - 1, PitchSlide_07 - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_07 - 2, PitchMode_NoteOffset - 1
 
 WaveVolume_01:
     db $28, $20
@@ -4730,7 +4760,7 @@ PitchSlide_07:
 ; Wave instrument $17, not used.
 Instrument_17:
     dw WaveVolume_02.loop - 1, WaveVolume_03 - 1
-    dw Arpeggio_00 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
 WaveVolume_02:
     db $03, $60
@@ -4749,7 +4779,7 @@ WaveVolume_03:
 ; Not in the instrument tables.
 Instrument_Unused_5f73:
     dw WaveVolume_04 - 1, WaveVolume_Silent - 1
-    dw Arpeggio_00 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
 WaveVolume_04:
     db $06, $20
@@ -4780,7 +4810,7 @@ WaveVolume_07:
 ; Wave instrument $27, not used.
 Instrument_27:
     dw WaveVolume_08 - 1, WaveVolume_09 - 1
-    dw Arpeggio_02 - 1, PitchSlide_05 - 2, PitchMode_03 - 1
+    dw Arpeggio_02 - 1, PitchSlide_05 - 2, PitchMode_NoteOffset - 1
 
 WaveVolume_08:
     db $0a, $60
@@ -4808,42 +4838,42 @@ Arpeggio_02:
 ; Wave instrument $07.
 Instrument_07:
     dw WaveVolume_07 - 1, WaveVolume_Silent - 1
-    dw Arpeggio_03 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_03 - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
 ; Wave instrument $08.
 Instrument_08:
     dw WaveVolume_07 - 1, WaveVolume_Silent - 1
-    dw Arpeggio_04 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_04 - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
 ; Wave instrument $09.
 Instrument_09:
     dw WaveVolume_07 - 1, WaveVolume_Silent - 1
-    dw Arpeggio_05 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_05 - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
 ; Wave instrument $0a.
 Instrument_0A:
     dw WaveVolume_07 - 1, WaveVolume_Silent - 1
-    dw Arpeggio_06 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_06 - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
 ; Wave instrument $0b.
 Instrument_0B:
     dw WaveVolume_07 - 1, WaveVolume_Silent - 1
-    dw Arpeggio_07 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_07 - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
 ; Wave instrument $0c.
 Instrument_0C:
     dw WaveVolume_07 - 1, WaveVolume_Silent - 1
-    dw Arpeggio_08 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_08 - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
 ; Wave instrument $0d.
 Instrument_0D:
     dw WaveVolume_07 - 1, WaveVolume_Silent - 1
-    dw Arpeggio_09 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_09 - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
 ; Wave instrument $12, not used.
 Instrument_12:
     dw WaveVolume_07 - 1, WaveVolume_Silent - 1
-    dw Arpeggio_10 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_10 - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_03:
     db $02, $fc
@@ -4898,7 +4928,7 @@ Arpeggio_10:
 ; Pulse instrument $1c, not used.
 Instrument_1C:
     db $80, $38, $21
-    dw Arpeggio_12 - 1, PitchSlide_08 - 2, PitchMode_03 - 1
+    dw Arpeggio_12 - 1, PitchSlide_08 - 2, PitchMode_NoteOffset - 1
 
 ; Nothing points here.
 Table_01:
@@ -4933,7 +4963,7 @@ PitchSlide_08:
 ; Pulse instrument $04.
 Instrument_04:
     db $80, $c1, $21
-    dw Arpeggio_11 - 1, PitchSlide_05 - 2, PitchMode_03 - 1
+    dw Arpeggio_11 - 1, PitchSlide_05 - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_11:
     db $01, $0c
@@ -4954,7 +4984,7 @@ Arpeggio_12:
 ; Pulse instrument $28, not used.
 Instrument_28:
     db $00, $1f, $f7
-    dw Arpeggio_13 - 1, PitchSlide_05 - 2, PitchMode_03 - 1
+    dw Arpeggio_13 - 1, PitchSlide_05 - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_13:
     db $04, $00
@@ -4969,7 +4999,7 @@ Arpeggio_13:
 ; Pulse instrument $20, not used.
 Instrument_20:
     db $80, $b3, $21
-    dw Arpeggio_14 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_14 - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_14:
     db $02, $00
@@ -4981,7 +5011,7 @@ Arpeggio_14:
 ; Pulse instrument $23.
 Instrument_23:
     db $80, $a8, $a4
-    dw Arpeggio_00 - 1, PitchSlide_04 - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_04 - 2, PitchMode_NoteOffset - 1
 
 PitchSlide_09:
     db $01, $ec, $ff
@@ -4993,17 +5023,17 @@ PitchSlide_09:
 Instrument_22:
 Instrument_24:
     db $80, $a8, $a4
-    dw Arpeggio_00 - 1, PitchSlide_09 - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_09 - 2, PitchMode_NoteOffset - 1
 
 ; Not in the instrument tables.
 Instrument_Unused_60ed:
     db $00, $f2, $21
-    dw Arpeggio_03 - 1, PitchSlide_04.loop - 2, PitchMode_03 - 1
+    dw Arpeggio_03 - 1, PitchSlide_04.loop - 2, PitchMode_NoteOffset - 1
 
 ; Pulse instrument $25.
 Instrument_25:
     db $40, $e8, $e7
-    dw Arpeggio_07 - 1, PitchSlide_10 - 2, PitchMode_03 - 1
+    dw Arpeggio_07 - 1, PitchSlide_10 - 2, PitchMode_NoteOffset - 1
 
 PitchSlide_10:
     db $03, $01, $00
@@ -5019,7 +5049,7 @@ PitchSlide_10:
 ; Pulse instrument $05.
 Instrument_05:
     db $80, $c2, $21
-    dw Arpeggio_15 - 1, PitchSlide_11 - 2, PitchMode_03 - 1
+    dw Arpeggio_15 - 1, PitchSlide_11 - 2, PitchMode_NoteOffset - 1
 
 PitchSlide_11:
     db $5a, $00, $00
@@ -5034,10 +5064,10 @@ Arpeggio_15:
     db TABLE_END
     dw Arpeggio_15
 
-; Pulse instrument $1e.
-Instrument_1E:
+; Pulse instrument $1e, a kick drum: a fast downward pitch sweep.
+Instrument_PulseKick:
     db $80, $e1, $21
-    dw Arpeggio_16 - 1, PitchSlide_12 - 2, PitchMode_01 - 1
+    dw Arpeggio_16 - 1, PitchSlide_12 - 2, PitchMode_Offset - 1
 
 PitchSlide_12:
     db $01, $4c, $04
@@ -5046,10 +5076,10 @@ PitchSlide_12:
     db TABLE_END
     dw PitchSlide_12
 
-; Pulse instrument $06.
-Instrument_06:
+; Pulse instrument $06, a snare drum: a pitch sweep that falls from a higher start.
+Instrument_PulseSnare:
     db $80, $f1, $21
-    dw Arpeggio_16 - 1, PitchSlide_13 - 2, PitchMode_01 - 1
+    dw Arpeggio_16 - 1, PitchSlide_13 - 2, PitchMode_Offset - 1
 
 Arpeggio_16:
     db $01, $00
@@ -5100,7 +5130,7 @@ PitchMode_04:
 ; Pulse instrument $18.
 Instrument_18:
     db $40, $83, $11
-    dw Arpeggio_18 - 1, PitchSlide_04.loop - 2, PitchMode_03 - 1
+    dw Arpeggio_18 - 1, PitchSlide_04.loop - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_18:
     db $06, $00
@@ -5111,7 +5141,7 @@ Arpeggio_18:
 ; Pulse instrument $19.
 Instrument_19:
     db $40, $72, $21
-    dw Arpeggio_19 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_19 - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_19:
     db $01, $00
@@ -5122,7 +5152,7 @@ Arpeggio_19:
 ; Pulse instrument $03.
 Instrument_03:
     db $80, $c1, $21
-    dw Arpeggio_20 - 1, PitchSlide_05 - 2, PitchMode_03 - 1
+    dw Arpeggio_20 - 1, PitchSlide_05 - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_20:
     db $01, $0c
@@ -5136,7 +5166,7 @@ Arpeggio_20:
 ; Not in the instrument tables.
 Instrument_Unused_61c1:
     db $80, $c7, $01
-    dw Arpeggio_21 - 1, PitchSlide_05 - 2, PitchMode_03 - 1
+    dw Arpeggio_21 - 1, PitchSlide_05 - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_21:
     db $01, $f4
@@ -5190,7 +5220,7 @@ WaveVolume_12:
 ; Pulse instrument $14.
 Instrument_14:
     db $80, $52, $21
-    dw Arpeggio_22 - 1, PitchSlide_05 - 2, PitchMode_03 - 1
+    dw Arpeggio_22 - 1, PitchSlide_05 - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_22:
     db $01, $00
@@ -5201,12 +5231,12 @@ Arpeggio_22:
 ; Pulse instrument $1d, not used.
 Instrument_1D:
     db $c0, $0e, $f7
-    dw Arpeggio_00 - 1, PitchSlide_03 - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_03 - 2, PitchMode_NoteOffset - 1
 
 ; Wave instrument $15.
 Instrument_15:
     dw WaveVolume_13 - 1, WaveVolume_Silent - 1
-    dw Arpeggio_00 - 1, PitchSlide_04.loop - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_04.loop - 2, PitchMode_NoteOffset - 1
 
 WaveVolume_13:
     db $04, $20
@@ -5226,7 +5256,7 @@ PitchSlide_17:
 ; Pulse instrument $16, not used.
 Instrument_16:
     db $80, $e1, $62
-    dw Arpeggio_00 - 1, PitchSlide_18 - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_18 - 2, PitchMode_NoteOffset - 1
 
 PitchSlide_18:
     db $01, $00, $00
@@ -5243,7 +5273,7 @@ PitchSlide_18:
 ; Pulse instrument $13.
 Instrument_13:
     db $80, $d2, $a3
-    dw Arpeggio_23 - 1, PitchSlide_19 - 2, PitchMode_03 - 1
+    dw Arpeggio_23 - 1, PitchSlide_19 - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_23:
     db $01, $0c
@@ -5261,7 +5291,7 @@ PitchSlide_19:
 ; Pulse instrument $21, not used.
 Instrument_21:
     db $80, $a8, $a3
-    dw Arpeggio_00 - 1, PitchSlide_20 - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_20 - 2, PitchMode_NoteOffset - 1
 
 PitchSlide_20:
     db $01, $f0, $ff
@@ -5281,7 +5311,7 @@ PitchSlide_21:
 ; Pulse instrument $3c.
 Instrument_3C:
     db $80, $f8, $61
-    dw Arpeggio_24 - 1, PitchSlide_04.loop - 2, PitchMode_03 - 1
+    dw Arpeggio_24 - 1, PitchSlide_04.loop - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_24:
     db $01, $f4
@@ -5291,10 +5321,10 @@ Arpeggio_24:
     db TABLE_END
     dw Arpeggio_24
 
-; Pulse instrument $3b.
-Instrument_3B:
+; Pulse instrument $3b, used only by Sfx_MenuSelect.
+Instrument_SfxMenuSelect:
     db $60, $f3, $e2
-    dw Arpeggio_25 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_25 - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_25:
     db $04, $00
@@ -5312,10 +5342,10 @@ PitchSlide_22:
     db TABLE_END
     dw PitchSlide_22
 
-; Pulse instrument $2a.
-Instrument_2A:
+; Pulse instrument $2a, used only by Sfx_BatBounce.
+Instrument_SfxBatBounce:
     db $60, $e2, $c1
-    dw Arpeggio_26 - 1, PitchSlide_23 - 2, PitchMode_03 - 1
+    dw Arpeggio_26 - 1, PitchSlide_23 - 2, PitchMode_NoteOffset - 1
 
 PitchSlide_23:
     db $01, $01, $00
@@ -5330,15 +5360,15 @@ Arpeggio_26:
     db TABLE_END
     dw Arpeggio_26
 
-; Pulse instrument $2b.
-Instrument_2B:
+; Pulse instrument $2b, used only by Sfx_BrickHit.
+Instrument_SfxBrickHit:
     db $60, $e3, $c1
-    dw Arpeggio_26 - 1, PitchSlide_23 - 2, PitchMode_03 - 1
+    dw Arpeggio_26 - 1, PitchSlide_23 - 2, PitchMode_NoteOffset - 1
 
-; Pulse instrument $2c.
-Instrument_2C:
+; Pulse instrument $2c, used only by Sfx_BrickBroken.
+Instrument_SfxBrickBroken:
     db $80, $e2, $c1
-    dw Arpeggio_27 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_27 - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_27:
     db $01, $f4
@@ -5353,10 +5383,10 @@ PitchSlide_24:
     db TABLE_END
     dw PitchSlide_24
 
-; Pulse instrument $2d.
-Instrument_2D:
+; Pulse instrument $2d, used only by Sfx_WallBounce.
+Instrument_SfxWallBounce:
     db $80, $c3, $c1
-    dw Arpeggio_28 - 1, PitchSlide_24 - 2, PitchMode_03 - 1
+    dw Arpeggio_28 - 1, PitchSlide_24 - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_28:
     db $01, $00
@@ -5364,10 +5394,10 @@ Arpeggio_28:
     db TABLE_END
     dw Arpeggio_28
 
-; Pulse instrument $31.
-Instrument_31:
+; Pulse instrument $31, used only by Sfx_PowerupCollected.
+Instrument_SfxPowerupCollected:
     db $c0, $f4, $41
-    dw Arpeggio_29 - 1, PitchSlide_25 - 2, PitchMode_03 - 1
+    dw Arpeggio_29 - 1, PitchSlide_25 - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_29:
     db $01, $00
@@ -5383,10 +5413,10 @@ PitchSlide_25:
     db TABLE_END
     dw PitchSlide_25
 
-; Pulse instrument $36.
-Instrument_36:
+; Pulse instrument $36, used only by Sfx_GrenadeThrow.
+Instrument_SfxGrenadeThrow:
     db $80, $59, $c1
-    dw Arpeggio_30 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_30 - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_30:
     db $01, $00
@@ -5421,10 +5451,10 @@ PitchSlide_26:
     db TABLE_END
     dw PitchSlide_26
 
-; Pulse instrument $37.
-Instrument_37:
+; Pulse instrument $37, used only by Sfx_UfoHit.
+Instrument_SfxUfoHit:
     db $00, $f4, $41
-    dw Arpeggio_00 - 1, PitchSlide_27 - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_27 - 2, PitchMode_NoteOffset - 1
 
 PitchSlide_27:
     db $04, $08, $00
@@ -5432,10 +5462,10 @@ PitchSlide_27:
     db TABLE_END
     dw PitchSlide_27
 
-; Pulse instrument $38.
-Instrument_38:
+; Pulse instrument $38, used only by Sfx_LaserShot.
+Instrument_SfxLaserShot:
     db $80, $f2, $41
-    dw Arpeggio_31 - 1, PitchSlide_28 - 2, PitchMode_03 - 1
+    dw Arpeggio_31 - 1, PitchSlide_28 - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_31:
     db $01, $f4
@@ -5454,10 +5484,10 @@ PitchSlide_28:
     db TABLE_END
     dw PitchSlide_28
 
-; Noise instrument $12.
-NoiseInstrument_12:
+; Noise instrument $12, used only by Sfx_FireworkBurst.
+NoiseInstrument_SfxFireworkBurst:
     db $00, $c5, $41
-    dw NoiseShape_03 - 1, Arpeggio_00 - 1
+    dw NoiseShape_03 - 1, Arpeggio_None - 1
 
 NoiseShape_03:
     db $04, $56
@@ -5465,10 +5495,10 @@ NoiseShape_03:
     db TABLE_END
     dw NoiseShape_03
 
-; Pulse instrument $39.
-Instrument_39:
+; Pulse instrument $39, used only by Sfx_AntigravityEnd.
+Instrument_SfxAntigravityEnd:
     db $80, $e8, $a3
-    dw Arpeggio_32 - 1, PitchSlide_29 - 2, PitchMode_03 - 1
+    dw Arpeggio_32 - 1, PitchSlide_29 - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_32:
     db $04, $05
@@ -5482,10 +5512,10 @@ PitchSlide_29:
     db TABLE_END
     dw PitchSlide_29
 
-; Pulse instrument $3a.
-Instrument_3A:
+; Pulse instrument $3a, used only by Sfx_GhostEnd.
+Instrument_SfxGhostEnd:
     db $40, $f8, $f3
-    dw Arpeggio_00 - 1, PitchSlide_30 - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_30 - 2, PitchMode_NoteOffset - 1
 
 PitchSlide_30:
     db $0c, $06, $00
@@ -5493,10 +5523,10 @@ PitchSlide_30:
     db TABLE_END
     dw PitchSlide_30
 
-; Pulse instrument $34.
-Instrument_34:
+; Pulse instrument $34, used only by Sfx_BatStunned.
+Instrument_SfxBatStunned:
     db $80, $c2, $41
-    dw Arpeggio_00 - 1, PitchSlide_31 - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_31 - 2, PitchMode_NoteOffset - 1
 
 PitchSlide_31:
     db $07, $05, $00
@@ -5504,10 +5534,10 @@ PitchSlide_31:
     db TABLE_END
     dw PitchSlide_31
 
-; Pulse instrument $35.
-Instrument_35:
+; Pulse instrument $35, used only by Sfx_BallWakesUp.
+Instrument_SfxBallWakesUp:
     db $80, $c1, $51
-    dw Arpeggio_33 - 1, PitchSlide_00 - 2, PitchMode_02 - 1
+    dw Arpeggio_33 - 1, PitchSlide_00 - 2, PitchMode_Note - 1
 
 Arpeggio_33:
     db $01, $0f
@@ -5515,10 +5545,10 @@ Arpeggio_33:
     db TABLE_END
     dw Arpeggio_33
 
-; Pulse instrument $32.
-Instrument_32:
+; Pulse instrument $32, used only by Sfx_BlobBallBounce.
+Instrument_SfxBlobBallBounce:
     db $80, $f1, $c1
-    dw Arpeggio_34 - 1, PitchSlide_32 - 2, PitchMode_03 - 1
+    dw Arpeggio_34 - 1, PitchSlide_32 - 2, PitchMode_NoteOffset - 1
 
 PitchSlide_32:
     db $ff, $0a, $00
@@ -5531,10 +5561,10 @@ Arpeggio_34:
     db TABLE_END
     dw Arpeggio_34
 
-; Pulse instrument $33.
-Instrument_33:
+; Pulse instrument $33, used only by Sfx_GrenadeBounce.
+Instrument_SfxGrenadeBounce:
     db $80, $a1, $11
-    dw Arpeggio_35 - 1, PitchSlide_33 - 2, PitchMode_03 - 1
+    dw Arpeggio_35 - 1, PitchSlide_33 - 2, PitchMode_NoteOffset - 1
 
 Arpeggio_35:
     db $01, $0c
@@ -5549,10 +5579,10 @@ PitchSlide_33:
     db TABLE_END
     dw PitchSlide_33
 
-; Pulse instrument $2e.
-Instrument_2E:
+; Pulse instrument $2e, used only by Sfx_PowerupSpawn.
+Instrument_SfxPowerupSpawn:
     db $00, $f8, $f1
-    dw Arpeggio_36 - 1, PitchSlide_00 - 2, PitchMode_02 - 1
+    dw Arpeggio_36 - 1, PitchSlide_00 - 2, PitchMode_Note - 1
 
 Arpeggio_36:
     db $01, $00
@@ -5563,10 +5593,10 @@ Arpeggio_36:
     db TABLE_END
     dw Arpeggio_36
 
-; Pulse instrument $2f.
-Instrument_2F:
+; Pulse instrument $2f, used only by Sfx_BallSticks.
+Instrument_SfxBallSticks:
     db $80, $f3, $c1
-    dw Arpeggio_37 - 1, PitchSlide_00 - 2, PitchMode_02 - 1
+    dw Arpeggio_37 - 1, PitchSlide_00 - 2, PitchMode_Note - 1
 
 Arpeggio_37:
     db $01, $05
@@ -5578,10 +5608,10 @@ Arpeggio_37:
     db TABLE_END
     dw Arpeggio_37
 
-; Pulse instrument $30.
-Instrument_30:
+; Pulse instrument $30, used only by Sfx_BallLaunch.
+Instrument_SfxBallLaunch:
     db $80, $f3, $a7
-    dw Arpeggio_00 - 1, PitchSlide_34 - 2, PitchMode_00 - 1
+    dw Arpeggio_None - 1, PitchSlide_34 - 2, PitchMode_00 - 1
 
 PitchSlide_34:
     db $01, $dc, $05
@@ -5592,7 +5622,7 @@ PitchSlide_34:
 ; Noise instrument $0a, not used.
 NoiseInstrument_0A:
     db $80, $f1, $41
-    dw NoiseShape_04 - 1, Arpeggio_00 - 1
+    dw NoiseShape_04 - 1, Arpeggio_None - 1
 
 NoiseShape_04:
     db $02, $44
@@ -5602,10 +5632,10 @@ NoiseShape_04:
     db TABLE_END
     dw NoiseShape_04
 
-; Noise instrument $14.
-NoiseInstrument_14:
+; Noise instrument $14, used only by Sfx_FireworkSpark.
+NoiseInstrument_SfxFireworkSpark:
     db $00, $58, $87
-    dw NoiseShape_05 - 1, Arpeggio_00 - 1
+    dw NoiseShape_05 - 1, Arpeggio_None - 1
 
 NoiseShape_05:
     db $03, $46
@@ -5622,10 +5652,10 @@ NoiseShape_05:
     db TABLE_END
     dw NoiseShape_05
 
-; Noise instrument $0e.
-NoiseInstrument_0E:
+; Noise instrument $0e, used only by Sfx_BlobThrow.
+NoiseInstrument_SfxBlobThrow:
     db $00, $c3, $a1
-    dw NoiseShape_06 - 1, Arpeggio_00 - 1
+    dw NoiseShape_06 - 1, Arpeggio_None - 1
 
 NoiseShape_06:
     db $02, $33
@@ -5647,10 +5677,10 @@ NoiseShape_06:
     db TABLE_END
     dw NoiseShape_06
 
-; Noise instrument $0b.
-NoiseInstrument_0B:
+; Noise instrument $0b, used only by Sfx_GrenadeBlast.
+NoiseInstrument_SfxGrenadeBlast:
     db $00, $e4, $41
-    dw NoiseShape_07 - 1, Arpeggio_00 - 1
+    dw NoiseShape_07 - 1, Arpeggio_None - 1
 
 NoiseShape_07:
     db $0a, $55
@@ -5659,10 +5689,10 @@ NoiseShape_07:
     db TABLE_END
     dw NoiseShape_07
 
-; Noise instrument $11.
-NoiseInstrument_11:
+; Noise instrument $11, used only by Sfx_UfoBomb.
+NoiseInstrument_SfxUfoBomb:
     db $00, $e2, $41
-    dw NoiseShape_08 - 1, Arpeggio_00 - 1
+    dw NoiseShape_08 - 1, Arpeggio_None - 1
 
 NoiseShape_08:
     db $01, $1b
@@ -5697,10 +5727,10 @@ NoiseShape_08:
     db TABLE_END
     dw NoiseShape_08
 
-; Noise instrument $0f.
-NoiseInstrument_0F:
+; Noise instrument $0f, used only by Sfx_PlasmaShot.
+NoiseInstrument_SfxPlasmaShot:
     db $00, $e3, $41
-    dw NoiseShape_09 - 1, Arpeggio_00 - 1
+    dw NoiseShape_09 - 1, Arpeggio_None - 1
 
 NoiseShape_09:
     db $02, $32
@@ -5721,10 +5751,10 @@ NoiseShape_09:
     db TABLE_END
     dw NoiseShape_09
 
-; Noise instrument $13.
-NoiseInstrument_13:
+; Noise instrument $13, used only by Sfx_MenuMove.
+NoiseInstrument_SfxMenuMove:
     db $00, $e1, $e1
-    dw NoiseShape_10 - 1, Arpeggio_00 - 1
+    dw NoiseShape_10 - 1, Arpeggio_None - 1
 
 NoiseShape_10:
     db $03, $2a
@@ -5736,17 +5766,17 @@ NoiseShape_10:
 ; Noise instrument $15, not used.
 NoiseInstrument_15:
     db $00, $78, $41
-    dw NoiseShape_11 - 1, Arpeggio_00 - 1
+    dw NoiseShape_11 - 1, Arpeggio_None - 1
 
 NoiseShape_11:
     db $14, $34
     db TABLE_END
     dw NoiseShape_11
 
-; Noise instrument $0c.
-NoiseInstrument_0C:
+; Noise instrument $0c, used only by Sfx_BlobCatch.
+NoiseInstrument_SfxBlobCatch:
     db $80, $69, $d2
-    dw NoiseShape_12 - 1, Arpeggio_00 - 1
+    dw NoiseShape_12 - 1, Arpeggio_None - 1
 
 NoiseShape_12:
     db $02, $56
@@ -5766,10 +5796,10 @@ NoiseShape_12:
     db TABLE_END
     dw NoiseShape_12.loop
 
-; Noise instrument $0d.
-NoiseInstrument_0D:
+; Noise instrument $0d, used only by Sfx_BatDestroyed.
+NoiseInstrument_SfxBatDestroyed:
     db $80, $f4, $e5
-    dw NoiseShape_13 - 1, Arpeggio_00 - 1
+    dw NoiseShape_13 - 1, Arpeggio_None - 1
 
 NoiseShape_13:
     db $03, $53
@@ -5780,10 +5810,10 @@ NoiseShape_13:
     db TABLE_END
     dw NoiseShape_13.loop
 
-; Noise instrument $10.
-NoiseInstrument_10:
+; Noise instrument $10, used only by Sfx_RocketShot.
+NoiseInstrument_SfxRocketShot:
     db $00, $69, $b2
-    dw NoiseShape_14 - 1, Arpeggio_00 - 1
+    dw NoiseShape_14 - 1, Arpeggio_None - 1
 
 NoiseShape_14:
     db $02, $66
@@ -5802,10 +5832,10 @@ NoiseShape_14:
     db TABLE_END
     dw NoiseShape_14.loop
 
-; Pulse instrument $10.
-Instrument_10:
+; Pulse instrument $10, silent. The silence song uses it.
+Instrument_Silent:
     db $80, $01, $01
-    dw Arpeggio_00 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
 ; Noise instrument $00, $05, $06, $07, $08, $09.
 ; The NR43 pointer is a pitch slide table, which has 3-byte steps. Read with 2-byte steps, its loop pointer
@@ -5817,12 +5847,12 @@ NoiseInstrument_07:
 NoiseInstrument_08:
 NoiseInstrument_09:
     db $00, $01, $01
-    dw PitchSlide_00 - 1, Arpeggio_00 - 1
+    dw PitchSlide_00 - 1, Arpeggio_None - 1
 
-; Wave instrument $11.
-Instrument_11:
+; Wave instrument $11, silent.
+Instrument_WaveSilent:
     dw WaveVolume_Silent - 1, WaveVolume_Silent - 1
-    dw Arpeggio_00 - 1, PitchSlide_00 - 2, PitchMode_03 - 1
+    dw Arpeggio_None - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
 Waveform_0:
     db $f0, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -5991,388 +6021,396 @@ WaveAnim_04:
     db TABLE_END
     dw WaveAnim_04
 
-; Leftover bytes from the build of the ROM: the text "-- THE END --", some graphics and some code.
-; Nothing reads them.
-LeftoverData_006_67d3:
-    db $2d, $2d, $20, $54, $48, $45, $20, $45, $4e, $44, $20, $2d, $2d, $08, $0f, $08
-    db $0f, $0b, $0f, $0b, $0e, $09, $0e, $08, $0f, $c0, $00, $1f, $ff, $c0, $ff, $e0
-    db $9f, $90, $9f, $08, $07, $08, $07, $80, $9f, $03, $00, $ff, $ff, $00, $ff, $02
-    db $ff, $26, $fc, $60, $cc, $09, $c6, $12, $ed, $40, $f0, $80, $f0, $00, $f0, $00
-    db $f0, $00, $f0, $80, $70, $00, $f0, $80, $70, $08, $0f, $08, $0f, $08, $0f, $08
-    db $0f, $08, $0f, $00, $0f, $04, $03, $01, $00, $60, $9f, $04, $ff, $0d, $f9, $00
-    db $ff, $00, $ff, $00, $ff, $00, $ff, $80, $7f, $05, $fa, $8a, $f5, $85, $3a, $0a
-    db $f5, $05, $fa, $02, $fd, $00, $ff, $01, $fe, $40, $b0, $a0, $50, $40, $b0, $a0
-    db $50, $40, $b0, $80, $70, $20, $c0, $80, $00, $00, $00, $00, $00, $00, $00, $23
-    db $18, $1b, $20, $0b, $20, $0b, $20, $1b, $20, $00, $00, $00, $00, $00, $00, $7f
-    db $ff, $fd, $ff, $fa, $ff, $f5, $ff, $ea, $ff, $00, $00, $00, $00, $00, $00, $fe
-    db $ff, $40, $ff, $80, $c7, $18, $c7, $1c, $c7, $00, $00, $00, $00, $00, $00, $00
-    db $30, $78, $00, $7c, $00, $4c, $30, $4c, $30, $1b, $20, $1b, $20, $1b, $20, $19
-    db $20, $1c, $20, $1f, $20, $1f, $20, $1f, $20, $d4, $ff, $a8, $ff, $50, $ff, $a0
-    db $7f, $00, $00, $ff, $00, $ff, $00, $00, $ff, $1c, $c7, $1c, $c7, $1c, $c7, $0d
-    db $fe, $00, $00, $ff, $00, $ff, $00, $00, $ff, $7c, $00, $7c, $00, $7c, $00, $7c
-    db $00, $fc, $00, $fc, $00, $fc, $00, $7c, $80, $1e, $21, $1e, $21, $1e, $21, $1e
-    db $21, $1e, $21, $1e, $21, $1e, $21, $1e, $21, $00, $ff, $6b, $94, $00, $ff, $5a
-    db $a5, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $d4, $2b, $00, $ff, $00
-    db $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $3c, $c0, $3c, $c0, $3c, $c0, $3c
-    db $c0, $3c, $c0, $3c, $c0, $3c, $c0, $3c, $c0, $06, $21, $02, $25, $36, $0d, $3e
-    db $01, $1f, $00, $00, $00, $00, $00, $00, $00, $00, $ff, $00, $ff, $00, $ff, $00
-    db $ff, $55, $aa, $00, $00, $00, $00, $00, $00, $00, $ff, $00, $ff, $00, $ff, $00
-    db $ff, $55, $aa, $00, $00, $00, $00, $00, $00, $24, $c0, $20, $c4, $30, $cc, $3c
-    db $c0, $78, $80, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $02, $01, $04, $03, $09, $07, $03, $0f, $00, $00, $00, $00, $20, $1f, $95
-    db $7f, $7e, $ff, $ff, $ff, $ff, $ff, $e7, $c3, $00, $00, $00, $00, $04, $f8, $55
-    db $fe, $ea, $ff, $55, $ff, $80, $ff, $a4, $c3, $00, $00, $00, $00, $00, $00, $00
-    db $00, $40, $80, $20, $c0, $90, $e0, $00, $f0, $13, $0f, $07, $1f, $2b, $1f, $07
-    db $3f, $0b, $3f, $15, $3f, $0e, $3f, $1f, $3f, $c3, $81, $81, $81, $81, $81, $81
-    db $81, $81, $81, $80, $81, $00, $81, $00, $81, $c2, $81, $80, $81, $80, $81, $80
-    db $81, $00, $81, $00, $81, $00, $81, $00, $81, $28, $d0, $50, $a8, $2c, $d0, $04
-    db $f8, $88, $74, $54, $a8, $a8, $54, $44, $b8, $1f, $3f, $1c, $38, $08, $31, $02
-    db $34, $29, $16, $02, $1f, $15, $0f, $02, $0f, $42, $81, $24, $c3, $82, $ff, $54
-    db $ff, $08, $7f, $b0, $0f, $40, $80, $20, $c0, $42, $81, $24, $c3, $01, $fe, $2a
-    db $d5, $40, $be, $0d, $f0, $02, $01, $04, $03, $08, $f4, $24, $18, $10, $8c, $40
-    db $2c, $94, $68, $40, $b8, $a8, $50, $40, $b0, $09, $07, $04, $03, $02, $01, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $10, $e0, $04, $f8, $40, $ff, $a8
-    db $7f, $20, $1f, $00, $00, $00, $00, $00, $00, $08, $07, $21, $1e, $0a, $f5, $51
-    db $ae, $04, $f8, $00, $00, $00, $00, $00, $00, $90, $60, $20, $c0, $40, $80, $00
+; Unused text. Nothing reads it.
+UnusedText_TheEnd:
+    db "-- THE END --"
+
+; Filler. The rest of the bank is a stale copy of bank 5 from $67E0 to $7FFF.
+; Nothing runs or reads it.
+BankFiller_006:
+    db $08, $0f, $08, $0f, $0b, $0f, $0b, $0e, $09, $0e, $08, $0f, $c0, $00, $1f, $ff
+    db $c0, $ff, $e0, $9f, $90, $9f, $08, $07, $08, $07, $80, $9f, $03, $00, $ff, $ff
+    db $00, $ff, $02, $ff, $26, $fc, $60, $cc, $09, $c6, $12, $ed, $40, $f0, $80, $f0
+    db $00, $f0, $00, $f0, $00, $f0, $80, $70, $00, $f0, $80, $70, $08, $0f, $08, $0f
+    db $08, $0f, $08, $0f, $08, $0f, $00, $0f, $04, $03, $01, $00, $60, $9f, $04, $ff
+    db $0d, $f9, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $80, $7f, $05, $fa, $8a, $f5
+    db $85, $3a, $0a, $f5, $05, $fa, $02, $fd, $00, $ff, $01, $fe, $40, $b0, $a0, $50
+    db $40, $b0, $a0, $50, $40, $b0, $80, $70, $20, $c0, $80, $00, $00, $00, $00, $00
+    db $00, $00, $23, $18, $1b, $20, $0b, $20, $0b, $20, $1b, $20, $00, $00, $00, $00
+    db $00, $00, $7f, $ff, $fd, $ff, $fa, $ff, $f5, $ff, $ea, $ff, $00, $00, $00, $00
+    db $00, $00, $fe, $ff, $40, $ff, $80, $c7, $18, $c7, $1c, $c7, $00, $00, $00, $00
+    db $00, $00, $00, $30, $78, $00, $7c, $00, $4c, $30, $4c, $30, $1b, $20, $1b, $20
+    db $1b, $20, $19, $20, $1c, $20, $1f, $20, $1f, $20, $1f, $20, $d4, $ff, $a8, $ff
+    db $50, $ff, $a0, $7f, $00, $00, $ff, $00, $ff, $00, $00, $ff, $1c, $c7, $1c, $c7
+    db $1c, $c7, $0d, $fe, $00, $00, $ff, $00, $ff, $00, $00, $ff, $7c, $00, $7c, $00
+    db $7c, $00, $7c, $00, $fc, $00, $fc, $00, $fc, $00, $7c, $80, $1e, $21, $1e, $21
+    db $1e, $21, $1e, $21, $1e, $21, $1e, $21, $1e, $21, $1e, $21, $00, $ff, $6b, $94
+    db $00, $ff, $5a, $a5, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $d4, $2b
+    db $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $3c, $c0, $3c, $c0
+    db $3c, $c0, $3c, $c0, $3c, $c0, $3c, $c0, $3c, $c0, $3c, $c0, $06, $21, $02, $25
+    db $36, $0d, $3e, $01, $1f, $00, $00, $00, $00, $00, $00, $00, $00, $ff, $00, $ff
+    db $00, $ff, $00, $ff, $55, $aa, $00, $00, $00, $00, $00, $00, $00, $ff, $00, $ff
+    db $00, $ff, $00, $ff, $55, $aa, $00, $00, $00, $00, $00, $00, $24, $c0, $20, $c4
+    db $30, $cc, $3c, $c0, $78, $80, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $02, $01, $04, $03, $09, $07, $03, $0f, $00, $00, $00, $00
+    db $20, $1f, $95, $7f, $7e, $ff, $ff, $ff, $ff, $ff, $e7, $c3, $00, $00, $00, $00
+    db $04, $f8, $55, $fe, $ea, $ff, $55, $ff, $80, $ff, $a4, $c3, $00, $00, $00, $00
+    db $00, $00, $00, $00, $40, $80, $20, $c0, $90, $e0, $00, $f0, $13, $0f, $07, $1f
+    db $2b, $1f, $07, $3f, $0b, $3f, $15, $3f, $0e, $3f, $1f, $3f, $c3, $81, $81, $81
+    db $81, $81, $81, $81, $81, $81, $80, $81, $00, $81, $00, $81, $c2, $81, $80, $81
+    db $80, $81, $80, $81, $00, $81, $00, $81, $00, $81, $00, $81, $28, $d0, $50, $a8
+    db $2c, $d0, $04, $f8, $88, $74, $54, $a8, $a8, $54, $44, $b8, $1f, $3f, $1c, $38
+    db $08, $31, $02, $34, $29, $16, $02, $1f, $15, $0f, $02, $0f, $42, $81, $24, $c3
+    db $82, $ff, $54, $ff, $08, $7f, $b0, $0f, $40, $80, $20, $c0, $42, $81, $24, $c3
+    db $01, $fe, $2a, $d5, $40, $be, $0d, $f0, $02, $01, $04, $03, $08, $f4, $24, $18
+    db $10, $8c, $40, $2c, $94, $68, $40, $b8, $a8, $50, $40, $b0, $09, $07, $04, $03
+    db $02, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $10, $e0, $04, $f8
+    db $40, $ff, $a8, $7f, $20, $1f, $00, $00, $00, $00, $00, $00, $08, $07, $21, $1e
+    db $0a, $f5, $51, $ae, $04, $f8, $00, $00, $00, $00, $00, $00, $90, $60, $20, $c0
+    db $40, $80, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $18
-    db $0f, $17, $18, $0f, $10, $0e, $10, $0e, $10, $00, $00, $00, $00, $00, $00, $10
-    db $e0, $f8, $00, $78, $00, $38, $00, $38, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $18
-    db $0f, $17, $18, $0f, $10, $0f, $10, $0c, $10, $0c, $10, $0c, $10, $0e, $11, $1f
-    db $e0, $ff, $00, $fe, $00, $3c, $00, $19, $20, $18, $00, $08, $10, $18, $e0, $fc
-    db $03, $ff, $00, $3f, $00, $fe, $00, $ee, $10, $00, $00, $00, $00, $00, $00, $50
-    db $e0, $f8, $00, $f8, $00, $78, $00, $18, $00, $08, $10, $0c, $10, $0f, $10, $1f
-    db $00, $0f, $00, $00, $00, $00, $00, $00, $00, $1b, $20, $1b, $20, $1f, $20, $be
-    db $41, $ff, $00, $1f, $00, $0f, $10, $0c, $10, $fe, $10, $de, $30, $be, $60, $3f
-    db $c0, $ff, $00, $f8, $00, $f8, $00, $18, $00, $08, $00, $18, $00, $48, $30, $38
-    db $c0, $f0, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $0c, $10, $1e, $10, $1e, $10, $0f
-    db $10, $17, $08, $00, $00, $00, $00, $00, $00, $08, $10, $28, $10, $18, $20, $58
-    db $20, $f0, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $18, $0f, $17, $18, $0f, $10, $0e, $10, $0e, $10, $00, $00, $00, $00
+    db $00, $00, $10, $e0, $f8, $00, $78, $00, $38, $00, $38, $00, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $02, $01, $04, $03, $08, $07, $00, $00, $00, $00, $00, $00, $30
-    db $0f, $80, $7f, $00, $ff, $00, $ff, $00, $ff, $00, $00, $00, $00, $00, $00, $4c
-    db $b0, $a1, $5e, $53, $af, $23, $df, $47, $bf, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $40, $80, $a0, $c0, $d0, $e0, $00, $0f, $10, $0f, $00, $1f, $20
-    db $1f, $30, $1f, $18, $3f, $3f, $3f, $00, $3f, $00, $ff, $00, $ff, $07, $ff, $1f
-    db $ff, $1a, $fc, $30, $f8, $f8, $f0, $30, $f0, $27, $df, $4f, $bf, $ef, $ff, $fe
-    db $ff, $58, $3f, $0c, $1f, $1f, $0f, $0c, $0f, $e0, $f0, $e8, $f0, $80, $f8, $04
-    db $f8, $04, $f8, $00, $fc, $a8, $fc, $00, $fc, $2a, $15, $14, $2b, $00, $3f, $20
-    db $1f, $20, $1f, $01, $1f, $17, $0f, $07, $0f, $b0, $70, $38, $f0, $30, $f8, $1a
-    db $fc, $7f, $ff, $f7, $ff, $f2, $fd, $e4, $fb, $0c, $0f, $1c, $0f, $0c, $1f, $58
-    db $3f, $f8, $ff, $e2, $fd, $0d, $f2, $0e, $f1, $00, $fc, $00, $fc, $00, $fc, $04
-    db $f8, $04, $f8, $00, $f8, $08, $f0, $a0, $50, $0b, $07, $05, $03, $02, $01, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $e2, $fd, $c4, $fb, $c8, $f7, $84
-    db $7b, $30, $0f, $00, $00, $00, $00, $00, $00, $07, $f8, $07, $f8, $03, $fc, $03
-    db $fc, $0c, $f0, $00, $00, $00, $00, $00, $00, $50, $a0, $a0, $40, $c0, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $0f
-    db $1f, $10, $1f, $10, $1f, $01, $1e, $10, $1e, $00, $00, $00, $00, $00, $00, $ff
-    db $ff, $00, $ff, $80, $00, $7f, $00, $95, $6a, $00, $00, $00, $00, $00, $00, $fe
-    db $ff, $00, $ff, $0b, $00, $dd, $22, $ab, $54, $00, $00, $00, $00, $00, $00, $80
-    db $00, $00, $80, $08, $f0, $80, $78, $88, $70, $01, $1e, $10, $1f, $10, $1f, $10
-    db $1f, $11, $1e, $12, $1c, $01, $1c, $19, $04, $ff, $00, $ff, $00, $00, $ff, $00
-    db $ff, $00, $00, $ff, $00, $3f, $ff, $3f, $e4, $ff, $00, $ff, $00, $ab, $ff, $00
-    db $ff, $05, $00, $ff, $00, $fe, $ff, $fe, $93, $80, $78, $48, $f0, $80, $f8, $00
-    db $f8, $80, $78, $c0, $38, $40, $b8, $58, $a0, $09, $1c, $19, $1c, $19, $1c, $19
-    db $1c, $1b, $1c, $19, $1c, $1b, $1c, $19, $1e, $3f, $ff, $3f, $e4, $3f, $ff, $3f
-    db $fb, $3f, $ff, $3f, $fc, $3f, $ff, $ff, $00, $fe, $ff, $fe, $93, $fe, $ff, $fe
-    db $ff, $fe, $ff, $fe, $3f, $fe, $ff, $ff, $00, $40, $b0, $40, $b0, $40, $b0, $40
-    db $b0, $40, $b0, $40, $b0, $40, $b0, $a0, $70, $18, $1f, $18, $1f, $08, $1f, $10
-    db $0f, $00, $00, $00, $00, $00, $00, $00, $00, $00, $ff, $01, $fe, $00, $ff, $00
-    db $ff, $00, $00, $00, $00, $00, $00, $00, $00, $0a, $ff, $e0, $3f, $c0, $7f, $00
-    db $ff, $00, $00, $00, $00, $00, $00, $00, $00, $c0, $f0, $00, $f0, $00, $f0, $10
-    db $e0, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $08, $00, $00, $04, $06
-    db $02, $02, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $1c, $00, $5c
-    db $3e, $d7, $e2, $03, $01, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $80, $00, $80, $80, $80, $80, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $18, $0f, $17, $18, $0f, $10, $0f, $10, $0c, $10, $0c, $10, $0c, $10
+    db $0e, $11, $1f, $e0, $ff, $00, $fe, $00, $3c, $00, $19, $20, $18, $00, $08, $10
+    db $18, $e0, $fc, $03, $ff, $00, $3f, $00, $fe, $00, $ee, $10, $00, $00, $00, $00
+    db $00, $00, $50, $e0, $f8, $00, $f8, $00, $78, $00, $18, $00, $08, $10, $0c, $10
+    db $0f, $10, $1f, $00, $0f, $00, $00, $00, $00, $00, $00, $00, $1b, $20, $1b, $20
+    db $1f, $20, $be, $41, $ff, $00, $1f, $00, $0f, $10, $0c, $10, $fe, $10, $de, $30
+    db $be, $60, $3f, $c0, $ff, $00, $f8, $00, $f8, $00, $18, $00, $08, $00, $18, $00
+    db $48, $30, $38, $c0, $f0, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $0c, $10, $1e, $10
+    db $1e, $10, $0f, $10, $17, $08, $00, $00, $00, $00, $00, $00, $08, $10, $28, $10
+    db $18, $20, $58, $20, $f0, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $01, $00, $01, $00, $01, $00, $01, $00, $03, $00, $05, $03, $00, $00, $bf
-    db $7f, $7f, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $c0, $00, $20, $c0, $00, $00, $f9
-    db $7e, $fe, $7f, $ff, $7f, $ff, $7f, $7f, $7f, $00, $00, $00, $00, $00, $00, $00
-    db $00, $80, $00, $80, $00, $80, $00, $80, $00, $01, $00, $01, $00, $01, $00, $01
-    db $00, $01, $00, $01, $00, $00, $01, $00, $01, $98, $e0, $df, $3f, $ff, $ff, $ff
-    db $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $19, $07, $fb, $fc, $ff, $ff, $ff
-    db $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $80, $00, $80, $00, $80, $00, $80
-    db $00, $80, $00, $80, $00, $00, $80, $00, $80, $01, $01, $01, $01, $00, $01, $00
-    db $01, $01, $00, $00, $00, $00, $00, $00, $00, $ff, $ff, $ff, $ff, $ff, $ff, $3f
-    db $ff, $00, $ff, $82, $7d, $20, $1f, $00, $00, $ff, $ff, $ff, $ff, $ff, $ff, $fc
-    db $ff, $05, $fa, $ab, $54, $54, $a8, $00, $00, $80, $80, $80, $80, $00, $80, $80
-    db $00, $80, $00, $00, $00, $00, $00, $00, $00, $20, $00, $18, $00, $14, $08, $0e
-    db $04, $04, $02, $00, $00, $00, $00, $01, $00, $00, $00, $00, $00, $08, $07, $20
-    db $1f, $58, $3f, $bc, $7f, $3c, $ff, $18, $ff, $00, $00, $00, $00, $20, $d0, $14
-    db $e8, $0a, $f4, $07, $f8, $0b, $f4, $05, $fa, $02, $00, $0c, $00, $14, $08, $38
-    db $10, $10, $20, $00, $00, $80, $00, $80, $00, $00, $01, $00, $01, $00, $01, $00
-    db $01, $58, $3d, $00, $01, $01, $00, $00, $00, $40, $ff, $60, $ff, $40, $ff, $00
-    db $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $03, $fc, $05, $fa, $03, $fc, $05
-    db $fa, $0b, $f4, $07, $f8, $0b, $f4, $17, $e8, $c0, $00, $c0, $00, $c0, $00, $c0
-    db $00, $cd, $1e, $c0, $00, $80, $00, $80, $00, $00, $00, $00, $00, $00, $00, $04
-    db $02, $0e, $04, $14, $08, $18, $00, $20, $00, $80, $7f, $40, $3f, $20, $1f, $08
-    db $1f, $10, $0f, $14, $0f, $04, $0f, $00, $0f, $2f, $d0, $1e, $e0, $2c, $d0, $5c
-    db $a0, $38, $c0, $78, $80, $b8, $40, $78, $80, $00, $00, $00, $00, $00, $00, $10
-    db $20, $38, $10, $14, $08, $0c, $00, $02, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $0f, $00, $16, $0f, $0f, $00, $16
-    db $0f, $0f, $00, $12, $0f, $07, $00, $06, $03, $c0, $00, $34, $c8, $c8, $00, $34
-    db $c8, $c8, $00, $34, $c8, $f8, $00, $d0, $20, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $02, $01, $04, $03, $08, $07, $00, $00, $00, $00
+    db $00, $00, $30, $0f, $80, $7f, $00, $ff, $00, $ff, $00, $ff, $00, $00, $00, $00
+    db $00, $00, $4c, $b0, $a1, $5e, $53, $af, $23, $df, $47, $bf, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $40, $80, $a0, $c0, $d0, $e0, $00, $0f, $10, $0f
+    db $00, $1f, $20, $1f, $30, $1f, $18, $3f, $3f, $3f, $00, $3f, $00, $ff, $00, $ff
+    db $07, $ff, $1f, $ff, $1a, $fc, $30, $f8, $f8, $f0, $30, $f0, $27, $df, $4f, $bf
+    db $ef, $ff, $fe, $ff, $58, $3f, $0c, $1f, $1f, $0f, $0c, $0f, $e0, $f0, $e8, $f0
+    db $80, $f8, $04, $f8, $04, $f8, $00, $fc, $a8, $fc, $00, $fc, $2a, $15, $14, $2b
+    db $00, $3f, $20, $1f, $20, $1f, $01, $1f, $17, $0f, $07, $0f, $b0, $70, $38, $f0
+    db $30, $f8, $1a, $fc, $7f, $ff, $f7, $ff, $f2, $fd, $e4, $fb, $0c, $0f, $1c, $0f
+    db $0c, $1f, $58, $3f, $f8, $ff, $e2, $fd, $0d, $f2, $0e, $f1, $00, $fc, $00, $fc
+    db $00, $fc, $04, $f8, $04, $f8, $00, $f8, $08, $f0, $a0, $50, $0b, $07, $05, $03
+    db $02, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $e2, $fd, $c4, $fb
+    db $c8, $f7, $84, $7b, $30, $0f, $00, $00, $00, $00, $00, $00, $07, $f8, $07, $f8
+    db $03, $fc, $03, $fc, $0c, $f0, $00, $00, $00, $00, $00, $00, $50, $a0, $a0, $40
+    db $c0, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $0f, $1f, $10, $1f, $10, $1f, $01, $1e, $10, $1e, $00, $00, $00, $00
+    db $00, $00, $ff, $ff, $00, $ff, $80, $00, $7f, $00, $95, $6a, $00, $00, $00, $00
+    db $00, $00, $fe, $ff, $00, $ff, $0b, $00, $dd, $22, $ab, $54, $00, $00, $00, $00
+    db $00, $00, $80, $00, $00, $80, $08, $f0, $80, $78, $88, $70, $01, $1e, $10, $1f
+    db $10, $1f, $10, $1f, $11, $1e, $12, $1c, $01, $1c, $19, $04, $ff, $00, $ff, $00
+    db $00, $ff, $00, $ff, $00, $00, $ff, $00, $3f, $ff, $3f, $e4, $ff, $00, $ff, $00
+    db $ab, $ff, $00, $ff, $05, $00, $ff, $00, $fe, $ff, $fe, $93, $80, $78, $48, $f0
+    db $80, $f8, $00, $f8, $80, $78, $c0, $38, $40, $b8, $58, $a0, $09, $1c, $19, $1c
+    db $19, $1c, $19, $1c, $1b, $1c, $19, $1c, $1b, $1c, $19, $1e, $3f, $ff, $3f, $e4
+    db $3f, $ff, $3f, $fb, $3f, $ff, $3f, $fc, $3f, $ff, $ff, $00, $fe, $ff, $fe, $93
+    db $fe, $ff, $fe, $ff, $fe, $ff, $fe, $3f, $fe, $ff, $ff, $00, $40, $b0, $40, $b0
+    db $40, $b0, $40, $b0, $40, $b0, $40, $b0, $40, $b0, $a0, $70, $18, $1f, $18, $1f
+    db $08, $1f, $10, $0f, $00, $00, $00, $00, $00, $00, $00, $00, $00, $ff, $01, $fe
+    db $00, $ff, $00, $ff, $00, $00, $00, $00, $00, $00, $00, $00, $0a, $ff, $e0, $3f
+    db $c0, $7f, $00, $ff, $00, $00, $00, $00, $00, $00, $00, $00, $c0, $f0, $00, $f0
+    db $00, $f0, $10, $e0, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $08, $00
+    db $00, $04, $06, $02, $02, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $1c, $00, $5c, $3e, $d7, $e2, $03, $01, $00, $01, $01, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $80, $00, $80, $80, $80, $80, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $ff, $0c, $83, $19, $87, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $01, $fe, $b4, $fe, $68, $fe, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $ff, $0c, $83, $19, $87, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $01, $fe, $b4, $fe, $68, $fe, $32, $8f, $65, $9f, $4b, $bf, $16
-    db $ff, $80, $00, $00, $01, $00, $01, $00, $01, $d2, $fc, $a6, $f8, $4c, $f0, $98
-    db $e0, $00, $00, $00, $ff, $19, $07, $32, $0f, $32, $8f, $65, $9f, $4b, $bf, $16
-    db $ff, $80, $00, $02, $fc, $68, $fc, $f0, $9c, $d2, $fc, $a6, $f8, $4c, $f0, $98
-    db $e0, $00, $00, $00, $00, $00, $00, $00, $00, $00, $01, $00, $01, $00, $01, $00
-    db $01, $01, $00, $00, $00, $00, $00, $00, $00, $65, $1f, $cb, $3f, $96, $7f, $2d
-    db $ff, $00, $00, $00, $00, $00, $00, $00, $00, $94, $a8, $2c, $b0, $b0, $b8, $78
-    db $bc, $3c, $3e, $3e, $3f, $3f, $3f, $3f, $3f, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $80, $80, $c0, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $01, $00, $01, $00, $01, $00, $01, $00, $03, $00, $05, $03
+    db $00, $00, $bf, $7f, $7f, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $c0, $00, $20, $c0
+    db $00, $00, $f9, $7e, $fe, $7f, $ff, $7f, $ff, $7f, $7f, $7f, $00, $00, $00, $00
+    db $00, $00, $00, $00, $80, $00, $80, $00, $80, $00, $80, $00, $01, $00, $01, $00
+    db $01, $00, $01, $00, $01, $00, $01, $00, $00, $01, $00, $01, $98, $e0, $df, $3f
+    db $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $19, $07, $fb, $fc
+    db $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $80, $00, $80, $00
+    db $80, $00, $80, $00, $80, $00, $80, $00, $00, $80, $00, $80, $01, $01, $01, $01
+    db $00, $01, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, $ff, $ff, $ff, $ff
+    db $ff, $ff, $3f, $ff, $00, $ff, $82, $7d, $20, $1f, $00, $00, $ff, $ff, $ff, $ff
+    db $ff, $ff, $fc, $ff, $05, $fa, $ab, $54, $54, $a8, $00, $00, $80, $80, $80, $80
+    db $00, $80, $80, $00, $80, $00, $00, $00, $00, $00, $00, $00, $20, $00, $18, $00
+    db $14, $08, $0e, $04, $04, $02, $00, $00, $00, $00, $01, $00, $00, $00, $00, $00
+    db $08, $07, $20, $1f, $58, $3f, $bc, $7f, $3c, $ff, $18, $ff, $00, $00, $00, $00
+    db $20, $d0, $14, $e8, $0a, $f4, $07, $f8, $0b, $f4, $05, $fa, $02, $00, $0c, $00
+    db $14, $08, $38, $10, $10, $20, $00, $00, $80, $00, $80, $00, $00, $01, $00, $01
+    db $00, $01, $00, $01, $58, $3d, $00, $01, $01, $00, $00, $00, $40, $ff, $60, $ff
+    db $40, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $03, $fc, $05, $fa
+    db $03, $fc, $05, $fa, $0b, $f4, $07, $f8, $0b, $f4, $17, $e8, $c0, $00, $c0, $00
+    db $c0, $00, $c0, $00, $cd, $1e, $c0, $00, $80, $00, $80, $00, $00, $00, $00, $00
+    db $00, $00, $04, $02, $0e, $04, $14, $08, $18, $00, $20, $00, $80, $7f, $40, $3f
+    db $20, $1f, $08, $1f, $10, $0f, $14, $0f, $04, $0f, $00, $0f, $2f, $d0, $1e, $e0
+    db $2c, $d0, $5c, $a0, $38, $c0, $78, $80, $b8, $40, $78, $80, $00, $00, $00, $00
+    db $00, $00, $10, $20, $38, $10, $14, $08, $0c, $00, $02, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $0f, $00, $16, $0f
+    db $0f, $00, $16, $0f, $0f, $00, $12, $0f, $07, $00, $06, $03, $c0, $00, $34, $c8
+    db $c8, $00, $34, $c8, $c8, $00, $34, $c8, $f8, $00, $d0, $20, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $3f, $3f, $3f, $3f, $2b, $37, $01
-    db $03, $00, $01, $01, $00, $00, $00, $00, $00, $00, $80, $80, $00, $00, $80, $c0
-    db $80, $80, $c0, $00, $c0, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $01, $00, $00, $01, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $80, $7f, $02, $fd, $05, $fa, $00, $04, $00, $0e, $00, $0e, $00
-    db $0e, $0a, $04, $0d, $f2, $a0, $5f, $50, $af, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $80, $00, $00, $80, $00, $01, $00, $01, $00, $01, $00
-    db $01, $00, $01, $00, $01, $00, $01, $00, $01, $02, $fd, $00, $ff, $80, $00, $1f
-    db $40, $1f, $00, $1f, $00, $80, $00, $30, $c0, $a0, $5f, $00, $ff, $02, $01, $f1
-    db $01, $f1, $01, $f1, $01, $03, $01, $1a, $07, $00, $80, $00, $80, $00, $80, $00
-    db $80, $00, $80, $00, $80, $00, $80, $00, $80, $01, $00, $00, $01, $00, $01, $00
-    db $01, $00, $01, $00, $01, $00, $01, $00, $01, $07, $ff, $00, $ff, $7b, $ff, $7f
-    db $fb, $3d, $c2, $7b, $ff, $7f, $fb, $3d, $c2, $fc, $ff, $00, $ff, $de, $ff, $ff
-    db $de, $ef, $10, $de, $ff, $ff, $de, $ef, $10, $80, $00, $00, $80, $00, $80, $00
-    db $80, $00, $80, $00, $80, $00, $80, $00, $80, $00, $01, $00, $01, $00, $01, $00
-    db $01, $00, $01, $00, $01, $01, $00, $00, $00, $7b, $ff, $7f, $fb, $3d, $c2, $7b
-    db $ff, $7f, $fb, $3c, $c3, $02, $fc, $80, $7f, $de, $ff, $ff, $de, $ef, $10, $de
-    db $ff, $ff, $de, $2f, $d0, $40, $3f, $01, $fe, $00, $80, $00, $80, $00, $80, $00
-    db $80, $00, $80, $00, $80, $80, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $14, $14, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $08, $00, $1c, $08, $3e, $14, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $0c, $04, $0c, $08, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $18, $10, $18, $08, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $0a, $0a, $14, $14, $00, $00, $3e, $7f, $77, $63, $60
-    db $60, $60, $60, $77, $63, $3e, $7f, $1c, $08, $18, $18, $18, $18, $18, $18, $18
-    db $18, $18, $18, $00, $00, $18, $18, $18, $18, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $30, $30, $30, $30, $00, $00, $00, $00, $00, $00, $00
-    db $00, $1c, $3e, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $30, $10, $30, $20, $18, $18, $10, $18, $00, $10, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $bf, $00, $fa, $00, $48, $00, $25
-    db $00, $90, $00, $44, $00, $28, $00, $41, $00, $14, $00, $81, $00, $4d, $00, $2b
-    db $00, $8a, $00, $25, $00, $95, $00, $02, $00, $52, $00, $04, $00, $e8, $17, $e8
-    db $17, $e4, $1b, $74, $0b, $ea, $15, $f4, $0b, $7d, $02, $b6, $09, $09, $ff, $00
-    db $ff, $00, $ff, $01, $fe, $8b, $74, $25, $da, $17, $e8, $4b, $b4, $04, $fb, $12
-    db $ed, $a0, $5f, $69, $96, $a9, $56, $d5, $2a, $ed, $12, $be, $41, $df, $20, $b7
-    db $48, $af, $50, $5d, $a0, $7f, $80, $5f, $a0, $bf, $40, $ff, $00, $e0, $1f, $fd
-    db $02, $7f, $00, $af, $00, $f7, $00, $5d, $00, $ff, $00, $bf, $00, $ff, $00, $7f
-    db $80, $fb, $00, $ff, $00, $ef, $00, $bf, $00, $ff, $00, $3e, $c0, $a0, $5f, $d4
-    db $2b, $f9, $06, $ed, $12, $fa, $05, $f7, $08, $ff, $00, $ff, $00, $38, $c7, $4e
-    db $b1, $2b, $d4, $5f, $a0, $af, $50, $ff, $00, $ff, $00, $ff, $00, $20, $ff, $01
-    db $fe, $80, $7f, $50, $bf, $81, $7e, $81, $7e, $c1, $3e, $81, $7e, $5d, $a0, $7c
-    db $80, $ad, $50, $bc, $40, $7c, $80, $5a, $a0, $7d, $80, $b8, $40, $57, $00, $ba
-    db $00, $17, $00, $ad, $00, $b6, $00, $5b, $00, $6a, $00, $ab, $00, $b5, $00, $eb
-    db $00, $b3, $00, $d7, $00, $db, $00, $e3, $00, $aa, $00, $aa, $00, $e7, $1f, $f5
-    db $0f, $f3, $0f, $59, $a7, $39, $c7, $1f, $e3, $3f, $c3, $db, $27, $ff, $ff, $7f
-    db $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $fe, $ff, $ff
-    db $ff, $fe, $ff, $fe, $ff, $fa, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $bd, $00, $b7
-    db $00, $bb, $00, $2b, $80, $6b, $80, $7b, $80, $95, $e0, $c8, $f0, $94, $00, $c2
-    db $00, $c4, $00, $e2, $00, $61, $80, $c4, $00, $43, $00, $29, $00, $10, $00, $42
-    db $00, $08, $00, $80, $00, $0a, $00, $a0, $00, $00, $00, $49, $00, $fd, $02, $3f
-    db $00, $7f, $00, $3f, $00, $7f, $00, $1f, $00, $5f, $00, $0b, $00, $07, $f8, $8b
-    db $74, $a7, $58, $85, $7a, $d3, $2c, $eb, $14, $d5, $2a, $fa, $05, $ff, $00, $ff
-    db $00, $df, $00, $ad, $00, $ff, $00, $ff, $00, $fc, $03, $f0, $0f, $be, $40, $ff
-    db $00, $ff, $00, $5f, $00, $be, $01, $dd, $02, $fc, $03, $2a, $d5, $ee, $01, $fe
-    db $01, $fd, $02, $61, $9e, $08, $f7, $0a, $ff, $2e, $ff, $02, $ff, $bf, $40, $bf
-    db $40, $56, $a9, $00, $ff, $95, $7f, $3a, $ff, $bb, $fc, $13, $fc, $7f, $00, $fc
-    db $00, $da, $20, $3d, $c0, $1b, $e0, $3d, $c2, $d6, $29, $e9, $16, $7a, $00, $ff
-    db $00, $ff, $00, $cf, $30, $a7, $58, $02, $fd, $43, $bc, $03, $fc, $d1, $3e, $85
-    db $7a, $82, $7d, $03, $fc, $85, $7a, $15, $ea, $8b, $74, $55, $aa, $7d, $80, $d9
-    db $20, $f4, $00, $75, $80, $f2, $00, $51, $80, $d4, $00, $ca, $00, $55, $00, $2a
-    db $00, $a5, $00, $52, $00, $4a, $00, $55, $00, $aa, $00, $49, $00, $5d, $00, $be
-    db $00, $1f, $00, $bb, $04, $9f, $00, $5d, $02, $4f, $00, $3d, $02, $65, $1f, $6f
-    db $1f, $27, $1f, $f7, $0f, $db, $07, $fb, $07, $ef, $1f, $5f, $bf, $fa, $e0, $ef
-    db $f0, $f7, $f8, $e1, $fe, $fc, $ff, $f9, $fe, $fc, $ff, $f9, $fe, $8a, $00, $10
-    db $00, $54, $00, $89, $00, $e0, $00, $a5, $00, $d0, $00, $a0, $00, $20, $00, $84
-    db $00, $11, $00, $40, $00, $01, $00, $24, $00, $00, $00, $11, $00, $2f, $00, $02
-    db $00, $2a, $00, $02, $00, $25, $00, $41, $00, $08, $00, $22, $00, $fd, $02, $fe
-    db $01, $fd, $02, $df, $00, $7f, $00, $5f, $00, $ef, $00, $37, $00, $54, $ab, $c0
-    db $3f, $b0, $4f, $60, $9f, $d4, $2b, $f0, $0f, $d8, $27, $f4, $0b, $44, $bb, $05
-    db $fa, $02, $fd, $a8, $57, $02, $fd, $10, $ef, $0a, $f5, $05, $fa, $01, $fe, $4d
-    db $b2, $b5, $4a, $80, $7f, $50, $af, $a0, $5f, $16, $e9, $55, $aa, $05, $fa, $68
-    db $97, $54, $ab, $00, $ff, $00, $ff, $00, $ff, $82, $7d, $69, $96, $2c, $d3, $52
-    db $ad, $09, $f6, $aa, $55, $a1, $5e, $94, $6b, $52, $ad, $54, $ab, $05, $fa, $05
-    db $fa, $0b, $f4, $0f, $f0, $45, $ba, $17, $e8, $57, $a8, $2b, $d4, $2f, $d0, $bf
-    db $40, $2f, $d0, $5d, $a0, $be, $40, $fd, $00, $7e, $80, $fa, $00, $d2, $00, $a9
-    db $00, $4a, $00, $51, $00, $aa, $00, $64, $00, $d2, $00, $a8, $00, $a5, $00, $14
-    db $00, $52, $00, $25, $00, $4f, $00, $8e, $01, $5b, $07, $f5, $0f, $74, $0f, $2e
-    db $1f, $ae, $1f, $77, $0f, $f1, $0f, $10, $ef, $c1, $fe, $e4, $ff, $9f, $7f, $3f
-    db $ff, $bf, $ff, $df, $ff, $27, $ff, $05, $ff, $a7, $5f, $1b, $ff, $fc, $ff, $fc
-    db $ff, $fe, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $90, $00, $85
-    db $00, $ef, $00, $78, $87, $43, $ff, $ff, $ff, $ff, $ff, $fe, $ff, $04, $00, $c1
-    db $00, $21, $c0, $80, $e0, $d9, $e0, $ec, $f0, $f2, $fc, $f9, $fe, $01, $00, $48
-    db $00, $a2, $00, $c4, $00, $e0, $00, $d1, $00, $a0, $00, $04, $00, $5b, $00, $4d
-    db $00, $26, $00, $95, $00, $55, $00, $35, $00, $54, $00, $35, $00, $fd, $02, $bd
-    db $02, $de, $01, $7f, $00, $af, $00, $6f, $00, $b7, $00, $57, $00, $09, $f6, $05
-    db $fa, $80, $7f, $01, $fe, $00, $ff, $80, $7f, $80, $7f, $a0, $5f, $56, $a9, $55
-    db $aa, $ff, $00, $5b, $a4, $bf, $40, $5d, $a2, $2b, $d4, $08, $f7, $ae, $51, $bd
-    db $42, $ef, $10, $7f, $80, $ff, $00, $ee, $11, $5a, $a5, $aa, $55, $fa, $05, $aa
-    db $55, $f8, $07, $ac, $53, $d0, $2f, $a8, $57, $94, $6b, $00, $ff, $5f, $a0, $2f
-    db $d0, $3f, $c0, $5e, $a0, $3e, $c0, $7d, $80, $7e, $80, $ba, $40, $fd, $00, $fa
-    db $00, $dd, $00, $ea, $00, $b5, $00, $6d, $00, $d5, $00, $b7, $00, $e2, $00, $b4
-    db $00, $68, $00, $f2, $00, $b1, $00, $e8, $00, $74, $00, $f1, $00, $6f, $1f, $cf
-    db $3f, $ff, $0f, $59, $07, $2d, $02, $95, $00, $4a, $00, $20, $00, $ff, $ff, $ff
-    db $ff, $ff, $ff, $ff, $ff, $1f, $ff, $ff, $0f, $b0, $0f, $1e, $01, $ff, $ff, $ff
-    db $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $7f, $ff, $5f, $bf, $ff, $ff, $ff
-    db $ff, $fe, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $fe, $ff, $fd, $fe, $fd, $fe, $f3
-    db $fc, $e4, $f8, $d8, $e0, $99, $e0, $20, $c0, $e2, $00, $88, $00, $10, $00, $04
-    db $00, $20, $00, $02, $00, $10, $00, $01, $00, $48, $00, $00, $00, $58, $00, $2d
-    db $00, $34, $00, $1e, $00, $55, $00, $1e, $00, $2e, $00, $17, $00, $ab, $00, $55
-    db $00, $aa, $00, $15, $00, $a5, $00, $88, $00, $a5, $00, $a4, $00, $d0, $2f, $f0
-    db $0f, $fd, $02, $7b, $04, $7e, $01, $af, $00, $5f, $00, $2b, $00, $12, $ed, $09
-    db $f6, $6d, $92, $57, $a8, $fa, $05, $ef, $10, $ff, $00, $ff, $00, $51, $ae, $5c
-    db $a3, $75, $8a, $bc, $43, $fe, $01, $fd, $02, $fe, $01, $ef, $00, $2a, $d5, $45
-    db $ba, $37, $c8, $d5, $2a, $bf, $40, $7f, $80, $ff, $00, $7e, $80, $fd, $00, $f6
-    db $00, $ea, $00, $da, $00, $69, $00, $aa, $00, $a9, $00, $d4, $00, $d5, $00, $af
-    db $00, $ab, $00, $af, $00, $5f, $00, $af, $00, $5f, $00, $bf, $00, $f4, $00, $f9
-    db $00, $f0, $00, $fa, $00, $f8, $00, $f9, $00, $fa, $00, $f8, $00, $8a, $00, $21
-    db $00, $8a, $00, $04, $00, $91, $00, $04, $00, $11, $00, $84, $00, $ab, $00, $00
-    db $00, $55, $00, $08, $00, $52, $00, $04, $00, $50, $00, $05, $00, $d7, $3f, $70
-    db $0f, $36, $01, $83, $00, $59, $00, $84, $00, $2a, $00, $24, $00, $ff, $ff, $7f
-    db $ff, $7f, $ff, $8f, $7f, $e7, $1f, $39, $07, $8d, $02, $2b, $00, $ff, $ff, $ff
-    db $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $fe, $ff, $fe, $ff, $f7, $fc, $f3
-    db $fc, $e0, $f8, $c9, $f0, $90, $e0, $25, $c0, $d0, $00, $94, $00, $21, $00, $00
-    db $00, $a2, $00, $00, $00, $40, $00, $12, $00, $80, $00, $00, $00, $02, $00, $10
-    db $00, $00, $00, $40, $00, $02, $00, $10, $00, $40, $00, $00, $00, $4e, $00, $1f
-    db $00, $0f, $00, $4f, $00, $17, $00, $1f, $00, $8f, $00, $17, $00, $d2, $00, $a5
-    db $00, $d4, $00, $f2, $00, $da, $00, $f9, $00, $f5, $00, $fd, $00, $95, $00, $25
-    db $00, $4a, $00, $91, $00, $44, $00, $29, $00, $40, $00, $2a, $00, $5f, $00, $5f
-    db $00, $aa, $00, $56, $00, $52, $00, $14, $00, $a2, $00, $49, $00, $df, $00, $bf
-    db $00, $eb, $00, $ad, $00, $aa, $00, $a5, $00, $a9, $00, $45, $00, $fb, $00, $ed
-    db $00, $da, $00, $6d, $00, $a4, $00, $52, $00, $2a, $00, $49, $00, $4a, $00, $52
-    db $00, $8d, $00, $55, $00, $2b, $00, $ad, $00, $97, $00, $55, $00, $df, $00, $bf
-    db $00, $7e, $01, $df, $00, $7d, $02, $fe, $01, $fb, $04, $ff, $00, $7c, $80, $fa
-    db $00, $bc, $40, $6a, $90, $bd, $40, $fe, $00, $7e, $80, $ee, $10, $28, $00, $42
-    db $00, $10, $00, $45, $00, $10, $00, $41, $00, $08, $00, $a2, $00, $90, $00, $25
-    db $00, $08, $00, $42, $00, $24, $00, $08, $00, $42, $00, $28, $00, $91, $00, $04
-    db $00, $92, $00, $41, $00, $88, $00, $25, $00, $88, $00, $45, $00, $40, $00, $aa
-    db $00, $09, $00, $52, $00, $04, $00, $51, $00, $8a, $00, $20, $00, $fd, $fe, $fe
-    db $f8, $f6, $f8, $e9, $f0, $ca, $f0, $92, $e0, $65, $80, $4a, $80, $42, $00, $28
-    db $00, $a0, $00, $44, $00, $10, $00, $82, $00, $24, $00, $08, $00, $40, $00, $08
-    db $00, $80, $00, $00, $00, $12, $00, $00, $00, $40, $00, $08, $00, $00, $00, $92
-    db $00, $00, $00, $09, $00, $20, $00, $00, $00, $00, $00, $84, $00, $4f, $00, $1f
-    db $00, $4f, $00, $1f, $00, $2f, $00, $1f, $00, $97, $00, $2f, $00, $f5, $00, $fe
-    db $00, $ff, $00, $ff, $00, $df, $20, $ff, $00, $df, $20, $f7, $08, $51, $00, $d4
-    db $00, $55, $00, $aa, $00, $6b, $00, $b5, $00, $ea, $00, $f5, $00, $12, $00, $80
-    db $00, $54, $00, $22, $00, $54, $00, $55, $00, $ad, $00, $d7, $00, $22, $00, $89
-    db $00, $44, $00, $29, $00, $92, $00, $49, $00, $55, $00, $bf, $00, $24, $00, $55
-    db $00, $95, $00, $2d, $00, $5e, $00, $b7, $00, $7d, $00, $d7, $00, $be, $00, $6b
-    db $00, $bf, $00, $ef, $00, $bf, $00, $ff, $00, $ff, $00, $7f, $00, $ed, $12, $ff
-    db $00, $ed, $12, $fe, $01, $ef, $10, $fa, $05, $55, $aa, $7a, $85, $7e, $80, $bf
-    db $40, $ed, $10, $bf, $40, $ff, $00, $bf, $40, $ef, $10, $bf, $40, $10, $00, $42
-    db $00, $28, $00, $81, $00, $2a, $00, $91, $00, $4a, $00, $d1, $00, $82, $00, $11
-    db $00, $04, $00, $10, $00, $45, $00, $00, $00, $2a, $00, $40, $00, $20, $00, $14
-    db $00, $a1, $00, $14, $00, $41, $00, $14, $00, $49, $00, $10, $00, $8a, $00, $21
-    db $00, $44, $00, $12, $00, $49, $00, $24, $00, $09, $00, $a4, $00, $ff, $00, $55
-    db $aa, $ff, $00, $aa, $55, $ff, $00, $aa, $55, $f7, $08, $5a, $a5, $ff, $00, $55
-    db $aa, $ff, $00, $aa, $55, $ff, $09, $ae, $55, $f7, $08, $5a, $a5, $ff, $00, $55
-    db $aa, $ff, $00, $aa, $55, $ff, $40, $aa, $77, $ff, $08, $5a, $b5, $ff, $00, $55
-    db $ab, $ff, $02, $af, $75, $ff, $80, $ba, $57, $f7, $08, $5e, $b5, $ff, $12, $5d
-    db $eb, $ff, $ac, $ba, $55, $ff, $20, $ea, $5d, $f7, $08, $fa, $a5, $ff, $48, $f5
-    db $aa, $ff, $40, $ab, $55, $ff, $14, $aa, $d5, $f7, $08, $7a, $e5, $ff, $80, $55
-    db $aa, $ff, $00, $aa, $55, $ff, $00, $aa, $57, $f7, $08, $5a, $a5, $ff, $00, $55
-    db $ae, $ff, $00, $aa, $55, $ff, $00, $aa, $55, $f7, $08, $5a, $a5, $ff, $08, $57
-    db $aa, $ff, $81, $ea, $7d, $ff, $15, $aa, $75, $f7, $4a, $5a, $a5, $ff, $20, $d5
-    db $aa, $ff, $50, $ae, $55, $ff, $02, $aa, $f5, $f7, $58, $5e, $a5, $ff, $00, $55
-    db $aa, $ff, $00, $aa, $d5, $ff, $80, $ea, $55, $ff, $28, $da, $b7, $ff, $00, $57
-    db $aa, $ff, $00, $aa, $5d, $ff, $00, $aa, $55, $f7, $08, $5a, $a5, $ff, $10, $55
-    db $aa, $ff, $00, $aa, $55, $ff, $00, $aa, $55, $f7, $08, $5a, $a5, $ff, $02, $55
-    db $aa, $ff, $02, $ab, $55, $ff, $00, $aa, $55, $f7, $08, $5a, $a5, $ff, $00, $75
-    db $ea, $ff, $08, $ea, $55, $ff, $20, $aa, $55, $f7, $08, $5a, $a5, $ff, $00, $55
-    db $aa, $ff, $00, $ab, $55, $ff, $0b, $ff, $55, $ff, $2a, $5a, $ad, $ff, $01, $55
-    db $aa, $ff, $d4, $ea, $75, $ff, $50, $ea, $55, $f7, $08, $5a, $a5, $ff, $10, $55
-    db $ae, $ff, $01, $ae, $55, $ff, $10, $aa, $55, $ff, $28, $da, $a5, $ff, $30, $d5
-    db $aa, $ff, $40, $ea, $55, $ff, $00, $aa, $55, $f7, $08, $5a, $a5, $38, $c0, $88
-    db $f0, $e7, $c0, $9f, $00, $0f, $70, $ce, $f1, $00, $00, $0f, $00, $35, $0a, $c0
-    db $3f, $8a, $71, $00, $c0, $5c, $8e, $b7, $1f, $00, $00, $00, $00, $c0, $00, $60
-    db $80, $30, $c0, $98, $60, $48, $30, $04, $38, $01, $00, $01, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $29, $c6, $81, $66, $80, $73, $42
-    db $39, $21, $1c, $3a, $04, $1d, $02, $3e, $01, $de, $01, $ad, $00, $de, $00, $ed
-    db $02, $c6, $01, $e3, $00, $45, $00, $e2, $00, $18, $fd, $31, $f8, $a0, $40, $04
-    db $03, $44, $bf, $01, $fe, $ff, $00, $f5, $00, $04, $f8, $04, $f9, $85, $79, $f0
-    db $0d, $7a, $85, $d7, $00, $a2, $00, $01, $00, $33, $fc, $ab, $9c, $81, $8e, $83
-    db $c0, $0d, $f0, $8f, $70, $ba, $00, $55, $00, $a1, $63, $80, $66, $94, $66, $de
-    db $27, $f8, $07, $5e, $01, $af, $00, $05, $00, $cf, $f0, $ef, $70, $0d, $30, $1f
-    db $00, $3a, $c0, $35, $c0, $e8, $00, $54, $00, $01, $bf, $a1, $1f, $d8, $07, $e6
-    db $01, $a9, $00, $04, $00, $01, $00, $04, $00, $94, $18, $04, $98, $06, $98, $0c
-    db $80, $14, $e8, $f8, $00, $34, $00, $a8, $00, $00, $00, $00, $00, $00, $00, $02
-    db $00, $05, $00, $2b, $00, $45, $18, $1b, $00, $58, $07, $30, $0f, $64, $18, $c3
-    db $30, $ce, $27, $a8, $4c, $9d, $4e, $84, $4e, $f0, $00, $68, $80, $b1, $40, $18
-    db $60, $31, $c0, $5a, $20, $15, $60, $bb, $40, $6a, $00, $bf, $00, $7b, $04, $e4
-    db $1b, $90, $60, $a4, $4c, $8d, $5c, $cc, $19, $80, $00, $40, $00, $82, $00, $d5
-    db $00, $e3, $00, $57, $80, $6b, $80, $47, $80, $2a, $00, $7f, $00, $e3, $1c, $80
-    db $7f, $41, $80, $00, $b6, $a6, $34, $65, $2c, $82, $00, $41, $00, $a2, $00, $c5
-    db $00, $63, $80, $46, $81, $63, $80, $56, $81, $a8, $00, $5c, $00, $ee, $10, $81
-    db $7e, $01, $c2, $22, $99, $01, $82, $99, $36, $01, $00, $02, $00, $81, $00, $42
-    db $01, $86, $01, $cc, $02, $94, $03, $4c, $03, $50, $00, $a0, $00, $f0, $00, $7a
-    db $80, $1d, $00, $46, $78, $05, $18, $0e, $d0, $00, $00, $00, $00, $00, $00, $00
-    db $00, $40, $00, $80, $00, $00, $60, $e0, $00, $15, $00, $02, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $81, $60, $c8, $37, $33, $0c, $1e
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $71, $80, $6a, $80, $d1, $00, $80
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $80, $41, $d1, $2e, $6f, $10, $1d
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $e3, $00, $c5, $00, $a2, $00, $41
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $40, $2d, $83, $7c, $ff, $00, $2a
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $e3, $00, $c5, $00, $82, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $01, $86, $23, $dc, $de, $20, $35
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $96, $00, $0f, $00, $87, $00, $03
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $2d, $10, $9a, $60, $f0, $00, $c0
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $01
-    db $02, $03, $04, $05, $06, $07, $08, $09, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $ff, $0c, $83, $19, $87, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $01, $fe, $b4, $fe, $68, $fe, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $ff, $0c, $83, $19, $87, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $01, $fe, $b4, $fe, $68, $fe, $32, $8f, $65, $9f
+    db $4b, $bf, $16, $ff, $80, $00, $00, $01, $00, $01, $00, $01, $d2, $fc, $a6, $f8
+    db $4c, $f0, $98, $e0, $00, $00, $00, $ff, $19, $07, $32, $0f, $32, $8f, $65, $9f
+    db $4b, $bf, $16, $ff, $80, $00, $02, $fc, $68, $fc, $f0, $9c, $d2, $fc, $a6, $f8
+    db $4c, $f0, $98, $e0, $00, $00, $00, $00, $00, $00, $00, $00, $00, $01, $00, $01
+    db $00, $01, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, $65, $1f, $cb, $3f
+    db $96, $7f, $2d, $ff, $00, $00, $00, $00, $00, $00, $00, $00, $94, $a8, $2c, $b0
+    db $b0, $b8, $78, $bc, $3c, $3e, $3e, $3f, $3f, $3f, $3f, $3f, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $80, $80, $c0, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $0a, $0b, $0c, $0d, $0e, $0f, $10, $11, $12, $13, $14, $15, $16, $17
-    db $18, $19, $1a, $1b, $00, $00, $1c, $1d, $1e, $1f, $20, $21, $22, $23, $24, $25
-    db $26, $27, $28, $29, $2a, $2b, $2c, $2d, $00, $00, $00, $2e, $2f, $30, $31, $32
-    db $33, $34, $35, $36, $37, $38, $39, $3a, $3b, $3c, $3d, $3e, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $3f, $40, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $41, $42, $43, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $44, $45
-    db $46, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $47, $48, $49, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $4a, $4b, $4c, $4d, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $4e, $4f, $50, $51, $52, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $53, $54, $55
-    db $56, $57, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $58, $59
-    db $5a, $00, $5b, $5c, $5d, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $5e, $5f, $60, $61, $62, $63, $64, $65, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $66, $67, $68, $69, $6a, $6b, $6c, $6d, $6e, $6f
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $70, $71, $72, $73, $74, $75
-    db $76, $77, $78, $79, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $7a, $7b
-    db $7c, $7d, $7e, $7f, $80, $81, $82, $83, $84, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $85, $86, $87, $88, $89, $8a, $8b, $8c, $8d, $8e, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $3f, $3f, $3f, $3f
+    db $2b, $37, $01, $03, $00, $01, $01, $00, $00, $00, $00, $00, $00, $80, $80, $00
+    db $00, $80, $c0, $80, $80, $c0, $00, $c0, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $01, $00, $00, $01, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $80, $7f, $02, $fd, $05, $fa, $00, $04, $00, $0e
+    db $00, $0e, $00, $0e, $0a, $04, $0d, $f2, $a0, $5f, $50, $af, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $80, $00, $00, $80, $00, $01, $00, $01
+    db $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $02, $fd, $00, $ff
+    db $80, $00, $1f, $40, $1f, $00, $1f, $00, $80, $00, $30, $c0, $a0, $5f, $00, $ff
+    db $02, $01, $f1, $01, $f1, $01, $f1, $01, $03, $01, $1a, $07, $00, $80, $00, $80
+    db $00, $80, $00, $80, $00, $80, $00, $80, $00, $80, $00, $80, $01, $00, $00, $01
+    db $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $07, $ff, $00, $ff
+    db $7b, $ff, $7f, $fb, $3d, $c2, $7b, $ff, $7f, $fb, $3d, $c2, $fc, $ff, $00, $ff
+    db $de, $ff, $ff, $de, $ef, $10, $de, $ff, $ff, $de, $ef, $10, $80, $00, $00, $80
+    db $00, $80, $00, $80, $00, $80, $00, $80, $00, $80, $00, $80, $00, $01, $00, $01
+    db $00, $01, $00, $01, $00, $01, $00, $01, $01, $00, $00, $00, $7b, $ff, $7f, $fb
+    db $3d, $c2, $7b, $ff, $7f, $fb, $3c, $c3, $02, $fc, $80, $7f, $de, $ff, $ff, $de
+    db $ef, $10, $de, $ff, $ff, $de, $2f, $d0, $40, $3f, $01, $fe, $00, $80, $00, $80
+    db $00, $80, $00, $80, $00, $80, $00, $80, $80, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $14, $14, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $08, $00, $1c, $08, $3e, $14, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $0c, $04, $0c, $08, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $18, $10, $18, $08, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $0a, $0a, $14, $14, $00, $00, $3e, $7f
+    db $77, $63, $60, $60, $60, $60, $77, $63, $3e, $7f, $1c, $08, $18, $18, $18, $18
+    db $18, $18, $18, $18, $18, $18, $00, $00, $18, $18, $18, $18, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $30, $30, $30, $30, $00, $00, $00, $00
+    db $00, $00, $00, $00, $1c, $3e, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $30, $10, $30, $20, $18, $18, $10, $18
+    db $00, $10, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $bf, $00, $fa, $00
+    db $48, $00, $25, $00, $90, $00, $44, $00, $28, $00, $41, $00, $14, $00, $81, $00
+    db $4d, $00, $2b, $00, $8a, $00, $25, $00, $95, $00, $02, $00, $52, $00, $04, $00
+    db $e8, $17, $e8, $17, $e4, $1b, $74, $0b, $ea, $15, $f4, $0b, $7d, $02, $b6, $09
+    db $09, $ff, $00, $ff, $00, $ff, $01, $fe, $8b, $74, $25, $da, $17, $e8, $4b, $b4
+    db $04, $fb, $12, $ed, $a0, $5f, $69, $96, $a9, $56, $d5, $2a, $ed, $12, $be, $41
+    db $df, $20, $b7, $48, $af, $50, $5d, $a0, $7f, $80, $5f, $a0, $bf, $40, $ff, $00
+    db $e0, $1f, $fd, $02, $7f, $00, $af, $00, $f7, $00, $5d, $00, $ff, $00, $bf, $00
+    db $ff, $00, $7f, $80, $fb, $00, $ff, $00, $ef, $00, $bf, $00, $ff, $00, $3e, $c0
+    db $a0, $5f, $d4, $2b, $f9, $06, $ed, $12, $fa, $05, $f7, $08, $ff, $00, $ff, $00
+    db $38, $c7, $4e, $b1, $2b, $d4, $5f, $a0, $af, $50, $ff, $00, $ff, $00, $ff, $00
+    db $20, $ff, $01, $fe, $80, $7f, $50, $bf, $81, $7e, $81, $7e, $c1, $3e, $81, $7e
+    db $5d, $a0, $7c, $80, $ad, $50, $bc, $40, $7c, $80, $5a, $a0, $7d, $80, $b8, $40
+    db $57, $00, $ba, $00, $17, $00, $ad, $00, $b6, $00, $5b, $00, $6a, $00, $ab, $00
+    db $b5, $00, $eb, $00, $b3, $00, $d7, $00, $db, $00, $e3, $00, $aa, $00, $aa, $00
+    db $e7, $1f, $f5, $0f, $f3, $0f, $59, $a7, $39, $c7, $1f, $e3, $3f, $c3, $db, $27
+    db $ff, $ff, $7f, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+    db $fe, $ff, $ff, $ff, $fe, $ff, $fe, $ff, $fa, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+    db $bd, $00, $b7, $00, $bb, $00, $2b, $80, $6b, $80, $7b, $80, $95, $e0, $c8, $f0
+    db $94, $00, $c2, $00, $c4, $00, $e2, $00, $61, $80, $c4, $00, $43, $00, $29, $00
+    db $10, $00, $42, $00, $08, $00, $80, $00, $0a, $00, $a0, $00, $00, $00, $49, $00
+    db $fd, $02, $3f, $00, $7f, $00, $3f, $00, $7f, $00, $1f, $00, $5f, $00, $0b, $00
+    db $07, $f8, $8b, $74, $a7, $58, $85, $7a, $d3, $2c, $eb, $14, $d5, $2a, $fa, $05
+    db $ff, $00, $ff, $00, $df, $00, $ad, $00, $ff, $00, $ff, $00, $fc, $03, $f0, $0f
+    db $be, $40, $ff, $00, $ff, $00, $5f, $00, $be, $01, $dd, $02, $fc, $03, $2a, $d5
+    db $ee, $01, $fe, $01, $fd, $02, $61, $9e, $08, $f7, $0a, $ff, $2e, $ff, $02, $ff
+    db $bf, $40, $bf, $40, $56, $a9, $00, $ff, $95, $7f, $3a, $ff, $bb, $fc, $13, $fc
+    db $7f, $00, $fc, $00, $da, $20, $3d, $c0, $1b, $e0, $3d, $c2, $d6, $29, $e9, $16
+    db $7a, $00, $ff, $00, $ff, $00, $cf, $30, $a7, $58, $02, $fd, $43, $bc, $03, $fc
+    db $d1, $3e, $85, $7a, $82, $7d, $03, $fc, $85, $7a, $15, $ea, $8b, $74, $55, $aa
+    db $7d, $80, $d9, $20, $f4, $00, $75, $80, $f2, $00, $51, $80, $d4, $00, $ca, $00
+    db $55, $00, $2a, $00, $a5, $00, $52, $00, $4a, $00, $55, $00, $aa, $00, $49, $00
+    db $5d, $00, $be, $00, $1f, $00, $bb, $04, $9f, $00, $5d, $02, $4f, $00, $3d, $02
+    db $65, $1f, $6f, $1f, $27, $1f, $f7, $0f, $db, $07, $fb, $07, $ef, $1f, $5f, $bf
+    db $fa, $e0, $ef, $f0, $f7, $f8, $e1, $fe, $fc, $ff, $f9, $fe, $fc, $ff, $f9, $fe
+    db $8a, $00, $10, $00, $54, $00, $89, $00, $e0, $00, $a5, $00, $d0, $00, $a0, $00
+    db $20, $00, $84, $00, $11, $00, $40, $00, $01, $00, $24, $00, $00, $00, $11, $00
+    db $2f, $00, $02, $00, $2a, $00, $02, $00, $25, $00, $41, $00, $08, $00, $22, $00
+    db $fd, $02, $fe, $01, $fd, $02, $df, $00, $7f, $00, $5f, $00, $ef, $00, $37, $00
+    db $54, $ab, $c0, $3f, $b0, $4f, $60, $9f, $d4, $2b, $f0, $0f, $d8, $27, $f4, $0b
+    db $44, $bb, $05, $fa, $02, $fd, $a8, $57, $02, $fd, $10, $ef, $0a, $f5, $05, $fa
+    db $01, $fe, $4d, $b2, $b5, $4a, $80, $7f, $50, $af, $a0, $5f, $16, $e9, $55, $aa
+    db $05, $fa, $68, $97, $54, $ab, $00, $ff, $00, $ff, $00, $ff, $82, $7d, $69, $96
+    db $2c, $d3, $52, $ad, $09, $f6, $aa, $55, $a1, $5e, $94, $6b, $52, $ad, $54, $ab
+    db $05, $fa, $05, $fa, $0b, $f4, $0f, $f0, $45, $ba, $17, $e8, $57, $a8, $2b, $d4
+    db $2f, $d0, $bf, $40, $2f, $d0, $5d, $a0, $be, $40, $fd, $00, $7e, $80, $fa, $00
+    db $d2, $00, $a9, $00, $4a, $00, $51, $00, $aa, $00, $64, $00, $d2, $00, $a8, $00
+    db $a5, $00, $14, $00, $52, $00, $25, $00, $4f, $00, $8e, $01, $5b, $07, $f5, $0f
+    db $74, $0f, $2e, $1f, $ae, $1f, $77, $0f, $f1, $0f, $10, $ef, $c1, $fe, $e4, $ff
+    db $9f, $7f, $3f, $ff, $bf, $ff, $df, $ff, $27, $ff, $05, $ff, $a7, $5f, $1b, $ff
+    db $fc, $ff, $fc, $ff, $fe, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+    db $90, $00, $85, $00, $ef, $00, $78, $87, $43, $ff, $ff, $ff, $ff, $ff, $fe, $ff
+    db $04, $00, $c1, $00, $21, $c0, $80, $e0, $d9, $e0, $ec, $f0, $f2, $fc, $f9, $fe
+    db $01, $00, $48, $00, $a2, $00, $c4, $00, $e0, $00, $d1, $00, $a0, $00, $04, $00
+    db $5b, $00, $4d, $00, $26, $00, $95, $00, $55, $00, $35, $00, $54, $00, $35, $00
+    db $fd, $02, $bd, $02, $de, $01, $7f, $00, $af, $00, $6f, $00, $b7, $00, $57, $00
+    db $09, $f6, $05, $fa, $80, $7f, $01, $fe, $00, $ff, $80, $7f, $80, $7f, $a0, $5f
+    db $56, $a9, $55, $aa, $ff, $00, $5b, $a4, $bf, $40, $5d, $a2, $2b, $d4, $08, $f7
+    db $ae, $51, $bd, $42, $ef, $10, $7f, $80, $ff, $00, $ee, $11, $5a, $a5, $aa, $55
+    db $fa, $05, $aa, $55, $f8, $07, $ac, $53, $d0, $2f, $a8, $57, $94, $6b, $00, $ff
+    db $5f, $a0, $2f, $d0, $3f, $c0, $5e, $a0, $3e, $c0, $7d, $80, $7e, $80, $ba, $40
+    db $fd, $00, $fa, $00, $dd, $00, $ea, $00, $b5, $00, $6d, $00, $d5, $00, $b7, $00
+    db $e2, $00, $b4, $00, $68, $00, $f2, $00, $b1, $00, $e8, $00, $74, $00, $f1, $00
+    db $6f, $1f, $cf, $3f, $ff, $0f, $59, $07, $2d, $02, $95, $00, $4a, $00, $20, $00
+    db $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $1f, $ff, $ff, $0f, $b0, $0f, $1e, $01
+    db $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $7f, $ff, $5f, $bf
+    db $ff, $ff, $ff, $ff, $fe, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $fe, $ff, $fd, $fe
+    db $fd, $fe, $f3, $fc, $e4, $f8, $d8, $e0, $99, $e0, $20, $c0, $e2, $00, $88, $00
+    db $10, $00, $04, $00, $20, $00, $02, $00, $10, $00, $01, $00, $48, $00, $00, $00
+    db $58, $00, $2d, $00, $34, $00, $1e, $00, $55, $00, $1e, $00, $2e, $00, $17, $00
+    db $ab, $00, $55, $00, $aa, $00, $15, $00, $a5, $00, $88, $00, $a5, $00, $a4, $00
+    db $d0, $2f, $f0, $0f, $fd, $02, $7b, $04, $7e, $01, $af, $00, $5f, $00, $2b, $00
+    db $12, $ed, $09, $f6, $6d, $92, $57, $a8, $fa, $05, $ef, $10, $ff, $00, $ff, $00
+    db $51, $ae, $5c, $a3, $75, $8a, $bc, $43, $fe, $01, $fd, $02, $fe, $01, $ef, $00
+    db $2a, $d5, $45, $ba, $37, $c8, $d5, $2a, $bf, $40, $7f, $80, $ff, $00, $7e, $80
+    db $fd, $00, $f6, $00, $ea, $00, $da, $00, $69, $00, $aa, $00, $a9, $00, $d4, $00
+    db $d5, $00, $af, $00, $ab, $00, $af, $00, $5f, $00, $af, $00, $5f, $00, $bf, $00
+    db $f4, $00, $f9, $00, $f0, $00, $fa, $00, $f8, $00, $f9, $00, $fa, $00, $f8, $00
+    db $8a, $00, $21, $00, $8a, $00, $04, $00, $91, $00, $04, $00, $11, $00, $84, $00
+    db $ab, $00, $00, $00, $55, $00, $08, $00, $52, $00, $04, $00, $50, $00, $05, $00
+    db $d7, $3f, $70, $0f, $36, $01, $83, $00, $59, $00, $84, $00, $2a, $00, $24, $00
+    db $ff, $ff, $7f, $ff, $7f, $ff, $8f, $7f, $e7, $1f, $39, $07, $8d, $02, $2b, $00
+    db $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $fe, $ff, $fe, $ff
+    db $f7, $fc, $f3, $fc, $e0, $f8, $c9, $f0, $90, $e0, $25, $c0, $d0, $00, $94, $00
+    db $21, $00, $00, $00, $a2, $00, $00, $00, $40, $00, $12, $00, $80, $00, $00, $00
+    db $02, $00, $10, $00, $00, $00, $40, $00, $02, $00, $10, $00, $40, $00, $00, $00
+    db $4e, $00, $1f, $00, $0f, $00, $4f, $00, $17, $00, $1f, $00, $8f, $00, $17, $00
+    db $d2, $00, $a5, $00, $d4, $00, $f2, $00, $da, $00, $f9, $00, $f5, $00, $fd, $00
+    db $95, $00, $25, $00, $4a, $00, $91, $00, $44, $00, $29, $00, $40, $00, $2a, $00
+    db $5f, $00, $5f, $00, $aa, $00, $56, $00, $52, $00, $14, $00, $a2, $00, $49, $00
+    db $df, $00, $bf, $00, $eb, $00, $ad, $00, $aa, $00, $a5, $00, $a9, $00, $45, $00
+    db $fb, $00, $ed, $00, $da, $00, $6d, $00, $a4, $00, $52, $00, $2a, $00, $49, $00
+    db $4a, $00, $52, $00, $8d, $00, $55, $00, $2b, $00, $ad, $00, $97, $00, $55, $00
+    db $df, $00, $bf, $00, $7e, $01, $df, $00, $7d, $02, $fe, $01, $fb, $04, $ff, $00
+    db $7c, $80, $fa, $00, $bc, $40, $6a, $90, $bd, $40, $fe, $00, $7e, $80, $ee, $10
+    db $28, $00, $42, $00, $10, $00, $45, $00, $10, $00, $41, $00, $08, $00, $a2, $00
+    db $90, $00, $25, $00, $08, $00, $42, $00, $24, $00, $08, $00, $42, $00, $28, $00
+    db $91, $00, $04, $00, $92, $00, $41, $00, $88, $00, $25, $00, $88, $00, $45, $00
+    db $40, $00, $aa, $00, $09, $00, $52, $00, $04, $00, $51, $00, $8a, $00, $20, $00
+    db $fd, $fe, $fe, $f8, $f6, $f8, $e9, $f0, $ca, $f0, $92, $e0, $65, $80, $4a, $80
+    db $42, $00, $28, $00, $a0, $00, $44, $00, $10, $00, $82, $00, $24, $00, $08, $00
+    db $40, $00, $08, $00, $80, $00, $00, $00, $12, $00, $00, $00, $40, $00, $08, $00
+    db $00, $00, $92, $00, $00, $00, $09, $00, $20, $00, $00, $00, $00, $00, $84, $00
+    db $4f, $00, $1f, $00, $4f, $00, $1f, $00, $2f, $00, $1f, $00, $97, $00, $2f, $00
+    db $f5, $00, $fe, $00, $ff, $00, $ff, $00, $df, $20, $ff, $00, $df, $20, $f7, $08
+    db $51, $00, $d4, $00, $55, $00, $aa, $00, $6b, $00, $b5, $00, $ea, $00, $f5, $00
+    db $12, $00, $80, $00, $54, $00, $22, $00, $54, $00, $55, $00, $ad, $00, $d7, $00
+    db $22, $00, $89, $00, $44, $00, $29, $00, $92, $00, $49, $00, $55, $00, $bf, $00
+    db $24, $00, $55, $00, $95, $00, $2d, $00, $5e, $00, $b7, $00, $7d, $00, $d7, $00
+    db $be, $00, $6b, $00, $bf, $00, $ef, $00, $bf, $00, $ff, $00, $ff, $00, $7f, $00
+    db $ed, $12, $ff, $00, $ed, $12, $fe, $01, $ef, $10, $fa, $05, $55, $aa, $7a, $85
+    db $7e, $80, $bf, $40, $ed, $10, $bf, $40, $ff, $00, $bf, $40, $ef, $10, $bf, $40
+    db $10, $00, $42, $00, $28, $00, $81, $00, $2a, $00, $91, $00, $4a, $00, $d1, $00
+    db $82, $00, $11, $00, $04, $00, $10, $00, $45, $00, $00, $00, $2a, $00, $40, $00
+    db $20, $00, $14, $00, $a1, $00, $14, $00, $41, $00, $14, $00, $49, $00, $10, $00
+    db $8a, $00, $21, $00, $44, $00, $12, $00, $49, $00, $24, $00, $09, $00, $a4, $00
+    db $ff, $00, $55, $aa, $ff, $00, $aa, $55, $ff, $00, $aa, $55, $f7, $08, $5a, $a5
+    db $ff, $00, $55, $aa, $ff, $00, $aa, $55, $ff, $09, $ae, $55, $f7, $08, $5a, $a5
+    db $ff, $00, $55, $aa, $ff, $00, $aa, $55, $ff, $40, $aa, $77, $ff, $08, $5a, $b5
+    db $ff, $00, $55, $ab, $ff, $02, $af, $75, $ff, $80, $ba, $57, $f7, $08, $5e, $b5
+    db $ff, $12, $5d, $eb, $ff, $ac, $ba, $55, $ff, $20, $ea, $5d, $f7, $08, $fa, $a5
+    db $ff, $48, $f5, $aa, $ff, $40, $ab, $55, $ff, $14, $aa, $d5, $f7, $08, $7a, $e5
+    db $ff, $80, $55, $aa, $ff, $00, $aa, $55, $ff, $00, $aa, $57, $f7, $08, $5a, $a5
+    db $ff, $00, $55, $ae, $ff, $00, $aa, $55, $ff, $00, $aa, $55, $f7, $08, $5a, $a5
+    db $ff, $08, $57, $aa, $ff, $81, $ea, $7d, $ff, $15, $aa, $75, $f7, $4a, $5a, $a5
+    db $ff, $20, $d5, $aa, $ff, $50, $ae, $55, $ff, $02, $aa, $f5, $f7, $58, $5e, $a5
+    db $ff, $00, $55, $aa, $ff, $00, $aa, $d5, $ff, $80, $ea, $55, $ff, $28, $da, $b7
+    db $ff, $00, $57, $aa, $ff, $00, $aa, $5d, $ff, $00, $aa, $55, $f7, $08, $5a, $a5
+    db $ff, $10, $55, $aa, $ff, $00, $aa, $55, $ff, $00, $aa, $55, $f7, $08, $5a, $a5
+    db $ff, $02, $55, $aa, $ff, $02, $ab, $55, $ff, $00, $aa, $55, $f7, $08, $5a, $a5
+    db $ff, $00, $75, $ea, $ff, $08, $ea, $55, $ff, $20, $aa, $55, $f7, $08, $5a, $a5
+    db $ff, $00, $55, $aa, $ff, $00, $ab, $55, $ff, $0b, $ff, $55, $ff, $2a, $5a, $ad
+    db $ff, $01, $55, $aa, $ff, $d4, $ea, $75, $ff, $50, $ea, $55, $f7, $08, $5a, $a5
+    db $ff, $10, $55, $ae, $ff, $01, $ae, $55, $ff, $10, $aa, $55, $ff, $28, $da, $a5
+    db $ff, $30, $d5, $aa, $ff, $40, $ea, $55, $ff, $00, $aa, $55, $f7, $08, $5a, $a5
+    db $38, $c0, $88, $f0, $e7, $c0, $9f, $00, $0f, $70, $ce, $f1, $00, $00, $0f, $00
+    db $35, $0a, $c0, $3f, $8a, $71, $00, $c0, $5c, $8e, $b7, $1f, $00, $00, $00, $00
+    db $c0, $00, $60, $80, $30, $c0, $98, $60, $48, $30, $04, $38, $01, $00, $01, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $29, $c6, $81, $66
+    db $80, $73, $42, $39, $21, $1c, $3a, $04, $1d, $02, $3e, $01, $de, $01, $ad, $00
+    db $de, $00, $ed, $02, $c6, $01, $e3, $00, $45, $00, $e2, $00, $18, $fd, $31, $f8
+    db $a0, $40, $04, $03, $44, $bf, $01, $fe, $ff, $00, $f5, $00, $04, $f8, $04, $f9
+    db $85, $79, $f0, $0d, $7a, $85, $d7, $00, $a2, $00, $01, $00, $33, $fc, $ab, $9c
+    db $81, $8e, $83, $c0, $0d, $f0, $8f, $70, $ba, $00, $55, $00, $a1, $63, $80, $66
+    db $94, $66, $de, $27, $f8, $07, $5e, $01, $af, $00, $05, $00, $cf, $f0, $ef, $70
+    db $0d, $30, $1f, $00, $3a, $c0, $35, $c0, $e8, $00, $54, $00, $01, $bf, $a1, $1f
+    db $d8, $07, $e6, $01, $a9, $00, $04, $00, $01, $00, $04, $00, $94, $18, $04, $98
+    db $06, $98, $0c, $80, $14, $e8, $f8, $00, $34, $00, $a8, $00, $00, $00, $00, $00
+    db $00, $00, $02, $00, $05, $00, $2b, $00, $45, $18, $1b, $00, $58, $07, $30, $0f
+    db $64, $18, $c3, $30, $ce, $27, $a8, $4c, $9d, $4e, $84, $4e, $f0, $00, $68, $80
+    db $b1, $40, $18, $60, $31, $c0, $5a, $20, $15, $60, $bb, $40, $6a, $00, $bf, $00
+    db $7b, $04, $e4, $1b, $90, $60, $a4, $4c, $8d, $5c, $cc, $19, $80, $00, $40, $00
+    db $82, $00, $d5, $00, $e3, $00, $57, $80, $6b, $80, $47, $80, $2a, $00, $7f, $00
+    db $e3, $1c, $80, $7f, $41, $80, $00, $b6, $a6, $34, $65, $2c, $82, $00, $41, $00
+    db $a2, $00, $c5, $00, $63, $80, $46, $81, $63, $80, $56, $81, $a8, $00, $5c, $00
+    db $ee, $10, $81, $7e, $01, $c2, $22, $99, $01, $82, $99, $36, $01, $00, $02, $00
+    db $81, $00, $42, $01, $86, $01, $cc, $02, $94, $03, $4c, $03, $50, $00, $a0, $00
+    db $f0, $00, $7a, $80, $1d, $00, $46, $78, $05, $18, $0e, $d0, $00, $00, $00, $00
+    db $00, $00, $00, $00, $40, $00, $80, $00, $00, $60, $e0, $00, $15, $00, $02, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $81, $60, $c8, $37
+    db $33, $0c, $1e, $00, $00, $00, $00, $00, $00, $00, $00, $00, $71, $80, $6a, $80
+    db $d1, $00, $80, $00, $00, $00, $00, $00, $00, $00, $00, $00, $80, $41, $d1, $2e
+    db $6f, $10, $1d, $00, $00, $00, $00, $00, $00, $00, $00, $00, $e3, $00, $c5, $00
+    db $a2, $00, $41, $00, $00, $00, $00, $00, $00, $00, $00, $00, $40, $2d, $83, $7c
+    db $ff, $00, $2a, $00, $00, $00, $00, $00, $00, $00, $00, $00, $e3, $00, $c5, $00
+    db $82, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $01, $86, $23, $dc
+    db $de, $20, $35, $00, $00, $00, $00, $00, $00, $00, $00, $00, $96, $00, $0f, $00
+    db $87, $00, $03, $00, $00, $00, $00, $00, $00, $00, $00, $00, $2d, $10, $9a, $60
+    db $f0, $00, $c0, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $01, $02, $03, $04, $05, $06, $07, $08, $09, $00, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $0a, $0b, $0c, $0d, $0e, $0f, $10, $11, $12, $13, $14
+    db $15, $16, $17, $18, $19, $1a, $1b, $00, $00, $1c, $1d, $1e, $1f, $20, $21, $22
+    db $23, $24, $25, $26, $27, $28, $29, $2a, $2b, $2c, $2d, $00, $00, $00, $2e, $2f
+    db $30, $31, $32, $33, $34, $35, $36, $37, $38, $39, $3a, $3b, $3c, $3d, $3e, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $3f, $40, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $41, $42, $43
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $44, $45, $46, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $47, $48, $49, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $4a, $4b, $4c, $4d, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $4e, $4f, $50, $51
+    db $52, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $53, $54, $55, $56, $57, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $58, $59, $5a, $00, $5b, $5c, $5d, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $5e, $5f, $60, $61, $62, $63, $64, $65, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $66, $67, $68, $69, $6a, $6b, $6c
+    db $6d, $6e, $6f, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $70, $71, $72
+    db $73, $74, $75, $76, $77, $78, $79, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $7a, $7b, $7c, $7d, $7e, $7f, $80, $81, $82, $83, $84, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $85, $86, $87, $88, $89, $8a, $8b, $8c, $8d, $8e, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $01, $01, $01, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $01, $01, $01
-    db $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $01, $01, $01, $01, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $01, $01, $01, $01, $01, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $01, $01, $01, $00, $01, $01, $01, $01, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $01, $01, $01, $01, $01, $01
-    db $01, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $01, $01
-    db $01, $01, $01, $01, $01, $01, $01, $01, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
-    db $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $01, $01, $01, $01, $01, $01
-    db $01, $01, $01, $01, $00, $00, $00, $00, $00, $4f, $21, $cf, $73, $11, $00, $90
-    db $01, $00, $08, $cd, $b0, $01, $21, $cf, $7b, $11, $00, $88, $01, $50, $01, $cd
-    db $b0, $01, $3e, $09, $11, $00, $98, $21, $1f, $7d, $06, $14, $0e, $09, $cd, $d4
-    db $01, $af, $11, $20, $99, $06, $14, $0e, $09, $cd, $d4, $01, $fa, $0d, $df, $6f
-    db $fa, $0e, $df, $67, $cd, $84, $0e, $cd, $84, $0e, $cd, $84, $0e, $cd, $84, $0e
-    db $cd, $84, $0e, $cd, $84, $0e, $3e, $01, $ea, $ac, $d8, $cd, $06, $02, $c9
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $01, $01, $01, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $01, $01, $01, $01, $01, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $01, $01, $01, $01, $01, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $01, $01, $01, $00, $01, $01, $01
+    db $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $01, $01, $01
+    db $01, $01, $01, $01, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $01, $01, $01, $01, $01, $01, $01
+    db $01, $01, $01, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $01, $01, $01
+    db $01, $01, $01, $01, $01, $01, $01, $00, $00, $00, $00, $00, $4f, $21, $cf, $73
+    db $11, $00, $90, $01, $00, $08, $cd, $b0, $01, $21, $cf, $7b, $11, $00, $88, $01
+    db $50, $01, $cd, $b0, $01, $3e, $09, $11, $00, $98, $21, $1f, $7d, $06, $14, $0e
+    db $09, $cd, $d4, $01, $af, $11, $20, $99, $06, $14, $0e, $09, $cd, $d4, $01, $fa
+    db $0d, $df, $6f, $fa, $0e, $df, $67, $cd, $84, $0e, $cd, $84, $0e, $cd, $84, $0e
+    db $cd, $84, $0e, $cd, $84, $0e, $cd, $84, $0e, $3e, $01, $ea, $ac, $d8, $cd, $06
+    db $02, $c9, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00

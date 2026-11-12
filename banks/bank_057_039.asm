@@ -3,4 +3,9 @@
 ; mgbdis v2.0 - Game Boy ROM disassembler by Matt Currie and contributors.
 ; https://github.com/mattcurrie/mgbdis
 
+; Bank $39 is empty. Nothing reads it.
+
 SECTION "ROM Bank $039", ROMX[$4000], BANK[$39]
+
+BankFiller_039:
+    ds $4000, $00
