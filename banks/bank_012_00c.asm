@@ -5,8 +5,8 @@
 
 SECTION "ROM Bank $00c", ROMX[$4000], BANK[$c]
 
-; Unused. 864 zero bytes. No level points here, the first power-up map is PowerupMap_Level050.
-UnusedZeros_00c:
+; A blank frame of the high score title: 864 zero bytes. HDMA mode 3 copies it to VRAM to clear the title.
+HighScoreAnim_Blank:
     ds 864, $00
 
 ; Power-up maps, in the same layout as the brick maps: (count, value) pairs that end with a count of 0.

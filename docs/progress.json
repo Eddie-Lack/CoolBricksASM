@@ -15,23 +15,23 @@
     "percent": 100.0
   },
   "data": {
-    "done": 785210,
+    "done": 1048576,
     "total": 1048576,
-    "percent": 74.88
+    "percent": 100.0
   },
   "graphics": {
-    "done": 47,
-    "total": 47,
+    "done": 45,
+    "total": 45,
     "percent": 100.0
   },
   "comments": {
-    "done": 128,
+    "done": 307,
     "total": 307,
-    "percent": 41.69
+    "percent": 100.0
   },
   "relocation": {
-    "done": 14,
+    "done": 19,
     "total": 20,
-    "percent": 70.0
+    "percent": 95.0
   }
 }
