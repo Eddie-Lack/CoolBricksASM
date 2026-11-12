@@ -364,7 +364,8 @@ Runs of labels with the same prefix are shown as one row.
 | `$6D74` | 80 | data | `Tilemap_VBlankMenus_002_6d74` |
 | `$6DC4` | 280 | data | `Tilemap_MainMenu_002_6dc4` |
 | `$6EDC` | 3504 | graphics | `Gfx_MainMenu_002_6edc` |
-| `$7C8C` | 884 | data | `Tilemap_DeveloperLogos_002_7c8c` to `Tilemap_DeveloperLogos_002_7df4` (2 labels) |
+| `$7C8C` | 720 | data | `Tilemap_DeveloperLogos_002_7c8c` to `Tilemap_DeveloperLogos_002_7df4` (2 labels) |
+| `$7F5C` | 164 | data | `BankFiller_002` |
 
 ## Bank $03
 
@@ -375,7 +376,8 @@ Runs of labels with the same prefix are shown as one row.
 | `$4A20` | 2192 | graphics | `Gfx_PublisherLogo_003_4a20` to `Gfx_PublisherLogo_003_5220` (2 labels) |
 | `$52B0` | 720 | data | `Tilemap_PublisherLogo_003_52b0` to `Tilemap_PublisherLogo_003_5418` (2 labels) |
 | `$5580` | 1968 | graphics | `Gfx_Copyright_003_5580` |
-| `$5D30` | 8912 | data | `Tilemap_Copyright_003_5d30` to `Tilemap_Copyright_003_5e98` (2 labels) |
+| `$5D30` | 8748 | data | `Tilemap_Copyright_003_5d30` to `Tilemap_Copyright_003_5e98` (2 labels) |
+| `$7F5C` | 164 | data | `BankFiller_003` |
 
 ## Bank $04
 
@@ -383,7 +385,8 @@ Runs of labels with the same prefix are shown as one row.
 |---|---|---|---|
 | `$4000` | 6672 | graphics | `BackgroundTiles_004_4000` |
 | `$5A10` | 7984 | data | `BackgroundTiles_004_5a10` to `BackgroundTiles_004_69e0` (2 labels) |
-| `$7940` | 1728 | graphics | `BackgroundTiles_004_7940` |
+| `$7940` | 1564 | graphics | `BackgroundTiles_004_7940` |
+| `$7F5C` | 164 | data | `BankFiller_004` |
 
 ## Bank $05
 
@@ -399,7 +402,8 @@ Runs of labels with the same prefix are shown as one row.
 | `$4953` | 25 | data | `Text_Italian_GameOver` |
 | `$496C` | 6352 | graphics | `Gfx_GameOver_005_496c` |
 | `$623C` | 720 | data | `Tilemap_GameOver_005_623c` to `Tilemap_GameOver_005_63a4` (2 labels) |
-| `$650C` | 6900 | graphics | `Gfx_Credits_005_650c` |
+| `$650C` | 6736 | graphics | `Gfx_Credits_005_650c` |
+| `$7F5C` | 164 | data | `BankFiller_005` |
 
 ## Bank $06
 
@@ -437,19 +441,19 @@ Runs of labels with the same prefix are shown as one row.
 | `$50DF` | 8 | data | `Song_Silence_Ch1` to `Song_Silence_Ch4` (4 labels) |
 | `$50E7` | 3071 | data | `Pattern_00` to `Pattern_7F` (128 labels) |
 | `$5CE6` | 8 | data | `Sfx_Unused_5ce6` |
-| `$5CEE` | 270 | data | `Sfx_01` to `Sfx_29` (30 labels) |
+| `$5CEE` | 270 | data | `Sfx_BatBounce` to `Sfx_29` (30 labels) |
 | `$5DFC` | 5 | data | `Pattern_Unused_5dfc` |
-| `$5E01` | 22 | data | `PitchMode_00` to `PitchMode_03` (4 labels) |
-| `$5E17` | 5 | data | `Arpeggio_00` |
+| `$5E01` | 22 | data | `PitchMode_00` to `PitchMode_NoteOffset` (4 labels) |
+| `$5E17` | 5 | data | `Arpeggio_None` |
 | `$5E1C` | 6 | data | `PitchSlide_00` |
 | `$5E22` | 5 | data | `Table_00` |
 | `$5E27` | 81 | data | `PitchSlide_01` to `PitchSlide_05` (5 labels) |
 | `$5E78` | 9 | data | `Instrument_00` |
-| `$5E81` | 7 | data | `NoiseInstrument_02` |
+| `$5E81` | 7 | data | `NoiseInstrument_Kick` |
 | `$5E88` | 5 | data | `NoiseShape_00` |
 | `$5E8D` | 14 | data | `NoiseInstrument_04` to `NoiseInstrument_03` (2 labels) |
 | `$5E9B` | 5 | data | `NoiseShape_01` |
-| `$5EA0` | 7 | data | `NoiseInstrument_01` |
+| `$5EA0` | 7 | data | `NoiseInstrument_Snare` |
 | `$5EA7` | 5 | data | `NoiseShape_02` |
 | `$5EAC` | 10 | data | `Instrument_02` |
 | `$5EB6` | 7 | data | `WaveVolume_00` |
@@ -487,9 +491,9 @@ Runs of labels with the same prefix are shown as one row.
 | `$6114` | 9 | data | `Instrument_05` |
 | `$611D` | 9 | data | `PitchSlide_11` |
 | `$6126` | 9 | data | `Arpeggio_15` |
-| `$612F` | 9 | data | `Instrument_1E` |
+| `$612F` | 9 | data | `Instrument_PulseKick` |
 | `$6138` | 12 | data | `PitchSlide_12` |
-| `$6144` | 9 | data | `Instrument_06` |
+| `$6144` | 9 | data | `Instrument_PulseSnare` |
 | `$614D` | 7 | data | `Arpeggio_16` |
 | `$6154` | 9 | data | `PitchSlide_13` |
 | `$615D` | 9 | data | `Instrument_01` |
@@ -521,81 +525,82 @@ Runs of labels with the same prefix are shown as one row.
 | `$6293` | 21 | data | `PitchSlide_20` to `PitchSlide_21` (2 labels) |
 | `$62A8` | 9 | data | `Instrument_3C` |
 | `$62B1` | 11 | data | `Arpeggio_24` |
-| `$62BC` | 9 | data | `Instrument_3B` |
+| `$62BC` | 9 | data | `Instrument_SfxMenuSelect` |
 | `$62C5` | 11 | data | `Arpeggio_25` |
 | `$62D0` | 12 | data | `PitchSlide_22` |
-| `$62DC` | 9 | data | `Instrument_2A` |
+| `$62DC` | 9 | data | `Instrument_SfxBatBounce` |
 | `$62E5` | 9 | data | `PitchSlide_23` |
 | `$62EE` | 9 | data | `Arpeggio_26` |
-| `$62F7` | 18 | data | `Instrument_2B` to `Instrument_2C` (2 labels) |
+| `$62F7` | 18 | data | `Instrument_SfxBrickHit` to `Instrument_SfxBrickBroken` (2 labels) |
 | `$6309` | 9 | data | `Arpeggio_27` |
 | `$6312` | 9 | data | `PitchSlide_24` |
-| `$631B` | 9 | data | `Instrument_2D` |
+| `$631B` | 9 | data | `Instrument_SfxWallBounce` |
 | `$6324` | 7 | data | `Arpeggio_28` |
-| `$632B` | 9 | data | `Instrument_31` |
+| `$632B` | 9 | data | `Instrument_SfxPowerupCollected` |
 | `$6334` | 13 | data | `Arpeggio_29` |
 | `$6341` | 6 | data | `PitchSlide_25` |
-| `$6347` | 9 | data | `Instrument_36` |
+| `$6347` | 9 | data | `Instrument_SfxGrenadeThrow` |
 | `$6350` | 45 | data | `Arpeggio_30` |
 | `$637D` | 12 | data | `PitchSlide_26` |
-| `$6389` | 9 | data | `Instrument_37` |
+| `$6389` | 9 | data | `Instrument_SfxUfoHit` |
 | `$6392` | 9 | data | `PitchSlide_27` |
-| `$639B` | 9 | data | `Instrument_38` |
+| `$639B` | 9 | data | `Instrument_SfxLaserShot` |
 | `$63A4` | 7 | data | `Arpeggio_31` |
 | `$63AB` | 24 | data | `PitchSlide_28` |
-| `$63C3` | 7 | data | `NoiseInstrument_12` |
+| `$63C3` | 7 | data | `NoiseInstrument_SfxFireworkBurst` |
 | `$63CA` | 7 | data | `NoiseShape_03` |
-| `$63D1` | 9 | data | `Instrument_39` |
+| `$63D1` | 9 | data | `Instrument_SfxAntigravityEnd` |
 | `$63DA` | 7 | data | `Arpeggio_32` |
 | `$63E1` | 9 | data | `PitchSlide_29` |
-| `$63EA` | 9 | data | `Instrument_3A` |
+| `$63EA` | 9 | data | `Instrument_SfxGhostEnd` |
 | `$63F3` | 9 | data | `PitchSlide_30` |
-| `$63FC` | 9 | data | `Instrument_34` |
+| `$63FC` | 9 | data | `Instrument_SfxBatStunned` |
 | `$6405` | 9 | data | `PitchSlide_31` |
-| `$640E` | 9 | data | `Instrument_35` |
+| `$640E` | 9 | data | `Instrument_SfxBallWakesUp` |
 | `$6417` | 7 | data | `Arpeggio_33` |
-| `$641E` | 9 | data | `Instrument_32` |
+| `$641E` | 9 | data | `Instrument_SfxBlobBallBounce` |
 | `$6427` | 6 | data | `PitchSlide_32` |
 | `$642D` | 7 | data | `Arpeggio_34` |
-| `$6434` | 9 | data | `Instrument_33` |
+| `$6434` | 9 | data | `Instrument_SfxGrenadeBounce` |
 | `$643D` | 9 | data | `Arpeggio_35` |
 | `$6446` | 6 | data | `PitchSlide_33` |
-| `$644C` | 9 | data | `Instrument_2E` |
+| `$644C` | 9 | data | `Instrument_SfxPowerupSpawn` |
 | `$6455` | 13 | data | `Arpeggio_36` |
-| `$6462` | 9 | data | `Instrument_2F` |
+| `$6462` | 9 | data | `Instrument_SfxBallSticks` |
 | `$646B` | 15 | data | `Arpeggio_37` |
-| `$647A` | 9 | data | `Instrument_30` |
+| `$647A` | 9 | data | `Instrument_SfxBallLaunch` |
 | `$6483` | 9 | data | `PitchSlide_34` |
 | `$648C` | 7 | data | `NoiseInstrument_0A` |
 | `$6493` | 11 | data | `NoiseShape_04` |
-| `$649E` | 7 | data | `NoiseInstrument_14` |
+| `$649E` | 7 | data | `NoiseInstrument_SfxFireworkSpark` |
 | `$64A5` | 25 | data | `NoiseShape_05` |
-| `$64BE` | 7 | data | `NoiseInstrument_0E` |
+| `$64BE` | 7 | data | `NoiseInstrument_SfxBlobThrow` |
 | `$64C5` | 35 | data | `NoiseShape_06` |
-| `$64E8` | 7 | data | `NoiseInstrument_0B` |
+| `$64E8` | 7 | data | `NoiseInstrument_SfxGrenadeBlast` |
 | `$64EF` | 9 | data | `NoiseShape_07` |
-| `$64F8` | 7 | data | `NoiseInstrument_11` |
+| `$64F8` | 7 | data | `NoiseInstrument_SfxUfoBomb` |
 | `$64FF` | 61 | data | `NoiseShape_08` |
-| `$653C` | 7 | data | `NoiseInstrument_0F` |
+| `$653C` | 7 | data | `NoiseInstrument_SfxPlasmaShot` |
 | `$6543` | 33 | data | `NoiseShape_09` |
-| `$6564` | 7 | data | `NoiseInstrument_13` |
+| `$6564` | 7 | data | `NoiseInstrument_SfxMenuMove` |
 | `$656B` | 9 | data | `NoiseShape_10` |
 | `$6574` | 7 | data | `NoiseInstrument_15` |
 | `$657B` | 5 | data | `NoiseShape_11` |
-| `$6580` | 7 | data | `NoiseInstrument_0C` |
+| `$6580` | 7 | data | `NoiseInstrument_SfxBlobCatch` |
 | `$6587` | 29 | data | `NoiseShape_12` |
-| `$65A4` | 7 | data | `NoiseInstrument_0D` |
+| `$65A4` | 7 | data | `NoiseInstrument_SfxBatDestroyed` |
 | `$65AB` | 11 | data | `NoiseShape_13` |
-| `$65B6` | 7 | data | `NoiseInstrument_10` |
+| `$65B6` | 7 | data | `NoiseInstrument_SfxRocketShot` |
 | `$65BD` | 27 | data | `NoiseShape_14` |
-| `$65D8` | 9 | data | `Instrument_10` |
+| `$65D8` | 9 | data | `Instrument_Silent` |
 | `$65E1` | 7 | data | `NoiseInstrument_00` |
-| `$65E8` | 10 | data | `Instrument_11` |
+| `$65E8` | 10 | data | `Instrument_WaveSilent` |
 | `$65F2` | 80 | data | `Waveform_0` to `Waveform_4` (5 labels) |
 | `$6642` | 105 | data | `WaveAnim_00` to `WaveAnim_01` (2 labels) |
 | `$66AB` | 32 | data | `Waveform_5` to `Waveform_6` (2 labels) |
 | `$66CB` | 264 | data | `WaveAnim_02` to `WaveAnim_04` (3 labels) |
-| `$67D3` | 6189 | data | `LeftoverData_006_67d3` |
+| `$67D3` | 13 | data | `UnusedText_TheEnd` |
+| `$67E0` | 6176 | data | `BankFiller_006` |
 
 ## Bank $07
 
@@ -606,39 +611,44 @@ Runs of labels with the same prefix are shown as one row.
 | `$5F28` | 1552 | graphics | `Gfx_TitleScreen_007_5f28` |
 | `$6538` | 320 | data | `Gfx_TitleLicensedBy_Spanish` |
 | `$6678` | 640 | graphics | `Gfx_TitleLicensedBy_German` to `Gfx_TitleLicensedBy_French` (2 labels) |
-| `$68F8` | 5896 | graphics | `Gfx_TitleScreen_007_68f8` |
+| `$68F8` | 5732 | graphics | `Gfx_TitleScreen_007_68f8` |
+| `$7F5C` | 164 | data | `BankFiller_007` |
 
 ## Bank $08
 
 | Address | Bytes | Kind | Labels |
 |---|---|---|---|
-| `$4000` | 16384 | data | `BrickLayout_Base` to `BrickLayout_Level123` (161 labels) |
+| `$4000` | 16220 | data | `BrickLayout_Base` to `BrickLayout_Level123` (161 labels) |
+| `$7F5C` | 164 | data | `BankFiller_008` |
 
 ## Bank $09
 
 | Address | Bytes | Kind | Labels |
 |---|---|---|---|
-| `$4000` | 16384 | data | `BrickShineAnimation` |
+| `$4000` | 3889 | data | `BrickShineAnimation` to `BrickShineAnimation_End` (2 labels) |
+| `$4F31` | 12495 | data | `BankFiller_009` |
 
 ## Bank $0A
 
 | Address | Bytes | Kind | Labels |
 |---|---|---|---|
-| `$4000` | 16384 | graphics | `BackgroundTiles_00a_4000` to `BackgroundTiles_00a_5f00` (2 labels) |
+| `$4000` | 16220 | graphics | `BackgroundTiles_00a_4000` to `BackgroundTiles_00a_5f00` (2 labels) |
+| `$7F5C` | 164 | data | `BankFiller_00a` |
 
 ## Bank $0B
 
 | Address | Bytes | Kind | Labels |
 |---|---|---|---|
-| `$4000` | 15552 | data | `HighScoreAnim_00b_4000` to `HighScoreAnim_00b_7960` (18 labels) |
-| `$7CC0` | 108 | data | `Tilemap_HighScores_00b_7cc0` to `Tilemap_HighScores_00b_7cf6` (2 labels) |
-| `$7D2C` | 724 | graphics | `Gfx_HighScores_00b_7d2c` |
+| `$4000` | 15552 | data | `HighScoreAnim_English_00` to `HighScoreAnim_English_17` (18 labels) |
+| `$7CC0` | 108 | data | `Tilemap_HighScores_English_Tiles` to `Tilemap_HighScores_English_Attributes` (2 labels) |
+| `$7D2C` | 272 | graphics | `Gfx_HighScores_English` |
+| `$7E3C` | 452 | data | `BankFiller_00b` |
 
 ## Bank $0C
 
 | Address | Bytes | Kind | Labels |
 |---|---|---|---|
-| `$4000` | 864 | data | (no label) |
+| `$4000` | 864 | data | `HighScoreAnim_Blank` |
 | `$4360` | 2376 | data | `PowerupMap_Level050` to `PowerupMap_Level123` (160 labels) |
 | `$4CA8` | 6 | data | `LevelPasswordScrollSplits` |
 | `$4CAE` | 62 | data | `Text_English_LevelPassword` |
@@ -656,7 +666,8 @@ Runs of labels with the same prefix are shown as one row.
 | `$4000` | 2128 | graphics | `Gfx_ColorOnly_00d_4000` to `Gfx_ColorOnly_00d_4800` (2 labels) |
 | `$4850` | 360 | data | `Tilemap_ColorOnly_00d_4850` |
 | `$49B8` | 1944 | graphics | `Gfx_LanguageSelect_00d_49b8` |
-| `$5150` | 11952 | data | `Tilemap_LanguageSelect_00d_5150` |
+| `$5150` | 11788 | data | `Tilemap_LanguageSelect_00d_5150` |
+| `$7F5C` | 164 | data | `BankFiller_00d` |
 
 ## Bank $0E
 
@@ -768,77 +779,303 @@ Runs of labels with the same prefix are shown as one row.
 | `$4214` | 144 | data | `RasterNextLines` |
 | `$42A4` | 288 | data | `RasterColours_Mode3` |
 | `$43C4` | 1728 | data | `RasterColours_Mode2_3` to `RasterColours_Mode4_3` (6 labels) |
-| `$4A84` | 13692 | data | `Credits_English` to `Credits_Spanish` (5 labels) |
+| `$4A84` | 13332 | data | `Credits_English` to `Credits_Spanish` (5 labels) |
+| `$7E98` | 360 | data | `BankFiller_00f` |
 
 ## Bank $10
 
 | Address | Bytes | Kind | Labels |
 |---|---|---|---|
-| `$4000` | 374 | data | (no label) |
-| `$4176` | 16010 | data | `IsThisTheOne` |
+| `$4000` | 15552 | data | `HighScoreAnim_Italian_00` to `HighScoreAnim_Italian_17` (18 labels) |
+| `$7CC0` | 108 | data | `Tilemap_HighScores_Italian_Tiles` to `Tilemap_HighScores_Italian_Attributes` (2 labels) |
+| `$7D2C` | 724 | data | `BankFiller_010` |
 
 ## Bank $11
 
-No labels. 16384 bytes of unlabelled data.
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 15552 | data | `HighScoreAnim_French_00` to `HighScoreAnim_French_17` (18 labels) |
+| `$7CC0` | 108 | data | `Tilemap_HighScores_French_Tiles` to `Tilemap_HighScores_French_Attributes` (2 labels) |
+| `$7D2C` | 724 | data | `BankFiller_011` |
 
 ## Bank $12
 
-No labels. 16384 bytes of unlabelled data.
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 15552 | data | `HighScoreAnim_Spanish_00` to `HighScoreAnim_Spanish_17` (18 labels) |
+| `$7CC0` | 108 | data | `Tilemap_HighScores_Spanish_Tiles` to `Tilemap_HighScores_Spanish_Attributes` (2 labels) |
+| `$7D2C` | 724 | data | `BankFiller_012` |
 
 ## Bank $13
 
-No labels. 16384 bytes of unlabelled data.
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 15552 | data | `HighScoreAnim_German_00` to `HighScoreAnim_German_17` (18 labels) |
+| `$7CC0` | 108 | data | `Tilemap_HighScores_German_Tiles` to `Tilemap_HighScores_German_Attributes` (2 labels) |
+| `$7D2C` | 724 | data | `BankFiller_013` |
 
 ## Bank $14
 
-No labels. 16384 bytes of unlabelled data.
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_014` |
 
 ## Bank $15
 
-No labels. 16384 bytes of unlabelled data.
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_015` |
 
 ## Bank $16
 
-No labels. 16384 bytes of unlabelled data.
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_016` |
 
 ## Bank $17
 
-No labels. 16384 bytes of unlabelled data.
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_017` |
 
 ## Bank $18
 
-No labels. 16384 bytes of unlabelled data.
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_018` |
 
 ## Bank $19
 
-No labels. 16384 bytes of unlabelled data.
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_019` |
 
 ## Bank $1A
 
-No labels. 16384 bytes of unlabelled data.
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_01a` |
 
 ## Bank $1B
 
-No labels. 16384 bytes of unlabelled data.
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_01b` |
 
 ## Bank $1C
 
-No labels. 16384 bytes of unlabelled data.
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_01c` |
 
 ## Bank $1D
 
-No labels. 16384 bytes of unlabelled data.
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_01d` |
 
 ## Bank $1E
 
-No labels. 16384 bytes of unlabelled data.
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_01e` |
 
 ## Bank $1F
 
-No labels. 16384 bytes of unlabelled data.
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_01f` |
 
 ## Bank $20
 
-No labels. 16368 bytes of unlabelled data.
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_020` |
+
+## Bank $21
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_021` |
+
+## Bank $22
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_022` |
+
+## Bank $23
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_023` |
+
+## Bank $24
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_024` |
+
+## Bank $25
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_025` |
+
+## Bank $26
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_026` |
+
+## Bank $27
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_027` |
+
+## Bank $28
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_028` |
+
+## Bank $29
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_029` |
+
+## Bank $2A
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_02a` |
+
+## Bank $2B
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_02b` |
+
+## Bank $2C
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_02c` |
+
+## Bank $2D
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_02d` |
+
+## Bank $2E
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_02e` |
+
+## Bank $2F
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_02f` |
+
+## Bank $30
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_030` |
+
+## Bank $31
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_031` |
+
+## Bank $32
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_032` |
+
+## Bank $33
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_033` |
+
+## Bank $34
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_034` |
+
+## Bank $35
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_035` |
+
+## Bank $36
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_036` |
+
+## Bank $37
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_037` |
+
+## Bank $38
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_038` |
+
+## Bank $39
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_039` |
+
+## Bank $3A
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_03a` |
+
+## Bank $3B
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_03b` |
+
+## Bank $3C
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_03c` |
+
+## Bank $3D
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_03d` |
+
+## Bank $3E
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_03e` |
+
+## Bank $3F
+
+| Address | Bytes | Kind | Labels |
+|---|---|---|---|
+| `$4000` | 16384 | data | `BankFiller_03f` |
 
 Banks that are not listed have no content in the sources and are filled with zeros.

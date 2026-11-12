@@ -25,7 +25,7 @@ The original data has two faults that make the sound depend on where things are 
 
 - NoiseInstrument_00 reads a stray pointer whose high byte is the low byte of the address of PitchSlide_00.
 - Some notes are above the end of NoteFrequencies. Their frequency is read from SfxTable, and one of the
-  bytes is the high byte of the address of Sfx_01.
+  bytes is the high byte of the address of Sfx_BatBounce.
 
 By default the test therefore moves the bank in two parts. It inserts 3 bytes at the start of the bank and
 253 more bytes before PitchSlide_00. Everything before PitchSlide_00 moves by 3 bytes and everything from
