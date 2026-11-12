@@ -5,7 +5,10 @@
 
 SECTION "ROM Bank $00c", ROMX[$4000], BANK[$c]
 
+; Unused. 864 zero bytes. No level points here, the first power-up map is PowerupMap_Level050.
+UnusedZeros_00c:
     ds 864, $00
+
 ; Power-up maps, in the same layout as the brick maps: (count, value) pairs that end with a count of 0.
 ; Values: 0 none, 1-16 power-up type + 1, $11 random, $12 fixed Clock.
 
