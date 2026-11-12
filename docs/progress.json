@@ -33,5 +33,10 @@
     "done": 19,
     "total": 20,
     "percent": 95.0
+  },
+  "playtest": {
+    "done": 1048,
+    "total": 1227,
+    "percent": 85.41
   }
 }
