@@ -6116,27 +6116,28 @@ HighScoreSpritePositions:
     db $7f, $ba, $7f, $ce, $7f, $e2, $7f, $f6
 
 ; Frames of the animated "HIGH SCORE" title, in the language graphics bank. A value of 1 restarts the list.
+; The labels are the English ones. Every language bank has its frames at the same addresses.
 HighScoreAnimFrames:
-    dw HighScoreAnim_00b_4000
+    dw HighScoreAnim_English_00
 
 HighScoreAnimFrames_Second:
-    dw HighScoreAnim_00b_4360
-    dw HighScoreAnim_00b_46c0
-    dw HighScoreAnim_00b_4a20
-    dw HighScoreAnim_00b_4d80
-    dw HighScoreAnim_00b_50e0
-    dw HighScoreAnim_00b_5440
-    dw HighScoreAnim_00b_57a0
-    dw HighScoreAnim_00b_5b00
-    dw HighScoreAnim_00b_5e60
-    dw HighScoreAnim_00b_61c0
-    dw HighScoreAnim_00b_6520
-    dw HighScoreAnim_00b_6880
-    dw HighScoreAnim_00b_6be0
-    dw HighScoreAnim_00b_6f40
-    dw HighScoreAnim_00b_72a0
-    dw HighScoreAnim_00b_7600
-    dw HighScoreAnim_00b_7960
+    dw HighScoreAnim_English_01
+    dw HighScoreAnim_English_02
+    dw HighScoreAnim_English_03
+    dw HighScoreAnim_English_04
+    dw HighScoreAnim_English_05
+    dw HighScoreAnim_English_06
+    dw HighScoreAnim_English_07
+    dw HighScoreAnim_English_08
+    dw HighScoreAnim_English_09
+    dw HighScoreAnim_English_10
+    dw HighScoreAnim_English_11
+    dw HighScoreAnim_English_12
+    dw HighScoreAnim_English_13
+    dw HighScoreAnim_English_14
+    dw HighScoreAnim_English_15
+    dw HighScoreAnim_English_16
+    dw HighScoreAnim_English_17
     db $01
 
     db $00
