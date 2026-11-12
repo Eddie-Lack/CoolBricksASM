@@ -4,18 +4,29 @@ Usage:
     python tools/relocation_test.py ORIGINAL_ROM BANK [BANK ...]
     python tools/relocation_test.py ORIGINAL_ROM --bisect BANK
     python tools/relocation_test.py ORIGINAL_ROM --lang 2 BANK [BANK ...]
+    python tools/relocation_test.py ORIGINAL_ROM --lang 4 --shift 256 10
 
 Needs RGBDS on the PATH and PyBoy (pip install pyboy).
 
-For each bank (hex number), the test inserts 3 bytes at the start of the bank, removes 3 bytes
-of padding from its end, builds the ROM and plays the same scripted session on it and on the
+For each bank (hex number), the test inserts 3 bytes (see --shift) at the start of the bank, removes
+the same number of bytes of padding from its end, builds the ROM and plays the same scripted session on it and on the
 original. The screen is compared every 20 frames. If they differ, something still refers to an
 address in that bank by number.
 
 --bisect inserts the bytes before each label in turn and reports the last label for which the
 play-through still differs. A raw pointer then targets that label's block.
 
+--shift N moves the bank by N bytes instead of 3. The language graphics banks ($0B and $10 to $13)
+need a multiple of 256, because the HDMA transfers start at the beginning of the bank's data. Those banks
+end with a BankFiller block of stale bytes, and the shifted bytes are taken from it.
+
+A language graphics bank ($0B, $10 to $13) is moved together with the other four, because the code
+addresses them all with the labels of bank $0B and a bank that moved alone would be read at the wrong
+place. --single moves only the bank that was named. That is expected to differ.
+
 --lang picks the language (0 English, 1 Spanish, 2 French, 3 German, 4 Italian). The default is English.
+The high score screen shows the language graphics bank, so for banks $0B and $10 to $13 use the language
+that selects the bank: 0 English ($0B), 1 Spanish ($12), 2 French ($11), 3 German ($13), 4 Italian ($10).
 Bank 4 ends with an image and cannot be shortened, so it cannot be tested this way.
 """
 import glob
@@ -33,10 +44,19 @@ from pyboy import PyBoy
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 SHIFT = 3
 
+# The five language graphics banks have the same layout, and the code addresses all of them with the
+# labels of bank $0B. Moving one of them alone makes the others disagree, so they are moved together.
+LANGUAGE_BANKS = [0x0B, 0x10, 0x11, 0x12, 0x13]
+
 # RAM addresses used by the session (see include/ram.inc)
 PASSWORD_ENTRY = 0xDAD7
 CURRENT_LEVEL = 0xCCE8
 GAME_STATE = 0xFF9F
+HDMA_MODE = 0xCB53          # 0 or 1 = no transfer, 3 = from bank $0C, other = from the language graphics bank
+LANG_GRAPHICS_BANK = 0xDF44
+
+# Language graphics banks seen while the high score animation was running in the last session
+HDMA_BANKS = set()
 
 
 class Done(Exception):
@@ -48,12 +68,15 @@ def session(rom, limit=None, language=0):
     pb = PyBoy(rom, window='null', sound_emulated=False)
     pb.set_emulation_speed(0)
     out = []
+    HDMA_BANKS.clear()
     frame = [0]
 
     def run(n):
         for _ in range(n):
             pb.tick()
             frame[0] += 1
+            if pb.memory[HDMA_MODE] not in (0, 1, 3):
+                HDMA_BANKS.add(pb.memory[LANG_GRAPHICS_BANK])
             if frame[0] % 20 == 0:
                 out.append(hashlib.md5(pb.screen.image.tobytes()).hexdigest()[:8])
                 if limit and len(out) >= limit:
@@ -125,21 +148,18 @@ def labels_of(bank):
     return found
 
 
-def build_shifted(bank, workdir, before_label=None):
-    """Copy the sources to workdir with the bank shifted and build them. Returns the ROM path or None."""
-    if os.path.exists(workdir):
-        shutil.rmtree(workdir)
-    shutil.copytree(ROOT, workdir, ignore=shutil.ignore_patterns('.git', '*.gbc', '*.o', '*.sym', '*.map'))
+def shift_file(workdir, bank, before_label, shift):
+    """Insert shift bytes at the start of the bank's file (or before a label) and take them from its padding."""
     path = glob.glob(os.path.join(workdir, 'banks', 'bank_%03d_*.asm' % bank))[0]
     lines = open(path).read().split('\n')
     if before_label:
         at = next(k for k, line in enumerate(lines) if line.startswith(before_label + ':'))
     else:
         at = next(k for k, line in enumerate(lines) if line.startswith('SECTION')) + 1
-    lines.insert(at, '    ds %d, $00' % SHIFT)
+    lines.insert(at, '    ds %d, $00' % shift)
 
     # Bank 0 has free space at its end. Other banks are full, so take the bytes from their padding.
-    need = 0 if bank == 0 else SHIFT
+    need = 0 if bank == 0 else shift
     k = len(lines) - 1
     while need > 0 and k > at:
         text = lines[k].split(';')[0].strip()
@@ -156,11 +176,24 @@ def build_shifted(bank, workdir, before_label=None):
             values = values[:len(values) - take]
             lines[k] = '    db ' + ', '.join(values) if values else ''
         elif text and not text.endswith(':'):
-            return None
+            return False
         k -= 1
     if need:
-        return None
+        return False
     open(path, 'w').write('\n'.join(lines))
+    return True
+
+
+def build_shifted(banks, workdir, before_label=None, shift=SHIFT):
+    """Copy the sources to workdir with the banks shifted and build them. Returns the ROM path or None."""
+    if isinstance(banks, int):
+        banks = [banks]
+    if os.path.exists(workdir):
+        shutil.rmtree(workdir)
+    shutil.copytree(ROOT, workdir, ignore=shutil.ignore_patterns('.git', '*.gbc', '*.o', '*.sym', '*.map'))
+    for bank in banks:
+        if not shift_file(workdir, bank, before_label, shift):
+            return None
     cmd = 'rgbasm -o game.o game.asm && rgblink -o game.gbc game.o && rgbfix -v -p 255 game.gbc'
     result = subprocess.run(cmd, shell=True, cwd=workdir, capture_output=True, text=True)
     if result.returncode:
@@ -182,12 +215,24 @@ def main():
         i = args.index('--lang')
         language = int(args[i + 1])
         del args[i:i + 2]
-    banks = [int(a, 16) for a in args if a != '--bisect']
+    single = '--single' in args
+    shift = SHIFT
+    if '--shift' in args:
+        i = args.index('--shift')
+        shift = int(args[i + 1])
+        del args[i:i + 2]
+    banks = [int(a, 16) for a in args if a not in ('--bisect', '--single')]
     base = session(original, language=language)
+    shown = set(HDMA_BANKS)
     with tempfile.TemporaryDirectory() as tmp:
         work = os.path.join(tmp, 'src')
         for bank in banks:
-            rom = build_shifted(bank, work)
+            if bank in LANGUAGE_BANKS and bank not in shown:
+                shown_text = ', '.join('%02X' % b for b in sorted(shown)) or 'none'
+                print('bank %02X: not shown in language %d (the session shows bank %s), use --lang' % (bank, language, shown_text))
+                continue
+            group = [bank] if single or bank not in LANGUAGE_BANKS else LANGUAGE_BANKS
+            rom = build_shifted(group, work, shift=shift)
             if not rom:
                 print('bank %02X: could not be shifted' % bank)
                 continue
@@ -203,7 +248,7 @@ def main():
             lo, hi = -1, len(labels)   # the largest index whose insertion still fails is lo
             while hi - lo > 1:
                 mid = (lo + hi) // 2
-                rom = build_shifted(bank, work, labels[mid])
+                rom = build_shifted(bank, work, labels[mid], shift)
                 if rom and differences(base, session(rom, limit, language)):
                     lo = mid
                 else:

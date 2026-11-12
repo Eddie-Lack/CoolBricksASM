@@ -912,7 +912,7 @@ StateInit_HighScores:
     call DrawHighScoreTable
     ld a, $0b
     call ChangeROMBank
-    ld hl, Gfx_HighScores_00b_7d2c
+    ld hl, Gfx_HighScores_English
     ld de, $8b40
     ld bc, $0090
     call DataTransfer
@@ -920,7 +920,7 @@ StateInit_HighScores:
     call ChangeROMBank
     ld a, $26
     ld de, $9800
-    ld hl, Tilemap_HighScores_00b_7cc0
+    ld hl, Tilemap_HighScores_English_Tiles
     ld b, $12
     ld c, $03
     call CopyTilemapRect
@@ -929,7 +929,7 @@ StateInit_HighScores:
     ldh [rVBK], a
     xor a
     ld de, $9800
-    ld hl, Tilemap_HighScores_00b_7cf6
+    ld hl, Tilemap_HighScores_English_Attributes
     ld b, $12
     ld c, $03
     call CopyTilemapRect
@@ -965,10 +965,10 @@ StateInit_HighScores:
     ld [wNameEntryColours + 6], a
     ; Start address of the first animation frame, low byte then high byte.
     ; The frames are sent with HDMA, which needs source addresses that are multiples of 16.
-    ASSERT LOW(HighScoreAnim_00b_4000) == 0, "the high score animation must start at an address ending in $00"
+    ASSERT LOW(HighScoreAnim_English_00) == 0, "the high score animation must start at an address ending in $00"
     xor a
     ld [wHdmaSource], a
-    ld a, HIGH(HighScoreAnim_00b_4000)
+    ld a, HIGH(HighScoreAnim_English_00)
     ld [wHdmaSource + 1], a
     ld hl, HighScoreAnimFrames_Second
     ld a, l
@@ -2006,7 +2006,7 @@ LoadLevel_SkipTilemap:
     call DataTransfer
     ld a, $0b
     call ChangeROMBank
-    ld hl, Gfx_HighScores_00b_7d2c
+    ld hl, Gfx_HighScores_English
     ld de, $96f0
     ld bc, $0110
     call DataTransfer
