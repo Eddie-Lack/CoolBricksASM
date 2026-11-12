@@ -224,20 +224,20 @@ Channel1Effects:
     ld l, a
     ld a, [de]
     dec a
-    jr nz, .slideKept
+    jr nz, .storeSlideCount
 
     inc hl
     inc hl
     ld a, [hl+]
     cp $00
-    jr nz, .slideKept
+    jr nz, .storeSlideCount
 
     ld a, [hl+]
     ld h, [hl]
     ld l, a
     ld a, [hl+]
 
-.slideKept:
+.storeSlideCount:
     ld [de], a
     ld a, l
     ld d, h
@@ -262,19 +262,19 @@ Channel1Effects:
     ld l, a
     ld a, [de]
     dec a
-    jr nz, .arpKept
+    jr nz, .storeArpCount
 
     inc hl
     ld a, [hl+]
     cp $00
-    jr nz, .arpKept
+    jr nz, .storeArpCount
 
     ld a, [hl+]
     ld h, [hl]
     ld l, a
     ld a, [hl+]
 
-.arpKept:
+.storeArpCount:
     ld [de], a
     ld a, l
     ld d, h
@@ -291,19 +291,19 @@ Channel1Effects:
     ld l, a
     ld a, [de]
     dec a
-    jr nz, .modeKept
+    jr nz, .storeModeCount
 
     inc hl
     ld a, [hl+]
     cp $00
-    jr nz, .modeKept
+    jr nz, .storeModeCount
 
     ld a, [hl+]
     ld h, [hl]
     ld l, a
     ld a, [hl+]
 
-.modeKept:
+.storeModeCount:
     ld [de], a
     ld a, l
     ld d, h
@@ -618,20 +618,20 @@ Channel2Effects:
     ld l, a
     ld a, [de]
     dec a
-    jr nz, .slideKept
+    jr nz, .storeSlideCount
 
     inc hl
     inc hl
     ld a, [hl+]
     cp $00
-    jr nz, .slideKept
+    jr nz, .storeSlideCount
 
     ld a, [hl+]
     ld h, [hl]
     ld l, a
     ld a, [hl+]
 
-.slideKept:
+.storeSlideCount:
     ld [de], a
     ld a, l
     ld d, h
@@ -656,19 +656,19 @@ Channel2Effects:
     ld l, a
     ld a, [de]
     dec a
-    jr nz, .arpKept
+    jr nz, .storeArpCount
 
     inc hl
     ld a, [hl+]
     cp $00
-    jr nz, .arpKept
+    jr nz, .storeArpCount
 
     ld a, [hl+]
     ld h, [hl]
     ld l, a
     ld a, [hl+]
 
-.arpKept:
+.storeArpCount:
     ld [de], a
     ld a, l
     ld d, h
@@ -685,19 +685,19 @@ Channel2Effects:
     ld l, a
     ld a, [de]
     dec a
-    jr nz, .modeKept
+    jr nz, .storeModeCount
 
     inc hl
     ld a, [hl+]
     cp $00
-    jr nz, .modeKept
+    jr nz, .storeModeCount
 
     ld a, [hl+]
     ld h, [hl]
     ld l, a
     ld a, [hl+]
 
-.modeKept:
+.storeModeCount:
     ld [de], a
     ld a, l
     ld d, h
@@ -931,19 +931,19 @@ Channel3Effects:
     ld l, a
     ld a, [de]
     dec a
-    jr nz, .volumeKept
+    jr nz, .storeVolumeCount
 
     inc hl
     ld a, [hl+]
     cp $00
-    jr nz, .volumeKept
+    jr nz, .storeVolumeCount
 
     ld a, [hl+]
     ld h, [hl]
     ld l, a
     ld a, [hl+]
 
-.volumeKept:
+.storeVolumeCount:
     ld [de], a
     ld a, l
     ld d, h
@@ -963,20 +963,20 @@ Channel3Effects:
     ld l, a
     ld a, [de]
     dec a
-    jr nz, .slideKept
+    jr nz, .storeSlideCount
 
     inc hl
     inc hl
     ld a, [hl+]
     cp $00
-    jr nz, .slideKept
+    jr nz, .storeSlideCount
 
     ld a, [hl+]
     ld h, [hl]
     ld l, a
     ld a, [hl+]
 
-.slideKept:
+.storeSlideCount:
     ld [de], a
     ld a, l
     ld d, h
@@ -1001,19 +1001,19 @@ Channel3Effects:
     ld l, a
     ld a, [de]
     dec a
-    jr nz, .arpKept
+    jr nz, .storeArpCount
 
     inc hl
     ld a, [hl+]
     cp $00
-    jr nz, .arpKept
+    jr nz, .storeArpCount
 
     ld a, [hl+]
     ld h, [hl]
     ld l, a
     ld a, [hl+]
 
-.arpKept:
+.storeArpCount:
     ld [de], a
     ld a, l
     ld d, h
@@ -1030,19 +1030,19 @@ Channel3Effects:
     ld l, a
     ld a, [de]
     dec a
-    jr nz, .modeKept
+    jr nz, .storeModeCount
 
     inc hl
     ld a, [hl+]
     cp $00
-    jr nz, .modeKept
+    jr nz, .storeModeCount
 
     ld a, [hl+]
     ld h, [hl]
     ld l, a
     ld a, [hl+]
 
-.modeKept:
+.storeModeCount:
     ld [de], a
     ld a, l
     ld d, h
@@ -1343,19 +1343,19 @@ Channel4Effects:
     ld l, a
     ld a, [de]
     dec a
-    jr nz, .shapeKept
+    jr nz, .storeShapeCount
 
     inc hl
     ld a, [hl+]
     cp $00
-    jr nz, .shapeKept
+    jr nz, .storeShapeCount
 
     ld a, [hl+]
     ld h, [hl]
     ld l, a
     ld a, [hl+]
 
-.shapeKept:
+.storeShapeCount:
     ld [de], a
     ld a, l
     ld d, h
@@ -1374,19 +1374,19 @@ Channel4Effects:
     ld l, a
     ld a, [de]
     dec a
-    jr nz, .controlKept
+    jr nz, .storeControlCount
 
     inc hl
     ld a, [hl+]
     cp $00
-    jr nz, .controlKept
+    jr nz, .storeControlCount
 
     ld a, [hl+]
     ld h, [hl]
     ld l, a
     ld a, [hl+]
 
-.controlKept:
+.storeControlCount:
     ld [de], a
     ld a, l
     ld d, h
@@ -1554,11 +1554,11 @@ UpdateMutedChannel:
 UpdateWaveAnim:
     ld a, [wSfxDone]
     cp $ff
-    jr nz, .sfxGoesOn
+    jr nz, .stepWaveAnim
 
     ld [wSfxChannel], a
 
-.sfxGoesOn:
+.stepWaveAnim:
     ld hl, wWaveAnimCount
     ld e, l
     ld d, h
@@ -4634,7 +4634,7 @@ Instrument_00:
     db $80, $01, $00
     dw Arpeggio_None - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
 
-; Noise instrument $02, a kick drum: low noise with a fast decay, played with the pulse kick.
+; Noise instrument $02, a kick drum: low noise with a fast decay. Usually layered with the pulse kick (Instrument_PulseKick), but not always.
 NoiseInstrument_Kick:
     db $00, $51, $91
     dw NoiseShape_00 - 1, Arpeggio_None - 1
@@ -4659,7 +4659,7 @@ NoiseShape_01:
     db TABLE_END
     dw NoiseShape_01
 
-; Noise instrument $01, a snare drum: noise with a slower decay, played with the pulse snare.
+; Noise instrument $01, a snare drum: higher noise than the kick, with a slower decay. Usually layered with the pulse snare (Instrument_PulseSnare), but not in Song_Title and Song_Ending.
 NoiseInstrument_Snare:
     db $80, $44, $01
     dw NoiseShape_02 - 1, Arpeggio_None - 1

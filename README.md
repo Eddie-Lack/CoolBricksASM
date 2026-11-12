@@ -6,7 +6,7 @@ This is a fork of [RoddyDev/CoolBricksASM](https://github.com/RoddyDev/CoolBrick
 
 ## Progress
 
-![Routines named](docs/badges/routines.svg) ![Local labels](docs/badges/locals.svg) ![RAM named](docs/badges/ram.svg) ![Data labelled](docs/badges/data.svg) ![Graphics PNGs](docs/badges/graphics.svg) ![Routine comments](docs/badges/comments.svg) ![Relocation tested](docs/badges/relocation.svg)
+![Routines named](docs/badges/routines.svg) ![Local labels](docs/badges/locals.svg) ![RAM named](docs/badges/ram.svg) ![Data labelled](docs/badges/data.svg) ![Graphics PNGs](docs/badges/graphics.svg) ![Routine comments](docs/badges/comments.svg) ![Relocation tested](docs/badges/relocation.svg) ![Play-tested](docs/badges/playtest.svg)
 
 What each badge measures (`python tools/progress.py` recalculates them from the sources):
 
@@ -19,10 +19,11 @@ What each badge measures (`python tools/progress.py` recalculates them from the 
 | Graphics PNGs | `.2bpp` files in `gfx/` that have a PNG. |
 | Routine comments | Routines that have a header comment. |
 | Relocation tested | Banks `$00`–`$13` that pass the relocation test. Bank 4 can't be tested. The number is kept by hand in `docs/progress_manual.json`. |
+| Play-tested | Names and comments that were checked against behaviour in the emulator with `tools/coverage.py`. The number is kept by hand in `docs/progress_manual.json`. |
 
 ## Status
 
-The game's code, RAM, level data, text and music driver are fully disassembled and named. The main work left is the graphics-heavy language banks and some tidying.
+Everything in the ROM is disassembled, named and commented. The sources build the original ROM byte for byte. Remaining items are listed under [Remaining work](#remaining-work).
 
 | Area | Status |
 |---|---|
@@ -30,14 +31,14 @@ The game's code, RAM, level data, text and music driver are fully disassembled a
 | Code and data separated | Done. |
 | Routine and jump names | Done. No automatic labels are left. |
 | RAM variables | Done. 382 names and no placeholders. |
-| Pointer tables | Done. Every pointer is a label in the banks that pass the relocation tests. |
+| Pointer tables | Done. Every pointer is a label. |
 | Level data and text | Done. |
-| Music and sound driver | Done. Rows and sound effects are still plain numbers (see below). |
-| Graphics files | Done. All 47 `.2bpp` files have a PNG. |
-| Relocation tests | Mostly done. See [Checks](#checks). |
-| Routine comments | Partly done. About 4 in 10 of the 280 routines in banks 0, 1 and `$0F` have a header comment. |
-| Language graphics banks (`$10`–`$13`) | Not done. The data has no labels. |
-| Bank 9 (brick shine animation) | Not done. It is one 16 KB block. |
+| Music and sound driver | Done. Songs, instruments, sound effects and notes have names. |
+| Language graphics banks (`$10`–`$13`) and bank 9 | Done. Animation frames, tile maps and graphics are labelled. |
+| Graphics files | Done. All 45 `.2bpp` files have a PNG. |
+| Routine comments | Done. All 307 routines have a header comment. |
+| Relocation tests | Done. 19 of 20 banks pass. Bank 4 can't be tested. See [Checks](#checks). |
+| Play-testing | Mostly done. 1048 of 1227 names and comments were confirmed in the emulator. 52 corrections were applied. |
 
 ## Building
 
@@ -82,24 +83,38 @@ make check
 
 The sources build to the matching ROM with RGBDS 0.8.0 (`make`) with no warnings under `rgbasm -Wall`, and with `tools/gbasm.py` (`make check`).
 
+### Relocation
+
 `tools/relocation_test.py` moves a bank by 3 bytes, rebuilds, and compares a scripted play-through with the original. The play-through covers the menus, the high score and credits screens that appear when the menu idles, every level load, pause, the password screens, the ending and game over. It compares the screen, not sound.
 
-- **English.** Banks 0, 1, 2, 3, 5, 7, 8, 9, `$0A`, `$0C`, `$0D`, `$0E` and `$0F` pass. Bank 6 passes too.
-- **Other languages.** In Spanish, French, German and Italian, banks 0, 1, 5, `$0C` and `$0E` pass. These hold the language tables and text. Bank `$0F` (credits) also passes in French.
+- **English.** Banks 0, 1, 2, 3, 5, 6, 7, 8, 9, `$0A`, `$0C`, `$0D`, `$0E` and `$0F` pass.
+- **Other languages.** Banks 0, 1, 5, `$0C` and `$0E` pass in all five languages. Banks 2, 3, 7, 8, 9, `$0A` and `$0D` pass in all five languages too. Bank `$0F` also passes in French.
+- **Language graphics banks.** Banks `$0B` and `$10`–`$13` can't move by 3 bytes. They move together by 256 bytes, and each passes in its own language.
 - **Sound.** `tools/sound_relocation_test.py` plays all 10 songs and all 30 sound effects. It records every write to the sound registers and the driver's variables in every frame. With bank 6 moved in two parts (3 bytes at the start, 256 bytes from `PitchSlide_00` on), the sound is identical.
-- **Not tested.** Bank 4 ends with an image and can't be shortened. Banks `$0B` and `$10`–`$13` can't be moved by a few bytes (see below).
+- **Not tested.** Bank 4 ends with an image and can't be shortened.
+
+### Play-testing
+
+`tools/coverage.py` runs five scripted scenarios in PyBoy: levels, power-ups, weapons, enemies and menus. It counts how often each code label runs and can log RAM values at a label with `--watch`. All five scenarios together run 1113 of the 1119 labels it can hook. The other six are interrupt vectors the game never uses and one branch that never runs.
+
+Six reviewers checked names and comments by area against what the emulator showed. They confirmed 1048 of 1227. The rest were read from the code only, because no scenario reached them. They proposed 59 corrections, and 52 were applied.
+
+Run it from the repository root after `make`:
+
+```sh
+python3 tools/coverage.py --list
+python3 tools/coverage.py --scenario all --report
+python3 tools/coverage.py --scenario powerups --watch "SpawnPowerup:wBallCount,wFallingPowerups:12"
+```
+
+PyBoy needs two workarounds, which the script applies. A hook that fires in the step that ends a frame fires again forever. Reads from `$D000`–`$DFFF` depend on the WRAM bank, so the script forces bank 1.
 
 ## Remaining work
 
-1. **Language graphics banks `$10`–`$13`.** Each holds the same kind of data as bank `$0B`: the "HIGH SCORE" animation frames, tile maps and graphics for one language (`$12` Spanish, `$11` French, `$13` German, `$10` Italian). Bank `$0B` (English) is labelled. The others are not. Bank `$10` has a label, `IsThisTheOne`, carried over from the original repository.
-2. **Bank 9.** It is one 16 KB block labelled `BrickShineAnimation`. The animation frames inside it are not split up or described.
-3. **Small unlabelled blocks.** `docs/ROM_MAP.md` shows them: 864 bytes at the start of bank `$0C` and 374 bytes at the start of bank `$10`.
-4. **Comments.** About 6 in 10 routines in banks 0, 1 and `$0F` have a name but no header comment.
-5. **Play-testing the names.** The names were checked against the code, not against every play situation. A few may still be slightly off.
-6. **Music data.** Sound effects have numbers (`Sfx_00` to `Sfx_29`), not names. Instrument and table labels are numbered by address. Pattern rows are plain `db` and `dw` lines with no note names, because `tools/gbasm.py` has no macros.
-7. **Filler at the end of banks.** The end of bank 1 (from `$7CAA`) is a stale copy of bank 0 and is stored as plain bytes (`BankFiller_001`). Banks 2 to `$0D` and `$0F` to `$20` end with similar copies that are still part of their last data block. Bank 6 has leftover data from `$67D3` (`LeftoverData_006_67d3`). Banks `$14`–`$1F` are 12 copies of one bank, bank `$20` is a copy of bank `$13`, and banks `$21`–`$3F` are empty.
-8. **Relocation tests in other languages.** Banks 2, 3, 7, 8, 9, `$0A` and `$0D` are tested in English only.
-9. **Upstream.** No pull request has been opened against RoddyDev/CoolBricksASM.
+1. **Names read from code only.** 179 names and comments were not reached by any scenario. They were checked against the code, not in play.
+2. **Upstream.** No pull request has been opened against RoddyDev/CoolBricksASM.
+
+Everything else listed in earlier versions of this file is done.
 
 ## Limits that can't be fixed
 
