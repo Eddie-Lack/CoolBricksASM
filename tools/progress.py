@@ -125,8 +125,8 @@ def colour(p):
 
 
 def badge(label, value, col):
-    lw = 7 * len(label) + 12
-    vw = 7 * len(value) + 12
+    lw = int(7.6 * len(label)) + 14
+    vw = int(7.6 * len(value)) + 14
     w = lw + vw
     return ('<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="20" role="img" aria-label="%s: %s">'
             '<title>%s: %s</title>'
