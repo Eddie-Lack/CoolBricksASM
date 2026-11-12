@@ -62,17 +62,17 @@ DEF wBallWorkXSub          EQU $d777 ; X fraction
 DEF wBallWorkX             EQU $d778 ; X
 DEF wBallWorkDirection     EQU $d779 ; Direction, 0-$1f
 DEF wBallWorkSpeed         EQU $d77a ; Speed. Bit 7 is set while the ball sits on the bat
-DEF wBallWorkFlags         EQU $d77b ; Bounce counter, not flags: counts hits on unbreakable bricks and walls since the last bat bounce or breakable brick hit (0 to $14), then bit 7 is set and a 1 to 7 counter runs. When it wraps to 0, UpdateBall_Move turns the ball one direction step to break endless loops. $ff marks a removed ball
+DEF wBallWorkFlags         EQU $d77b ; Bounce counter, not flags: counts hits on unbreakable bricks and walls since the last bat bounce or breakable brick hit (0 to $14), then it runs $81 to $87 and wraps to $80. At $80 the next UpdateBall_Move clears it and turns the ball one direction step (two when the new direction would be a multiple of 8) to break endless loops. $ff marks a removed ball
 DEF wBalls                 EQU $d77d ; The balls, 7 bytes each, in the same layout as wBallWork
 DEF wBatDeltaX             EQU $d89f ; Bat movement this frame with the sign reversed: negative when the bat moved right, positive when it moved left (UpdateBall subtracts it from the ball X while the ball rides the bat)
 DEF wLaunchDirection       EQU $d8a0 ; Direction ($01 or $1f) for the ball held on the bat that is launched this frame, or 0. The value 4 is not a direction: it is set when a ball not held at its start is released (Multi ball, Magnet) and by the Ninja pick-up. The ball then keeps its direction and only takes its speed from the bat bounce table
 DEF wMultiBallPending      EQU $d8a1 ; Set by Multi ball until the ball splits
-DEF wAntigravityActive     EQU $d8a2 ; Not 0 while Antigravity (Pepper) is active
+DEF wAntigravityActive     EQU $d8a2 ; Not 0 while Antigravity (Pepper) is active. Pepper sets it to $a0, the start value of wBallEffectTimer, not to 1
 DEF wSlowBallActive       EQU $d8a3 ; Set by Slow ball. Selects the slower half of the bat bounce tables
 DEF wSleepyBallActive      EQU $d8a5 ; Not 0 while the ball sleeps (Clock)
 DEF wBallEffectTimer       EQU $d8a6 ; Time left for Sleepy ball, Antigravity or Ninja
 DEF wBallOnBat             EQU $d8a8 ; Not 0 while a ball is held on the bat
-DEF wAntigravityCancel     EQU $d8a9 ; Set when another power-up ends Antigravity early
+DEF wAntigravityCancel     EQU $d8a9 ; Set when Slow ball, Sleepy ball, Triple ball or Ninja is picked up while Antigravity runs. It is a copy of wAntigravityActive ($a0, not 1). Gameplay_AntigravitySteering ends Antigravity on the next frame and clears it
 DEF wRemoveBall            EQU $d8aa ; Set to remove the ball being updated
 DEF hLastDirection         EQU $ff8b ; Left/right bits of the last frame
 DEF hStateTimer            EQU $ffa0 ; Counts down once per frame in FrameLoop. At 0 the frame loop ends and the state in hGameState starts. While it is not 0 the B level skip, Start pause, losing a life and RestartAfterLifeLost are held off, but the bat and balls keep moving
@@ -81,7 +81,7 @@ DEF hLifeLostTimer         EQU $ffa2 ; Counts up to $28 after a lost life, then 
 ; Gameplay: weapons
 DEF wShotActive            EQU $dc3e ; 6 shot slots. 0 = free, otherwise the frames since firing (1 to 4 only draw the flash at the bat, 5 and up fly)
 DEF wRocketLaserBat        EQU $dc46 ; 1 with a Rocket or Laser bat
-DEF wGrenadePower          EQU $dc49 ; Throw power, grows while A is held
+DEF wGrenadePower          EQU $dc49 ; Throw power, 16 bits. Grows by $20 per frame while A is held. The high byte (0 to 10, capped) is the index into GrenadeThrowTable
 DEF wGrenadeDelay          EQU $dc4b ; Set to 4 when a grenade is thrown. It is not counted down: UpdateProjectiles clears it when the explosion ends. While it is not 0, no grenade can be charged or thrown, so it works as a busy flag
 DEF wLaserBat              EQU $dc4c ; 1 = Laser bat, 0 = Rocket bat
 
@@ -126,8 +126,8 @@ DEF wPasswordLetterColours EQU $dadb ; Palette of each password letter: 4 = sele
 DEF wPasswordCursor        EQU $dadf ; Letter being edited, 0-3. Becomes 4 when the fourth letter is confirmed, which submits the password, and stays 4 until the next password entry starts
 
 ; Gameplay: shot positions
-DEF wShotCooldown          EQU $dc44 ; Frames until the next rocket or laser can be fired
-DEF wFireLatch             EQU $dc4d ; Not 0 until A is released; each shot needs a new press
+DEF wShotCooldown          EQU $dc44 ; Frames until the next rocket or laser can be fired. A shot sets it to wShotReloadDelay, and it is reset to 0 early when the last shot in flight ends, for example on a brick next to the bat
+DEF wFireLatch             EQU $dc4d ; Set to the reload delay (30 or 8) when a shot leaves. Cleared only when A is not held and wShotCooldown is 0, so each shot needs a new press
 DEF wShots                 EQU $dc4e ; 21 bytes. Slots 0 to 2 have 4 bytes each (x, y, y when fired, 1 for a laser). Slots 3 to 5 (laser only) have 3 bytes each (x, y, y when fired), at +12, +15 and +18
 
 ; Gameplay: UFO hits
@@ -306,7 +306,7 @@ DEF wLevelPasswordText    EQU $dd0b ; The text of the level password screen, cop
 DEF wTwinkleWrites        EQU $deb8 ; Tile changes of the twinkling stars for VBlank, 6 bytes each
 DEF wTwinkleWriteCount    EQU $defa ; Number of entries in wTwinkleWrites
 DEF wHitTileWriteCount    EQU $d9bc ; Tile changes that ProcessBrickHitQueue added to wVBlankTileWrites this frame
-DEF wEndingSeen           EQU $dcff ; Non-zero after the ending. The level password screens are then skipped
+DEF wEndingSeen           EQU $dcff ; Non-zero after the ending. StateInit_Ending stores $0e in it, the ROM bank number reused as the flag. The level password screens are then skipped
 DEF wBallLoopCount        EQU $d8a4 ; Number of balls at the start of this frame's ball loop
 DEF wLevelTitleTimer      EQU $d745 ; Counts down while the top row shows the level title instead of the score. $ff = clear the row first
 DEF wLevelTitleBlink      EQU $d746 ; Blink phase of the level title

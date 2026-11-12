@@ -1190,7 +1190,7 @@ def projectile_lands(g, y, flags, x=80):
     lands this frame at (x, y) on an unbreakable brick, so that it bounces off it."""
     row = (y & 0xF8) // 8 - 3
     g.sync_poke(g.syms['wBrickMap'] + 16 * row + (x >> 4), 0x0E)
-    g.sync_poke('wProjectiles', 1, 0, x, 0, y, 0, 0, 0, flags)
+    g.sync_poke('wProjectiles', 1, 0, x, 0, y, 0, flags, 0, 0)
     g.run(8)
 
 
