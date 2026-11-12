@@ -3,7 +3,12 @@
 ; mgbdis v2.0 - Game Boy ROM disassembler by Matt Currie and contributors.
 ; https://github.com/mattcurrie/mgbdis
 
+; Bank $20 is a stale copy of bank $13 (the German high score graphics) and of the stale buffers in banks $14 to $1F.
+; Nothing reads this bank.
+
 SECTION "ROM Bank $020", ROMX[$4000], BANK[$20]
+
+BankFiller_020:
 
     ds 56, $00
     db $02, $7c, $fe, $7f, $ff, $7f
