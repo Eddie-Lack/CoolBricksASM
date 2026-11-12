@@ -330,11 +330,13 @@ Special cases, also tested in the emulator:
 - **Title letters.** `TitleScreen_SlideLetters` slides the six title letters in from the right as sprites, one after the other. When a letter arrives, `TitleScreen_VBlank` draws it on the background. All six letters share one list of steps (`TitleLetterPath_1`); each later letter starts 3 bytes further in.
 - **Logo sway.** On the level password screen the LCD STAT handler changes the horizontal scroll at three screen lines (`wScrollSplits`). `LogoSwaySteps` moves the first and third part in opposite directions.
 - **Level title.** When a level starts, the top row shows the level title and blinks. `wLevelTitleTimer` counts down, and then the row shows the score again.
+- **Frame shine.** `BrickShineAnimation` (bank 9) is a loop of 108 frames of 36 bytes. A frame is 12 records of (tile map address low, high, tile number). `FlushBrickRedraw` copies one frame per game frame to the VBlank tile write buffer, so only tile numbers in VRAM bank 0 change. It animates the metal frame around the playfield, not the bricks. Two lamps in the top bar swap tiles every 9 frames. A light runs along the slots on the left and right walls and takes 18 frames per pass. The cross piece on each wall cycles through six tiles. The byte `$FF` after frame 107 restarts the loop.
+- **High score title.** Banks `$0B` (English), `$12` (Spanish), `$11` (French), `$13` (German) and `$10` (Italian) each hold 18 frames of 864 bytes (`HighScoreAnim_<Language>_NN`): the "HIGH SCORE" title spinning around its vertical axis, 54 tiles per frame (18 by 3). `StartHdmaTransfer` copies one frame to VRAM at `$9260` with HDMA. `HighScores_AdvanceAnim` steps to the next frame every third VBlank. The tile map (`$7CC0`) holds the tile numbers `$00` to `$35`. The attribute map (`$7CF6`) is 54 zeros. All five banks have the same layout, and the code uses the English labels for every language. The first 864 bytes of bank `$0C` are an all-zero blank frame (`HighScoreAnim_Blank`). It is copied with HDMA mode 3 to clear the title while the sprites slide off.
 - **High score screen.** `HighScores_AdvanceAnim` steps the "HIGH SCORE" animation every third frame. `HighScores_SlideSprites` slides the four rows of sprites in and out, and rows alternate direction.
 
 ## Music and sound driver
 
-Bank 6 holds the sound driver (`06:4000`–`06:487A`) and all song and sound effect data (up to `06:67D2`). The rest of the bank is leftover bytes that nothing reads. Bank 0 reaches the driver through three small routines that switch to bank 6 and back:
+Bank 6 holds the sound driver (`06:4000`–`06:487A`) and all song and sound effect data (up to `06:67D2`). After that come the unused text "-- THE END --" and a stale copy of bank 5 (`BankFiller_006`). Nothing reads them. Bank 0 reaches the driver through three small routines that switch to bank 6 and back:
 
 | Bank 0 | Bank 6 | Meaning |
 |---|---|---|
@@ -409,7 +411,7 @@ Where the next length would be, two values are special:
 - `$00` (`PATTERN_END`): the pattern is over. The channel reads the next order list entry.
 - `$FF` (`PATTERN_JUMP`): a pointer to an order list entry follows. The channel continues there.
 
-Notes are semitones. Note 0 is the C at 65.4 Hz, and `NoteFrequencies` holds the register value of 72 notes (6 octaves). With a waveform of one cycle, the wave channel sounds one octave lower for the same value. The noise channel ignores the note number.
+Notes use scientific pitch notation. Note 0 is C2 at 65.4 Hz, and `NoteFrequencies` holds the register value of 72 notes (6 octaves). It follows equal temperament with A4 at 440 Hz, within about 5 cents up to B5 and within about 25 cents above it. `include/sound.inc` has `NOTE_C2` to `NOTE_B7`, with `s` for sharp. Pattern rows use these names and the `INSTR_*` and `NOISE_INSTR_*` constants. Noise rows keep the note byte as hex, because the driver ignores it. With a waveform of one cycle, the wave channel sounds one octave lower for the same value.
 
 ### Instruments
 
@@ -457,32 +459,42 @@ A sound effect *takes over* its channel:
 
 Only one sound effect plays at a time. `PlaySfx` ignores a new effect when its priority is lower than the priority of the effect that plays (`wSfxPriority`). An equal or higher priority cuts the old effect off. `PlaySong` also stops the sound effect.
 
-The game uses these numbers (the callers are routine names in bank 0 and bank 1):
+The game plays these sound effects. `include/sound.inc` has the constants (`SFX_BAT_BOUNCE` and so on).
 
-| Sound effect | Played by |
-|---|---|
-| 0 | `ProgramStart`, `FrameLoop`, `Gameplay_AfterBalls`. It is one silent note with priority 127, so it stops any other effect |
-| 1 | `CollideBallPoint` |
-| 2, 3 | `ProcessBrickHitQueue` |
-| 4 | `HitBrickAtBall`, `Projectile_CheckBrick` |
-| 5 | `SpawnPowerup` |
-| 6, 22 | `UpdateBall` |
-| 7 | `Gameplay_AfterBalls` |
-| 8 | `PowerupCollected_AddScore` |
-| 9, 12 | `UpdateProjectile_HitBrick` |
-| 10 | `Gameplay_BallLoop`, `UpdateUfoBomb` |
-| 11 | `UpdateProjectiles` |
-| 13, 14 | `CheckBlobCatch`, `UpdateBlob` |
-| 15 | `Gameplay_UpdateStun` |
-| 16, 17, 19 | The shot routines (`Shots_HandleFire` and so on) |
-| 20, 21 | `UpdateUfo`, `CheckUfoHit` |
-| 23 | `Gameplay_AntigravitySteering` |
-| 24 | `UpdateFallingPowerups` |
-| 25 | The menus (`MainMenu_Navigate`, `LanguageSelect_Update` and two more) |
-| 26 | The menus and the screens that wait for a button (`Pause_Update`, `TitleScreen_Update` and 11 more) |
-| 27, 28 | `Firework_Fly` |
+| # | Name | Played when |
+|---|---|---|
+| 0 | `Sfx_Silence` | At start-up, in `FrameLoop` and after a lost life. It is one silent note with priority 127, so it stops any other effect. |
+| 1 | `Sfx_BatBounce` | The ball hits the bat. |
+| 2 | `Sfx_BrickHit` | A brick is hit. |
+| 3 | `Sfx_BrickBroken` | A brick breaks. |
+| 4 | `Sfx_WallBounce` | The ball or a projectile hits a wall or an unbreakable brick. |
+| 5 | `Sfx_PowerupSpawn` | A brick drops a power-up. |
+| 6 | `Sfx_BallSticks` | The sticky bat catches the ball. |
+| 7 | `Sfx_BallLaunch` | A launches the ball from the bat. |
+| 8 | `Sfx_PowerupCollected` | The bat catches a power-up. |
+| 9 | `Sfx_BlobBallBounce` | A ball thrown by the blob lands on an unbreakable brick. |
+| 10 | `Sfx_BatDestroyed` | The last ball is lost, or a UFO bomb hits the bat. |
+| 11 | `Sfx_GrenadeBlast` | A grenade explodes. |
+| 12 | `Sfx_GrenadeBounce` | A grenade lands on an unbreakable brick. |
+| 13 | `Sfx_BlobCatch` | The blob catches the ball. |
+| 14 | `Sfx_BlobThrow` | The blob throws the ball back. |
+| 15 | `Sfx_BatStunned` | The bat shakes while stunned (Poison). |
+| 16 | `Sfx_GrenadeThrow` | A grenade is thrown. |
+| 17 | `Sfx_PlasmaShot` | Plasma is fired. |
+| 18 | `Sfx_RocketShot` | A rocket is fired. `Shots_FireRocketOrLaser` computes the number. It is 18 without the Laser and 19 with it. |
+| 19 | `Sfx_LaserShot` | A laser is fired. |
+| 20 | `Sfx_UfoBomb` | The UFO drops a bomb. |
+| 21 | `Sfx_UfoHit` | The ball or a shot hits the UFO. |
+| 22 | `Sfx_BallWakesUp` | The sleeping ball (Clock) wakes up. |
+| 23 | `Sfx_AntigravityEnd` | Antigravity ends. |
+| 24 | `Sfx_GhostEnd` | Ghost ends. |
+| 25 | `Sfx_MenuMove` | A menu cursor or value changes. |
+| 26 | `Sfx_MenuSelect` | A menu choice or a screen is confirmed. |
+| 27 | `Sfx_FireworkSpark` | A firework spark starts. |
+| 28 | `Sfx_FireworkBurst` | A firework rocket bursts. |
+| 29 | `Sfx_29` | Nothing plays it. |
 
-Numbers 18 and 29 were not found in a direct call. `Shots_FireRocketOrLaser` also plays a number that it computes.
+The numbers were checked by logging each call and its caller during scripted play. Effects 25, 27 and 28 were not reached in the emulator and are named from the code. Effect 10 was seen for the lost ball only.
 
 ### Faults in the original data
 
@@ -494,7 +506,7 @@ The data has small faults. They are part of the ROM, so the disassembly keeps th
 - **Jumps in sound effects.** The `$FF` jump command does not work in sound effect data: it would write to the variables of the song channel. No sound effect uses it.
 - **Transpose on noise.** Channel 4 adds the transpose value to the note and then throws the result away.
 
-These faults matter for moving the data. The first one makes the sound depend on the low byte of the address of `PitchSlide_00`. The second makes it depend on the high byte of the address of `Sfx_01`. See the relocation notes in the README.
+These faults matter for moving the data. The first one makes the sound depend on the low byte of the address of `PitchSlide_00`. The second makes it depend on the high byte of the address of `Sfx_BatBounce`. See the relocation notes in the README.
 
 ### What is not used
 
@@ -521,7 +533,15 @@ No song or sound effect reaches 3 patterns, 15 pulse and wave instruments, 3 noi
 - The default high-score names are CLIVE, ANDY, MARCUS, RACHEL and VICKY (`02:4045`).
 - The ending sets `wEndingSeen`. While it is set, no level password screen appears. `StartGame` clears it.
 - The main menu has five hidden sprites that spell B, O, I, N, G. `UpdateMenuSparkles` draws them from `BoingLetterSprites` and moves them with `BoingLetterBobSteps`. They start below the visible screen (`BoingLetterStartPositions`) and never come into view.
-- The end of several banks is stale filler, not code or data. Bank 1 from `$7CAA` is a copy of the last 854 bytes of bank 0. Banks 2 to `$0D` end with a copy of the last 164 bytes of bank 0. Banks `$0F` to `$20` end with a copy of the last 360 bytes of bank `$0E`.
+- The end of many banks is stale filler, not code or data. Each tail was compared byte by byte with its source, and each is a `BankFiller_<bank>` block.
+  - Bank 1 from `$7CAA` is a copy of the last 854 bytes of bank 0.
+  - Banks 2 to `$0D` end with a copy of the last 164 bytes of bank 0, from `$7F5C`. This includes 78 trailing zeros.
+  - Bank `$0B` is stale from `$7E3C`: zeros, a 0/1 byte table and then the copy of bank 0.
+  - Banks `$10` to `$13` are stale from `$7D2C`: 364 bytes of credits text that equal bank `$0F`, then 360 bytes that equal the end of bank `$0E`.
+  - Banks `$0F` to `$20` end with a copy of the last 360 bytes of bank `$0E`, from `$7E98`.
+  - Banks `$14` to `$1F` are 12 identical stale 16 KB buffers. Bank `$20` is a copy of bank `$13`. Banks `$21` to `$3F` are all zero.
+  - Bank 9 after `$4F30` and bank 6 after `$67E0` are stale copies of bank 8 and bank 5.
+  - Nothing points into any of these tails. Overwriting them with `$AA` and playing a full session in each language changed no screen.
 - Some variables are written and never read: `wMessageUnused`, `wLevelPasswordUnused`, and the two bytes at `wBlob + 13`. `wBonusCountdownPaused` is read but never written.
 - Level 33 has two unbreakable bricks with the power-up id `$29`. They can never drop anything.
 
