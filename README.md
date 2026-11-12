@@ -4,6 +4,22 @@ A disassembly of *Cool Bricks* (Game Boy Color, 2000). It assembles to a ROM tha
 
 This is a fork of [RoddyDev/CoolBricksASM](https://github.com/RoddyDev/CoolBricksASM), which produced the matching build, the extracted graphics and the first labels in the music driver.
 
+## Progress
+
+![Routines named](docs/badges/routines.svg) ![Local labels](docs/badges/locals.svg) ![RAM named](docs/badges/ram.svg) ![Data labelled](docs/badges/data.svg) ![Graphics PNGs](docs/badges/graphics.svg) ![Routine comments](docs/badges/comments.svg) ![Relocation tested](docs/badges/relocation.svg)
+
+What each badge measures (`python tools/progress.py` recalculates them from the sources):
+
+| Badge | Measures |
+|---|---|
+| Routines named | Routines (labels that start code) that have a real name, not one made from an address. |
+| Local labels | `jr` targets that have a name for their purpose, not an address. |
+| RAM named | Variables in `include/ram.inc` that have a real name, not `wUnk_` or `hUnk_`. |
+| Data labelled | Bytes of the 1 MiB ROM that sit under a label. Bytes before the first label of a bank, and banks with no label, count as unlabelled. |
+| Graphics PNGs | `.2bpp` files in `gfx/` that have a PNG. |
+| Routine comments | Routines that have a header comment. |
+| Relocation tested | Banks `$00`–`$13` that pass the relocation test. Bank 4 can't be tested. The number is kept by hand in `docs/progress_manual.json`. |
+
 ## Status
 
 The game's code, RAM, level data, text and music driver are fully disassembled and named. The main work left is the graphics-heavy language banks and some tidying.
