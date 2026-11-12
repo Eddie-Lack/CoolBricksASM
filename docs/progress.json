@@ -1,12 +1,12 @@
 {
   "routines": {
-    "done": 307,
-    "total": 307,
+    "done": 308,
+    "total": 308,
     "percent": 100.0
   },
   "locals": {
-    "done": 823,
-    "total": 823,
+    "done": 822,
+    "total": 822,
     "percent": 100.0
   },
   "ram": {
@@ -25,8 +25,8 @@
     "percent": 100.0
   },
   "comments": {
-    "done": 307,
-    "total": 307,
+    "done": 308,
+    "total": 308,
     "percent": 100.0
   },
   "relocation": {

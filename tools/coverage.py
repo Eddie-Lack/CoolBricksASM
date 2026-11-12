@@ -1302,10 +1302,8 @@ def wait_flying(g, limit=1500):
 def shot_hits_ufo(g, slot):
     """Place the UFO and a shot in slot 0 to 5 on top of each other (the shot slots are checked one by one).
 
-    Slots 4 and 5 are checked against misaligned bytes. Slot 4 takes x from the laser flag of slot 3 (1)
-    and y from its own x, so the UFO has to be at the left edge and the shot's x has to equal the UFO's
-    height. Slot 5 takes y from the laser flag of slot 4 (0 or 1), which is below any UFO, so the
-    hit can only be made by poking that byte."""
+    Slots 0 to 2 have 4 bytes in wShots (x, y, y when fired, laser flag). Slots 3 to 5 have 3 bytes (no flag),
+    so slot 3 is at +12, slot 4 at +15 and slot 5 at +18."""
     height = g.peek('wUfoHeight')
     shots = g.syms['wShots']
     g.sync_poke('wUfoSpeed', 0x80, 0)
@@ -1313,7 +1311,7 @@ def shot_hits_ufo(g, slot):
     g.sync_poke('wUfoX', 2 if slot >= 4 else 60)
     g.sync_poke('wUfoFlying', 1)
     if slot == 5:
-        g.sync_poke(shots + 18, 10, height + 8)      # slot 5 reads x from slot 4's third byte and y from its laser flag
+        g.sync_poke(shots + 18, 10, height + 8)      # slot 5: x and y
     elif slot == 4:
         g.sync_poke(shots + 15, 1)
         g.sync_poke(shots + 16, height + 8)

@@ -106,7 +106,7 @@ The icon table is `01:7726`: one pointer per type to 4 (tile, attribute) pairs, 
 ## When a power-up drops
 
 1. A ball hit calls `00:1A3A`. A rocket, laser, grenade or plasma shot calls `00:1A0B`. Both subtract 1 from the brick and queue the result at `$D8BC`.
-   - While a plasma shot is in flight (`$DC47 = 2`), `00:1A0B` subtracts a second point if the brick is not yet at 0.
+   - While a plasma shot is in flight (`$DC47 = 2`), `00:1A0B` sets a brick that survives to 1 hit point, so it removes 1 to 3 points in all.
    - While Ninja is active (`$D76E ≠ 0`), `00:1A3A` sets any brick that is not at 0 to `$D76E` (1). It then returns without a bounce, so the ball passes through.
 2. The queue routine `00:1ED8` copies the power-up id to `$DB6E` and the new brick value to `$DB6F`, then calls `01:5034`.
 3. `01:5034` returns at once unless the id is not 0 and the new brick value is exactly 1. Otherwise it fills a free falling-object slot at `$DB71` (8 slots of 12 bytes). On the way it changes the type:
@@ -363,9 +363,9 @@ Each channel has a block of variables in RAM (`wCh1Tick` at `$C000`, `wCh2Tick` 
 Each channel part does one of two things.
 
 1. **Timing.** `wChNTick` counts frames. When it reaches 0 it starts again from `wSongTempo` and one *row step* has passed. `wChNRows` counts row steps. When it reaches 0 the channel reads its next row.
-2. **Effects.** On every other frame the channel steps its instrument tables and writes the result to the sound registers (`Channel1Effects` and so on).
+2. **Effects.** On every frame except those listed below, the channel steps its instrument tables and writes the result to the sound registers (`Channel1Effects` and so on).
 
-When a row starts a new note, the effects are skipped for that frame. The note is therefore heard one frame later.
+When a row starts a new note, the effects are skipped for that frame. The note is therefore heard one frame later. Channel 4 also skips the effects on a release row and on a retrigger row, because those paths jump to `UpdateMutedChannel`.
 
 ### Songs
 
@@ -384,7 +384,7 @@ There are 10 songs:
 |---|---|---|
 | 0 | `Song_Silence` | Stops the music. Each channel plays one silent note and holds it |
 | 1 | `Song_Title` | Title screen |
-| 2, 3, 4 | `Song_Level1` to `Song_Level3` | Levels. `wLevelMusicIndex` picks one and steps when the password screen appears |
+| 2, 3, 4 | `Song_Level1` to `Song_Level3` | Levels. `wLevelMusicIndex` picks one and `NextLevelMusic` steps it every fourth level, also after the ending when the password screen is skipped |
 | 5 | `Song_MainMenu` | Main menu |
 | 6 | `Song_HighScores` | High scores. Same as song 5 with another channel 2 |
 | 7 | `Song_GameOver` | Game over. Plays once |
@@ -523,7 +523,7 @@ No song or sound effect reaches 3 patterns, 15 pulse and wave instruments, 3 noi
 | `$DAD7`–`$DADA` | Letters on the password screen (ASCII) |
 | `$DC35` | Level type (`wLevelType`): bit 0 = UFO, bit 1 = blob |
 | `$DC36` | `wBlobPalette`: the high nibble of the level type byte, added to the attributes of the blob's sprites |
-| `$DB71` | Falling power-ups, 8 × 12 bytes: active, y, x, type, 4 × (tile, attribute) |
+| `$DB71` | Falling power-ups, 8 × 12 bytes: y fraction (not 0 = slot in use), y, x, type, 4 × (tile, attribute) |
 | `$C000`–`$C068` | Sound driver variables (`wSoundState`) |
 
 ## Other findings
@@ -542,8 +542,14 @@ No song or sound effect reaches 3 patterns, 15 pulse and wave instruments, 3 noi
   - Banks `$14` to `$1F` are 12 identical stale 16 KB buffers. Bank `$20` is a copy of bank `$13`. Banks `$21` to `$3F` are all zero.
   - Bank 9 after `$4F30` and bank 6 after `$67E0` are stale copies of bank 8 and bank 5.
   - Nothing points into any of these tails. Overwriting them with `$AA` and playing a full session in each language changed no screen.
-- Some variables are written and never read: `wMessageUnused`, `wLevelPasswordUnused`, and the two bytes at `wBlob + 13`. `wBonusCountdownPaused` is read but never written.
+- Some variables are written and never read: `wMessageUnused`, `wLevelPasswordUnused`, and the two bytes at `wBlob + 13`.
+- Some variables never change or never matter. `wBonusCountdownPaused` is read but never written, so the pause branch in `LevelPassword_Update` is dead. `wBlobActive` is set to 1 on every level, so it only lets `CheckBlobCatch` run. `wGrenadeDelay` is set to 4 and cleared when the explosion ends, so it is a busy flag and not a delay.
 - Level 33 has two unbreakable bricks with the power-up id `$29`. They can never drop anything.
+- Shot slots 3 to 5 have 3 bytes each and no laser flag, so `wShots` is 21 bytes and not 24. `UpdateUfo` reads slot 4 at `wShots + 15` and slot 5 at `wShots + 18`. This only looks misaligned if every slot is assumed to have 4 bytes.
+- `UpdateUfo` draws 5 sprites of 4 bytes from `UfoSprites`, which is 18 bytes long. The fifth sprite takes its last two bytes (tile `$53`, attribute `$05`) from the start of `UfoHitScores`. `UfoHit` adds twice the hit count after the increment (1 to 5), so those two bytes are never read as a score.
+- The UFO moves half a pixel per frame, so its X equals `wUfoDropX` on two frames in a row. The bomb is started twice and the second start restarts the release. Every bomb therefore has `wUfoBombActive` at 2 on two consecutive frames.
+- `DrawBatSprites` chooses between the 3-sprite and 4-sprite bat shadow with the scratch byte `hTemp2`. That byte is overwritten between frames, so the wide bat draws the 3-sprite shadow in practice and the 4-sprite row appears only for a few frames.
+- `UpdateBall_Move` uses `wBallWorkFlags` as a counter of bounces off unbreakable bricks and walls. After 20 such bounces without a bat or brick hit, it turns the ball one direction step to break endless loops.
 
 ## Check against the community savestates
 
