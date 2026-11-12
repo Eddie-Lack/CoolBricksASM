@@ -17,7 +17,7 @@ ProgramStart:
     ld sp, hl
     call GBC_Check          ; Do a RAM Check to check if the ROM is being booted on the correct hardware
 
-    jr_000_0158:
+    StateLoop:
     .WaitForVBlank:
     ldh a, [rLY]            ; Check current rendering line
     cp $90                  ; Wait until VBlank (Line 144)
@@ -68,7 +68,7 @@ ProgramStart:
     ei
     call RunStateUpdate
     di
-    jr jr_000_0158
+    jr StateLoop
 
 ; ClearRAM routine
 ; This fills parts of RAM to value set in register A
@@ -1471,7 +1471,7 @@ BuildScoreText:
     ret
 
 ; Build the password of the level whose 3-digit number is at HL and write its 4 letters to wPasswordChars.
-; Also calls CheckPassword on the result, which sets wStartLevel.
+; Also calls CheckPassword on the result, which sets wStartLevel only when the level number minus 1 is a multiple of 4. Otherwise wStartLevel is left as it was.
 EncodeLevelPassword:
     ld a, $02
     call ChangeROMBank
@@ -1566,7 +1566,7 @@ EncodeLevelPassword:
     ret
 
 ; Decode the 4 letters at DE.
-; A level password stores the 0-based level in wStartLevel and returns NZ.
+; A level password stores the 0-based level in wStartLevel and returns NZ. Only levels whose 0-based number is a multiple of 4 are accepted. Any other valid-looking code returns Z and leaves wStartLevel alone.
 ; A cheat password sets its flag and returns Z. An invalid password returns Z.
 CheckPassword:
     ld a, [de]
@@ -2318,7 +2318,7 @@ DrawString:
 
     ret
 
-; Like DrawString, but a zero character leaves the tile as it is.
+; Like DrawString, but a space ($20) leaves the tile as it is. A $00 byte in the string is not a character, and the byte after it is the attribute for the characters that follow.
 DrawStringSkipZero:
     ld a, [hl+]
     ld e, a
@@ -4338,7 +4338,7 @@ UpdateBatTiles:
 
 ; A rocket, laser or plasma shot in slot 0 or 1 hit the brick at HL. A = its hit points.
 ; Shots in slots 2 to 5 and grenade blasts use HitBrickWithBall instead.
-; A plasma shot (wPlasmaState = 2) sets a brick that survives to 1 hit point, like Ninja does for the ball.
+; A plasma shot (wPlasmaState = 2) sets a brick that survives to 1 hit point, like Ninja does for the ball. The shot flies on through the brick and hits it again once the first hit is processed, so the same shot destroys it a moment later.
 HitBrickWithShot:
     and $0f
     ld c, l
@@ -7364,7 +7364,7 @@ UpdateProjectile:
     ld a, [wBlobThrowCount]
     dec a
     ld [wBlobThrowCount], a
-    ld a, [wProjectileWork + 4]
+    ld a, [wProjectileWork + 4]   ; Dead: A is reloaded below
     ld hl, wBalls
     ld a, [wBallCount]
     or a
@@ -7704,7 +7704,8 @@ Projectile_CheckBrick:
     or a
     ret
 
-; Hit the brick at A = y, C = x, if there is one.
+; Hit the brick at A = y, C = x, if there is one. A wall cell ($0f) is hit too and becomes $0e (unbreakable).
+; Unbreakable bricks never get here from a flying grenade because UpdateProjectile bounces off them first. Called for the four corners of a grenade blast.
 Projectile_HitBrick:
     and $f8
     ld l, a
@@ -8545,8 +8546,9 @@ UpdateShots_Shot5:
     or a
     jp nz, UpdateShot5
 
-; Fire the current weapon. A grenade is charged while A is held and thrown when A is released;
-; left or right at that moment sets its direction.
+; Fire the current weapon. A grenade is charged while A is held and thrown when A is released.
+; The power grows by $20 per frame (wGrenadePower, high byte capped at 10) and its high byte picks one of the 11 entries of GrenadeThrowTable.
+; Direction at release is opposite to the held button: right gives $1e and the grenade flies left, left gives $02 and it flies right, neither gives 0 (straight up). With both held, left wins.
 Shots_HandleFire:
     ld a, [wWeaponFlag]
     or a

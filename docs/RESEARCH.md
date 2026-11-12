@@ -550,6 +550,11 @@ No song or sound effect reaches 3 patterns, 15 pulse and wave instruments, 3 noi
 - The UFO moves half a pixel per frame, so its X equals `wUfoDropX` on two frames in a row. The bomb is started twice and the second start restarts the release. Every bomb therefore has `wUfoBombActive` at 2 on two consecutive frames.
 - `DrawBatSprites` chooses between the 3-sprite and 4-sprite bat shadow with the scratch byte `hTemp2`. That byte is overwritten between frames, so the wide bat draws the 3-sprite shadow in practice and the 4-sprite row appears only for a few frames.
 - `UpdateBall_Move` uses `wBallWorkFlags` as a counter of bounces off unbreakable bricks and walls. After 20 such bounces without a bat or brick hit, it turns the ball one direction step to break endless loops.
+- A grenade flies opposite to the held button. Releasing A with right held gives direction `$1E` and the grenade flies left. Left gives `$02` and it flies right. With both held, left wins. The bat itself moves the expected way.
+- Only level passwords for levels 1, 5, 9 and so on work. `CheckPassword` accepts a level only when its 0-based number is a multiple of 4. The password screen shows a code for every level, but entering one for another level leaves `wStartLevel` alone.
+- `StateInit_Ending` stores `$0E` in `wEndingSeen`. It is the ROM bank number that was in A, so any non-zero value acts as the flag.
+- A plasma shot sets a brick that survives to 1 hit point and flies on through it. It hits the same brick again once the first hit is processed, so the brick is destroyed by the same shot.
+- `Projectile_HitBrick` does not skip wall cells. A grenade blast corner on a wall cell turns it into an unbreakable brick (`$0F` to `$0E`). Only a poked blast showed this.
 
 ## Check against the community savestates
 
