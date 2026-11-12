@@ -33,7 +33,8 @@ Runs of labels with the same prefix are shown as one row.
 | `$014C` | 1 | data | `HeaderMaskROMVersion` |
 | `$014D` | 1 | data | `HeaderComplementCheck` |
 | `$014E` | 2 | data | `HeaderGlobalChecksum` |
-| `$0150` | 84 | code | `ProgramStart` |
+| `$0150` | 8 | code | `ProgramStart` |
+| `$0158` | 76 | code | `StateLoop` |
 | `$01A4` | 12 | code | `ClearRAM` |
 | `$01B0` | 9 | code | `DataTransfer` |
 | `$01B9` | 27 | code | `ClearTileMap` |

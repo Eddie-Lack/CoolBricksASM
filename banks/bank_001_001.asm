@@ -982,7 +982,7 @@ Powerup_ShotBatCommon:
     xor a
     ld [wGrenadeCount], a
 
-; Shared part of the weapon power-ups. Ends the plasma bat and sets wWeaponFlag.
+; Shared part of the weapon power-ups. Ends the plasma bat (wPlasmaState 1 only, a plasma shot in flight with state 2 stays) and sets wWeaponFlag.
 ; Clears the sticky, stun and reverse effects, shrinks a big bat to normal width and ends the pick-up.
 Powerup_WeaponCommon:
     ld a, [wPlasmaState]
@@ -1061,7 +1061,7 @@ Powerup_Plasma:
     jr Powerup_WeaponCommon.clearBatEffects
 
 ; Stun bat power-up. Starts wBatEffectTimer and sets wStunActive and wStunWobble.
-; Clears the sticky, weapon and reverse effects, shrinks a big bat to normal width and ends the pick-up.
+; Clears the sticky, weapon (wWeaponFlag only) and reverse effects, shrinks a big bat to normal width and ends the pick-up.
 Powerup_Poison:
     ld a, $50
     ld [wBatEffectTimer], a
@@ -1086,7 +1086,7 @@ Powerup_Poison:
     jp PowerupCollected
 
 ; Big bat power-up. Sets wBatWidth to $28 and moves wBatX 4 to the left, kept between $17 and $81.
-; Clears the sticky, weapon, stun and reverse effects, shows the message and ends the pick-up.
+; Clears the sticky, weapon (wWeaponFlag only), stun and reverse effects, shows the message and ends the pick-up.
 Powerup_Milk:
     ld a, [wBatX]
     sub $04
@@ -1152,7 +1152,7 @@ Powerup_Pepper:
     jp PowerupCollected
 
 ; Magnetic bat power-up. Sets wBallSticks so the ball sticks to the bat.
-; Clears the stun, weapon and reverse effects, shrinks a big bat to normal width and ends the pick-up.
+; Clears the stun, weapon (wWeaponFlag only) and reverse effects, shrinks a big bat to normal width and ends the pick-up.
 Powerup_Magnet:
     ld a, $01
     ld [wBallSticks], a
@@ -1224,7 +1224,7 @@ Powerup_Laser:
     jp Powerup_ShotBatCommon
 
 ; Reverse bat power-up. Starts wBatEffectTimer and sets wReverseActive.
-; Clears the stun, weapon and sticky effects, shrinks a big bat to normal width and ends the pick-up.
+; Clears the stun, weapon (wWeaponFlag only) and sticky effects, shrinks a big bat to normal width and ends the pick-up.
 Powerup_Reverse:
     ld a, $50
     ld [wBatEffectTimer], a
