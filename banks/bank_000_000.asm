@@ -31,7 +31,7 @@ ProgramStart:
     ; Disabling the display outside of the VBlank period may damage the hardware by burning in a black horizontal line.
     ; This appears to be a serious issue. Nintendo is reported to reject any games not following this rule.
 
-    ld e, $00
+    ld e, SONG_SILENCE
     call StartSong
     xor a
     call PlaySound
@@ -874,7 +874,7 @@ VBlank_Credits:
 ; Sets up the high score screen: music, palettes, VBlank handler, graphics, tilemaps and the score table.
 ; Also resets the name entry fields and prepares wHdmaSource and the animation pointer for the animated title.
 StateInit_HighScores:
-    ld e, $06
+    ld e, SONG_HIGH_SCORES
     call PlayMusic
     ld a, $04
     ld [wLcdcFlags], a
@@ -1032,7 +1032,7 @@ HighScores_Leave:
     ld [wNameEntryDone], a
     ld a, $1e
     ld [hStateTimer], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
 
 .done:
@@ -1099,7 +1099,7 @@ HighScores_Leave:
 
     inc a
     ld [wNameEntryDownHeld], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     push hl
     pop hl
@@ -1128,7 +1128,7 @@ HighScores_Leave:
 
     inc a
     ld [wNameEntryUpHeld], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     push hl
     pop hl
@@ -1157,7 +1157,7 @@ HighScores_Leave:
     or a
     ret nz
 
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     ld a, $01
     ld [wNameEntryButtonHeld], a
@@ -1763,19 +1763,19 @@ PlayLevelMusic:
     or a
     jr nz, .checkIndex1
 
-    ld e, $02
+    ld e, SONG_LEVEL_1
 
 .checkIndex1:
     cp $01
     jr nz, .checkIndex2
 
-    ld e, $03
+    ld e, SONG_LEVEL_2
 
 .checkIndex2:
     cp $02
     jr nz, .playSong
 
-    ld e, $04
+    ld e, SONG_LEVEL_3
 
 .playSong:
     call PlayMusic
@@ -2487,7 +2487,7 @@ Gameplay_UpdateStun:
     and $07
     jr nz, .skipSound
 
-    ld a, $0f
+    ld a, SFX_BAT_STUNNED
     call PlaySound
 
 .skipSound:
@@ -2803,7 +2803,7 @@ Gameplay_AntigravitySteering:
     dec b
     jr nz, .resetBallLoop
 
-    ld a, $17
+    ld a, SFX_ANTIGRAVITY_END
     call PlaySound
 
 ; Launch the ball from the bat with A, or split it when Multi ball was picked up.
@@ -2943,7 +2943,7 @@ Gameplay_BallLoop:
     xor a
 
     ld [wWeaponFlag], a
-    ld a, $0a
+    ld a, SFX_BAT_DESTROYED
     call PlaySound
     ld a, [wLives]
     dec a
@@ -3097,7 +3097,7 @@ Gameplay_AfterBalls:
     xor a
     ld [wBallSticks], a
     ld [wBallOnBat], a
-    ld a, $07
+    ld a, SFX_BALL_LAUNCH
     call PlaySound
 
 .updateObjects:
@@ -3125,7 +3125,7 @@ Gameplay_AfterBalls:
 
     xor a
     ld [hLifeLostTimer], a
-    ld e, $00
+    ld e, SONG_SILENCE
     call StartSong
     xor a
     call PlaySound
@@ -3150,7 +3150,7 @@ Gameplay_CheckPause:
     ld a, $01
     ld [hStateTimer], a
     ld [hResumeFromPause], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
     ld a, $1e
 
@@ -3221,7 +3221,7 @@ UpdateBall:
     cp $18
     jr nz, .effectTimerNot18
 
-    ld a, $16
+    ld a, SFX_BALL_WAKES_UP
     call PlaySound
     jr .checkSticking
 
@@ -3320,7 +3320,7 @@ UpdateBall:
     cp c
     jr c, UpdateBall_Split
 
-    ld a, $06
+    ld a, SFX_BALL_STICKS
     call PlaySound
 
 .ballOnBat:
@@ -4033,7 +4033,7 @@ CollideBallPoint:
     ld [wBallWorkSpeed], a
     ld a, $01
     ld [wBallBounced], a
-    ld a, $01
+    ld a, SFX_BAT_BOUNCE
     call PlaySound
 
 .clearFlagsReturnHit:
@@ -4104,7 +4104,7 @@ HitBrickAtBall:
     ld [wBallWorkFlags], a
 
 .playSound4ReturnNz:
-    ld a, $04
+    ld a, SFX_WALL_BOUNCE
     call PlaySound
     ld a, $01
     or a
@@ -5237,7 +5237,7 @@ ProcessBrickHitQueue_Entry:
     ld a, [hl+]
     or a
     call nz, SpawnBrickBreakEffect
-    ld a, $03
+    ld a, SFX_BRICK_BROKEN
     call PlaySound
     jp ProcessBrickHitQueue_Next
 
@@ -5436,7 +5436,7 @@ ProcessBrickHitQueue_NewHit:
     ld [wHitTileWriteCount], a
     call SpawnPowerup
     inc hl
-    ld a, $02
+    ld a, SFX_BRICK_HIT
     call PlaySound
     jr ProcessBrickHitQueue_Next
 
@@ -5467,7 +5467,7 @@ ProcessBrickHitQueue_Next:
 ; Loads the palettes, graphics and tilemap and draws the menu texts in the current language, including the music and sound on or off texts.
 ; Resets the password entry and idle timer and sets hMenuScrollY so the menu scrolls in.
 StateInit_MainMenu:
-    ld e, $05
+    ld e, SONG_MAIN_MENU
     call PlayMusic
     ld a, $04
     ld [wLcdcFlags], a
@@ -5739,7 +5739,7 @@ MainMenu_PasswordEntry:
 
     inc a
     ld [wMenuDownHeld], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     ld a, [hl]
 
@@ -5783,7 +5783,7 @@ MainMenu_PasswordEntry:
 
     inc a
     ld [wMenuUpHeld], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     ld a, [hl]
 
@@ -5824,7 +5824,7 @@ MainMenu_PasswordEntry:
     or a
     ret nz
 
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     ld a, $01
     ld [wMenuButtonHeld], a
@@ -5936,7 +5936,7 @@ SubmitPassword:
     ld [hl+], a
     ld a, [wPasswordEntry + 3]
     ld [hl], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
 
 .restoreBank:
@@ -5982,7 +5982,7 @@ MainMenu_Navigate:
     cp $02
     jr z, .checkItem1
 
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
     ld a, $02
     ld [hGameState], a
@@ -6019,7 +6019,7 @@ MainMenu_Navigate:
     cp $02
     jr z, .checkItem2
 
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
     ld a, $02
     ld [hGameState], a
@@ -6056,7 +6056,7 @@ MainMenu_Navigate:
     or a
     jr nz, .checkItem3
 
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
     ld a, $01
     ld [wPasswordEntryActive], a
@@ -6134,7 +6134,7 @@ MainMenu_Navigate:
 
     inc a
     ld [wMenuDownHeld], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     ld a, [wMenuCursor]
     inc a
@@ -6174,7 +6174,7 @@ MainMenu_Navigate:
 
     inc a
     ld [wMenuUpHeld], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     ld a, [wMenuCursor]
     dec a
@@ -6221,7 +6221,7 @@ MainMenu_Navigate:
 
     inc a
     ld [wMenuButtonHeld], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     ld a, [wMenuCursor]
     cp $03
@@ -6230,11 +6230,11 @@ MainMenu_Navigate:
     ld a, [wMusicOff]
     xor $01
     ld [wMusicOff], a
-    ld e, $05
+    ld e, SONG_MAIN_MENU
     or a
     jr z, .buttonStartSong
 
-    ld e, $00
+    ld e, SONG_SILENCE
 
 .buttonStartSong:
     call StartSong
@@ -6260,7 +6260,7 @@ MainMenu_Navigate:
 
     inc a
     ld [wMenuRightHeld], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     ld a, [wMenuCursor]
     cp $03
@@ -6269,11 +6269,11 @@ MainMenu_Navigate:
     ld a, [wMusicOff]
     xor $01
     ld [wMusicOff], a
-    ld e, $05
+    ld e, SONG_MAIN_MENU
     or a
     jr z, .bit0StartSong
 
-    ld e, $00
+    ld e, SONG_SILENCE
 
 .bit0StartSong:
     call StartSong
@@ -6299,7 +6299,7 @@ MainMenu_Navigate:
 
     inc a
     ld [wMenuLeftHeld], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     ld a, [wMenuCursor]
     cp $03
@@ -6308,11 +6308,11 @@ MainMenu_Navigate:
     ld a, [wMusicOff]
     xor $01
     ld [wMusicOff], a
-    ld e, $05
+    ld e, SONG_MAIN_MENU
     or a
     jr z, .bit1StartSong
 
-    ld e, $00
+    ld e, SONG_SILENCE
 
 .bit1StartSong:
     call StartSong
@@ -6368,7 +6368,7 @@ MainMenu_IdleTick:
     ld [wHighScoresNextState], a
     ld a, $fe
     ld [wMenuIdleTimer], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
 
 .done:
@@ -6409,7 +6409,7 @@ StartGame:
 ; Runs once when the title screen state starts. Starts the title music and loads the palettes, graphics and tilemaps.
 ; Picks the licensed-by graphics for the current language, sets wMenuItemColours and calls TitleScreen_InitLetters.
 StateInit_TitleScreen:
-    ld e, $01
+    ld e, SONG_TITLE
     call PlayMusic
     ld a, $00
     ld [wLcdcFlags], a
@@ -6552,7 +6552,7 @@ TitleScreen_Update:
     ld [hGameState], a
     ld a, $1e
     ld [hStateTimer], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
 
 .slideLetters:
@@ -6566,7 +6566,7 @@ StateInit_GameOver:
     or a
     jr nz, .skipSong
 
-    ld e, $07
+    ld e, SONG_GAME_OVER
     call StartSong
 
 .skipSong:
@@ -6756,7 +6756,7 @@ UpdateBlob:
 
 .spawnThrow:
     call SpawnProjectile
-    ld a, $0e
+    ld a, SFX_BLOB_THROW
     call PlaySound
 
 .notThrowing:
@@ -7145,7 +7145,7 @@ UpdateProjectiles:
     jr nz, .drawTimedSprites
 
     ld e, a
-    ld a, $0b
+    ld a, SFX_GRENADE_BLAST
     call PlaySound
     ld a, e
 
@@ -7211,12 +7211,12 @@ UpdateProjectile_HitBrick:
     bit 7, a
     jr z, .playSound09
 
-    ld a, $0c
+    ld a, SFX_GRENADE_BOUNCE
     call PlaySound
     jr .pickDataByPos
 
 .playSound09:
-    ld a, $09
+    ld a, SFX_BLOB_BALL_BOUNCE
     call PlaySound
 
 .pickDataByPos:
@@ -7660,7 +7660,7 @@ Projectile_CheckBrickKeepDE:
     ret
 
 .brickIs0f:
-    ld a, $04
+    ld a, SFX_WALL_BOUNCE
     call PlaySound
     ld a, $01
     or a
@@ -7693,7 +7693,7 @@ Projectile_CheckBrick:
     ret
 
 .brickIs0e:
-    ld a, $04
+    ld a, SFX_WALL_BOUNCE
     call PlaySound
     ld a, $01
     or a
@@ -7818,7 +7818,7 @@ UpdateUfo:
     ld [wUfoBombStartY], a
     ld a, $01
     ld [wUfoBombActive], a
-    ld a, $14
+    ld a, SFX_UFO_BOMB
     call PlaySound
 
 .checkPassEnd:
@@ -7937,7 +7937,7 @@ UpdateUfo:
     ld [wShotCooldown], a
 
 .shot0HitUfo:
-    ld a, $15
+    ld a, SFX_UFO_HIT
     call PlaySound
     call UfoHit
 
@@ -7998,7 +7998,7 @@ UpdateUfo:
     ld [wShotCooldown], a
 
 .shot1HitUfo:
-    ld a, $15
+    ld a, SFX_UFO_HIT
     call PlaySound
     call UfoHit
 
@@ -8054,7 +8054,7 @@ UpdateUfo:
     ld [wShotCooldown], a
 
 .shot2HitUfo:
-    ld a, $15
+    ld a, SFX_UFO_HIT
     call PlaySound
     call UfoHit
 
@@ -8110,7 +8110,7 @@ UpdateUfo:
     ld [wShotCooldown], a
 
 .shot3HitUfo:
-    ld a, $15
+    ld a, SFX_UFO_HIT
     call PlaySound
     call UfoHit
 
@@ -8166,7 +8166,7 @@ UpdateUfo:
     ld [wShotCooldown], a
 
 .shot4HitUfo:
-    ld a, $15
+    ld a, SFX_UFO_HIT
     call PlaySound
     call UfoHit
 
@@ -8224,7 +8224,7 @@ UpdateUfo:
     ld [wShotCooldown], a
 
 .shot5HitUfo:
-    ld a, $15
+    ld a, SFX_UFO_HIT
     call PlaySound
     call UfoHit
     ret
@@ -8372,7 +8372,7 @@ UpdateUfoBomb:
     ld [wWeaponFlag], a
     xor a
     ld [wUfoBombActive], a
-    ld a, $0a
+    ld a, SFX_BAT_DESTROYED
     call PlaySound
     ld a, [wLives]
     dec a
@@ -8418,7 +8418,7 @@ CheckUfoHit:
     push bc
     call UfoHit
     pop bc
-    ld a, $15
+    ld a, SFX_UFO_HIT
     call PlaySound
     ld a, $01
     or a
@@ -8469,7 +8469,7 @@ CheckBlobCatch:
     inc a
     ld [wBlobThrowing], a
     ld [wRemoveBall], a
-    ld a, $0d
+    ld a, SFX_BLOB_CATCH
     call PlaySound
 
 .returnZero:
@@ -8644,7 +8644,7 @@ Shots_HandleFire:
     ld d, [hl]
     pop hl
     call SpawnProjectile
-    ld a, $10
+    ld a, SFX_GRENADE_THROW
     call PlaySound
     ret
 
@@ -8685,7 +8685,7 @@ Shots_FireRocketLaserPlasma:
     ld a, $01
     ld [wShotActive], a
     ld [wShotActive + 1], a
-    ld a, $11
+    ld a, SFX_PLASMA_SHOT
     call PlaySound
     ret
 
@@ -8720,13 +8720,13 @@ Shots_FireRocketOrLaser:
     jr nz, .trySlot1
 
     ld [wShots + 3], a
-    ld b, $12
+    ld b, SFX_ROCKET_SHOT
     ld a, [wLaserBat]
     or a
     jr z, .fireSlot0
 
     ld [wShots + 3], a
-    ld b, $13
+    ld b, SFX_LASER_SHOT
 
 .fireSlot0:
     ld a, b
@@ -8751,13 +8751,13 @@ Shots_FireRocketOrLaser:
     jr nz, .trySlot2
 
     ld [wShots + 7], a
-    ld b, $12
+    ld b, SFX_ROCKET_SHOT
     ld a, [wLaserBat]
     or a
     jr z, .fireSlot1
 
     ld [wShots + 7], a
-    ld b, $13
+    ld b, SFX_LASER_SHOT
 
 .fireSlot1:
     ld a, b
@@ -8782,13 +8782,13 @@ Shots_FireRocketOrLaser:
     jr nz, .tryLaserSlot3
 
     ld [wShots + 11], a
-    ld b, $12
+    ld b, SFX_ROCKET_SHOT
     ld a, [wLaserBat]
     or a
     jr z, .fireSlot2
 
     ld [wShots + 11], a
-    ld b, $13
+    ld b, SFX_LASER_SHOT
 
 .fireSlot2:
     ld a, b
@@ -8816,7 +8816,7 @@ Shots_FireRocketOrLaser:
     or a
     jr nz, .tryLaserSlot4
 
-    ld a, $13
+    ld a, SFX_LASER_SHOT
     call PlaySound
     ld a, [wShotReloadDelay]
     ld [wFireLatch], a
@@ -8837,7 +8837,7 @@ Shots_FireRocketOrLaser:
     or a
     jr nz, .tryLaserSlot5
 
-    ld a, $13
+    ld a, SFX_LASER_SHOT
     call PlaySound
     ld a, [wShotReloadDelay]
     ld [wFireLatch], a
@@ -8858,7 +8858,7 @@ Shots_FireRocketOrLaser:
     or a
     ret nz
 
-    ld a, $13
+    ld a, SFX_LASER_SHOT
     call PlaySound
     ld a, [wShotReloadDelay]
     ld [wFireLatch], a
@@ -9880,7 +9880,7 @@ PublisherLogo_Update:
 ; Sets up the credits screen. Starts the credits music, installs VBlank_Credits and loads the credits graphics.
 ; Clears the background map, picks the credits text for the current language and sets wCreditsRowColour to 0 and wCreditsScrollDone to $ff.
 StateInit_Credits:
-    ld e, $09
+    ld e, SONG_CREDITS
     call PlayMusic
     ld hl, VBlank_Credits
     ld a, l
@@ -10056,7 +10056,7 @@ UpdateCreditsScroll_AdvanceRow:
     ld [hGameState], a
     ld a, $28
     ld [hStateTimer], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
     ld a, [wCreditsTextStart]
     ld l, a
@@ -10456,7 +10456,7 @@ Copyright_Update:
 ; Starts the ending music, loads its palettes, graphics and tilemaps, draws the ending text, and sets wEndingSeen.
 ; Also clears wLevelsSincePassword and sets wLives to 1.
 StateInit_Ending:
-    ld e, $08
+    ld e, SONG_ENDING
     call PlayMusic
     xor a
     ldh [rSCX], a
