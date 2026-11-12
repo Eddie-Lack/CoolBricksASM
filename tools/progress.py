@@ -125,8 +125,8 @@ def colour(p):
 
 
 def badge(label, value, col):
-    lw = int(7.6 * len(label)) + 14
-    vw = int(7.6 * len(value)) + 14
+    lw = int(7.0 * len(label)) + 14
+    vw = int(7.0 * len(value)) + 14
     w = lw + vw
     return ('<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="20" role="img" aria-label="%s: %s">'
             '<title>%s: %s</title>'
@@ -136,10 +136,11 @@ def badge(label, value, col):
             '<g clip-path="url(#r)"><rect width="%d" height="20" fill="#555"/>'
             '<rect x="%d" width="%d" height="20" fill="%s"/><rect width="%d" height="20" fill="url(#s)"/></g>'
             '<g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11">'
-            '<text x="%d" y="15" fill="#010101" fill-opacity=".3">%s</text><text x="%d" y="14">%s</text>'
-            '<text x="%d" y="15" fill="#010101" fill-opacity=".3">%s</text><text x="%d" y="14">%s</text></g></svg>\n'
+            '<text x="%d" y="15" fill="#010101" fill-opacity=".3" textLength="%d" lengthAdjust="spacingAndGlyphs">%s</text><text x="%d" y="14" textLength="%d" lengthAdjust="spacingAndGlyphs">%s</text>'
+            '<text x="%d" y="15" fill="#010101" fill-opacity=".3" textLength="%d" lengthAdjust="spacingAndGlyphs">%s</text><text x="%d" y="14" textLength="%d" lengthAdjust="spacingAndGlyphs">%s</text></g></svg>\n'
             % (w, label, value, label, value, w, lw, lw, vw, col, w,
-               lw // 2, label, lw // 2, label, lw + vw // 2, value, lw + vw // 2, value))
+               lw // 2, lw - 14, label, lw // 2, lw - 14, label,
+               lw + vw // 2, vw - 14, value, lw + vw // 2, vw - 14, value))
 
 
 def main():
