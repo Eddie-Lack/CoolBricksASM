@@ -6344,7 +6344,7 @@ BatAndBallStartSprites:
 BatShadowTiles_Normal:
     db $1f, $02, $20, $02, $21, $02
 
-; Four-sprite version of the bat shadow row ($1f, $20, $20, $21), used when hTemp2 is not 0 on entry. hTemp2 is a scratch byte that Gameplay_UpdateBalls and ProcessBrickHitQueue overwrite between frames, so it is not a reliable wide-bat flag. In play this row is almost never drawn (6 frames in 21800 with a normal-width bat, never with a wide bat).
+; Four-sprite version of the bat shadow row ($1f, $20, $20, $21), used when hTemp2 is not 0 on entry. hTemp2 is a scratch byte that Gameplay_UpdateBalls and ProcessBrickHitQueue overwrite between frames, so it is not a reliable wide-bat flag. In play this row is almost never drawn (6 of 21615 frames with a normal-width bat, never with a wide bat).
 BatShadowTiles_Wide:
     db $1f, $02, $20, $02, $20, $02
     db $21, $02
