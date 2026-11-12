@@ -92,6 +92,9 @@ SetUpRasterEffect:
     ld bc, $005c
     jr Raster_CopyBytes
 
+; Sets up the raster effect for palette mode 3. Jumped to from SetUpRasterEffect.
+; Fills wRasterTable with one sprite colour, a horizontal scroll value and the next line number for each of the 144 lines.
+; Then copies RasterHandler_Mode3 to wStatJump as the LCD STAT handler.
 SetUpRasterEffect_Mode3:
     ld hl, wRasterTable
     ld de, RasterColours_Mode3
@@ -114,6 +117,8 @@ SetUpRasterEffect_Mode3:
     ld de, wStatJump
     ld bc, $0038
 
+; Copies a raster handler to RAM through DataTransfer. Last step of SetUpRasterEffect in every mode.
+; HL = source, DE = destination (wStatJump), BC = number of bytes.
 Raster_CopyBytes:
     call DataTransfer
     ret
@@ -1343,6 +1348,8 @@ Credits_Spanish:
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     db $ff
 
+; Stale copy of the last 360 bytes of bank $0E. Nothing reads it.
+BankFiller_00f:
     db $09, $09, $09, $0f, $0f, $08, $0f, $0c, $0f, $09, $09, $0c, $0d, $0d, $0d, $08
     db $08, $09, $09, $09, $09, $0e, $09, $08, $08, $08, $08, $0c, $0c, $0c, $0c, $0c
     db $0d, $0d, $0d, $0d, $0d, $08, $0e, $09, $09, $09, $09, $0e, $08, $08, $08, $0c
@@ -1364,5 +1371,5 @@ Credits_Spanish:
     db $07, $07, $07, $04, $04, $00, $00, $00, $00, $00, $05, $05, $05, $06, $06, $00
     db $00, $00, $07, $06, $06, $06, $00, $04, $04, $00, $00, $00, $02, $01, $06, $06
     db $06, $06, $06, $00, $00, $06, $06, $06, $06, $06, $00, $00, $00, $00, $00, $00
-    db $06, $06, $06, $06, $06, $06, $06, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $06, $06, $06, $06, $06, $06, $06
+    ds 17, $00
