@@ -57,13 +57,13 @@ def to_menu_fresh(g, language=0):
 def pause_once(g, wait=150):
     """Press Start in a level; return (state during pause, lives before, lives in pause)."""
     lives = g.peek('wLives')
-    c_resume = g.count('jr_000_0158.resumeLcdc')
+    c_resume = g.count('StateLoop.resumeLcdc')
     g.press('start', hold=3, after=10)
     g.wait_until(lambda: g.state == 4, limit=200)
     state = g.state
     g.run(wait)
     in_pause = g.peek('wLives')
-    c_pause = g.count('jr_000_0158.resumeLcdc') - c_resume
+    c_pause = g.count('StateLoop.resumeLcdc') - c_resume
     for _ in range(5):
         g.press('start', hold=3, after=60)
         if g.state == 2:
@@ -259,7 +259,7 @@ DEFAULT_WATCHES = [
     'Gameplay_Update:wCheatLevelSkip,hJoypad',
     'StateInit_Pause:wLives,wCheatLivesRefill,hGameState',
     'Pause_Update:hGameState,hResumeFromPause',
-    'jr_000_0158.resumeLcdc:hResumeFromPause,hGameState',
+    'StateLoop.resumeLcdc:hResumeFromPause,hGameState',
     'StartGame.startAtFirstLevel:wCurrentLevel,wStartLevel',
     'StateInit_Ending:wCurrentLevel,wLives,wEndingSeen',
     'Ending_Update:hGameState,hJoypad',

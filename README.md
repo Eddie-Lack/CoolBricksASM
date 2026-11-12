@@ -109,6 +109,12 @@ python3 tools/coverage.py --scenario powerups --watch "SpawnPowerup:wBallCount,w
 
 PyBoy needs two workarounds, which the script applies. A hook that fires in the step that ends a frame fires again forever. Reads from `$D000`–`$DFFF` depend on the WRAM bank, so the script forces bank 1.
 
+Each area also has a script that plays it in more detail and logs what the code does: `tools/playtest_powerups.py`, `tools/playtest_weapons.py`, `tools/playtest_enemies.py`, `tools/playtest_menus.py`, `tools/playtest_core.py` and `tools/playtest_sound.py`. Each lists its checks with `--list`:
+
+```sh
+python3 tools/playtest_weapons.py --list
+```
+
 ## Remaining work
 
 1. **Names read from code only.** 179 names and comments were not reached by any scenario. They were checked against the code, not in play.
