@@ -119,18 +119,18 @@ LoadPalettes:
     ld b, $10
     ld a, [hPaletteMode]
     cp $02
-    jr nz, jr_000_0076
+    jr nz, .paletteLoop
 
     ld b, $90
     ld hl, wRasterPaletteBuffer
     ld a, $02
     ldh [rSVBK], a
 
-jr_000_0076:
+.paletteLoop:
     push bc
     ld b, $04
 
-jr_000_0079:
+.colourLoop:
     ld a, [de]
     and $1f
     ld [hl+], a
@@ -153,20 +153,20 @@ jr_000_0079:
     srl a
     ld [hl+], a
     dec b
-    jr nz, jr_000_0079
+    jr nz, .colourLoop
 
     ld a, [hPaletteMode]
 
     cp $02
-    jr nz, jr_000_009e
+    jr nz, .nextPalette
 
     inc de
     inc de
 
-jr_000_009e:
+.nextPalette:
     pop bc
     dec b
-    jr nz, jr_000_0076
+    jr nz, .paletteLoop
 
     xor a
     ldh [rSVBK], a
