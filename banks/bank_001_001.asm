@@ -727,7 +727,7 @@ SpawnPowerup:
     ld [hl+], a
     ld a, [bc]
     ld [hl+], a
-    ld a, $05
+    ld a, SFX_POWERUP_SPAWN
     call PlaySound
     pop de
     pop hl
@@ -848,7 +848,7 @@ UpdateFallingPowerups:
     ret nz
 
     ld [wGhostActive], a
-    ld a, $18
+    ld a, SFX_GHOST_END
     call PlaySound
     ret
 
@@ -1273,7 +1273,7 @@ PowerupCollected_AddScore:
     ld e, $00
     call SpawnPickupEffect
     pop de
-    ld a, $08
+    ld a, SFX_POWERUP_COLLECTED
     call PlaySound
     ld a, $01
     or a
@@ -1763,7 +1763,7 @@ LevelPassword_Update:
     ld [hGameState], a
     ld a, $28
     ld [hStateTimer], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
 
 .done:
@@ -2103,7 +2103,7 @@ Firework_Fly:
     cp $02
     jr z, .initSparkLoop
 
-    ld a, $1c
+    ld a, SFX_FIREWORK_BURST
     call PlaySound
 
 .initSparkLoop:
@@ -2135,7 +2135,7 @@ Firework_Fly:
     cp $02
     jr z, .storeSparkFrame
 
-    ld a, $1b
+    ld a, SFX_FIREWORK_SPARK
     call PlaySound
 
 .storeSparkFrame:
@@ -3853,7 +3853,7 @@ LanguageSelect_Update:
 
     inc a
     ld [wLanguage], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     jr .checkPrevKey
 
@@ -3880,7 +3880,7 @@ LanguageSelect_Update:
 
     dec a
     ld [wLanguage], a
-    ld a, $19
+    ld a, SFX_MENU_MOVE
     call PlaySound
     jr .checkConfirm
 
@@ -3949,7 +3949,7 @@ LanguageSelect_CopyTable:
     dec b
     jr nz, .fillLoop
 
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
     ld a, $05
     ld [hGameState], a
@@ -5412,7 +5412,7 @@ FrameLoop:
     ld [hStateTimer], a
     jr nz, .frameLoop
 
-    ld e, $00
+    ld e, SONG_SILENCE
     call StartSong
     xor a
     call PlaySound
@@ -6115,7 +6115,7 @@ Credits_Update:
     ld [hGameState], a
     ld a, $28
     ld [hStateTimer], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
 
 .noButton:
@@ -6279,7 +6279,7 @@ GameOver_Update:
     ld a, $ff
     ld [wMenuIdleTimer], a
     call BuildScoreText
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
 
 .noButton:
@@ -6303,7 +6303,7 @@ Pause_Update:
     ld [hLastDirection], a
     ld [wBatMovingRight], a
     ld [wBatMovingLeft], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
 
 .startNotPressed:
@@ -6386,7 +6386,7 @@ Ending_Update:
     ld [hGameState], a
     ld a, $28
     ld [hStateTimer], a
-    ld a, $1a
+    ld a, SFX_MENU_SELECT
     call PlaySound
 
 .noButtonPressed:
