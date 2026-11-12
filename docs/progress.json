@@ -1,12 +1,12 @@
 {
   "routines": {
-    "done": 307,
-    "total": 307,
+    "done": 308,
+    "total": 308,
     "percent": 100.0
   },
   "locals": {
-    "done": 823,
-    "total": 823,
+    "done": 822,
+    "total": 822,
     "percent": 100.0
   },
   "ram": {
@@ -25,13 +25,18 @@
     "percent": 100.0
   },
   "comments": {
-    "done": 307,
-    "total": 307,
+    "done": 308,
+    "total": 308,
     "percent": 100.0
   },
   "relocation": {
     "done": 19,
     "total": 20,
     "percent": 95.0
+  },
+  "playtest": {
+    "done": 1048,
+    "total": 1227,
+    "percent": 85.41
   }
 }

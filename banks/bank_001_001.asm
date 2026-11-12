@@ -420,7 +420,7 @@ ThrowPath_4d35:
     db $3b, $3b, $3b, $22, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d
     db $0d, $0d, $0d, $00, $00, $00, $00
 
-BlobThrowData_Left:
+ThrowPath_4d7d:
     db $00
     db $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
@@ -492,7 +492,7 @@ ProjectileBounceArc_6:
 ProjectileBounceArc_7:
     db $00, $0d, $22, $22, $22, $22, $0d, $00
 
-BlobThrowDirections_Left:
+BlobThrowDirections_Upper:
     db $04
 
     db $1c
@@ -503,7 +503,7 @@ BlobThrowDirections_Left:
     db $03
     db $1e
 
-BlobThrowDirections_Right:
+BlobThrowDirections_Lower:
     db $14
 
     db $14
@@ -514,7 +514,7 @@ BlobThrowDirections_Right:
 
     db $0b
 
-; Segment list of the blob's first move (BlobPath entry 0): pairs of (frame count, direction index into BallVelocityTable, moved at half speed) ending with 0.
+; Segment list of the blob's first move (BlobPath entry 0): one pair of (frame count, direction index into BallVelocityTable) ending with 0. Every blob move runs at half the table speed, because UpdateEnemyPath halves each step.
 BlobPathSegments_1:
     db $78, $08, $00
 
@@ -556,12 +556,12 @@ UfoSprites:
     db $10
     db $50, $05, $f8, $04, $52, $02, $f8, $0c
 
-; Effect number and score units for each UFO hit.
+; Effect number and score units for each UFO hit. The first two bytes ($53, $05) are not a score pair. UpdateUfo reads 20 bytes from UfoSprites, which has only 18, so they serve as the tile and attribute of the fifth UFO sprite. UfoHit adds 2 x the hit count after the increment (1 to 5), so the real pairs start 2 bytes in.
 UfoHitScores:
     db $53, $05, $01, $0a, $02, $0f, $03, $14
     db $04, $19, $05, $32
 
-; UFO passes: wait time and side for each of 8 passes.
+; UFO passes, 8 entries of (wait, side). The side is that of the pass that is starting (0 = rightward, 1 = leftward). The wait is loaded into wUfoWaitTimer when the pass starts, so it is the pause before the next pass. The first pass uses entry 1, and entry 0 is used by the 8th pass.
 UfoPassTable:
     db $f5, $00
     db $80, $00
@@ -735,7 +735,7 @@ SpawnPowerup:
     pop hl
     ret
 
-; Move the falling power-ups and run their pick-up handlers.
+; Move the falling power-ups and run their pick-up handlers. Then count down the Sleepy ball, Ninja and Ghost timers once per frame.
 UpdateFallingPowerups:
     ld hl, wFallingPowerups
     ld c, $08
@@ -1174,7 +1174,7 @@ Powerup_Magnet:
     ld [wBatWidth], a
     jp PowerupCollected
 
-; Multi ball power-up. Sets wMultiBallPending, which stays set until the ball splits.
+; Triple ball power-up (the in-game text is "Multi ball"). Sets wMultiBallPending, which stays set until the ball splits. The split adds 2 balls to however many are in play.
 ; Cancels Antigravity, Sleepy ball, Slow ball and Ninja, shows the message and ends the pick-up.
 Powerup_TripleBall:
     ld a, [wAntigravityActive]
@@ -1503,7 +1503,7 @@ GrenadeThrowTable:
     dw $0028, ThrowPath_4e25
     dw $0030, ThrowPath_4df5
     dw $0038, ThrowPath_4dbd
-    dw $0040, BlobThrowData_Left
+    dw $0040, ThrowPath_4d7d
     dw $0048, ThrowPath_4d35
     dw $0050, ThrowPath_4ce5
     dw $0058, ThrowPath_4c8d
@@ -4500,13 +4500,13 @@ DrawBatSprites:
     ld b, a
     ld a, [hTemp2]
     or a
-    jr nz, .wideLowerRow
+    jr nz, .fourSpriteLowerRow
 
     ld de, BatShadowTiles_Normal
     ld c, $03
     jr .lowerRowLoop
 
-.wideLowerRow:
+.fourSpriteLowerRow:
     ld de, BatShadowTiles_Wide
     ld c, $04
 
@@ -6344,7 +6344,7 @@ BatAndBallStartSprites:
 BatShadowTiles_Normal:
     db $1f, $02, $20, $02, $21, $02
 
-; Four-sprite version of the bat shadow row ($1f, $20, $20, $21), used when hTemp2 is not 0 on entry; hTemp2 is left at 1 by the previous call when wBatWidth is not $20.
+; Four-sprite version of the bat shadow row ($1f, $20, $20, $21), used when hTemp2 is not 0 on entry. hTemp2 is a scratch byte that Gameplay_UpdateBalls and ProcessBrickHitQueue overwrite between frames, so it is not a reliable wide-bat flag. In play this row is almost never drawn (6 of 21615 frames with a normal-width bat, never with a wide bat).
 BatShadowTiles_Wide:
     db $1f, $02, $20, $02, $20, $02
     db $21, $02
