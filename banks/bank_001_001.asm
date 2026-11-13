@@ -3186,7 +3186,7 @@ SweepBricks_Cell:
 
 ; Writes the $ff end marker after wUnbreakableHitEffects and points wUnbreakableHitEffectPtr at the first slot.
 ; Does not clear the slots themselves.
-; Called when a level starts and after a life is lost.
+; Called when a level starts and after a life is lost. After a lost life the slots are already 0 (the effect lasts 18 frames, the lost-life countdown 40 and only a ball starts an effect). At level start a slot can still be alive: the effects stop counting when the level ends, so an effect started in the last frames of the previous level goes on counting and is drawn in the new level.
 ClearUnbreakableHitEffects:
     ld a, $ff
     ld [wUnbreakableHitEffectsEnd], a
@@ -6344,7 +6344,7 @@ BatAndBallStartSprites:
 BatShadowTiles_Normal:
     db $1f, $02, $20, $02, $21, $02
 
-; Four-sprite version of the bat shadow row ($1f, $20, $20, $21), used when hTemp2 is not 0 on entry. hTemp2 is a scratch byte that Gameplay_UpdateBalls and ProcessBrickHitQueue overwrite between frames, so it is not a reliable wide-bat flag. In play this row is almost never drawn (6 of 21615 frames with a normal-width bat, never with a wide bat).
+; Four-sprite version of the bat shadow row ($1f, $20, $20, $21), used when hTemp2 is not 0 on entry. hTemp2 is a scratch byte: ProcessBrickHitQueue leaves it 0 at the end of a frame and Gameplay_UpdateBalls clears it and then counts the balls it removes, so on entry it is the number of balls removed in that frame. The row is drawn only in a frame in which a ball is removed while others stay (Triple ball loses one, or the blob catches one), whatever the bat width. It is almost never drawn (6 of 21615 frames with a normal-width bat). Seen with a real Milk bat (wBatWidth $28) when one of three balls was lost; it is not a wide-bat flag.
 BatShadowTiles_Wide:
     db $1f, $02, $20, $02, $20, $02
     db $21, $02
@@ -6580,7 +6580,7 @@ DeveloperLogos_Update:
     ret
 
 ; Frame handler of the screen shown on a console that is not a Game Boy Color.
-; Loops on itself, so the game stays on this screen.
+; Loops on itself, so the game stays on this screen. Reached only from StateUpdate_ColorOnly (state 10), which GBC_Check selects when the WRAM bank test fails (not a Game Boy Color). Seen with PyBoy in DMG mode: state 10, PC $7ca8 on every frame, no poke (tools/playtest_close1.py close_dmg).
 ColorOnly_Update:
     jr ColorOnly_Update
 
