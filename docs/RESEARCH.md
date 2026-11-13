@@ -22,7 +22,7 @@ The password is valid when `(a + b) & $FF == $FD` and `b` is a multiple of 4.
 - `b = $C8, $CC, $D0, $D4`: these set the cheat flags `$DB51` to `$DB54`.
 - Any other `b`: rejected.
 
-`tools/pw.py` encodes and decodes passwords.
+`tools/pw.py` in the brickworld repository encodes and decodes passwords.
 
 ### The encoder
 
@@ -43,7 +43,7 @@ The routine at `00:3A57` clears all four flags. Holding A+B+Select+Start resets 
 
 ## Level data
 
-The level table is at `05:4000`, 8 bytes per level for 160 levels. The load routine is `00:0B2A`.
+The level table is at `05:4000`, 8 bytes per level for 160 levels. The load routine is `LoadLevel` (`00:0B03`).
 
 | Bytes | Meaning |
 |---|---|
@@ -382,14 +382,14 @@ There are 10 songs:
 
 | Song | Label | Used for |
 |---|---|---|
-| 0 | `Song_Silence` | Stops the music. Each channel plays one silent note and holds it |
-| 1 | `Song_Title` | Title screen |
-| 2, 3, 4 | `Song_Level1` to `Song_Level3` | Levels. `wLevelMusicIndex` picks one and `NextLevelMusic` steps it every fourth level, also after the ending when the password screen is skipped |
-| 5 | `Song_MainMenu` | Main menu |
-| 6 | `Song_HighScores` | High scores. Same as song 5 with another channel 2 |
-| 7 | `Song_GameOver` | Game over. Plays once |
-| 8 | `Song_Ending` | Ending |
-| 9 | `Song_Credits` | Credits |
+| 0 | `SongHeader_Silence` | Stops the music. Each channel plays one silent note and holds it |
+| 1 | `SongHeader_Title` | Title screen |
+| 2, 3, 4 | `SongHeader_Level1` to `SongHeader_Level3` | Levels. `wLevelMusicIndex` picks one and `NextLevelMusic` steps it every fourth level, also after the ending when the password screen is skipped |
+| 5 | `SongHeader_MainMenu` | Main menu |
+| 6 | `SongHeader_HighScores` | High scores. Same as song 5 with another channel 2 |
+| 7 | `SongHeader_GameOver` | Game over. Plays once |
+| 8 | `SongHeader_Ending` | Ending |
+| 9 | `SongHeader_Credits` | Credits |
 
 An **order list** is a row of 2-byte entries: transpose, pattern number. The transpose value is added to every note of the pattern, so one pattern can be played in several keys. `PatternPointers` turns the pattern number into an address. There are 128 patterns, and songs share them.
 
@@ -494,19 +494,19 @@ The game plays these sound effects. `include/sound.inc` has the constants (`SFX_
 | 28 | `Sfx_FireworkBurst` | A firework rocket bursts. |
 | 29 | `Sfx_29` | Nothing plays it. |
 
-The numbers were checked by logging each call and its caller during scripted play. Effects 25, 27 and 28 were not reached in the emulator and are named from the code. Effect 10 was seen for the lost ball only.
+The numbers were checked by logging each call and its caller during scripted play. Effect 29 is never requested. Effect 10 was seen for the lost ball only.
 
 ### Faults in the original data
 
 The data has small faults. They are part of the ROM, so the disassembly keeps them.
 
-- **Stray noise pointer.** `NoiseInstrument_00` is the silent noise instrument. Its `NR43` table pointer points to a pitch slide table (`PitchSlide_00`), which has 3-byte entries. The noise code reads 2-byte entries. After 255 frames it takes the end mark and the low byte of the real loop pointer as a pointer: `$1C00`, in the code of bank 0. From then on it writes bytes from bank 0 to `NR43`. The envelope is 0, so nothing is heard. This happens in normal play, for example while `Song_Silence` plays.
+- **Stray noise pointer.** `NoiseInstrument_00` is the silent noise instrument. Its `NR43` table pointer points to a pitch slide table (`PitchSlide_00`), which has 3-byte entries. The noise code reads 2-byte entries. After 255 frames it takes the end mark and the low byte of the real loop pointer as a pointer: `$1C00`, in the code of bank 0. From then on it writes bytes from bank 0 to `NR43`. The envelope is 0, so nothing is heard. This happens in normal play, for example while `SongHeader_Silence` plays.
 - **Notes above the table.** Note number + transpose + arpeggio can be more than 71. The frequency is then read from `SfxTable`, which follows `NoteFrequencies`. Sound effect 22 does this: its instrument adds 15 semitones to note 60 for one frame.
 - **Missing end mark.** `PitchSlide_19` (instrument `$13`) has its loop pointer but no end mark before it. If a note with this instrument lasts longer than 257 frames, the driver reads the pointer and the next instrument as slide entries.
 - **Jumps in sound effects.** The `$FF` jump command does not work in sound effect data: it would write to the variables of the song channel. No sound effect uses it.
 - **Transpose on noise.** Channel 4 adds the transpose value to the note and then throws the result away.
 
-These faults matter for moving the data. The first one makes the sound depend on the low byte of the address of `PitchSlide_00`. The second makes it depend on the high byte of the address of `Sfx_BatBounce`. See the relocation notes in the README.
+These faults matter for moving the data. The first one makes the sound depend on the low byte of the address of `PitchSlide_00`. The second makes it depend on the high byte of the address of `Sfx_BatBounce`. See the relocation notes in the disassembly README.
 
 ### What is not used
 
@@ -538,9 +538,9 @@ No song or sound effect reaches 3 patterns, 15 pulse and wave instruments, 3 noi
   - Banks 2 to `$0D` end with a copy of the last 164 bytes of bank 0, from `$7F5C`. This includes 78 trailing zeros.
   - Bank `$0B` is stale from `$7E3C`: zeros, a 0/1 byte table and then the copy of bank 0.
   - Banks `$10` to `$13` are stale from `$7D2C`: 364 bytes of credits text that equal bank `$0F`, then 360 bytes that equal the end of bank `$0E`.
-  - Banks `$0F` to `$20` end with a copy of the last 360 bytes of bank `$0E`, from `$7E98`.
+  - Bank `$0F` ends with a copy of the last 360 bytes of bank `$0E`, from `$7E98`.
   - Banks `$14` to `$1F` are 12 identical stale 16 KB buffers. Bank `$20` is a copy of bank `$13`. Banks `$21` to `$3F` are all zero.
-  - Bank 9 after `$4F30` and bank 6 after `$67E0` are stale copies of bank 8 and bank 5.
+  - Bank 9 from `$4F31` and bank 6 from `$67E0` are stale copies of bank 8 and bank 5.
   - Nothing points into any of these tails. Overwriting them with `$AA` and playing a full session in each language changed no screen.
 - Some variables are written and never read: `wMessageUnused`, `wLevelPasswordUnused`, and the two bytes at `wBlob + 13`.
 - Some variables never change or never matter. `wBonusCountdownPaused` is read but never written, so the pause branch in `LevelPassword_Update` is dead. `wBlobActive` is set to 1 on every level, so it only lets `CheckBlobCatch` run. `wGrenadeDelay` is set to 4 and cleared when the explosion ends, so it is a busy flag and not a delay.
@@ -558,7 +558,7 @@ No song or sound effect reaches 3 patterns, 15 pulse and wave instruments, 3 noi
 
 ## Check against the community savestates
 
-The community savestates (VisualBoyAdvance `.sgm`, one per level) were compared with `data/levels.json` using `tools/check_savestates.py`.
+In the brickworld repository, the community savestates (VisualBoyAdvance `.sgm`, one per level) were compared with `data/levels.json` using `tools/check_savestates.py`.
 
 - Every state is on the level its file name says.
 - Each state was saved before its level's maps were loaded, so the maps in state N+1 belong to level N. They match the extracted data exactly for 152 of the 159 levels that can be checked.

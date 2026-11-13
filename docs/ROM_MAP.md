@@ -656,7 +656,8 @@ Runs of labels with the same prefix are shown as one row.
 | `$4D68` | 62 | data | `Text_German_LevelPassword` |
 | `$4DA6` | 62 | data | `Text_Italian_LevelPassword` |
 | `$4DE4` | 2096 | graphics | `Gfx_LevelPassword_00c_4de4` |
-| `$5614` | 10732 | data | `Tilemap_LevelPassword_00c_5614` to `Tilemap_LevelPassword_00c_577c` (2 labels) |
+| `$5614` | 10568 | data | `Tilemap_LevelPassword_00c_5614` to `Tilemap_LevelPassword_00c_577c` (2 labels) |
+| `$7F5C` | 164 | data | `BankFiller_00c` |
 
 ## Bank $0D
 

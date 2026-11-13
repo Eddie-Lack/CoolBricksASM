@@ -27,7 +27,6 @@ place. --single moves only the bank that was named. That is expected to differ.
 --lang picks the language (0 English, 1 Spanish, 2 French, 3 German, 4 Italian). The default is English.
 The high score screen shows the language graphics bank, so for banks $0B and $10 to $13 use the language
 that selects the bank: 0 English ($0B), 1 Spanish ($12), 2 French ($11), 3 German ($13), 4 Italian ($10).
-Bank 4 ends with an image and cannot be shortened, so it cannot be tested this way.
 """
 import glob
 import hashlib
