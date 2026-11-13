@@ -435,5 +435,3 @@ DEF STATE_COLOR_ONLY         EQU 10 ; "Please use a Game Boy Color" screen on ol
 DEF STATE_LANGUAGE_SELECT    EQU 11 ; Language selection
 DEF STATE_PUBLISHER_LOGO     EQU 12 ; SCi logo
 DEF STATE_ENDING             EQU 13 ; Ending text after level 160
-
-; Variables whose purpose is not known yet

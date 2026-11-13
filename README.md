@@ -18,7 +18,7 @@ What each badge measures (`python tools/progress.py` recalculates them from the 
 | Data labelled | Bytes of the 1 MiB ROM that sit under a label. Bytes before the first label of a bank, and banks with no label, count as unlabelled. |
 | Graphics PNGs | `.2bpp` files in `gfx/` that have a PNG. |
 | Routine comments | Routines that have a header comment. |
-| Relocation tested | Banks `$00`–`$13` that pass the relocation test. Bank 4 can't be tested. The number is kept by hand in `docs/progress_manual.json`. |
+| Relocation tested | Banks `$00`–`$13` that pass the relocation test. The number is kept by hand in `docs/progress_manual.json`. |
 | Play-tested | Names and comments that were checked against behaviour in the emulator with `tools/coverage.py`. The number is kept by hand in `docs/progress_manual.json`. |
 
 ## Status
@@ -36,8 +36,8 @@ Everything in the ROM is disassembled, named and commented. The sources build th
 | Music and sound driver | Done. Songs, instruments, sound effects and notes have names. |
 | Language graphics banks (`$10`–`$13`) and bank 9 | Done. Animation frames, tile maps and graphics are labelled. |
 | Graphics files | Done. All 45 `.2bpp` files have a PNG. |
-| Routine comments | Done. All 307 routines have a header comment. |
-| Relocation tests | Done. 19 of 20 banks pass. Bank 4 can't be tested. See [Checks](#checks). |
+| Routine comments | Done. All 308 routines have a header comment. |
+| Relocation tests | Done. All 20 banks pass, bank 4 included. See [Checks](#checks). |
 | Play-testing | Done. All 1227 names and comments were checked. A few were confirmed with RAM pokes or by reading the code. |
 
 ## Building
@@ -87,15 +87,15 @@ The sources build to the matching ROM with RGBDS 0.8.0 (`make`) with no warnings
 
 `tools/relocation_test.py` moves a bank by 3 bytes, rebuilds, and compares a scripted play-through with the original. The play-through covers the menus, the high score and credits screens that appear when the menu idles, every level load, pause, the password screens, the ending and game over. It compares the screen, not sound.
 
-- **English.** Banks 0, 1, 2, 3, 5, 6, 7, 8, 9, `$0A`, `$0C`, `$0D`, `$0E` and `$0F` pass.
-- **Other languages.** Banks 0, 1, 5, `$0C` and `$0E` pass in all five languages. Banks 2, 3, 7, 8, 9, `$0A` and `$0D` pass in all five languages too. Bank `$0F` also passes in French.
+- **English.** Banks 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, `$0A`, `$0C`, `$0D`, `$0E` and `$0F` pass.
+- **Other languages.** Banks 0, 1, 5, `$0C` and `$0E` pass in all five languages. Banks 2, 3, 4, 7, 8, 9, `$0A` and `$0D` pass in all five languages too. Bank `$0F` also passes in French.
 - **Language graphics banks.** Banks `$0B` and `$10`–`$13` can't move by 3 bytes. They move together by 256 bytes, and each passes in its own language.
 - **Sound.** `tools/sound_relocation_test.py` plays all 10 songs and all 30 sound effects. It records every write to the sound registers and the driver's variables in every frame. With bank 6 moved in two parts (3 bytes at the start, 256 bytes from `PitchSlide_00` on), the sound is identical.
-- **Not tested.** Bank 4 ends with an image and can't be shortened.
+- **Bank 4.** It ends with the stale filler `BankFiller_004`, which supplies the shifted bytes. It passes in all five languages.
 
 ### Play-testing
 
-`tools/coverage.py` runs five scripted scenarios in PyBoy: levels, power-ups, weapons, enemies and menus. It counts how often each code label runs and can log RAM values at a label with `--watch`. All five scenarios together run 1113 of the 1119 labels it can hook. The other six are interrupt vectors the game never uses and one branch that never runs.
+`tools/coverage.py` runs five scripted scenarios in PyBoy: levels, power-ups, weapons, enemies and menus. It counts how often each code label runs and can log RAM values at a label with `--watch`. All five scenarios together run 1113 of the 1119 labels it can hook. The other six are five vectors the game never uses (two restart vectors and three interrupt vectors) and one branch that never runs.
 
 Reviewers checked names and comments by area against what the emulator showed, in three passes with new scenarios (`tools/playtest_*.py`, each with `--list`). They confirmed all 1227 and proposed 82 corrections, of which 75 were applied. A last pass closed the final 19 names. Most were seen in play. A few could not be reached by a player and were confirmed with a RAM poke (for example, the Triple ball nudge) or by reading the code (for example, a grenade blast on a wall cell and the unused sound effect 29).
 
@@ -109,7 +109,7 @@ python3 tools/coverage.py --scenario powerups --watch "SpawnPowerup:wBallCount,w
 
 PyBoy needs two workarounds, which the script applies. A hook that fires in the step that ends a frame fires again forever. Reads from `$D000`–`$DFFF` depend on the WRAM bank, so the script forces bank 1.
 
-Each area also has a script that plays it in more detail and logs what the code does: `tools/playtest_powerups.py`, `tools/playtest_weapons.py`, `tools/playtest_enemies.py`, `tools/playtest_menus.py`, `tools/playtest_core.py` and `tools/playtest_sound.py`. Each lists its checks with `--list`:
+Each area also has a script that plays it in more detail and logs what the code does: `tools/playtest_powerups.py`, `tools/playtest_weapons.py`, `tools/playtest_enemies.py`, `tools/playtest_menus.py`, `tools/playtest_core.py` and `tools/playtest_sound.py`. The names left open after these were closed by `tools/playtest_extra0.py`, `tools/playtest_extra1.py`, `tools/playtest_extra2.py`, `tools/playtest_close0.py`, `tools/playtest_close1.py` and `tools/playtest_close2.py`. Each lists its checks with `--list`:
 
 ```sh
 python3 tools/playtest_weapons.py --list
@@ -117,9 +117,7 @@ python3 tools/playtest_weapons.py --list
 
 ## Remaining work
 
-1. **Upstream.** No pull request has been opened against RoddyDev/CoolBricksASM.
-
-Everything else listed in earlier versions of this file is done.
+1. **Upstream.** No pull request has been opened against RoddyDev/CoolBricksASM. It is on hold.
 
 ## Limits that can't be fixed
 

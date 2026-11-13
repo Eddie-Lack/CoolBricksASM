@@ -30,9 +30,9 @@
     "percent": 100.0
   },
   "relocation": {
-    "done": 19,
+    "done": 20,
     "total": 20,
-    "percent": 95.0
+    "percent": 100.0
   },
   "playtest": {
     "done": 1227,

@@ -137,8 +137,6 @@ ClearTileMap:
 
     ret
 
-    ; TODO: Document this function
-
 ; Copy a rectangle of B x C tiles from HL to the tile map at DE.
 CopyTilemapRect:
     ld [hTemp], a
