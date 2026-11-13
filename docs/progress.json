@@ -1,0 +1,42 @@
+{
+  "routines": {
+    "done": 308,
+    "total": 308,
+    "percent": 100.0
+  },
+  "locals": {
+    "done": 822,
+    "total": 822,
+    "percent": 100.0
+  },
+  "ram": {
+    "done": 382,
+    "total": 382,
+    "percent": 100.0
+  },
+  "data": {
+    "done": 1048576,
+    "total": 1048576,
+    "percent": 100.0
+  },
+  "graphics": {
+    "done": 45,
+    "total": 45,
+    "percent": 100.0
+  },
+  "comments": {
+    "done": 308,
+    "total": 308,
+    "percent": 100.0
+  },
+  "relocation": {
+    "done": 20,
+    "total": 20,
+    "percent": 100.0
+  },
+  "playtest": {
+    "done": 1227,
+    "total": 1227,
+    "percent": 100.0
+  }
+}

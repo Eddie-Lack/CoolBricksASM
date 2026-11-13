@@ -5,6 +5,7 @@
 
 SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
 
+Palettes_MainMenu:
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $4a, $29, $73, $4e, $bd, $77
     db $00, $00, $00, $41, $6f, $6e, $f9, $7f, $00, $00, $40, $01, $08, $16, $6f, $37
     db $00, $00, $d1, $00, $1b, $02, $9e, $17, $00, $00, $0f, $54, $b9, $71, $3d, $77
@@ -14,55 +15,11 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     db $00, $00, $13, $19, $17, $2a, $3c, $4f, $00, $00, $e6, $29, $cd, $5a, $79, $67
     db $00, $00, $0a, $15, $f2, $35, $98, $4a, $00, $00, $08, $21, $31, $46, $5a, $6b
 
-    rst $38
-    ld a, a
-    nop
-    nop
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
-    rst $38
-    ld a, a
+    db $ff, $7f, $00, $00, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f
+    db $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f
+    db $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f
 
+Palettes_HighScores:
     db $00, $00, $0d, $00, $16, $00, $5f, $00, $00, $00, $08, $21, $31, $46, $5a, $6b
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $40, $01, $08, $16, $6f, $37
     db $00, $00, $ad, $00, $d7, $01, $9e, $17, $00, $00, $0f, $54, $b9, $71, $3d, $77
@@ -71,6 +28,8 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     db $00, $00, $65, $29, $6b, $36, $d9, $3e, $00, $00, $91, $1c, $70, $41, $5a, $77
     db $00, $00, $13, $19, $17, $2a, $3c, $4f, $00, $00, $e6, $29, $cd, $5a, $79, $67
     db $00, $00, $0a, $15, $f2, $35, $98, $4a, $00, $00, $08, $21, $31, $46, $5a, $6b
+
+Palettes_TitleScreen:
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $4a, $29, $73, $4e, $bd, $77
     db $00, $00, $00, $41, $6f, $6e, $f9, $7f, $00, $00, $40, $01, $08, $16, $6f, $37
     db $00, $00, $d1, $00, $1b, $02, $ff, $17, $00, $00, $0f, $54, $b9, $71, $3d, $77
@@ -80,128 +39,20 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     db $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f
     db $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f, $ff, $7f
 
-    nop
-    nop
-    dec c
-    nop
-    inc d
-    nop
-    rra
-    nop
-    ld c, $00
-    ld d, l
-    ld bc, $025b
-    cp a
-    inc bc
-    nop
-    nop
-    ld l, $01
-    sub $01
-    rra
-    inc bc
-    nop
-    nop
-    ld l, e
-    ld bc, $0292
-    sbc b
-    inc bc
-    nop
-    nop
-    add b
-    ld b, c
-    ld h, [hl]
-    ld d, d
-    ld h, b
-    ld [hl], e
-    nop
-    nop
-    ld [$1034], a
-    ld e, d
-    ld e, h
-    ld a, a
-    nop
-    nop
-    adc d
-    inc [hl]
+Palettes_GameOver:
+    db $00, $00, $0d, $00, $14, $00, $1f, $00, $0e, $00, $55, $01, $5b, $02, $bf, $03
+    db $00, $00, $2e, $01, $d6, $01, $1f, $03, $00, $00, $6b, $01, $92, $02, $98, $03
+    db $00, $00, $80, $41, $66, $52, $60, $73, $00, $00, $ea, $34, $10, $5a, $5c, $7f
+    db $00, $00, $8a, $34
     db $10
-    ld e, c
-    inc e
-    ld a, [hl]
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    nop
-    jr jr_001_4208
+    db $59, $1c, $7e, $15, $00, $15, $00, $15, $00, $15, $00, $00, $18, $15, $00, $15
+    db $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15
+    db $00, $15, $00
+    db $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00
+    db $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00
+    db $15, $00, $15, $00, $15, $00, $15, $00
 
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-
-jr_001_4208:
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-
+Palettes_Pause:
     db $00, $00, $00, $28, $00, $50, $00, $7c, $0e, $00, $55, $01, $5b, $02, $bf, $03
     db $00, $00, $2e, $01, $d6, $01, $1f, $03, $00, $00, $6b, $01, $92, $02, $98, $03
     db $00, $00, $80, $41, $66, $52, $60, $73, $00, $00, $ea, $34, $10, $5a, $5c, $7f
@@ -211,6 +62,7 @@ jr_001_4208:
     db $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00
     db $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00
 
+Palettes_DeveloperLogos:
     db $00, $00, $47, $51, $2f, $7e, $99, $7f, $00, $00, $8b, $54, $d3, $75, $ff, $7f
     db $00, $24, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b
     db $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b
@@ -219,6 +71,8 @@ jr_001_4208:
     db $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b
     db $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b
     db $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b
+
+Palettes_PublisherLogo:
     db $00, $00, $05, $2d, $8f, $66, $bc, $7f, $15, $00, $15, $00, $15, $00, $15, $00
     db $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00
     db $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00
@@ -227,6 +81,8 @@ jr_001_4208:
     db $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00
     db $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00
     db $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00
+
+Palettes_LanguageSelect:
     db $00, $00, $1f, $00, $ff, $02, $29, $25, $00, $00, $00, $00, $00, $00, $00, $00
     db $1f, $00, $ff, $7f, $20, $16, $00, $7c, $00, $00, $40, $01, $08, $16, $6f, $37
     db $00, $00, $ad, $00, $d7, $01, $9e, $17, $00, $00, $0f, $54, $b9, $71, $3d, $77
@@ -236,254 +92,33 @@ jr_001_4208:
     db $00, $00, $13, $19, $17, $2a, $3c, $4f, $00, $00, $e6, $29, $cd, $5a, $79, $67
     db $00, $00, $0a, $15, $f2, $35, $98, $4a, $00, $00, $4a, $29, $52, $4a, $39, $67
 
-    nop
-    nop
-    rrca
-    ld d, h
-    cp c
-    ld [hl], c
-    dec a
-    ld [hl], a
-    nop
-    nop
-    nop
-    ld c, b
-    rst $28
-    ld l, l
-    ld [hl], l
-    ld a, a
-    nop
-    nop
-    ld l, h
-    jr @-$2c
+Palettes_LevelPassword:
+    db $00, $00, $0f, $54, $b9, $71, $3d, $77, $00, $00, $00, $48, $ef, $6d, $75, $7f
+    db $00, $00, $6c, $18, $d2, $2c, $5e, $3e, $00, $00, $c4, $38, $2c, $26, $ff, $7f
+    db $00, $00, $ad, $00, $d7, $01, $9e, $17, $1f, $7c, $1f, $7c, $1f, $7c, $1f, $7c
+    db $1f, $7c, $1f, $7c, $1f, $7c, $1f, $7c, $1f, $7c, $1f, $7c, $1f, $7c, $1f, $7c
+    db $00, $00, $00, $48, $ef, $6d, $75, $7f, $00, $00, $22, $01, $6c, $02, $fb, $23
+    db $00, $00, $20, $01, $8c
+    db $26, $f2, $57, $00, $00, $51, $01, $38, $16, $9e, $17, $00, $00, $60, $2d, $40
+    db $5e, $b0, $7f, $00, $00, $0d, $34, $15, $54, $3f, $7e, $00, $00, $8c, $44, $17
+    db $7e, $bf, $7f, $00, $00, $0c, $00, $1f, $00, $5f, $52
 
-    inc l
-    ld e, [hl]
-    ld a, $00
-    nop
-    call nz, Call_000_2c38
-    ld h, $ff
-    ld a, a
-    nop
-    nop
-    xor l
-    nop
-    rst $10
-    ld bc, $179e
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    nop
-    nop
-    nop
-    ld c, b
-    rst $28
-    ld l, l
-    ld [hl], l
-    ld a, a
-    nop
-    nop
-    ld [hl+], a
-    ld bc, $026c
-    ei
-    inc hl
-    nop
-    nop
-    jr nz, jr_001_4485
-
-    adc h
-
-jr_001_4485:
-    ld h, $f2
-    ld d, a
-    nop
-    nop
-    ld d, c
-    ld bc, $1638
-    sbc [hl]
-    rla
-    nop
-    nop
-    ld h, b
-    dec l
-    ld b, b
-    ld e, [hl]
-    or b
-    ld a, a
-    nop
-    nop
-    dec c
-    inc [hl]
-    dec d
-    ld d, h
-    ccf
-    ld a, [hl]
-    nop
-    nop
-    adc h
-    ld b, h
-    rla
-    ld a, [hl]
-    cp a
-    ld a, a
-    nop
-    nop
-    inc c
-    nop
-    rra
-    nop
-    ld e, a
-    ld d, d
-    nop
-    nop
-    inc c
-    nop
-    ld de, $1a00
-    nop
-    nop
-    nop
-    jr nz, @+$03
-
-    jr nz, jr_001_44c0
-
-    ld h, b
-    inc bc
-
-jr_001_44c0:
-    nop
-    nop
-    ld l, $01
-    sub $01
-    rra
-    inc bc
-    nop
-    nop
-    rlca
-    ld de, $1dcd
-    or h
-    ld l, $00
-    nop
-    jr nz, jr_001_4509
-
-    ld h, $52
-    nop
-    ld [hl], e
-    nop
-    nop
-    inc b
-    add hl, de
-    jr z, jr_001_4510
-
-    ld c, l
-    ld c, a
-    nop
-    nop
-    adc d
-    inc [hl]
+Palettes_Ending:
+    db $00, $00, $0c, $00, $11
+    db $00, $1a, $00, $00, $00, $20, $01, $20, $02, $60, $03
+    db $00, $00, $2e, $01, $d6, $01, $1f, $03, $00, $00, $07, $11, $cd, $1d, $b4, $2e
+    db $00, $00, $20, $35, $26, $52, $00, $73, $00, $00, $04, $19, $28, $32, $4d, $4f
+    db $00, $00, $8a, $34
     db $10
-    ld e, c
-    inc e
-    ld a, [hl]
-    nop
-    nop
-    nop
-    inc [hl]
-    nop
-    ld d, b
-    nop
-    ld a, h
-    nop
-    jr jr_001_4508
+    db $59, $1c, $7e, $00, $00, $00, $34, $00, $50, $00, $7c, $00, $18, $15, $00, $15
+    db $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15
+    db $00, $15, $00
+    db $15
+    db $00, $15, $00, $15, $00, $15, $00
+    db $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00
+    db $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00, $15, $00
 
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-
-jr_001_4508:
-    dec d
-
-jr_001_4509:
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-
-jr_001_4510:
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-    dec d
-    nop
-
+Palettes_Copyright:
     db $00, $00, $47, $51, $2f, $7e, $99, $7f, $00, $00, $67, $38, $d3, $75, $ff, $7f
     db $00, $00, $00, $41, $6f, $6e, $f9, $7f, $de, $7b, $de, $7b, $de, $7b, $de, $7b
     db $00, $00, $d1, $00, $1b, $02, $9e, $17, $de, $7b, $de, $7b, $de, $7b, $de, $7b
@@ -493,715 +128,245 @@ jr_001_4510:
     db $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b
     db $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b, $de, $7b
 
-    nop
-    nop
-    rrca
-    ld d, h
-    cp c
-    ld [hl], c
-    dec a
-    ld [hl], a
-    nop
-    nop
-    nop
-    ld c, b
-    rst $28
-    ld l, l
-    ld [hl], l
-    ld a, a
-    nop
-    nop
-    ld l, h
-    jr @-$2c
+    db $00, $00, $0f, $54, $b9, $71, $3d, $77, $00, $00, $00, $48, $ef, $6d, $75, $7f
+    db $00, $00, $6c, $18, $d2, $2c, $5e, $3e, $00, $00, $c4, $38, $2c, $26, $ff, $7f
+    db $00, $00, $ad, $00, $d7, $01, $9e, $17, $1f, $7c, $1f, $7c, $1f, $7c, $1f, $7c
+    db $1f, $7c, $1f, $7c, $1f, $7c, $1f, $7c, $1f, $7c, $1f, $7c, $1f, $7c, $1f, $7c
+    db $00, $00, $00, $48, $ef, $6d, $75, $7f, $00, $00, $22, $01, $6c, $02, $fb, $23
+    db $00, $00, $20, $01, $8c
+    db $26, $f2, $57, $00, $00, $51, $01, $38, $16, $9e, $17, $00, $00, $60, $2d, $40
+    db $5e, $b0, $7f, $00, $00, $0d, $34, $15, $54, $3f, $7e, $00, $00, $8c, $44, $17
+    db $7e, $bf, $7f, $00, $00, $0c, $00, $1f, $00, $5f, $52
 
-    inc l
-    ld e, [hl]
-    ld a, $00
-    nop
-    call nz, Call_000_2c38
-    ld h, $ff
-    ld a, a
-    nop
-    nop
-    xor l
-    nop
-    rst $10
-    ld bc, $179e
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    rra
-    ld a, h
-    nop
-    nop
-    nop
-    ld c, b
-    rst $28
-    ld l, l
-    ld [hl], l
-    ld a, a
-    nop
-    nop
-    ld [hl+], a
-    ld bc, $026c
-    ei
-    inc hl
-    nop
-    nop
-    jr nz, jr_001_4605
-
-    adc h
-
-jr_001_4605:
-    ld h, $f2
-    ld d, a
-    nop
-    nop
-    ld d, c
-    ld bc, $1638
-    sbc [hl]
-    rla
-    nop
-    nop
-    ld h, b
-    dec l
-    ld b, b
-    ld e, [hl]
-    or b
-    ld a, a
-    nop
-    nop
-    dec c
-    inc [hl]
-    dec d
-    ld d, h
-    ccf
-    ld a, [hl]
-    nop
-    nop
-    adc h
-    ld b, h
-    rla
-    ld a, [hl]
-    cp a
-    ld a, a
-    nop
-    nop
-    inc c
-    nop
-    rra
-    nop
-    ld e, a
-    ld d, d
-
+LevelSpritePalettes:
     db $00, $00, $4a, $00, $19, $02, $9e, $17, $00, $00, $00, $00, $f1, $49, $ff, $7f
     db $00, $00, $00, $00, $d2, $2c, $5e, $3e, $00, $00, $c4, $38, $2c, $26, $ff, $7f
     db $00, $00, $17, $00, $19, $02, $9e, $03, $00, $00, $00, $00, $84, $7c, $60, $7e
     db $00, $00, $00, $00, $17, $00, $ff, $7f, $00, $00, $c0, $00, $80, $02, $f3, $4f
+
+LevelPalette_4670:
     db $00, $00, $0e, $00, $15, $01, $7f, $02, $00, $00, $08, $21, $31, $46, $5a, $6b
     db $00, $00, $06, $00, $8b, $00, $13, $01, $00, $00, $c0, $00, $a6, $0d, $33, $43
     db $00, $00, $ad, $00, $d7, $01, $9e, $17, $00, $00, $15, $54, $bf, $7d, $1f, $7f
     db $00, $00, $00, $60, $ef, $7d, $f5, $7f, $00, $00, $17, $00, $1b, $21, $7f, $4e
+
+LevelPalette_46b0:
     db $80, $01, $00, $00, $ff, $7f, $f4, $03, $00, $00, $08, $21, $31, $46, $5a, $6b
     db $f4, $03, $f4, $03, $f4, $03, $f4, $03, $00, $00, $c0, $00, $a6, $0d, $33, $43
     db $00, $00, $ad, $00, $d7, $01, $9e, $17, $00, $00, $17, $00, $fa, $1c, $7f, $4e
     db $00, $00, $65, $49, $8e, $62, $50, $7b, $00, $00, $87, $00, $ed, $00, $72, $01
+
+LevelPalette_46f0:
     db $a0, $01, $60, $14, $ff, $7f, $f4, $03, $00, $00, $08, $21, $31, $46, $5a, $6b
     db $f4, $03, $f4, $03, $f4, $03, $f4, $03, $00, $00, $c0, $00, $a6, $0d, $33, $43
     db $00, $00, $ad, $00, $d7, $01, $9e, $17, $00, $00, $00, $3c, $22, $41, $26, $46
     db $00, $00, $00, $60, $ef, $7d, $f5, $7f, $00, $00, $46, $00, $ad, $00, $94, $01
+
+LevelPalette_4730:
     db $a0, $01, $60, $14, $ff, $7f, $f4, $03, $00, $00, $08, $21, $31, $46, $5a, $6b
     db $f4, $03, $f4, $03, $f4, $03, $f4, $03, $00, $00, $17, $00, $fa, $1c, $7f, $4e
     db $00, $00, $45, $01, $4e, $02, $d3, $3f, $00, $00, $a8, $21, $92, $4b, $97, $5f
     db $00, $00, $46, $11, $8d, $26, $f4, $3f, $00, $00, $ac, $25, $2e, $32, $d2, $3e
+
+LevelPalette_4770:
     db $a0, $01, $60, $14, $ff, $7f, $f4, $03, $00, $00, $08, $21, $31, $46, $5a, $6b
     db $f4, $03, $f4, $03, $f4, $03, $f4, $03, $00, $00, $57, $61, $be, $7e, $bf, $73
     db $00, $00, $e0, $3c, $c1, $69, $a5, $7e, $00, $00, $80, $18, $40, $35, $e0, $55
     db $00, $00, $00, $60, $ef, $7d, $f5, $7f, $00, $00, $17, $00, $1b, $21, $7f, $4e
+
+LevelPalette_47b0:
     db $80, $01, $00, $00, $ff, $7f, $f4, $03, $00, $00, $08, $21, $31, $46, $5a, $6b
     db $f4, $03, $f4, $03, $f4, $03, $f4, $03, $00, $00, $cf, $00, $bf, $09, $bf, $3a
     db $00, $00, $ad, $00, $d7, $01, $9e, $17, $00, $00, $15, $54, $9d, $79, $1f, $7f
     db $00, $00, $00, $60, $ef, $7d, $f5, $7f, $00, $00, $17, $00, $1b, $21, $7f, $4e
+
+LevelPalette_47f0:
     db $a0, $01, $60, $14, $ff, $7f, $f4, $03, $00, $00, $08, $21, $31, $46, $5a, $6b
     db $f4, $03, $f4, $03, $f4, $03, $f4, $03, $00, $00, $e0, $3c, $c1, $69, $a5, $7e
     db $00, $00, $ad, $00, $d7, $01, $9e, $17, $00, $00, $80, $18, $40, $35, $e0, $55
     db $00, $00, $00, $60, $ef, $7d, $f5, $7f, $00, $00, $17, $00, $1b, $21, $7f, $4e
 
-    nop
-    nop
-    rst $28
+BrickPalette_4830:
+    db $00, $00, $ef
     db $10
-    ld e, d
-    ld a, $5d
-    ld h, a
-    nop
-    nop
-    call z, $d50c
-    ld sp, $4a75
+    db $5a, $3e, $5d, $67, $00, $00, $cc, $0c, $d5, $31, $75, $4a
 
+BrickPalette_4840:
     db $00, $00, $13, $00, $38, $01, $1f, $03, $00, $00, $0d, $00, $f1, $00, $57, $02
+
+BrickPalette_4850:
     db $00, $00, $c0, $01, $11, $03, $ff, $03, $00, $00, $e0, $00, $e8, $01, $f3, $02
+
+BrickPalette_4860:
     db $00, $00, $0e, $38, $78, $61, $df, $7e, $00, $00, $0a, $28, $0f, $3d, $f7, $5d
 
-    nop
-    nop
-    ld c, e
-    dec h
-    ld [hl], $3a
-    sbc a
-    ld h, a
-    nop
-    nop
-    ret z
+    db $00, $00, $4b, $25, $36, $3a, $9f, $67, $00, $00, $c8, $18, $4e, $25, $77, $4a
 
-    jr @+$50
-
-    dec h
-    ld [hl], a
-    ld c, d
-
+BrickPalette_4880:
     db $00, $00, $4b, $01, $36, $02, $9f, $03, $00, $00, $c8, $00, $4e, $01, $77, $02
+
+BrickPalette_4890:
     db $00, $00, $40, $25, $20, $3a, $80, $67, $00, $00, $c0, $18, $40, $25, $60, $4a
+
+BrickPalette_48a0:
     db $00, $00, $00, $58, $20, $61, $a0, $7e, $00, $00, $00, $34, $e0, $44, $c0, $5d
+
+BrickPalette_48b0:
     db $00, $00, $8b, $08, $75, $19, $df, $3a, $00, $00, $28, $00, $d0, $0c, $b5, $15
+
+BrickPalette_48c0:
     db $00, $00, $04, $10, $0a, $28, $0f, $3c, $00, $00, $02, $08, $05, $14, $07, $1c
 
+BrickPalette_48d0:
     db $00, $00, $00, $10, $00, $28, $00, $3c, $00, $00, $00, $08, $00, $14, $00, $1c
 
-    nop
-    nop
-    nop
-    inc c
-    nop
-    jr jr_001_48e7
+BrickPalette_48e0:
+    db $00, $00, $00, $0c, $00, $18, $00
+    db $2c, $00, $00, $00, $04, $00, $10, $00, $1c
 
-jr_001_48e7:
-    inc l
-    nop
-    nop
-    nop
-    inc b
-    nop
-    stop
-    inc e
-    nop
-    nop
-    add h
+BrickPalette_48f0:
+    db $00, $00, $84
     db $10
-    ld c, d
-    add hl, hl
-    rst $28
-    dec a
-    nop
-    nop
-    ld b, d
-    ld [$14a5], sp
-    rst $20
-    inc e
-    nop
-    nop
-    nop
-    inc c
-    nop
-    jr jr_001_4907
+    db $4a, $29, $ef, $3d, $00, $00, $42, $08, $a5, $14, $e7, $1c
 
-jr_001_4907:
-    inc l
-    nop
-    nop
-    nop
-    inc b
-    nop
-    stop
-    inc e
-    nop
-    nop
-    rlca
-    nop
-    dec c
-    nop
-    ld [de], a
-    nop
-    nop
-    nop
-    dec b
-    nop
-    ld [$0b00], sp
-    nop
-    nop
-    nop
-    inc bc
-    dec c
-    ld b, $1a
-    ld a, [hl+]
-    dec hl
-    nop
-    nop
-    ld h, c
-    inc b
-    ld [c], a
-    ld [$1164], sp
-    nop
-    nop
-    ld a, [bc]
-    ld bc, $0214
-    ccf
-    inc bc
-    nop
-    nop
-    ld h, h
-    nop
-    ld a, [bc]
-    ld bc, $018f
-    nop
-    nop
-    ldh [rP1], a
-    dec c
-    ld bc, $01d2
-    nop
-    nop
-    add b
-    nop
-    xor b
-    nop
-    dec hl
-    ld bc, $0000
-    ret nz
+BrickPalette_4900:
+    db $00, $00, $00, $0c
+    db $00, $18, $00
+    db $2c, $00, $00, $00, $04, $00, $10, $00, $1c
 
-    inc e
-    dec b
-    dec [hl]
-    xor b
-    ld c, c
-    nop
-    nop
-    ld h, b
+BrickPalette_4910:
+    db $00, $00, $07, $00, $0d, $00, $12
+    db $00, $00, $00, $05, $00, $08, $00, $0b, $00
+
+BrickPalette_4920:
+    db $00, $00, $03, $0d, $06, $1a, $2a
+    db $2b, $00, $00, $61, $04, $e2, $08, $64, $11
+
+BrickPalette_4930:
+    db $00, $00, $0a, $01, $14, $02, $3f
+    db $03, $00, $00, $64, $00, $0a, $01, $8f, $01
+
+BrickPalette_4940:
+    db $00, $00, $e0, $00, $0d, $01, $d2
+    db $01, $00, $00, $80, $00, $a8, $00, $2b, $01
+
+BrickPalette_4950:
+    db $00, $00, $c0, $1c, $05, $35, $a8
+    db $49, $00, $00, $60
     db $10
-    and d
-    inc h
-    dec h
-    dec [hl]
-    nop
-    nop
-    ret nz
+    db $a2, $24, $25, $35
 
-    inc c
-    dec b
-    ld de, $21ac
-    nop
-    nop
-    ld h, b
-    ld [$08a2], sp
-    ld h, $19
-    nop
-    nop
-    dec bc
-    dec d
-    ld l, e
-    add hl, hl
-    ld [hl], h
-    ld b, [hl]
-    nop
-    nop
-    ld h, [hl]
-    ld [$14e7], sp
-    rst $08
-    ld sp, $0000
-    xor e
-    inc d
-    ld c, [hl]
-    nop
-    inc [hl]
-    dec d
-    nop
-    nop
-    ld b, $00
-    jr z, jr_001_498e
+BrickPalette_4960:
+    db $00, $00, $c0, $0c, $05, $11, $ac, $21, $00, $00, $60, $08
+    db $a2, $08, $26, $19
 
-jr_001_498e:
-    xor l
-    inc b
-    nop
-    nop
-    ld c, b
-    jr nz, jr_001_4a01
+BrickPalette_4970:
+    db $00, $00, $0b, $15, $6b, $29, $74, $46, $00, $00, $66, $08
+    db $e7, $14, $cf, $31
 
-    inc h
-    ld sp, $0039
-    nop
-    ld b, l
-    inc d
-    rlca
-    inc d
-    sra b
-    nop
-    nop
-    ret
+BrickPalette_4980:
+    db $00, $00, $ab, $14, $4e, $00, $34, $15, $00, $00, $06, $00
+    db $28, $00
+    db $ad, $04
 
+BrickPalette_4990:
+    db $00, $00, $48, $20, $6c, $24, $31, $39, $00, $00, $45, $14, $07, $14
+    db $cb, $28
 
-    nop
-    ld a, [bc]
-    ld bc, $2256
-    nop
-    nop
-    ld h, a
-    nop
-    and a
-    nop
-    ld c, l
-    ld de, $0000
-    ld b, b
-    ld bc, $0160
-    ld b, $01
-    nop
-    nop
-    add b
-    nop
-    and b
-    nop
-    add e
-    nop
-    cp $fe
-    ld b, $0a
-    ld b, $06
-    ld b, $0a
-    ld bc, $0000
-    add hl, sp
-    dec bc
-    cp $fe
-    ld b, $0a
-    ld b, $06
-    ld b, $0a
-    inc bc
-    rst $38
-    rst $38
-    ld [hl], $0b
-    rst $38
-    rlca
-    scf
-    dec bc
-    rlca
-    rst $38
-    jr c, jr_001_49ed
+BrickPalette_49a0:
+    db $00, $00, $c9, $00, $0a, $01, $56, $22, $00, $00, $67, $00, $a7, $00
+    db $4d, $11
 
-    cp $fe
-    ld b, $0a
-    ld b, $06
-    ld b, $0a
-    inc b
+BrickPalette_49b0:
+    db $00, $00, $40, $01, $60, $01, $06, $01, $00, $00, $80, $00, $a0, $00
+    db $83, $00
+
+; Four sprite frames (small to large) for a ball thrown by the blob, at byte offsets $00, $0d, $22 and $3b as stored in the throw arc tables.
+BallProjectileFrames:
+    db $fe, $fe, $06, $0a, $06, $06, $06, $0a, $01, $00, $00, $39, $0b, $fe
+    db $fe, $06, $0a, $06, $06, $06, $0a, $03, $ff, $ff, $36, $0b, $ff, $07, $37, $0b
+    db $07, $ff, $38, $0b, $fe, $fe, $06, $0a, $06, $06, $06, $0a, $04
     db $fc
     db $fc
 
-jr_001_49ed:
-    ld [hl-], a
-    dec bc
+    db $32, $0b
     db $fc
-    inc b
-    inc sp
-    dec bc
-    inc b
+    db $04, $33, $0b, $04
     db $fc
-    inc [hl]
-    dec bc
-    inc b
-    inc b
-    dec [hl]
-    dec bc
-    cp $fe
-    ld b, $0a
-    ld b, $06
+    db $34, $0b, $04, $04, $35, $0b, $fe, $fe, $06, $0a, $06, $06
+    db $06, $0a, $04
+    db $fc
+    db $fc
+    db $2e, $0b
+    db $fc
+    db $04, $2f, $0b, $04
+    db $fc
+    db $30, $0b, $04, $04, $31, $0b
 
-jr_001_4a01:
-    ld b, $0a
-    inc b
+; Four sprite frames (small to large) for a flying grenade, in the same layout and at the same offsets ($00, $0d, $22, $3b) as BallProjectileFrames.
+GrenadeProjectileFrames:
+    db $fe, $fe, $06, $0a, $06, $06, $06, $0a, $01, $00
+    db $00, $41, $0f, $fe, $fe, $06, $0a, $06, $06, $06, $0a, $03, $ff, $ff, $3e, $0f
+    db $ff, $07, $3f, $0f, $07, $ff, $40, $0f, $fe, $fe, $06, $0a, $06, $06, $06, $0a
+    db $04
     db $fc
     db $fc
-    ld l, $0b
+    db $3a, $0f
     db $fc
-    inc b
-    cpl
-    dec bc
-    inc b
+    db $04, $3b, $0f, $04
     db $fc
-    jr nc, @+$0d
+    db $3c, $0f, $04, $04, $3d, $0f, $fe, $fe, $06, $0a, $06, $06, $06, $0a, $04
+    db $fc
+    db $fc
+    db $59, $0f
+    db $fc
+    db $04, $5a, $0f, $04
+    db $fc
+    db $5b, $0f, $04, $04, $5c, $0f
 
-    inc b
-    inc b
-    ld sp, $fe0b
-    cp $06
-    ld a, [bc]
-    ld b, $06
-    ld b, $0a
-    ld bc, $0000
-    ld b, c
-    rrca
-    cp $fe
-    ld b, $0a
-    ld b, $06
-    ld b, $0a
-    inc bc
-    rst $38
-    rst $38
-    ld a, $0f
-    rst $38
-    rlca
-    ccf
-    rrca
-    rlca
-    rst $38
-    ld b, b
-    rrca
-    cp $fe
-    ld b, $0a
-    ld b, $06
-    ld b, $0a
-    inc b
+; Thirteen sprite frames of the grenade explosion, each a sprite count followed by 4 bytes (Y offset, X offset, tile, attribute) per sprite.
+GrenadeExplosionFrames:
+    db $01, $00, $00, $42, $0c, $04
     db $fc
     db $fc
-    ld a, [hl-]
-    rrca
+    db $4c, $0c
     db $fc
-    inc b
-    dec sp
-    rrca
-    inc b
+    db $04, $4d, $0c, $04
     db $fc
-    inc a
-    rrca
-    inc b
-    inc b
-    dec a
-    rrca
-    cp $fe
-    ld b, $0a
-    ld b, $06
-    ld b, $0a
-    inc b
+    db $52, $0c, $04, $04, $53, $0c, $04
     db $fc
     db $fc
-    ld e, c
-    rrca
+    db $4e, $0c
     db $fc
-    inc b
-    ld e, d
-    rrca
-    inc b
+    db $04, $4f, $0c, $04
     db $fc
-    ld e, e
-    rrca
-    inc b
-    inc b
-    ld e, h
-    rrca
-    ld bc, $0000
-    ld b, d
-    inc c
-    inc b
+    db $54, $0c, $04, $04, $55, $0c, $04
     db $fc
     db $fc
-    ld c, h
-    inc c
+    db $50, $0c
     db $fc
-    inc b
-    ld c, l
-    inc c
-    inc b
+    db $04, $51, $0c, $04
     db $fc
-    ld d, d
-    inc c
-    inc b
-    inc b
-    ld d, e
-    inc c
-    inc b
-    db $fc
-    db $fc
-    ld c, [hl]
-    inc c
-    db $fc
-    inc b
-    ld c, a
-    inc c
-    inc b
-    db $fc
-    ld d, h
-    inc c
-    inc b
-    inc b
-    ld d, l
-    inc c
-    inc b
-    db $fc
-    db $fc
-    ld d, b
-    inc c
-    db $fc
-    inc b
-    ld d, c
-    inc c
-    inc b
-    db $fc
-    ld d, [hl]
-    inc c
-    inc b
-    inc b
-    ld d, a
-    inc c
-    inc b
-    ld sp, hl
-    ld sp, hl
-    ld b, e
-    inc c
-    ld sp, hl
-    inc b
-    ld b, h
-    inc c
-    inc b
-    ld sp, hl
-    ld b, l
-    inc c
-    inc b
-    inc b
-    ld b, [hl]
-    inc c
-    inc b
-    ld sp, hl
-    ld sp, hl
-    ld b, h
-    inc c
-    ld sp, hl
-    inc b
-    ld b, l
-    inc c
-    inc b
-    ld sp, hl
-    ld b, [hl]
-    inc c
-    inc b
-    inc b
-    ld b, a
-    inc c
-    inc b
-    ld sp, hl
-    ld sp, hl
-    ld b, l
-    inc c
-    ld sp, hl
-    inc b
-    ld b, [hl]
-    inc c
-    inc b
-    ld sp, hl
-    ld b, a
-    inc c
-    inc b
-    inc b
-    ld c, b
-    inc c
-    inc b
-    ld sp, hl
-    ld sp, hl
-    ld b, [hl]
-    inc c
-    ld sp, hl
-    inc b
-    ld b, a
-    inc c
-    inc b
-    ld sp, hl
-    ld c, b
-    inc c
-    inc b
-    inc b
-    ld c, c
-    inc c
-    inc b
-    ld sp, hl
-    ld sp, hl
-    ld b, a
-    inc c
-    ld sp, hl
-    inc b
-    ld c, b
-    inc c
-    inc b
-    ld sp, hl
-    ld c, c
-    inc c
-    inc b
-    inc b
-    ld c, d
-    inc c
-    inc b
-    ld sp, hl
-    ld sp, hl
-    ld c, b
-    inc c
-    ld sp, hl
-    inc b
-    ld c, c
-    inc c
-    inc b
-    ld sp, hl
-    ld c, d
-    inc c
-    inc b
-    inc b
-    ld c, e
-    inc c
-    inc bc
-    ld sp, hl
-    ld sp, hl
-    ld c, c
-    inc c
-    ld sp, hl
-    inc b
-    ld c, d
-    inc c
-    inc b
-    ld sp, hl
-    ld c, e
-    inc c
-    ld [bc], a
-    ld sp, hl
-    ld sp, hl
-    ld c, d
-    inc c
-    ld sp, hl
-    inc b
-    ld c, e
-    inc c
-    ld bc, $f9f9
-    ld c, e
-    inc c
-    or h
+    db $56, $0c, $04, $04, $57, $0c, $04, $f9, $f9, $43, $0c, $f9, $04, $44, $0c, $04
+    db $f9, $45, $0c, $04, $04, $46, $0c, $04, $f9, $f9, $44, $0c, $f9, $04, $45, $0c
+    db $04, $f9, $46, $0c, $04, $04, $47, $0c, $04, $f9, $f9, $45, $0c, $f9, $04, $46
+    db $0c, $04, $f9, $47, $0c, $04, $04, $48, $0c, $04, $f9, $f9, $46, $0c, $f9, $04
+    db $47, $0c, $04, $f9, $48, $0c, $04, $04, $49, $0c, $04, $f9, $f9, $47, $0c, $f9
+    db $04, $48, $0c, $04, $f9, $49, $0c, $04, $04, $4a, $0c, $04, $f9, $f9, $48, $0c
+    db $f9, $04, $49, $0c, $04, $f9, $4a, $0c, $04, $04, $4b, $0c, $03, $f9, $f9, $49
+    db $0c, $f9, $04, $4a, $0c, $04, $f9, $4b, $0c, $02, $f9, $f9, $4a, $0c, $f9, $04
+    db $4b, $0c, $01, $f9, $f9, $4b, $0c
 
+; For each value of the grenade explosion timer (51 down to 1), the byte offset of the frame to draw in GrenadeExplosionFrames.
+GrenadeExplosionSequence:
+    db $b4
     db $b4, $b4, $b4, $ab, $ab, $ab, $ab, $9e, $9e, $9e, $9e, $8d, $8d, $8d, $8d, $7c
     db $7c, $7c, $7c, $6b, $6b, $6b, $6b, $5a, $5a, $5a, $5a, $49, $49, $49, $49, $38
     db $38, $38, $38, $27, $27, $27, $27, $16, $16, $16, $16, $05, $05, $05, $05, $00
     db $00, $00, $00
 
-    nop
-
+ThrowPath_4b55:
+    db $00
     db $00, $00, $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d
     db $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22
     db $22, $22, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
@@ -1210,112 +375,17 @@ jr_001_4a01:
     db $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d
     db $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00, $00, $00, $00, $00
 
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
+ThrowPath_4bc5:
+    db $00, $00, $00, $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d
+    db $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22
+    db $22, $22, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
+    db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
+    db $3b, $3b, $3b, $3b, $3b, $3b, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22
+    db $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d
+    db $0d, $0d, $00, $00, $00, $00, $00, $00
 
+ThrowPath_4c2d:
+    db $00
     db $00, $00, $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d
     db $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
@@ -1323,362 +393,117 @@ jr_001_4a01:
     db $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d
     db $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00, $00, $00, $00, $00
 
-    nop
-
+ThrowPath_4c8d:
+    db $00
     db $00, $00, $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d
-    db $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $3b
+    db $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $22
+
+ColorOnlyData_001_4ca8:
+    db $22, $22, $22, $22, $22, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $22, $22, $22, $22, $22, $22, $22, $22, $22
     db $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d
     db $0d, $00, $00, $00, $00, $00, $00
 
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
+ThrowPath_4ce5:
+    db $00, $00, $00, $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $22
+    db $22, $22, $22, $22, $22, $22, $22, $22, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
+    db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
+    db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $22, $22, $22, $22, $22, $22, $22, $22
+    db $22, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00, $00, $00, $00, $00
 
+ThrowPath_4d35:
+    db $00
     db $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22
     db $22, $22, $22, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
     db $3b, $3b, $3b, $22, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d
     db $0d, $0d, $0d, $00, $00, $00, $00
 
-    nop
-
+ThrowPath_4d7d:
+    db $00
     db $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $22
     db $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00, $00
 
-    nop
-
+ThrowPath_4dbd:
+    db $00
     db $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $22, $22, $22, $22, $22, $22, $22, $0d, $0d
     db $0d, $0d, $0d, $0d, $00, $00, $00
 
-    nop
-    nop
-    nop
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    dec sp
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    nop
-    nop
-    nop
-    nop
+ThrowPath_4df5:
+    db $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22
+    db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b, $3b
+    db $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00, $00
 
+ThrowPath_4e25:
+    db $00
     db $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $3b
     db $3b, $3b, $3b, $3b, $3b, $3b, $3b, $22, $22, $22, $22, $22, $22, $22, $0d, $0d
     db $0d, $0d, $0d, $0d, $00, $00, $00
 
-    nop
-    nop
-    nop
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    dec sp
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    nop
-    nop
-    nop
-    nop
+ThrowPath_4e4d:
+    db $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22
+    db $3b, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00
+    db $00
 
+; Flight path of $24 frames, one byte per frame: used for the blob's throw to the right and as the longest bounce path after a projectile hits a brick.
+ThrowPath_4e6e:
+    db $00
     db $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $3b
     db $3b, $3b, $3b, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d
     db $00, $00, $00
 
-    nop
-    nop
-    nop
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    dec c
-    dec c
-    dec c
-    dec c
-    dec c
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    dec c
-    dec c
-    dec c
-    dec c
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    dec c
-    dec c
-    dec c
-    dec c
-    nop
-    nop
-    nop
-    nop
-    nop
-    dec c
-    dec c
-    dec c
-    dec c
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    dec c
-    dec c
-    dec c
-    dec c
-    nop
-    nop
-    nop
-    nop
-    dec c
-    dec c
-    dec c
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    dec c
-    dec c
-    dec c
-    nop
-    nop
-    nop
-    dec c
-    dec c
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    dec c
-    dec c
-    nop
-    nop
-    dec c
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    ld [hl+], a
-    dec c
-    nop
+; Arc table for a projectile that came down on a brick with Y from $6d to $71 and flies on for 32 more frames: one byte per remaining frame giving the frame offset ($00, $0d or $22) into BallProjectileFrames or GrenadeProjectileFrames.
+ProjectileBounceArc_1:
+    db $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22
+    db $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $0d, $00, $00, $00
 
+; Arc table for a projectile that came down on a brick with Y from $72 to $76 and flies on for 28 more frames: one frame offset into the projectile sprite frames per remaining frame.
+ProjectileBounceArc_2:
+    db $00, $00, $00, $0d, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $22
+    db $22, $22, $22, $22, $0d, $0d, $0d, $0d, $0d, $00, $00, $00
+
+; Arc table for a projectile that came down on a brick with Y from $77 to $7b and flies on for 24 more frames: one frame offset into the projectile sprite frames per remaining frame.
+ProjectileBounceArc_3:
+    db $00, $00, $00, $0d
+    db $0d, $0d, $0d, $22, $22, $22, $22, $22, $22, $22, $22, $22, $22, $0d, $0d, $0d
+    db $0d, $00, $00, $00
+
+; Arc table for a projectile that came down on a brick with Y from $7c to $80 and flies on for 20 more frames: one frame offset into the projectile sprite frames per remaining frame.
+ProjectileBounceArc_4:
+    db $00, $00, $0d, $0d, $0d, $0d, $22, $22, $22, $22, $22, $22
+    db $22, $22, $0d, $0d, $0d, $0d, $00, $00
+
+; Arc table for a projectile that came down on a brick with Y from $81 to $85 and flies on for 16 more frames: one frame offset into the projectile sprite frames per remaining frame.
+ProjectileBounceArc_5:
+    db $00, $00, $0d, $0d, $0d, $22, $22, $22
+    db $22, $22, $22, $0d, $0d, $0d, $00, $00
+
+; Arc table for a projectile that came down on a brick with Y from $86 to $8a and flies on for 12 more frames: one frame offset into the projectile sprite frames per remaining frame.
+ProjectileBounceArc_6:
+    db $00, $0d, $0d, $22, $22, $22, $22, $22
+    db $22, $0d, $0d, $00
+
+; Arc table for a projectile that came down on a brick with Y of $8b or more and flies on for 8 more frames: one frame offset into the projectile sprite frames per remaining frame.
+ProjectileBounceArc_7:
+    db $00, $0d, $22, $22, $22, $22, $0d, $00
+
+BlobThrowDirections_Upper:
     db $04
 
-    inc e
-
+    db $1c
     db $01, $1f, $02
 
     db $1d
 
-    inc bc
+    db $03
     db $1e
 
+BlobThrowDirections_Lower:
     db $14
 
     db $14
@@ -1687,159 +512,104 @@ jr_001_4a01:
 
     db $0c, $0b
 
-    dec bc
+    db $0b
 
-    db $78, $08, $00, $8c, $08, $46, $0d, $46, $13, $8c, $18, $46, $1d, $46, $03, $00
+; Segment list of the blob's first move (BlobPath entry 0): one pair of (frame count, direction index into BallVelocityTable) ending with 0. Every blob move runs at half the table speed, because UpdateEnemyPath halves each step.
+BlobPathSegments_1:
+    db $78, $08, $00
+
+; Segment list of one of the blob's two looping moves: six pairs of (frame count, direction index into BallVelocityTable) ending with 0.
+BlobPathSegments_2:
+    db $8c, $08, $46, $0d, $46, $13, $8c, $18, $46, $1d, $46, $03, $00
+
+; Segment list of the blob's other looping move, the same as BlobPathSegments_2 with the diagonal directions swapped: six pairs of (frame count, direction index) ending with 0.
+BlobPathSegments_3:
     db $8c, $08, $46, $13, $46, $0d, $8c, $18, $46, $03, $46, $1d, $00
 
-    db $01, $01, $2e, $4f, $02, $02, $31, $4f
+BlobPath:
+    db $01, $01
+    dw BlobPathSegments_1
+    db $02, $02
+    dw BlobPathSegments_2
+    db $01, $01
+    dw BlobPathSegments_3
 
-    ld bc, $3e01
-    ld c, a
-
+BlobSprites:
     db $00, $00, $5f, $00, $00, $08, $60, $00, $08, $00, $67, $00, $08, $08, $68, $00
     db $00, $00, $61, $00, $00, $08, $62, $00, $08, $00, $69, $00, $08, $08, $6a, $00
 
-    nop
-    nop
-    ld h, e
-    nop
-    nop
-    ld [$0064], sp
-    ld [$6b00], sp
-    nop
-    ld [$6c08], sp
-    nop
-    nop
-    nop
-    ld h, l
-    nop
-    nop
-    ld [$0066], sp
-    ld [$6d00], sp
-    nop
-    ld [$6e08], sp
-    nop
-    nop
-    nop
-    ld d, $08
-    nop
-    ld [$0817], sp
-    ld [$1e00], sp
-    ld [$0808], sp
-    rra
-    ld [$0000], sp
-    jr @+$0a
+    db $00, $00, $63, $00, $00, $08, $64, $00, $08, $00, $6b, $00, $08, $08, $6c, $00
+    db $00, $00, $65, $00, $00, $08, $66, $00, $08, $00, $6d, $00, $08, $08, $6e, $00
 
-    nop
-    ld [$0819], sp
-    ld [$2000], sp
-    ld [$0808], sp
-    ld hl, $0008
-    nop
-    ld a, [de]
-    ld [$0800], sp
-    dec de
-    ld [$0008], sp
-    ld [hl+], a
-    ld [$0808], sp
-    inc hl
-    ld [$0000], sp
-    inc e
-    ld [$0800], sp
-    dec e
-    ld [$0008], sp
-    inc h
-    ld [$0808], sp
-    dec h
-    ld [$0000], sp
-    ld h, $08
-    nop
-    ld [$0827], sp
-    ld [$2800], sp
-    ld [$0808], sp
-    add hl, hl
-    ld [$0000], sp
-    ld a, [hl+]
-    ld [$0800], sp
-    dec hl
-    ld [$0008], sp
-    inc l
-    ld [$0808], sp
-    dec l
-    ld [$0000], sp
-    ld c, [hl]
-    ld [bc], a
-    nop
-    ld [$014f], sp
-    nop
+BlobSprites_Ghost:
+    db $00, $00, $16, $08, $00, $08, $17, $08, $08, $00, $1e, $08, $08, $08, $1f, $08
+    db $00, $00, $18, $08, $00, $08, $19, $08, $08, $00, $20, $08, $08, $08, $21, $08
+    db $00, $00, $1a, $08, $00, $08, $1b, $08, $08, $00, $22, $08, $08, $08, $23, $08
+    db $00, $00, $1c, $08, $00, $08, $1d, $08, $08, $00, $24, $08, $08, $08, $25, $08
+
+BlobSprites_Throwing:
+    db $00, $00, $26, $08, $00, $08, $27, $08, $08, $00, $28, $08, $08, $08, $29, $08
+    db $00, $00, $2a, $08, $00, $08, $2b, $08, $08, $00, $2c, $08, $08, $08, $2d, $08
+
+UfoSprites:
+    db $00, $00, $4e, $02, $00, $08, $4f, $01, $00
     db $10
-    ld d, b
-    dec b
-    ld hl, sp+$04
-    ld d, d
-    ld [bc], a
-    ld hl, sp+$0c
-    ld d, e
-    dec b
-    ld bc, $020a
-    rrca
-    inc bc
-    inc d
-    inc b
-    add hl, de
-    dec b
-    ld [hl-], a
-    push af
-    nop
+    db $50, $05, $f8, $04, $52, $02, $f8, $0c
 
+; Effect number and score units for each UFO hit. The first two bytes ($53, $05) are not a score pair. UpdateUfo reads 20 bytes from UfoSprites, which has only 18, so they serve as the tile and attribute of the fifth UFO sprite. UfoHit adds 2 x the hit count after the increment (1 to 5), so the real pairs start 2 bytes in.
+UfoHitScores:
+    db $53, $05, $01, $0a, $02, $0f, $03, $14
+    db $04, $19, $05, $32
+
+; UFO passes, 8 entries of (wait, side). The side is that of the pass that is starting (0 = rightward, 1 = leftward). The wait is loaded into wUfoWaitTimer when the pass starts, so it is the pause before the next pass. The first pass uses entry 1, and entry 0 is used by the 8th pass.
+UfoPassTable:
+    db $f5, $00
     db $80, $00
 
-    ret z
+    db $c8, $01, $32, $00, $e6, $01, $0a, $00, $be, $01, $64, $01
 
-    ld bc, $0032
-    and $01
-    ld a, [bc]
-    nop
-    cp [hl]
-    ld bc, $0164
-
-    ld hl, $db71
+; Empties all 8 slots of wFallingPowerups, so no power-up is falling.
+; Called when a level is set up.
+ClearFallingPowerups:
+    ld hl, wFallingPowerups
     ld c, $08
     xor a
 
-jr_001_502b:
+.clearSlotLoop:
     ld [hl], a
     ld de, $000c
     add hl, de
     dec c
-    jr nz, jr_001_502b
+    jr nz, .clearSlotLoop
 
     ret
 
-
-    ld a, [$db6e]
+; Release the power-up of the brick that was just hit.
+; Only runs when the power-up id (wHitPowerupId) is not 0 and the brick now has exactly 1 hit point.
+; Random, Triple ball and Clock ids can change type here; see RESEARCH.md.
+SpawnPowerup:
+    ld a, [wHitPowerupId]
     or a
     ret z
 
-    ld a, [$db6f]
+    ld a, [wHitBrickValue]
     dec a
     ret nz
 
     push hl
     push de
-    ld hl, $db71
+    ld hl, wFallingPowerups
     ld de, $000c
 
-jr_001_5046:
+.findFreeSlot:
     ld a, [hl]
     or a
-    jr z, jr_001_504d
+    jr z, .slotFound
 
     add hl, de
-    jr jr_001_5046
+    jr .findFreeSlot
 
-jr_001_504d:
+.slotFound:
     inc a
     ld [hl+], a
     dec c
@@ -1864,73 +634,73 @@ jr_001_504d:
     sla a
     add $08
     ld [hl+], a
-    ld a, [$db6e]
+    ld a, [wHitPowerupId]
     dec a
     cp $10
-    jr nz, jr_001_508d
+    jr nz, .checkType9
 
-    ld a, [$ff8c]
+    ld a, [hFrameCounter]
     and $0f
     push af
-    ld a, [$dc35]
+    ld a, [wLevelType]
     bit 1, a
-    jr z, jr_001_5089
+    jr z, .subtractOffset
 
     ld d, $03
 
-jr_001_5089:
+.subtractOffset:
     pop af
     sub d
     and $0f
 
-jr_001_508d:
+.checkType9:
     cp $09
-    jr nz, jr_001_509e
+    jr nz, .checkType6
 
     ld d, a
-    ld a, [$d77c]
+    ld a, [wBallCount]
     or a
-    jr z, jr_001_509d
+    jr z, .type9Resolved
 
     dec a
-    jr z, jr_001_509d
+    jr z, .type9Resolved
 
     ld d, $00
 
-jr_001_509d:
+.type9Resolved:
     ld a, d
 
-jr_001_509e:
+.checkType6:
     cp $06
-    jr nz, jr_001_50ab
+    jr nz, .checkType17
 
     ld d, a
-    ld a, [$dc3d]
+    ld a, [wWeaponFlag]
     or a
-    jr nz, jr_001_50aa
+    jr nz, .type6Resolved
 
     ld d, a
 
-jr_001_50aa:
+.type6Resolved:
     ld a, d
 
-jr_001_50ab:
+.checkType17:
     cp $11
-    jr nz, jr_001_50b1
+    jr nz, .storeType
 
     ld a, $06
 
-jr_001_50b1:
+.storeType:
     ld [hl+], a
-    ld de, $7726
+    ld de, PowerupSprites
     add a
     add e
     ld e, a
-    jr nc, jr_001_50bb
+    jr nc, .noCarry
 
     inc d
 
-jr_001_50bb:
+.noCarry:
     ld a, [de]
     inc de
     ld c, a
@@ -1959,52 +729,53 @@ jr_001_50bb:
     ld [hl+], a
     ld a, [bc]
     ld [hl+], a
-    ld a, $05
-    call Call_000_3e64
+    ld a, SFX_POWERUP_SPAWN
+    call PlaySound
     pop de
     pop hl
     ret
 
-
-    ld hl, $db71
+; Move the falling power-ups and run their pick-up handlers. Then count down the Sleepy ball, Ninja and Ghost timers once per frame.
+UpdateFallingPowerups:
+    ld hl, wFallingPowerups
     ld c, $08
 
-jr_001_50e4:
+.powerupLoop:
     ld a, [hl]
     or a
-    jr z, jr_001_5118
+    jr z, .skipSlot
 
     push hl
     ld e, a
     inc hl
     ld a, [hl+]
     cp $a0
-    jr c, jr_001_50f5
+    jr c, .onScreen
 
-jr_001_50f0:
+.removePowerup:
     xor a
     pop hl
     ld [hl], a
-    jr jr_001_5118
+    jr .skipSlot
 
-jr_001_50f5:
+.onScreen:
     ld d, a
     ld a, [hl+]
     ld b, a
     ld a, [hl+]
     add a
-    call Call_001_5179
-    jr nz, jr_001_50f0
+    call CheckPowerupCaught
+    jr nz, .removePowerup
 
     ld a, h
-    ld hl, $7706
+    ld hl, PowerupFallSpeeds
     add l
     ld l, a
-    jr nc, jr_001_5108
+    jr nc, .noCarry
 
     inc h
 
-jr_001_5108:
+.noCarry:
     ld a, [hl+]
     ld h, [hl]
     ld l, a
@@ -2017,74 +788,74 @@ jr_001_5108:
     ld [hl], d
     ld de, $000b
     add hl, de
-    jr jr_001_511c
+    jr .nextPowerup
 
-jr_001_5118:
+.skipSlot:
     ld de, $000c
     add hl, de
 
-jr_001_511c:
+.nextPowerup:
     dec c
-    jr nz, jr_001_50e4
+    jr nz, .powerupLoop
 
-    ld a, [$d8a5]
+    ld a, [wSleepyBallActive]
     or a
-    jr z, jr_001_513c
+    jr z, .updateNinjaTimer
 
-    ld a, [$d8a7]
+    ld a, [wBallEffectTick]
     inc a
-    ld [$d8a7], a
+    ld [wBallEffectTick], a
     and $01
-    jr nz, jr_001_513c
+    jr nz, .updateNinjaTimer
 
-    ld a, [$d8a6]
+    ld a, [wBallEffectTimer]
     dec a
-    ld [$d8a6], a
-    jr nz, jr_001_513c
+    ld [wBallEffectTimer], a
+    jr nz, .updateNinjaTimer
 
-    ld [$d8a5], a
+    ld [wSleepyBallActive], a
 
-jr_001_513c:
-    ld a, [$d76e]
+.updateNinjaTimer:
+    ld a, [wNinjaActive]
     or a
-    jr z, jr_001_5159
+    jr z, .updateGhostTimer
 
-    ld a, [$d8a7]
+    ld a, [wBallEffectTick]
     inc a
-    ld [$d8a7], a
+    ld [wBallEffectTick], a
     and $01
-    jr nz, jr_001_5159
+    jr nz, .updateGhostTimer
 
-    ld a, [$d8a6]
+    ld a, [wBallEffectTimer]
     dec a
-    ld [$d8a6], a
-    jr nz, jr_001_5159
+    ld [wBallEffectTimer], a
+    jr nz, .updateGhostTimer
 
-    ld [$d76e], a
+    ld [wNinjaActive], a
 
-jr_001_5159:
-    ld a, [$dc20]
+.updateGhostTimer:
+    ld a, [wGhostActive]
     or a
     ret z
 
-    ld a, [$dc22]
+    ld a, [wGhostTick]
     inc a
-    ld [$dc22], a
+    ld [wGhostTick], a
     and $07
     ret nz
 
-    ld a, [$dc21]
+    ld a, [wGhostTimer]
     dec a
-    ld [$dc21], a
+    ld [wGhostTimer], a
     ret nz
 
-    ld [$dc20], a
-    ld a, $18
-    call Call_000_3e64
+    ld [wGhostActive], a
+    ld a, SFX_GHOST_END
+    call PlaySound
     ret
 
-
-Call_001_5179:
+; Test a falling power-up against the bat and jump to its handler.
+CheckPowerupCaught:
     push af
     push bc
     push de
@@ -2092,1658 +863,684 @@ Call_001_5179:
     ld a, d
     add $0c
     ld d, a
-    ld a, [$c200]
+    ld a, [wBatY]
     sub $08
     cp d
-    jr nc, jr_001_51ae
+    jr nc, .checkRightEdge
 
     add $07
     cp d
-    jr c, jr_001_51ae
+    jr c, .checkRightEdge
 
-    ld a, [$c201]
+    ld a, [wBatX]
     sub $08
     cp b
-    jr nc, jr_001_51ae
+    jr nc, .checkRightEdge
 
     ld h, a
-    ld a, [$d764]
+    ld a, [wBatWidth]
     add h
     cp b
-    jr c, jr_001_51ae
+    jr c, .checkRightEdge
 
-jr_001_519e:
-    ld a, [$d76b]
+.caught:
+    ld a, [wBatExplosionTimer]
     or a
-    jr nz, jr_001_51cf
+    jr nz, .notCaught
 
     ld h, $00
-    ld de, $76e6
+    ld de, PowerupHandlers
     add hl, de
     ld a, [hl+]
     ld h, [hl]
     ld l, a
     jp hl
 
-
-jr_001_51ae:
+.checkRightEdge:
     ld a, b
     add $0f
     ld b, a
-    ld a, [$c200]
+    ld a, [wBatY]
     sub $08
     cp d
-    jr nc, jr_001_51cf
+    jr nc, .notCaught
 
     add $07
     cp d
-    jr c, jr_001_51cf
+    jr c, .notCaught
 
-    ld a, [$c201]
+    ld a, [wBatX]
     sub $08
     cp b
-    jr nc, jr_001_51cf
+    jr nc, .notCaught
 
     ld h, a
-    ld a, [$d764]
+    ld a, [wBatWidth]
     add h
     cp b
-    jr nc, jr_001_519e
+    jr nc, .caught
 
-jr_001_51cf:
+.notCaught:
     xor a
     pop de
     pop bc
     pop hl
     ret
 
-
-    ld a, [$d77c]
+; Slow ball power-up. Sets wSlowBallActive and clears the low nibble of byte 5 in every wBalls record.
+; Switches off Sleepy ball, Antigravity and Ninja, shows the message and ends the pick-up.
+Powerup_Slowball:
+    ld a, [wBallCount]
     or a
-    jr z, jr_001_51e9
+    jr z, .ballsDone
 
-    ld hl, $d782
+    ld hl, wBalls + 5
     ld de, $0007
     ld b, a
 
-jr_001_51e1:
+.clearLowNibbleLoop:
     ld a, [hl]
     and $f0
     ld [hl], a
     add hl, de
     dec b
-    jr nz, jr_001_51e1
+    jr nz, .clearLowNibbleLoop
 
-jr_001_51e9:
-    ld a, [$d8a2]
+.ballsDone:
+    ld a, [wAntigravityActive]
     or a
-    jr z, jr_001_51f2
+    jr z, .noAntigravity
 
-    ld [$d8a9], a
+    ld [wAntigravityCancel], a
 
-jr_001_51f2:
+.noAntigravity:
     ld a, $01
-    ld [$d8a3], a
+    ld [wSlowBallActive], a
     xor a
-    ld [$d8a5], a
-    ld [$d8a2], a
-    ld [$d76e], a
-    ld hl, $df11
-    call Call_000_0001
-    jp Jump_001_544e
+    ld [wSleepyBallActive], a
+    ld [wAntigravityActive], a
+    ld [wNinjaActive], a
+    ld hl, wLangTextSlowBall
+    call ShowMessageBankE
+    jp PowerupCollected
 
-
+; Rocket bat power-up. Sets wShotReloadDelay to 30 frames and clears wLaserBat, then shows the message.
+; Falls through to Powerup_ShotBatCommon.
+Powerup_Rocket:
     ld a, $1e
-    ld [$dc45], a
+    ld [wShotReloadDelay], a
     xor a
-    ld [$dc4c], a
-    ld hl, $df17
-    call Call_000_0001
+    ld [wLaserBat], a
+    ld hl, wLangTextRocketBat
+    call ShowMessageBankE
 
-Jump_001_5219:
+; Shared part of the Rocket and Laser bats. Sets wRocketLaserBat and clears wGrenadeCount.
+; Falls through to Powerup_WeaponCommon.
+Powerup_ShotBatCommon:
     ld a, $01
-    ld [$dc46], a
+    ld [wRocketLaserBat], a
     xor a
-    ld [$dc48], a
+    ld [wGrenadeCount], a
 
-Jump_001_5222:
-    ld a, [$dc47]
+; Shared part of the weapon power-ups. Ends the plasma bat (wPlasmaState 1 only, a plasma shot in flight with state 2 stays) and sets wWeaponFlag.
+; Clears the sticky, stun and reverse effects, shrinks a big bat to normal width and ends the pick-up.
+Powerup_WeaponCommon:
+    ld a, [wPlasmaState]
     cp $01
-    jr nz, jr_001_522d
+    jr nz, .clearBatEffects
 
     xor a
-    ld [$dc47], a
+    ld [wPlasmaState], a
 
-jr_001_522d:
+.clearBatEffects:
     xor a
-    ld [$d763], a
-    ld [$d765], a
-    ld [$d766], a
-    ld [$d76a], a
+    ld [wBallSticks], a
+    ld [wStunActive], a
+    ld [wStunWobble], a
+    ld [wReverseActive], a
     inc a
-    ld [$dc3d], a
-    ld a, [$d764]
+    ld [wWeaponFlag], a
+    ld a, [wBatWidth]
     cp $28
-    jp nz, Jump_001_544e
+    jp nz, PowerupCollected
 
-    ld a, [$c201]
+    ld a, [wBatX]
     add $04
-    ld [$c201], a
+    ld [wBatX], a
     ld a, $20
-    ld [$d764], a
-    jp Jump_001_544e
+    ld [wBatWidth], a
+    jp PowerupCollected
 
-
+; Smiley ends the level: it sets the next game state and adds 1 to wCurrentLevel.
+; Unlike CountBrickDestroyed, it does not check hStateTimer first. If the last brick has
+; just been destroyed, the level number has already gone up and this adds 1 again.
+; This is the "brick skip". See docs/RESEARCH.md.
+Powerup_Smiley:
     ld b, $02
-    ld a, [$dcfe]
+    ld a, [wLevelsSincePassword]
     cp $04
-    jr nz, jr_001_526a
+    jr nz, .setGameState
 
-    call Call_000_3c34
-    ld a, [$dcff]
+    call NextLevelMusic
+    ld a, [wEndingSeen]
     or a
-    jr nz, jr_001_526a
+    jr nz, .setGameState
 
     ld b, $09
 
-jr_001_526a:
+.setGameState:
     ld a, b
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $0f
-    ld [$ffa0], a
-    ld a, [$cce8]
+    ld [hStateTimer], a
+    ld a, [wCurrentLevel]
     inc a
     cp $a0
-    jr nz, jr_001_5281
+    jr nz, .storeLevel
 
     ld a, $0d
-    ld [$ff9f], a
+    ld [hGameState], a
     xor a
 
-jr_001_5281:
-    ld [$cce8], a
+.storeLevel:
+    ld [wCurrentLevel], a
     ld b, $32
-    jp Jump_001_5450
+    jp PowerupCollected_AddScore
 
-
+; Plasma bat power-up. Clears the rocket, laser and grenade state, shows the message, sets wPlasmaState to 1.
+; Continues in Powerup_WeaponCommon without ending the plasma bat.
+Powerup_Plasma:
     xor a
-    ld [$dc46], a
-    ld [$dc4c], a
-    ld [$dc48], a
-    ld hl, $df19
-    call Call_000_0001
+    ld [wRocketLaserBat], a
+    ld [wLaserBat], a
+    ld [wGrenadeCount], a
+    ld hl, wLangTextPlasmaBat
+    call ShowMessageBankE
     ld a, $01
-    ld [$dc47], a
-    jr jr_001_522d
+    ld [wPlasmaState], a
+    jr Powerup_WeaponCommon.clearBatEffects
 
+; Stun bat power-up. Starts wBatEffectTimer and sets wStunActive and wStunWobble.
+; Clears the sticky, weapon (wWeaponFlag only) and reverse effects, shrinks a big bat to normal width and ends the pick-up.
+Powerup_Poison:
     ld a, $50
-    ld [$d768], a
+    ld [wBatEffectTimer], a
     ld a, $03
-    ld [$d765], a
-    ld [$d766], a
+    ld [wStunActive], a
+    ld [wStunWobble], a
     xor a
-    ld [$d763], a
-    ld [$dc3d], a
-    ld [$d76a], a
-    ld hl, $df1d
-    call Call_000_0001
-    ld a, [$d764]
+    ld [wBallSticks], a
+    ld [wWeaponFlag], a
+    ld [wReverseActive], a
+    ld hl, wLangTextStunBat
+    call ShowMessageBankE
+    ld a, [wBatWidth]
     cp $28
-    jp nz, Jump_001_544e
+    jp nz, PowerupCollected
 
-    ld a, [$c201]
+    ld a, [wBatX]
     add $04
-    ld [$c201], a
+    ld [wBatX], a
     ld a, $20
-    ld [$d764], a
-    jp Jump_001_544e
+    ld [wBatWidth], a
+    jp PowerupCollected
 
-
-    ld a, [$c201]
+; Big bat power-up. Sets wBatWidth to $28 and moves wBatX 4 to the left, kept between $17 and $81.
+; Clears the sticky, weapon (wWeaponFlag only), stun and reverse effects, shows the message and ends the pick-up.
+Powerup_Milk:
+    ld a, [wBatX]
     sub $04
     cp $81
-    jr c, jr_001_52e2
+    jr c, .checkLeftLimit
 
     ld a, $81
-    jr jr_001_52e8
+    jr .storeBatX
 
-jr_001_52e2:
+.checkLeftLimit:
     cp $17
-    jr nc, jr_001_52e8
+    jr nc, .storeBatX
 
     ld a, $17
 
-jr_001_52e8:
-    ld [$c201], a
+.storeBatX:
+    ld [wBatX], a
     ld a, $28
-    ld [$d764], a
+    ld [wBatWidth], a
     xor a
-    ld [$d763], a
-    ld [$dc3d], a
-    ld [$d765], a
-    ld [$d766], a
-    ld [$d76a], a
-    ld hl, $df1b
-    call Call_000_0001
-    jp Jump_001_544e
+    ld [wBallSticks], a
+    ld [wWeaponFlag], a
+    ld [wStunActive], a
+    ld [wStunWobble], a
+    ld [wReverseActive], a
+    ld hl, wLangTextBigBat
+    call ShowMessageBankE
+    jp PowerupCollected
 
-
-    ld a, [$d8a2]
+; Sleepy ball power-up. Starts wBallEffectTimer and sets wSleepyBallActive.
+; Cancels Antigravity, Slow ball and Ninja, shows the message and ends the pick-up.
+Powerup_Clock:
+    ld a, [wAntigravityActive]
     or a
-    jr z, jr_001_5312
+    jr z, .noAntigravity
 
-    ld [$d8a9], a
+    ld [wAntigravityCancel], a
 
-jr_001_5312:
+.noAntigravity:
     ld a, $a0
-    ld [$d8a6], a
-    ld [$d8a5], a
+    ld [wBallEffectTimer], a
+    ld [wSleepyBallActive], a
     xor a
-    ld [$d8a2], a
-    ld [$d8a3], a
-    ld [$d76e], a
-    ld hl, $df15
-    call Call_000_0001
-    jp Jump_001_544e
+    ld [wAntigravityActive], a
+    ld [wSlowBallActive], a
+    ld [wNinjaActive], a
+    ld hl, wLangTextSleepyBall
+    call ShowMessageBankE
+    jp PowerupCollected
 
-
+; Antigravity ball power-up. Starts wBallEffectTimer and sets wAntigravityActive.
+; Switches off Sleepy ball, Slow ball and Ninja, shows the message and ends the pick-up.
+Powerup_Pepper:
     ld a, $a0
-    ld [$d8a6], a
-    ld [$d8a2], a
+    ld [wBallEffectTimer], a
+    ld [wAntigravityActive], a
     xor a
-    ld [$d8a5], a
-    ld [$d8a3], a
-    ld [$d76e], a
-    ld hl, $df13
-    call Call_000_0001
-    jp Jump_001_544e
+    ld [wSleepyBallActive], a
+    ld [wSlowBallActive], a
+    ld [wNinjaActive], a
+    ld hl, wLangTextAntigravityBall
+    call ShowMessageBankE
+    jp PowerupCollected
 
-
+; Magnetic bat power-up. Sets wBallSticks so the ball sticks to the bat.
+; Clears the stun, weapon (wWeaponFlag only) and reverse effects, shrinks a big bat to normal width and ends the pick-up.
+Powerup_Magnet:
     ld a, $01
-    ld [$d763], a
+    ld [wBallSticks], a
     xor a
-    ld [$d765], a
-    ld [$d766], a
-    ld [$dc3d], a
-    ld [$d76a], a
-    ld hl, $df1f
-    call Call_000_0001
-    ld a, [$d764]
+    ld [wStunActive], a
+    ld [wStunWobble], a
+    ld [wWeaponFlag], a
+    ld [wReverseActive], a
+    ld hl, wLangTextMagneticBat
+    call ShowMessageBankE
+    ld a, [wBatWidth]
     cp $28
-    jp nz, Jump_001_544e
+    jp nz, PowerupCollected
 
-    ld a, [$c201]
+    ld a, [wBatX]
     add $04
-    ld [$c201], a
+    ld [wBatX], a
     ld a, $20
-    ld [$d764], a
-    jp Jump_001_544e
+    ld [wBatWidth], a
+    jp PowerupCollected
 
-
-    ld a, [$d8a2]
+; Triple ball power-up (the in-game text is "Multi ball"). Sets wMultiBallPending, which stays set until the ball splits. The split adds 2 balls to however many are in play.
+; Cancels Antigravity, Sleepy ball, Slow ball and Ninja, shows the message and ends the pick-up.
+Powerup_TripleBall:
+    ld a, [wAntigravityActive]
     or a
-    jr z, jr_001_5381
+    jr z, .noAntigravity
 
-    ld [$d8a9], a
+    ld [wAntigravityCancel], a
 
-jr_001_5381:
+.noAntigravity:
     ld a, $01
-    ld [$d8a1], a
+    ld [wMultiBallPending], a
     xor a
-    ld [$d8a5], a
-    ld [$d8a2], a
-    ld [$d8a3], a
-    ld [$d76e], a
-    ld hl, $df0f
-    call Call_000_0001
-    jp Jump_001_544e
+    ld [wSleepyBallActive], a
+    ld [wAntigravityActive], a
+    ld [wSlowBallActive], a
+    ld [wNinjaActive], a
+    ld hl, wLangTextMultiBall
+    call ShowMessageBankE
+    jp PowerupCollected
 
-
-    ld hl, $df21
-    ld a, [$d8ac]
+; Extra life power-up. Adds 1 to wLives and shows the message.
+; If wLives would reach 10, it stays as it is, no message is shown and the player gets a score bonus.
+Powerup_ExtraLife:
+    ld hl, wLangTextExtraLife
+    ld a, [wLives]
     inc a
     cp $0a
-    jr nz, jr_001_53ac
+    jr nz, .addLife
 
     ld b, $32
-    jp Jump_001_5450
+    jp PowerupCollected_AddScore
 
+.addLife:
+    ld [wLives], a
+    call ShowMessageBankE
+    jp PowerupCollected
 
-jr_001_53ac:
-    ld [$d8ac], a
-    call Call_000_0001
-    jp Jump_001_544e
-
-
+; Laser bat power-up. Sets wShotReloadDelay to 8 frames and wLaserBat to 1, then shows the message.
+; Continues in Powerup_ShotBatCommon.
+Powerup_Laser:
     ld a, $08
-    ld [$dc45], a
+    ld [wShotReloadDelay], a
     ld a, $01
-    ld [$dc4c], a
-    ld hl, $df23
-    call Call_000_0001
-    jp Jump_001_5219
+    ld [wLaserBat], a
+    ld hl, wLangTextLazerBat
+    call ShowMessageBankE
+    jp Powerup_ShotBatCommon
 
-
+; Reverse bat power-up. Starts wBatEffectTimer and sets wReverseActive.
+; Clears the stun, weapon (wWeaponFlag only) and sticky effects, shrinks a big bat to normal width and ends the pick-up.
+Powerup_Reverse:
     ld a, $50
-    ld [$d768], a
-    ld [$d76a], a
+    ld [wBatEffectTimer], a
+    ld [wReverseActive], a
     xor a
-    ld [$d765], a
-    ld [$d766], a
-    ld [$dc3d], a
-    ld [$d763], a
-    ld hl, $df25
-    call Call_000_0001
-    ld a, [$d764]
+    ld [wStunActive], a
+    ld [wStunWobble], a
+    ld [wWeaponFlag], a
+    ld [wBallSticks], a
+    ld hl, wLangTextReverseBat
+    call ShowMessageBankE
+    ld a, [wBatWidth]
     cp $28
-    jr nz, jr_001_544e
+    jr nz, PowerupCollected
 
-    ld a, [$c201]
+    ld a, [wBatX]
     add $04
-    ld [$c201], a
+    ld [wBatX], a
     ld a, $20
-    ld [$d764], a
-    jr jr_001_544e
+    ld [wBatWidth], a
+    jr PowerupCollected
 
-    ld a, [$d8a2]
+; Ninja ball power-up. Starts wBallEffectTimer, sets wNinjaActive and sets wLaunchDirection to 4.
+; Cancels the other ball effects, shows the message and ends the pick-up.
+Powerup_Ninja:
+    ld a, [wAntigravityActive]
     or a
-    jr z, jr_001_5402
+    jr z, .noAntigravity
 
-    ld [$d8a9], a
+    ld [wAntigravityCancel], a
 
-jr_001_5402:
+.noAntigravity:
     ld a, $c8
-    ld [$d8a6], a
+    ld [wBallEffectTimer], a
     ld a, $01
-    ld [$d76e], a
+    ld [wNinjaActive], a
     ld a, $04
-    ld [$d8a0], a
+    ld [wLaunchDirection], a
     xor a
-    ld [$d8a2], a
-    ld [$d8a3], a
-    ld [$d8a5], a
-    ld hl, $df2b
-    call Call_000_0001
-    jr jr_001_544e
+    ld [wAntigravityActive], a
+    ld [wSlowBallActive], a
+    ld [wSleepyBallActive], a
+    ld hl, wLangTextNinjaUp
+    call ShowMessageBankE
+    jr PowerupCollected
 
+; Ghost power-up. Sets wGhostActive and starts wGhostTimer at $FF.
+; Shows the message and ends the pick-up.
+Powerup_Ghost:
     ld a, $01
-    ld [$dc20], a
+    ld [wGhostActive], a
     ld a, $ff
-    ld [$dc21], a
-    ld hl, $df27
-    call Call_000_0001
-    jr jr_001_544e
+    ld [wGhostTimer], a
+    ld hl, wLangTextGhostUp
+    call ShowMessageBankE
+    jr PowerupCollected
 
+; Grenade bat power-up. Clears the laser and rocket state, shows the message and adds 4 to wGrenadeCount.
+; Continues in Powerup_WeaponCommon.
+Powerup_Grenade:
     xor a
-    ld [$dc4c], a
-    ld [$dc46], a
-    ld hl, $df29
-    call Call_000_0001
+    ld [wLaserBat], a
+    ld [wRocketLaserBat], a
+    ld hl, wLangTextGrenadeBat
+    call ShowMessageBankE
     ld b, $04
-    ld a, [$dc48]
+    ld a, [wGrenadeCount]
     add b
-    ld [$dc48], a
-    jp Jump_001_5222
+    ld [wGrenadeCount], a
+    jp Powerup_WeaponCommon
 
-
-Jump_001_544e:
-jr_001_544e:
+; Common end of the pick-up handlers.
+PowerupCollected:
     ld b, $0a
 
-Jump_001_5450:
-    call Call_001_7c39
+; Ends a power-up pick-up. B = score passed to AddScore.
+; Starts the pick-up effect, plays sound 8, restores the registers saved by the catch check and returns A = 1.
+PowerupCollected_AddScore:
+    call AddScore
     pop de
     pop bc
     push de
     ld a, $01
     ld e, $00
-    call Call_001_634d
+    call SpawnPickupEffect
     pop de
-    ld a, $08
-    call Call_000_3e64
+    ld a, SFX_POWERUP_COLLECTED
+    call PlaySound
     ld a, $01
     or a
     pop hl
     ret
 
+ShotSprite_Rocket:
+    db $55, $04, $51, $41, $54, $44
 
-    db $55, $04, $51, $41, $54, $44, $5e, $05, $5d, $05, $5c, $05, $12, $0c, $10, $0c
+ShotSprite_Plasma:
+    db $5e, $05, $5d, $05, $5c, $05
+
+ShotSprite_Laser:
+    db $12, $0c, $10, $0c
     db $11, $0c
 
-    inc b
-    jr nz, jr_001_549d
+GrenadeText_English_0:
+    db $04, "      GRENADE 0     "
 
-    jr nz, jr_001_549f
+GrenadeText_French_0:
+    db $04, "      GRENADE 0     "
 
-    jr nz, jr_001_54a1
+GrenadeText_German_0:
+    db $00, "     GRANATEN 0     "
 
-    ld b, a
-    ld d, d
-    ld b, l
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, l
-    jr nz, jr_001_54ba
+GrenadeText_Italian_0:
+    db $04, "      GRANATE 0     "
 
-    jr nz, jr_001_54ac
+GrenadeText_Spanish_0:
+    db $04, "      GRANADA 0     "
 
-    jr nz, jr_001_54ae
+GrenadeText_English_1:
+    db $04, "      GRENADE 1     "
 
-    jr nz, jr_001_5494
+GrenadeText_French_1:
+    db $04, "      GRENADE 1     "
 
-    jr nz, jr_001_54b2
+GrenadeText_German_1:
+    db $00, "     GRANATEN 1     "
 
-    jr nz, jr_001_54b4
+GrenadeText_Italian_1:
+    db $04, "      GRANATE 1     "
 
-jr_001_5494:
-    jr nz, jr_001_54b6
+GrenadeText_Spanish_1:
+    db $04, "      GRANADA 1     "
 
-    ld b, a
-    ld d, d
-    ld b, l
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, l
+GrenadeText_English_2:
+    db $04, "      GRENADE 2     "
 
-jr_001_549d:
-    jr nz, jr_001_54cf
+GrenadeText_French_2:
+    db $04, "      GRENADE 2     "
 
-jr_001_549f:
-    jr nz, jr_001_54c1
+GrenadeText_German_2:
+    db $00, "     GRANATEN 2     "
 
-jr_001_54a1:
-    jr nz, jr_001_54c3
+GrenadeText_Italian_2:
+    db $04, "      GRANATE 2     "
 
-    jr nz, jr_001_54a5
+GrenadeText_Spanish_2:
+    db $04, "      GRANADA 2     "
 
-jr_001_54a5:
-    jr nz, jr_001_54c7
+GrenadeText_English_3:
+    db $04, "      GRENADE 3     "
 
-    jr nz, jr_001_54c9
+GrenadeText_French_3:
+    db $04, "      GRENADE 3     "
 
-    jr nz, @+$49
+GrenadeText_German_3:
+    db $00, "     GRANATEN 3     "
 
-    ld d, d
+GrenadeText_Italian_3:
+    db $04, "      GRANATE 3     "
 
-jr_001_54ac:
-    ld b, c
-    ld c, [hl]
+GrenadeText_Spanish_3:
+    db $04, "      GRANADA 3     "
 
-jr_001_54ae:
-    ld b, c
-    ld d, h
-    ld b, l
-    ld c, [hl]
+GrenadeText_English_4:
+    db $04, "      GRENADE 4     "
 
-jr_001_54b2:
-    jr nz, @+$32
+GrenadeText_French_4:
+    db $04, "      GRENADE 4     "
 
-jr_001_54b4:
-    jr nz, jr_001_54d6
+GrenadeText_German_4:
+    db $00, "     GRANATEN 4     "
 
-jr_001_54b6:
-    jr nz, jr_001_54d8
+GrenadeText_Italian_4:
+    db $04, "      GRANATE 4     "
 
-    jr nz, jr_001_54be
+GrenadeText_Spanish_4:
+    db $04, "      GRANADA 4     "
 
-jr_001_54ba:
-    jr nz, jr_001_54dc
+GrenadeText_English_5:
+    db $04, "      GRENADE 5     "
 
-    jr nz, jr_001_54de
+GrenadeText_French_5:
+    db $04, "      GRENADE 5     "
 
-jr_001_54be:
-    jr nz, jr_001_54e0
+GrenadeText_German_5:
+    db $00, "     GRANATEN 5     "
 
-    ld b, a
+GrenadeText_Italian_5:
+    db $04, "      GRANATE 5     "
+
+GrenadeText_Spanish_5:
+    db $04, "      GRANADA 5     "
+
+GrenadeText_English_6:
+    db $04, "      GRENADE 6     "
 
-jr_001_54c1:
-    ld d, d
-    ld b, c
+GrenadeText_French_6:
+    db $04, "      GRENADE 6     "
 
-jr_001_54c3:
-    ld c, [hl]
-    ld b, c
-    ld d, h
-    ld b, l
+GrenadeText_German_6:
+    db $00, "     GRANATEN 6     "
 
-jr_001_54c7:
-    jr nz, jr_001_54f9
-
-jr_001_54c9:
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    jr nz, jr_001_54d3
-
-jr_001_54cf:
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-jr_001_54d3:
-    jr nz, @+$22
-
-    ld b, a
-
-jr_001_54d6:
-    ld d, d
-    ld b, c
-
-jr_001_54d8:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, c
-
-jr_001_54dc:
-    jr nz, jr_001_550e
-
-jr_001_54de:
-    jr nz, jr_001_5500
-
-jr_001_54e0:
-    jr nz, jr_001_5502
-
-    db $20
-
-    db $04, $20, $20, $20, $20, $20, $20, $47, $52, $45, $4e, $41, $44, $45, $20, $31
-    db $20, $20, $20, $20, $20
-
-    inc b
-
-jr_001_54f9:
-    jr nz, jr_001_551b
-
-    jr nz, jr_001_551d
-
-    jr nz, jr_001_551f
-
-    ld b, a
-
-jr_001_5500:
-    ld d, d
-    ld b, l
-
-jr_001_5502:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, l
-    jr nz, @+$33
-
-    jr nz, jr_001_552a
-
-    jr nz, jr_001_552c
-
-    jr nz, jr_001_550e
-
-jr_001_550e:
-    jr nz, jr_001_5530
-
-    jr nz, jr_001_5532
-
-    jr nz, @+$49
-
-    ld d, d
-    ld b, c
-    ld c, [hl]
-    ld b, c
-    ld d, h
-    ld b, l
-    ld c, [hl]
-
-jr_001_551b:
-    jr nz, @+$33
-
-jr_001_551d:
-    jr nz, jr_001_553f
-
-jr_001_551f:
-    jr nz, jr_001_5541
-
-    jr nz, jr_001_5527
-
-    jr nz, jr_001_5545
-
-    jr nz, jr_001_5547
-
-jr_001_5527:
-    jr nz, jr_001_5549
-
-    ld b, a
-
-jr_001_552a:
-    ld d, d
-    ld b, c
-
-jr_001_552c:
-    ld c, [hl]
-    ld b, c
-    ld d, h
-    ld b, l
-
-jr_001_5530:
-    jr nz, @+$33
-
-jr_001_5532:
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    jr nz, jr_001_553c
-
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-jr_001_553c:
-    jr nz, @+$22
-
-    ld b, a
-
-jr_001_553f:
-    ld d, d
-    ld b, c
-
-jr_001_5541:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, c
-
-jr_001_5545:
-    jr nz, @+$33
-
-jr_001_5547:
-    jr nz, jr_001_5569
-
-jr_001_5549:
-    jr nz, jr_001_556b
-
-    db $20
-
-    db $04, $20, $20, $20, $20, $20, $20, $47, $52, $45, $4e, $41, $44, $45, $20, $32
-    db $20, $20, $20, $20, $20
-
-    inc b
-    jr nz, jr_001_5584
-
-    jr nz, jr_001_5586
-
-    jr nz, jr_001_5588
-
-    ld b, a
-
-jr_001_5569:
-    ld d, d
-    ld b, l
-
-jr_001_556b:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, l
-    jr nz, jr_001_55a3
-
-    jr nz, jr_001_5593
-
-    jr nz, jr_001_5595
-
-    jr nz, jr_001_5577
-
-jr_001_5577:
-    jr nz, jr_001_5599
-
-    jr nz, jr_001_559b
-
-    jr nz, @+$49
-
-    ld d, d
-    ld b, c
-    ld c, [hl]
-    ld b, c
-    ld d, h
-    ld b, l
-    ld c, [hl]
-
-jr_001_5584:
-    jr nz, @+$34
-
-jr_001_5586:
-    jr nz, jr_001_55a8
-
-jr_001_5588:
-    jr nz, jr_001_55aa
-
-    jr nz, jr_001_5590
-
-    jr nz, jr_001_55ae
-
-    jr nz, jr_001_55b0
-
-jr_001_5590:
-    jr nz, jr_001_55b2
-
-    ld b, a
-
-jr_001_5593:
-    ld d, d
-    ld b, c
-
-jr_001_5595:
-    ld c, [hl]
-    ld b, c
-    ld d, h
-    ld b, l
-
-jr_001_5599:
-    jr nz, jr_001_55cd
-
-jr_001_559b:
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    jr nz, jr_001_55a5
-
-    jr nz, @+$22
-
-jr_001_55a3:
-    jr nz, @+$22
-
-jr_001_55a5:
-    jr nz, @+$22
-
-    ld b, a
-
-jr_001_55a8:
-    ld d, d
-    ld b, c
-
-jr_001_55aa:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, c
-
-jr_001_55ae:
-    jr nz, jr_001_55e2
-
-jr_001_55b0:
-    jr nz, jr_001_55d2
-
-jr_001_55b2:
-    jr nz, jr_001_55d4
-
-    db $20
-
-    db $04, $20, $20, $20, $20, $20, $20, $47, $52, $45, $4e, $41, $44, $45, $20, $33
-    db $20, $20, $20, $20, $20
-
-    inc b
-    jr nz, jr_001_55ed
-
-jr_001_55cd:
-    jr nz, jr_001_55ef
-
-    jr nz, jr_001_55f1
-
-    ld b, a
-
-jr_001_55d2:
-    ld d, d
-    ld b, l
-
-jr_001_55d4:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, l
-    jr nz, @+$35
-
-    jr nz, jr_001_55fc
-
-    jr nz, jr_001_55fe
-
-    jr nz, jr_001_55e0
-
-jr_001_55e0:
-    jr nz, jr_001_5602
-
-jr_001_55e2:
-    jr nz, jr_001_5604
-
-    jr nz, @+$49
-
-    ld d, d
-    ld b, c
-    ld c, [hl]
-    ld b, c
-    ld d, h
-    ld b, l
-    ld c, [hl]
-
-jr_001_55ed:
-    jr nz, @+$35
-
-jr_001_55ef:
-    jr nz, jr_001_5611
-
-jr_001_55f1:
-    jr nz, jr_001_5613
-
-    jr nz, jr_001_55f9
-
-    jr nz, jr_001_5617
-
-    jr nz, jr_001_5619
-
-jr_001_55f9:
-    jr nz, jr_001_561b
-
-    ld b, a
-
-jr_001_55fc:
-    ld d, d
-    ld b, c
-
-jr_001_55fe:
-    ld c, [hl]
-    ld b, c
-    ld d, h
-    ld b, l
-
-jr_001_5602:
-    jr nz, @+$35
-
-jr_001_5604:
-    jr nz, jr_001_5626
-
-    jr nz, jr_001_5628
-
-    jr nz, jr_001_560e
-
-    jr nz, jr_001_562c
-
-    jr nz, jr_001_562e
-
-jr_001_560e:
-    jr nz, jr_001_5630
-
-    ld b, a
-
-jr_001_5611:
-    ld d, d
-    ld b, c
-
-jr_001_5613:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, c
-
-jr_001_5617:
-    jr nz, @+$35
-
-jr_001_5619:
-    jr nz, jr_001_563b
-
-jr_001_561b:
-    jr nz, jr_001_563d
-
-    jr nz, jr_001_5623
-
-    jr nz, jr_001_5641
-
-    jr nz, jr_001_5643
-
-jr_001_5623:
-    jr nz, jr_001_5645
-
-    ld b, a
-
-jr_001_5626:
-    ld d, d
-    ld b, l
-
-jr_001_5628:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, l
-
-jr_001_562c:
-    jr nz, jr_001_5662
-
-jr_001_562e:
-    jr nz, jr_001_5650
-
-jr_001_5630:
-    jr nz, jr_001_5652
-
-    jr nz, jr_001_5638
-
-    jr nz, jr_001_5656
-
-    jr nz, jr_001_5658
-
-jr_001_5638:
-    jr nz, jr_001_565a
-
-    ld b, a
-
-jr_001_563b:
-    ld d, d
-    ld b, l
-
-jr_001_563d:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, l
-
-jr_001_5641:
-    jr nz, jr_001_5677
-
-jr_001_5643:
-    jr nz, jr_001_5665
-
-jr_001_5645:
-    jr nz, jr_001_5667
-
-    jr nz, jr_001_5649
-
-jr_001_5649:
-    jr nz, jr_001_566b
-
-    jr nz, jr_001_566d
-
-    jr nz, @+$49
-
-    ld d, d
-
-jr_001_5650:
-    ld b, c
-    ld c, [hl]
-
-jr_001_5652:
-    ld b, c
-    ld d, h
-    ld b, l
-    ld c, [hl]
-
-jr_001_5656:
-    jr nz, jr_001_568c
-
-jr_001_5658:
-    jr nz, jr_001_567a
-
-jr_001_565a:
-    jr nz, jr_001_567c
-
-    jr nz, jr_001_5662
-
-    jr nz, jr_001_5680
-
-    jr nz, jr_001_5682
-
-jr_001_5662:
-    jr nz, jr_001_5684
-
-    ld b, a
-
-jr_001_5665:
-    ld d, d
-    ld b, c
-
-jr_001_5667:
-    ld c, [hl]
-    ld b, c
-    ld d, h
-    ld b, l
-
-jr_001_566b:
-    jr nz, jr_001_56a1
-
-jr_001_566d:
-    jr nz, jr_001_568f
-
-    jr nz, jr_001_5691
-
-    jr nz, jr_001_5677
-
-    jr nz, jr_001_5695
-
-    jr nz, jr_001_5697
-
-jr_001_5677:
-    jr nz, jr_001_5699
-
-    ld b, a
-
-jr_001_567a:
-    ld d, d
-    ld b, c
-
-jr_001_567c:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, c
-
-jr_001_5680:
-    jr nz, jr_001_56b6
-
-jr_001_5682:
-    jr nz, jr_001_56a4
-
-jr_001_5684:
-    jr nz, jr_001_56a6
-
-    jr nz, jr_001_568c
-
-    jr nz, jr_001_56aa
-
-    jr nz, jr_001_56ac
-
-jr_001_568c:
-    jr nz, jr_001_56ae
-
-    ld b, a
-
-jr_001_568f:
-    ld d, d
-    ld b, l
-
-jr_001_5691:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, l
-
-jr_001_5695:
-    jr nz, @+$37
-
-jr_001_5697:
-    jr nz, jr_001_56b9
-
-jr_001_5699:
-    jr nz, jr_001_56bb
-
-    jr nz, jr_001_56a1
-
-    jr nz, jr_001_56bf
-
-    jr nz, jr_001_56c1
-
-jr_001_56a1:
-    jr nz, jr_001_56c3
-
-    ld b, a
-
-jr_001_56a4:
-    ld d, d
-    ld b, l
-
-jr_001_56a6:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, l
-
-jr_001_56aa:
-    jr nz, @+$37
-
-jr_001_56ac:
-    jr nz, jr_001_56ce
-
-jr_001_56ae:
-    jr nz, jr_001_56d0
-
-    jr nz, jr_001_56b2
-
-jr_001_56b2:
-    jr nz, jr_001_56d4
-
-    jr nz, jr_001_56d6
-
-jr_001_56b6:
-    jr nz, @+$49
-
-    ld d, d
-
-jr_001_56b9:
-    ld b, c
-    ld c, [hl]
-
-jr_001_56bb:
-    ld b, c
-    ld d, h
-    ld b, l
-    ld c, [hl]
-
-jr_001_56bf:
-    jr nz, @+$37
-
-jr_001_56c1:
-    jr nz, jr_001_56e3
-
-jr_001_56c3:
-    jr nz, jr_001_56e5
-
-    jr nz, jr_001_56cb
-
-    jr nz, jr_001_56e9
-
-    jr nz, jr_001_56eb
-
-jr_001_56cb:
-    jr nz, jr_001_56ed
-
-    ld b, a
-
-jr_001_56ce:
-    ld d, d
-    ld b, c
-
-jr_001_56d0:
-    ld c, [hl]
-    ld b, c
-    ld d, h
-    ld b, l
-
-jr_001_56d4:
-    jr nz, @+$37
-
-jr_001_56d6:
-    jr nz, jr_001_56f8
-
-    jr nz, jr_001_56fa
-
-    jr nz, jr_001_56e0
-
-    jr nz, jr_001_56fe
-
-    jr nz, jr_001_5700
-
-jr_001_56e0:
-    jr nz, jr_001_5702
-
-    ld b, a
-
-jr_001_56e3:
-    ld d, d
-    ld b, c
-
-jr_001_56e5:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, c
-
-jr_001_56e9:
-    jr nz, @+$37
-
-jr_001_56eb:
-    jr nz, jr_001_570d
-
-jr_001_56ed:
-    jr nz, jr_001_570f
-
-    jr nz, jr_001_56f5
-
-    jr nz, jr_001_5713
-
-    jr nz, jr_001_5715
-
-jr_001_56f5:
-    jr nz, jr_001_5717
-
-    ld b, a
-
-jr_001_56f8:
-    ld d, d
-    ld b, l
-
-jr_001_56fa:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, l
-
-jr_001_56fe:
-    jr nz, jr_001_5736
-
-jr_001_5700:
-    jr nz, jr_001_5722
-
-jr_001_5702:
-    jr nz, jr_001_5724
-
-    jr nz, jr_001_570a
-
-    jr nz, jr_001_5728
-
-    jr nz, jr_001_572a
-
-jr_001_570a:
-    jr nz, jr_001_572c
-
-    ld b, a
-
-jr_001_570d:
-    ld d, d
-    ld b, l
-
-jr_001_570f:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, l
-
-jr_001_5713:
-    jr nz, jr_001_574b
-
-jr_001_5715:
-    jr nz, jr_001_5737
-
-jr_001_5717:
-    jr nz, jr_001_5739
-
-    jr nz, jr_001_571b
-
-jr_001_571b:
-    jr nz, jr_001_573d
-
-    jr nz, jr_001_573f
-
-    jr nz, @+$49
-
-    ld d, d
-
-jr_001_5722:
-    ld b, c
-    ld c, [hl]
-
-jr_001_5724:
-    ld b, c
-    ld d, h
-    ld b, l
-    ld c, [hl]
-
-jr_001_5728:
-    jr nz, jr_001_5760
-
-jr_001_572a:
-    jr nz, jr_001_574c
-
-jr_001_572c:
-    jr nz, jr_001_574e
-
-    jr nz, jr_001_5734
-
-    jr nz, jr_001_5752
-
-    jr nz, jr_001_5754
-
-jr_001_5734:
-    jr nz, jr_001_5756
-
-jr_001_5736:
-    ld b, a
-
-jr_001_5737:
-    ld d, d
-    ld b, c
-
-jr_001_5739:
-    ld c, [hl]
-    ld b, c
-    ld d, h
-    ld b, l
-
-jr_001_573d:
-    jr nz, jr_001_5775
-
-jr_001_573f:
-    jr nz, jr_001_5761
-
-    jr nz, jr_001_5763
-
-    jr nz, jr_001_5749
-
-    jr nz, jr_001_5767
-
-    jr nz, jr_001_5769
-
-jr_001_5749:
-    jr nz, jr_001_576b
-
-jr_001_574b:
-    ld b, a
-
-jr_001_574c:
-    ld d, d
-    ld b, c
-
-jr_001_574e:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, c
-
-jr_001_5752:
-    jr nz, jr_001_578a
-
-jr_001_5754:
-    jr nz, jr_001_5776
-
-jr_001_5756:
-    jr nz, jr_001_5778
-
-    jr nz, jr_001_575e
-
-    jr nz, jr_001_577c
-
-    jr nz, jr_001_577e
-
-jr_001_575e:
-    jr nz, jr_001_5780
-
-jr_001_5760:
-    ld b, a
-
-jr_001_5761:
-    ld d, d
-    ld b, l
-
-jr_001_5763:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, l
-
-jr_001_5767:
-    jr nz, jr_001_57a0
-
-jr_001_5769:
-    jr nz, jr_001_578b
-
-jr_001_576b:
-    jr nz, jr_001_578d
-
-    jr nz, jr_001_5773
-
-    jr nz, jr_001_5791
-
-    jr nz, jr_001_5793
-
-jr_001_5773:
-    jr nz, jr_001_5795
-
-jr_001_5775:
-    ld b, a
-
-jr_001_5776:
-    ld d, d
-    ld b, l
-
-jr_001_5778:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, l
-
-jr_001_577c:
-    jr nz, jr_001_57b5
-
-jr_001_577e:
-    jr nz, jr_001_57a0
-
-jr_001_5780:
-    jr nz, jr_001_57a2
-
-    jr nz, jr_001_5784
-
-jr_001_5784:
-    jr nz, jr_001_57a6
-
-    jr nz, jr_001_57a8
-
-    jr nz, jr_001_57d1
-
-jr_001_578a:
-    ld d, d
-
-jr_001_578b:
-    ld b, c
-    ld c, [hl]
-
-jr_001_578d:
-    ld b, c
-    ld d, h
-    ld b, l
-    ld c, [hl]
-
-jr_001_5791:
-    jr nz, jr_001_57ca
-
-jr_001_5793:
-    jr nz, jr_001_57b5
-
-jr_001_5795:
-    jr nz, jr_001_57b7
-
-    jr nz, jr_001_579d
-
-    jr nz, jr_001_57bb
-
-    jr nz, jr_001_57bd
-
-jr_001_579d:
-    jr nz, jr_001_57bf
-
-    ld b, a
-
-jr_001_57a0:
-    ld d, d
-    ld b, c
-
-jr_001_57a2:
-    ld c, [hl]
-    ld b, c
-    ld d, h
-    ld b, l
-
-jr_001_57a6:
-    jr nz, jr_001_57df
-
-jr_001_57a8:
-    jr nz, jr_001_57ca
-
-    jr nz, jr_001_57cc
-
-    jr nz, jr_001_57b2
-
-    jr nz, jr_001_57d0
-
-    jr nz, jr_001_57d2
-
-jr_001_57b2:
-    jr nz, jr_001_57d4
-
-    ld b, a
-
-jr_001_57b5:
-    ld d, d
-    ld b, c
-
-jr_001_57b7:
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, c
-
-jr_001_57bb:
-    jr nz, jr_001_57f4
-
-jr_001_57bd:
-    jr nz, jr_001_57df
-
-jr_001_57bf:
-    jr nz, jr_001_57e1
-
-    db $20
-
-    db $7a, $54, $e3, $54, $4c, $55, $b5, $55
-
-jr_001_57ca:
-    ld e, $56
-
-jr_001_57cc:
-    add a
-    ld d, [hl]
-    ldh a, [rRP]
-
-jr_001_57d0:
-    ld e, c
-
-jr_001_57d1:
-    ld d, a
-
-jr_001_57d2:
-    adc a
-    ld d, h
-
-jr_001_57d4:
-    ld hl, sp+$54
-    ld h, c
-    ld d, l
-    jp z, $3355
-
-    ld d, [hl]
-    sbc h
-    ld d, [hl]
-    dec b
-
-jr_001_57df:
-    ld d, a
-    ld l, [hl]
-
-jr_001_57e1:
-    ld d, a
-    and h
-    ld d, h
-    dec c
-    ld d, l
-    db $76
-    ld d, l
-    rst $18
-    ld d, l
-    ld c, b
-    ld d, [hl]
-    or c
-    ld d, [hl]
-    ld a, [de]
-    ld d, a
-    add e
-    ld d, a
-    adc $54
-
-jr_001_57f4:
-    scf
-    ld d, l
-    and b
-    ld d, l
-    add hl, bc
-    ld d, [hl]
-    ld [hl], d
-    ld d, [hl]
-    db $db
-    ld d, [hl]
-    ld b, h
-    ld d, a
-    xor l
-    ld d, a
-    cp c
-    ld d, h
-    ld [hl+], a
-    ld d, l
-    adc e
-    ld d, l
-    db $f4
-    ld d, l
-    ld e, l
-    ld d, [hl]
-    add $56
-    cpl
-    ld d, a
-    sbc b
-    ld d, a
-    ld hl, $4d00
-    ld c, [hl]
-
-    db $28
-
-    nop
-
-    db $25, $4e
-
-    jr nc, jr_001_581c
-
-jr_001_581c:
-    push af
-    ld c, l
-
-    db $38
-
-    nop
-
-    db $bd, $4d, $40
-
-    nop
-
-    db $7d, $4d, $48
-
-    nop
-
-    db $35, $4d
-
-    ld d, b
-    nop
-    push hl
-    ld c, h
-
-    db $58
-
-    nop
-
-    db $8d, $4c, $60
-
-    nop
-
-    db $2d, $4c
-
-    ld l, b
-    nop
-    push bc
-    ld c, e
-
-    db $70
-
-    nop
-
-    db $55, $4b
-
-    db $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8
-    db $f8, $f8, $fd, $fe, $fe, $ff, $00, $12, $00, $00, $00, $01, $00, $08, $00, $01
+GrenadeText_Italian_6:
+    db $04, "      GRANATE 6     "
+
+GrenadeText_Spanish_6:
+    db $04, "      GRANADA 6     "
+
+GrenadeText_English_7:
+    db $04, "      GRENADE 7     "
+
+GrenadeText_French_7:
+    db $04, "      GRENADE 7     "
+
+GrenadeText_German_7:
+    db $00, "     GRANATEN 7     "
+
+GrenadeText_Italian_7:
+    db $04, "      GRANATE 7     "
+
+GrenadeText_Spanish_7:
+    db $04, "      GRANADA 7     "
+
+GrenadeTexts_English:
+    dw GrenadeText_English_0
+    dw GrenadeText_English_1
+    dw GrenadeText_English_2
+    dw GrenadeText_English_3
+    dw GrenadeText_English_4
+    dw GrenadeText_English_5
+    dw GrenadeText_English_6
+    dw GrenadeText_English_7
+
+GrenadeTexts_French:
+    dw GrenadeText_French_0
+    dw GrenadeText_French_1
+    dw GrenadeText_French_2
+    dw GrenadeText_French_3
+    dw GrenadeText_French_4
+    dw GrenadeText_French_5
+    dw GrenadeText_French_6
+    dw GrenadeText_French_7
+
+GrenadeTexts_German:
+    dw GrenadeText_German_0
+    dw GrenadeText_German_1
+    dw GrenadeText_German_2
+    dw GrenadeText_German_3
+    dw GrenadeText_German_4
+    dw GrenadeText_German_5
+    dw GrenadeText_German_6
+    dw GrenadeText_German_7
+
+GrenadeTexts_Spanish:
+    dw GrenadeText_Spanish_0
+    dw GrenadeText_Spanish_1
+    dw GrenadeText_Spanish_2
+    dw GrenadeText_Spanish_3
+    dw GrenadeText_Spanish_4
+    dw GrenadeText_Spanish_5
+    dw GrenadeText_Spanish_6
+    dw GrenadeText_Spanish_7
+
+GrenadeTexts_Italian:
+    dw GrenadeText_Italian_0
+    dw GrenadeText_Italian_1
+    dw GrenadeText_Italian_2
+    dw GrenadeText_Italian_3
+    dw GrenadeText_Italian_4
+    dw GrenadeText_Italian_5
+    dw GrenadeText_Italian_6
+    dw GrenadeText_Italian_7
+
+GrenadeThrowTable:
+    dw $0021, ThrowPath_4e4d
+    dw $0028, ThrowPath_4e25
+    dw $0030, ThrowPath_4df5
+    dw $0038, ThrowPath_4dbd
+    dw $0040, ThrowPath_4d7d
+    dw $0048, ThrowPath_4d35
+    dw $0050, ThrowPath_4ce5
+    dw $0058, ThrowPath_4c8d
+    dw $0060, ThrowPath_4c2d
+    dw $0068, ThrowPath_4bc5
+    dw $0070, ThrowPath_4b55
+
+; X step per frame for each sliding letter, ending with 0. All six paths share one list:
+; each later letter starts 3 bytes further in, so it travels a shorter distance.
+TitleLetterPath_1:
+    db $f8, $f8, $f8
+
+TitleLetterPath_2:
+    db $f8, $f8, $f8
+
+TitleLetterPath_3:
+    db $f8, $f8, $f8
+
+TitleLetterPath_4:
+    db $f8, $f8, $f8
+
+TitleLetterPath_5:
+    db $f8, $f8, $f8
+
+TitleLetterPath_6:
+    db $f8
+    db $f8, $f8, $fd, $fe, $fe, $ff, $00
+
+; Sprite lists of the six sliding letters.
+TitleLetterSprites_1:
+    db $12, $00, $00, $00, $01, $00, $08, $00, $01
     db $00, $10, $00, $01, $08, $00, $00, $01, $08, $08, $00, $01, $08, $10, $00, $01
     db $10, $00, $00, $01, $10, $08, $00, $01, $10, $10, $00, $01, $18, $00, $20, $01
     db $18, $08, $21, $01, $18, $10, $22, $01, $20, $00, $32, $01, $20, $08, $33, $01
     db $20, $10, $34, $01, $28, $00, $42, $01, $28, $08, $43, $01, $28, $10, $44, $01
+
+TitleLetterSprites_2:
     db $24, $00, $00, $01, $00, $00, $08, $02, $00, $00, $10, $03, $00, $08, $00, $0b
     db $00, $08, $08, $0c, $00, $08, $10, $0d, $00, $10, $00, $14, $00, $10, $08, $15
     db $00, $10, $10, $16, $00, $18, $00, $23, $01, $18, $08, $24, $01, $18, $10, $25
@@ -3753,7 +1550,10 @@ jr_001_581c:
     db $0a, $10, $00, $08, $0a, $10, $08, $09, $0a, $10, $10, $0a, $0a, $18, $00, $00
     db $00, $18, $08, $00, $00, $18, $10, $00, $00, $20, $00, $00, $00, $20, $08, $00
     db $00, $20, $10, $00, $00, $28, $00, $00, $00, $28, $08, $00, $00, $28, $10, $00
-    db $00, $24, $00, $00, $04, $00, $00, $08, $05, $00, $00, $10, $06, $00, $08, $00
+    db $00
+
+TitleLetterSprites_3:
+    db $24, $00, $00, $04, $00, $00, $08, $05, $00, $00, $10, $06, $00, $08, $00
     db $0e, $00, $08, $08, $0f, $00, $08, $10, $10, $00, $10, $00, $17, $00, $10, $08
     db $18, $00, $10, $10, $19, $00, $18, $00, $26, $01, $18, $08, $27, $01, $18, $10
     db $28, $01, $20, $00, $00, $01, $20, $08, $38, $01, $20, $10, $00, $01, $28, $00
@@ -3762,7 +1562,10 @@ jr_001_581c:
     db $06, $0a, $10, $00, $08, $0a, $10, $08, $09, $0a, $10, $10, $0b, $0a, $18, $00
     db $00, $00, $18, $08, $00, $00, $18, $10, $00, $00, $20, $00, $00, $00, $20, $08
     db $00, $00, $20, $10, $00, $00, $28, $00, $00, $00, $28, $08, $00, $00, $28, $10
-    db $00, $00, $24, $00, $00, $07, $00, $00, $08, $08, $00, $00, $10, $09, $00, $08
+    db $00, $00
+
+TitleLetterSprites_4:
+    db $24, $00, $00, $07, $00, $00, $08, $08, $00, $00, $10, $09, $00, $08
     db $00, $11, $00, $08, $08, $0f, $00, $08, $10, $12, $00, $10, $00, $1a, $00, $10
     db $08, $1b, $00, $10, $10, $1c, $00, $18, $00, $29, $01, $18, $08, $2a, $01, $18
     db $10, $2b, $01, $20, $00, $39, $01, $20, $08, $3a, $01, $20, $10, $3b, $01, $28
@@ -3771,7 +1574,10 @@ jr_001_581c:
     db $10, $06, $0a, $10, $00, $08, $0a, $10, $08, $09, $0a, $10, $10, $0b, $0a, $18
     db $00, $00, $00, $18, $08, $00, $00, $18, $10, $00, $00, $20, $00, $00, $00, $20
     db $08, $00, $00, $20, $10, $00, $00, $28, $00, $00, $00, $28, $08, $00, $00, $28
-    db $10, $00, $00, $24, $00, $00, $0a, $00, $00, $08, $00, $00, $00, $10, $00, $00
+    db $10, $00, $00
+
+TitleLetterSprites_5:
+    db $24, $00, $00, $0a, $00, $00, $08, $00, $00, $00, $10, $00, $00
     db $08, $00, $13, $00, $08, $08, $00, $00, $08, $10, $00, $00, $10, $00, $1d, $00
     db $10, $08, $1e, $00, $10, $10, $1f, $00, $18, $00, $2c, $01, $18, $08, $2d, $01
     db $18, $10, $2e, $01, $20, $00, $3c, $01, $20, $08, $3d, $01, $20, $10, $3e, $01
@@ -3780,38 +1586,106 @@ jr_001_581c:
     db $08, $10, $00, $0a, $10, $00, $08, $0a, $10, $08, $09, $0a, $10, $10, $0c, $0a
     db $18, $00, $00, $00, $18, $08, $00, $00, $18, $10, $00, $00, $20, $00, $00, $00
     db $20, $08, $00, $00, $20, $10, $00, $00, $28, $00, $00, $00, $28, $08, $00, $00
-    db $28, $10, $00, $00, $12, $00, $00, $00, $01, $00, $08, $00, $01, $00, $10, $00
+    db $28, $10, $00, $00
+
+TitleLetterSprites_6:
+    db $12, $00, $00, $00, $01, $00, $08, $00, $01, $00, $10, $00
     db $01, $08, $00, $00, $01, $08, $08, $00, $01, $08, $10, $00, $01, $10, $00, $00
     db $01, $10, $08, $00, $01, $10, $10, $00, $01, $18, $00, $2f, $01, $18, $08, $30
     db $01, $18, $10, $31, $01, $20, $00, $3f, $01, $20, $08, $40, $01, $20, $10, $41
-    db $01, $28, $00, $51, $01, $28, $08, $52, $01, $28, $10, $53, $01, $01, $98, $03
-    db $c1, $5b, $04, $98, $03, $af, $5b, $07, $98, $03, $9d, $5b, $0a, $98, $03, $8b
-    db $5b, $0d, $98, $03, $79, $5b, $10, $98, $03, $67, $5b, $01, $98, $03, $d3, $5b
-    db $04, $98, $03, $e5, $5b, $07, $98, $03, $e5, $5b, $0a, $98, $03, $e5, $5b, $0d
-    db $98, $03, $f7, $5b, $10, $98, $03, $d3, $5b, $0f, $10, $11, $20, $21, $11, $31
-    db $32, $33, $0f, $10, $11, $20, $21, $22, $32, $33, $34, $0c, $0d, $0e, $1d, $1e
-    db $1f, $2e, $2f, $30, $0c, $0d, $0e, $1d, $1e, $1f, $2f, $30, $31, $09, $0a, $0b
-    db $1b, $19, $1c, $2b, $2c, $2d, $09, $0a, $0b, $1a, $1b, $1c, $2c, $2d, $2e, $06
-    db $07, $08, $18, $19, $1a, $28, $29, $2a, $06, $07, $08, $18, $19, $18, $29, $2a
-    db $2b, $03, $04, $05, $15, $16, $17, $25, $26, $27, $03, $04, $05, $15, $16, $17
-    db $26, $27, $28, $00, $01, $02, $12, $13, $14, $22, $23, $24, $00, $01, $02, $12
-    db $13, $14, $23, $24, $25, $08, $08, $08, $08, $08, $08, $08, $08, $08, $04, $04
-    db $04, $04, $04, $04, $04, $04, $04, $0a, $0a, $0a, $0a, $0a, $0a, $0a, $0a, $0a
-    db $04, $04, $04, $04, $04, $04, $04, $04, $04, $0a, $08, $08, $0a, $08, $08, $0a
-    db $0a, $0a, $04, $04, $04, $04, $04, $04, $04, $04, $04
+    db $01, $28, $00, $51, $01, $28, $08, $52
 
-Call_001_5c09:
-    ld a, [$df37]
+TitleLetterTileTable:
+    db $01, $28, $10, $53, $01
+    dw $9801
+    db $03
+    dw TitleLetterTiles_5bc1
+    dw $9804
+    db $03
+    dw TitleLetterTiles_5baf
+    dw $9807
+    db $03
+    dw TitleLetterTiles_5b9d
+    dw $980a
+    db $03
+    dw TitleLetterTiles_5b8b
+    dw $980d
+    db $03
+    dw TitleLetterTiles_5b79
+
+TitleLetterAttrTable:
+    dw $9810
+    db $03
+    dw TitleLetterTiles_5b67
+    dw $9801
+    db $03
+    dw TitleLetterTiles_5bd3
+    dw $9804
+    db $03
+    dw TitleLetterTiles_5be5
+    dw $9807
+    db $03
+    dw TitleLetterTiles_5be5
+    dw $980a
+    db $03
+    dw TitleLetterTiles_5be5
+    dw $980d
+    db $03
+    dw TitleLetterTiles_5bf7
+    dw $9810
+    db $03
+    dw TitleLetterTiles_5bd3
+TitleLetterTiles_5b67:
+    db $0f, $10, $11, $20, $21, $11, $31, $32, $33
+TitleLetterTiles_5b70:
+    db $0f, $10, $11, $20, $21, $22, $32, $33, $34
+TitleLetterTiles_5b79:
+    db $0c, $0d, $0e, $1d, $1e, $1f, $2e, $2f, $30
+TitleLetterTiles_5b82:
+    db $0c, $0d, $0e, $1d, $1e, $1f, $2f, $30, $31
+TitleLetterTiles_5b8b:
+    db $09, $0a, $0b, $1b, $19, $1c, $2b, $2c, $2d
+TitleLetterTiles_5b94:
+    db $09, $0a, $0b, $1a, $1b, $1c, $2c, $2d, $2e
+TitleLetterTiles_5b9d:
+    db $06, $07, $08, $18, $19, $1a, $28, $29, $2a
+TitleLetterTiles_5ba6:
+    db $06, $07, $08, $18, $19, $18, $29, $2a, $2b
+TitleLetterTiles_5baf:
+    db $03, $04, $05, $15, $16, $17, $25, $26, $27
+TitleLetterTiles_5bb8:
+    db $03, $04, $05, $15, $16, $17, $26, $27, $28
+TitleLetterTiles_5bc1:
+    db $00, $01, $02, $12, $13, $14, $22, $23, $24
+TitleLetterTiles_5bca:
+    db $00, $01, $02, $12, $13, $14, $23, $24, $25
+TitleLetterTiles_5bd3:
+    db $08, $08, $08, $08, $08, $08, $08, $08, $08
+TitleLetterTiles_5bdc:
+    db $04, $04, $04, $04, $04, $04, $04, $04, $04
+TitleLetterTiles_5be5:
+    db $0a, $0a, $0a, $0a, $0a, $0a, $0a, $0a, $0a
+TitleLetterTiles_5bee:
+    db $04, $04, $04, $04, $04, $04, $04, $04, $04
+TitleLetterTiles_5bf7:
+    db $0a, $08, $08, $0a, $08, $08, $0a, $0a, $0a
+TitleLetterTiles_5c00:
+    db $04, $04, $04, $04, $04, $04, $04, $04, $04
+
+; Writes the bonus as five digit characters to the buffer whose address is stored at wLangTable + $36.
+; HL = the bonus value. Used on the level password screen to show the bonus.
+LevelPassword_DrawBonus:
+    ld a, [wLangTable + $36]
     ld c, a
-    ld a, [$df38]
+    ld a, [wLangTable + $37]
     ld b, a
     xor a
 
-jr_001_5c12:
+.tenThousandsLoop:
     ld de, $d8f0
     add hl, de
     bit 7, h
-    jr z, jr_001_5c63
+    jr z, .incTenThousands
 
     ld de, $2710
     add hl, de
@@ -3820,11 +1694,11 @@ jr_001_5c12:
     inc bc
     xor a
 
-jr_001_5c23:
+.thousandsLoop:
     ld de, $fc18
     add hl, de
     bit 7, h
-    jr z, jr_001_5c60
+    jr z, .incThousands
 
     ld de, $03e8
     add hl, de
@@ -3833,11 +1707,11 @@ jr_001_5c23:
     inc bc
     xor a
 
-jr_001_5c34:
+.hundredsLoop:
     ld de, $ff9c
     add hl, de
     bit 7, h
-    jr z, jr_001_5c5d
+    jr z, .incHundreds
 
     ld de, $0064
     add hl, de
@@ -3846,11 +1720,11 @@ jr_001_5c34:
     inc bc
     xor a
 
-jr_001_5c45:
+.tensLoop:
     ld de, $fff6
     add hl, de
     bit 7, h
-    jr z, jr_001_5c5a
+    jr z, .incTens
 
     ld de, $000a
     add hl, de
@@ -3862,95 +1736,101 @@ jr_001_5c45:
     ld [bc], a
     ret
 
-
-jr_001_5c5a:
+.incTens:
     inc a
-    jr jr_001_5c45
+    jr .tensLoop
 
-jr_001_5c5d:
+.incHundreds:
     inc a
-    jr jr_001_5c34
+    jr .hundredsLoop
 
-jr_001_5c60:
+.incThousands:
     inc a
-    jr jr_001_5c23
+    jr .thousandsLoop
 
-jr_001_5c63:
+.incTenThousands:
     inc a
-    jr jr_001_5c12
+    jr .tenThousandsLoop
 
+; Called once per frame on the level password screen. Resets wLevelsSincePassword.
+; Updates fireworks and twinkles, then counts wBonusCountdown down by 50 per frame once wBonusDelay is 0.
+; Holding A, B, Select or Start starts the next game state.
+LevelPassword_Update:
     xor a
-    ld [$dcfe], a
-    call Call_001_5d63
-    call Call_001_5f18
-    ld a, [$dd4b]
+    ld [wLevelsSincePassword], a
+    call UpdateFireworks
+    call UpdateTwinkles
+    ld a, [wBonusDelay]
     or a
-    jr z, jr_001_5c7c
+    jr z, .bonusDelayOver
 
     dec a
-    ld [$dd4b], a
-    jr jr_001_5c9f
+    ld [wBonusDelay], a
+    jr .checkJoypad
 
-jr_001_5c7c:
-    ld a, [$dd49]
+.bonusDelayOver:
+    ld a, [wBonusCountdown]
     ld l, a
-    ld a, [$dd4a]
+    ld a, [wBonusCountdown + 1]
     ld h, a
     or l
-    jr z, jr_001_5c9f
+    jr z, .checkJoypad
 
-    ld a, [$dd4c]
+    ld a, [wBonusCountdownPaused]
     xor $01
-    jr z, jr_001_5c92
+    jr z, .drawBonus
 
     ld de, $ffce
     add hl, de
 
-jr_001_5c92:
+.drawBonus:
     push hl
-    call Call_001_5c09
+    call LevelPassword_DrawBonus
     pop hl
     ld a, l
-    ld [$dd49], a
+    ld [wBonusCountdown], a
     ld a, h
-    ld [$dd4a], a
+    ld [wBonusCountdown + 1], a
 
-jr_001_5c9f:
-    ld a, [$ff9f]
+.checkJoypad:
+    ld a, [hGameState]
     cp $02
-    jr z, jr_001_5cbd
+    jr z, .done
 
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     and $f0
     or a
-    jr z, jr_001_5cbd
+    jr z, .done
 
     ld a, $02
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $28
-    ld [$ffa0], a
-    ld a, $1a
-    call Call_000_3e64
+    ld [hStateTimer], a
+    ld a, SFX_MENU_SELECT
+    call PlaySound
 
-jr_001_5cbd:
+.done:
     ret
 
-
-    ld a, [$dd00]
+; Runs in VBlank once the level password screen is set up (wLevelPasswordReady).
+; Sets rIE, draws text from wLevelPasswordText and writes pending twinkle tiles from wTwinkleWrites.
+; Sways the logo through wScrollSplits and sets rSCX and rLYC.
+LevelPassword_VBlank:
+    ld a, [wLevelPasswordReady]
     or a
     ret z
 
     ld a, $03
     ldh [rIE], a
-    ld hl, $dd32
-    call Call_000_0e54
-    ld a, [$defa]
+    ld hl, wLevelPasswordText + 39
+    call DrawString
+    ld a, [wTwinkleWriteCount]
     or a
-    jr z, jr_001_5cf5
+    jr z, .swayLogo
 
-    ld de, $deb8
+    ld de, wTwinkleWrites
 
-jr_001_5cd6:
+.twinkleWriteLoop:
     push af
     ld a, [de]
     inc de
@@ -3974,48 +1854,49 @@ jr_001_5cd6:
     ld [hl-], a
     pop af
     dec a
-    jr nz, jr_001_5cd6
+    jr nz, .twinkleWriteLoop
 
     xor a
-    ld [$defa], a
+    ld [wTwinkleWriteCount], a
 
-jr_001_5cf5:
-    ld a, [$dd09]
+.swayLogo:
+    ld a, [wLogoSwayPtr]
     ld l, a
-    ld a, [$dd0a]
+    ld a, [wLogoSwayPtr + 1]
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_5d05
+    jr nz, .applySwayStep
 
-    ld hl, $6784
+    ld hl, LogoSwaySteps
     ld a, [hl+]
 
-jr_001_5d05:
+.applySwayStep:
     ld b, a
-    ld a, [$dd03]
+    ld a, [wScrollSplits]
     add b
-    ld [$dd03], a
-    ld a, [$dd07]
+    ld [wScrollSplits], a
+    ld a, [wScrollSplits + 4]
     sub b
-    ld [$dd07], a
+    ld [wScrollSplits + 4], a
     ld a, l
-    ld [$dd09], a
+    ld [wLogoSwayPtr], a
     ld a, h
-    ld [$dd0a], a
-    ld hl, $dd03
+    ld [wLogoSwayPtr + 1], a
+    ld hl, wScrollSplits
     ld a, [hl+]
     ldh [rSCX], a
     ld a, [hl+]
     ldh [rLYC], a
     ld a, l
-    ld [$dd01], a
+    ld [wScrollSplitPtr], a
     ld a, h
-    ld [$dd02], a
+    ld [wScrollSplitPtr + 1], a
     ret
 
-
-Call_001_5d2e:
+; Start the next firework. HL = a firework record; its first two bytes point into the launch script.
+; A script entry of $ff is followed by the address to continue from.
+Firework_Launch:
     push hl
     ld a, [hl+]
     ld e, a
@@ -4024,7 +1905,7 @@ Call_001_5d2e:
     ld a, [de]
     inc de
     cp $ff
-    jr nz, jr_001_5d41
+    jr nz, .gotScriptByte
 
     ld a, [de]
     inc de
@@ -4035,7 +1916,7 @@ Call_001_5d2e:
     ld a, [de]
     inc de
 
-jr_001_5d41:
+.gotScriptByte:
     ld b, a
     xor a
     ld [hl+], a
@@ -4071,70 +1952,70 @@ jr_001_5d41:
     ld [hl+], a
     ret
 
-
-Call_001_5d63:
-    ld a, [$de80]
+; Update the three fireworks on the level password screen and write their sprites.
+UpdateFireworks:
+    ld a, [wFireworkTick]
     inc a
     and $03
-    ld [$de80], a
-    ld hl, $c200
-    ld a, [$de7d]
+    ld [wFireworkTick], a
+    ld hl, wOamBuffer
+    ld a, [wFireworkSpriteCount]
     inc a
-    call Call_001_6e9a
+    call ClearOamEntries
     xor a
-    ld [$de7d], a
-    ld hl, $c200
+    ld [wFireworkSpriteCount], a
+    ld hl, wOamBuffer
     ld a, l
-    ld [$de7e], a
+    ld [wFireworkOamPtr], a
     ld a, h
-    ld [$de7f], a
+    ld [wFireworkOamPtr + 1], a
     ld a, $03
-    ld hl, $dd60
+    ld hl, wFireworks
 
-jr_001_5d8a:
+.nextFirework:
     push af
     push hl
-    ld de, $dd51
+    ld de, wFireworkWork
     ld c, $0f
 
-jr_001_5d91:
+.copyToWorkLoop:
     ld a, [hl+]
     ld [de], a
     inc de
     dec c
-    jr nz, jr_001_5d91
+    jr nz, .copyToWorkLoop
 
-    call Call_001_5dab
+    call UpdateFirework
     pop hl
-    ld de, $dd51
+    ld de, wFireworkWork
     ld c, $0f
 
-jr_001_5da0:
+.copyBackLoop:
     ld a, [de]
     inc de
     ld [hl+], a
     dec c
-    jr nz, jr_001_5da0
+    jr nz, .copyBackLoop
 
     pop af
     dec a
-    jr nz, jr_001_5d8a
+    jr nz, .nextFirework
 
     ret
 
-
-Call_001_5dab:
-    ld a, [$dd5d]
+; Update the firework in wFireworkWork. After the burst, move its 10 sparks along their curves.
+UpdateFirework:
+    ld a, [wFireworkWork + 12]
     or a
-    jp z, Jump_001_5e35
+    jp z, Firework_Fly
 
-    ld a, [$dd5e]
+    ld a, [wFireworkWork + 13]
     ld e, a
-    ld a, [$dd5f]
+    ld a, [wFireworkWork + 14]
     ld d, a
     ld a, $0a
 
-jr_001_5dbc:
+.nextSpark:
     push af
     push de
     ld a, [de]
@@ -4166,11 +2047,11 @@ jr_001_5dbc:
     ld h, a
     ld a, [hl+]
     cp $80
-    jr z, jr_001_5e2b
+    jr z, .curveEnded
 
     pop de
     cp $7f
-    jr z, jr_001_5e1f
+    jr z, .skipSpark
 
     ld b, a
     ld a, l
@@ -4184,9 +2065,9 @@ jr_001_5dbc:
     ld [de], a
     inc de
     push af
-    ld a, [$de7e]
+    ld a, [wFireworkOamPtr]
     ld l, a
-    ld a, [$de7f]
+    ld a, [wFireworkOamPtr + 1]
     ld h, a
     pop af
     ld [hl+], a
@@ -4196,87 +2077,86 @@ jr_001_5dbc:
     ld [hl+], a
     ld a, [de]
     ld b, a
-    ld a, [$de80]
+    ld a, [wFireworkTick]
     or a
-    jr nz, jr_001_5e0a
+    jr nz, .storeSparkFrame
 
     ld a, b
     inc a
     and $07
     ld b, a
 
-jr_001_5e0a:
+.storeSparkFrame:
     ld a, b
     ld [de], a
     inc de
     ld [hl+], a
-    ld a, [$de7d]
+    ld a, [wFireworkSpriteCount]
     inc a
-    ld [$de7d], a
+    ld [wFireworkSpriteCount], a
     ld a, l
-    ld [$de7e], a
+    ld [wFireworkOamPtr], a
     ld a, h
-    ld [$de7f], a
-    jr jr_001_5e26
+    ld [wFireworkOamPtr + 1], a
+    jr .sparkDone
 
-jr_001_5e1f:
+.skipSpark:
     pop af
     ld hl, $0004
     add hl, de
     ld d, h
     ld e, l
 
-jr_001_5e26:
+.sparkDone:
     pop af
     dec a
-    jr nz, jr_001_5dbc
+    jr nz, .nextSpark
 
     ret
 
-
-jr_001_5e2b:
+.curveEnded:
     pop de
     pop hl
     pop af
-    ld hl, $dd51
-    call Call_001_5d2e
+    ld hl, wFireworkWork
+    call Firework_Launch
     ret
 
-
-Jump_001_5e35:
-    ld a, [$dd57]
+; Move the rocket until its fuse runs out, then burst it into 10 sparks.
+Firework_Fly:
+    ld a, [wFireworkWork + 6]
     ld e, a
-    ld a, [$dd58]
+    ld a, [wFireworkWork + 7]
     ld d, a
-    ld a, [$dd5a]
+    ld a, [wFireworkWork + 9]
     ld l, a
-    ld a, [$dd5b]
+    ld a, [wFireworkWork + 10]
     ld h, a
     add hl, de
     ld a, h
     or a
-    jr nz, jr_001_5e99
+    jr nz, .stillFlying
 
-    ld hl, $660a
-    ld a, [$dd5e]
+    ld hl, LevelPasswordCurves
+    ld a, [wFireworkWork + 13]
     ld e, a
-    ld a, [$dd5f]
+    ld a, [wFireworkWork + 14]
     ld d, a
     ld c, $0a
     ld a, c
-    ld [$dd5d], a
-    ld a, [$ff9f]
+    ld [wFireworkWork + 12], a
+    ld a, [hGameState]
     cp $02
-    jr z, jr_001_5e67
+    jr z, .initSparkLoop
 
-    ld a, $1c
-    call Call_000_3e64
+    ld a, SFX_FIREWORK_BURST
+    call PlaySound
 
-jr_001_5e67:
+.initSparkLoop:
     xor a
     ld [de], a
     inc de
-    ld a, [$dd54]
+    ld a, [wFireworkWork + 3]
     ld [de], a
     inc de
     ld a, [hl+]
@@ -4291,41 +2171,40 @@ jr_001_5e67:
     ld a, [hl+]
     ld [de], a
     inc de
-    ld a, [$dd56]
+    ld a, [wFireworkWork + 5]
     ld [de], a
     inc de
     cp $90
-    jr nc, jr_001_5e90
+    jr nc, .storeSparkFrame
 
-    ld a, [$ff9f]
+    ld a, [hGameState]
     cp $02
-    jr z, jr_001_5e90
+    jr z, .storeSparkFrame
 
-    ld a, $1b
-    call Call_000_3e64
+    ld a, SFX_FIREWORK_SPARK
+    call PlaySound
 
-jr_001_5e90:
+.storeSparkFrame:
     ld a, c
     and $07
     ld [de], a
     inc de
     dec c
-    jr nz, jr_001_5e67
+    jr nz, .initSparkLoop
 
     ret
 
-
-jr_001_5e99:
+.stillFlying:
     ld a, l
-    ld [$dd5a], a
+    ld [wFireworkWork + 9], a
     ld a, h
-    ld [$dd5b], a
-    ld a, [$dd59]
+    ld [wFireworkWork + 10], a
+    ld a, [wFireworkWork + 8]
     ld l, a
     ld h, $00
     add hl, hl
     add hl, hl
-    ld de, $617f
+    ld de, BallVelocityTable
     add hl, de
     ld a, [hl+]
     ld c, a
@@ -4334,82 +2213,82 @@ jr_001_5e99:
     ld a, [hl+]
     ld e, a
     ld d, [hl]
-    ld a, [$dd53]
+    ld a, [wFireworkWork + 2]
     ld l, a
-    ld a, [$dd54]
+    ld a, [wFireworkWork + 3]
     ld h, a
-    ld a, [$dd5b]
+    ld a, [wFireworkWork + 10]
 
-jr_001_5ebf:
+.addXStepLoop:
     add hl, bc
     dec a
-    jr nz, jr_001_5ebf
+    jr nz, .addXStepLoop
 
     ld a, l
-    ld [$dd53], a
+    ld [wFireworkWork + 2], a
     ld a, h
-    ld [$dd54], a
-    ld a, [$dd55]
+    ld [wFireworkWork + 3], a
+    ld a, [wFireworkWork + 4]
     ld l, a
-    ld a, [$dd56]
+    ld a, [wFireworkWork + 5]
     ld h, a
-    ld a, [$dd5b]
+    ld a, [wFireworkWork + 10]
 
-jr_001_5ed6:
+.addYStepLoop:
     add hl, de
     dec a
-    jr nz, jr_001_5ed6
+    jr nz, .addYStepLoop
 
     ld a, l
-    ld [$dd55], a
+    ld [wFireworkWork + 4], a
     ld a, h
-    ld [$dd56], a
-    ld a, [$de7e]
+    ld [wFireworkWork + 5], a
+    ld a, [wFireworkOamPtr]
     ld l, a
-    ld a, [$de7f]
+    ld a, [wFireworkOamPtr + 1]
     ld h, a
-    ld a, [$dd56]
+    ld a, [wFireworkWork + 5]
     ld [hl+], a
-    ld a, [$dd54]
+    ld a, [wFireworkWork + 3]
     ld [hl+], a
     xor a
     ld [hl+], a
-    ld a, [$dd5c]
+    ld a, [wFireworkWork + 11]
     ld b, a
-    ld a, [$de80]
+    ld a, [wFireworkTick]
     or a
-    jr nz, jr_001_5f06
+    jr nz, .storeRocketFrame
 
     ld a, b
     inc a
     and $07
-    ld [$dd5c], a
+    ld [wFireworkWork + 11], a
     ld b, a
 
-jr_001_5f06:
+.storeRocketFrame:
     ld a, b
     ld [hl+], a
-    ld a, [$de7d]
+    ld a, [wFireworkSpriteCount]
     inc a
-    ld [$de7d], a
+    ld [wFireworkSpriteCount], a
     ld a, l
-    ld [$de7e], a
+    ld [wFireworkOamPtr], a
     ld a, h
-    ld [$de7f], a
+    ld [wFireworkOamPtr + 1], a
     ret
 
-
-Call_001_5f18:
+; Animate the 11 twinkling stars on the level password screen.
+UpdateTwinkles:
     ld a, $0b
-    ld hl, $de81
-    ld de, $deb8
+    ld hl, wTwinkles
+    ld de, wTwinkleWrites
 
-jr_001_5f20:
+.nextTwinkle:
     push af
     ld a, [hl]
     dec a
     or a
-    jr nz, jr_001_5f6d
+    jr nz, .storeTimer
 
     push hl
     inc hl
@@ -4417,13 +2296,13 @@ jr_001_5f20:
     inc a
     ld [hl+], a
     cp $30
-    jr z, jr_001_5f60
+    jr z, .restartTwinkle
 
     add a
     push hl
     ld l, a
     ld h, $00
-    ld bc, $65a8
+    ld bc, LevelPasswordFrames
     add hl, bc
     ld a, [hl+]
     ld b, [hl]
@@ -4451,15 +2330,15 @@ jr_001_5f20:
     inc bc
     ld [de], a
     inc de
-    ld a, [$defa]
+    ld a, [wTwinkleWriteCount]
     inc a
-    ld [$defa], a
+    ld [wTwinkleWriteCount], a
     pop hl
     ld bc, $0005
     add hl, bc
-    jr jr_001_5f72
+    jr .twinkleDone
 
-jr_001_5f60:
+.restartTwinkle:
     inc hl
     inc hl
     ld a, [hl]
@@ -4469,31 +2348,26 @@ jr_001_5f60:
     ld [hl+], a
     ld bc, $0003
     add hl, bc
-    jr jr_001_5f72
+    jr .twinkleDone
 
-jr_001_5f6d:
+.storeTimer:
     ld [hl+], a
     ld bc, $0004
     add hl, bc
 
-jr_001_5f72:
+.twinkleDone:
     pop af
     dec a
-    jr nz, jr_001_5f20
+    jr nz, .nextTwinkle
 
     ret
 
-
+BatSpeedTable:
     db $00, $01, $01, $01, $01, $01, $01, $01, $01, $02, $00
 
-    nop
-    ld bc, $0101
-    ld bc, $0201
-    ld [bc], a
-    ld [bc], a
-    inc bc
-    nop
+    db $00, $01, $01, $01, $01, $01, $02, $02, $02, $03, $00
 
+BatBounceTable:
     db $1c, $01
 
     db $1c, $01
@@ -4502,243 +2376,118 @@ jr_001_5f72:
 
     db $1c, $01
 
-    dec e
-    ld [bc], a
-
+    db $1d, $02
     db $1d, $02
 
     db $1d, $02, $1d, $02
 
     db $1e, $03, $1e, $03, $1e, $03
 
-    ld e, $03
-    rra
-    nop
-
+    db $1e, $03, $1f, $00
     db $1f, $00, $1f, $00
 
-    rra
-    nop
-
+    db $1f, $00
     db $01, $00
 
     db $01, $00
 
-    ld bc, $0100
-    nop
-    ld [bc], a
-    inc bc
-
+    db $01, $00, $01, $00, $02, $03
     db $02, $03
 
     db $02, $03
 
     db $02, $03
 
-    inc bc
-    ld [bc], a
-    inc bc
-    ld [bc], a
-
+    db $03, $02, $03, $02
     db $03, $02
 
-    inc bc
-    ld [bc], a
-
+    db $03, $02
     db $04, $01
 
-    inc b
+    db $04
     db $01
 
     db $04, $01
 
-    inc b
-    ld bc, $021c
-    inc e
-    ld [bc], a
-
+    db $04, $01, $1c, $02, $1c, $02
     db $1c, $02
 
-    inc e
-    ld [bc], a
-
+    db $1c, $02
     db $1d, $02
 
-    dec e
-    inc bc
-    dec e
-    inc bc
-
+    db $1d, $03, $1d, $03
     db $1d, $03
 
-    ld e, $03
-    ld e, $03
-    ld e, $00
-    ld e, $00
-
+    db $1e, $03, $1e, $03, $1e, $00, $1e, $00
     db $1f, $00, $1f, $00
 
-    rra
-    nop
-
+    db $1f, $00
     db $1f, $00, $01, $00
 
     db $01
-    nop
-
+    db $00
     db $01, $00, $01, $00
 
     db $02, $00
 
-    ld [bc], a
-    nop
-
+    db $02, $00
     db $02, $03
 
-    ld [bc], a
-    inc bc
-
+    db $02, $03
     db $03, $03
 
     db $03, $03
 
-    inc bc
-    inc bc
-    inc bc
-    ld [bc], a
-
+    db $03, $03, $03, $02
     db $04, $02
 
-    inc b
-    ld [bc], a
-    inc b
-    ld [bc], a
+    db $04, $02, $04, $02
+    db $04, $02
 
-    db $04, $02, $1c, $01
+BatBounceTable_BigBat:
+    db $1c, $01
 
-    inc e
+    db $1c
     db $01
 
     db $1c, $01
 
-    inc e
+    db $1c
     db $01
 
     db $1c, $01, $1d, $02
 
-    dec e
-    ld [bc], a
-
+    db $1d, $02
     db $1d, $02, $1d, $02
 
-    dec e
-    ld [bc], a
-    ld e, $03
-
+    db $1d, $02, $1e, $03
     db $1e, $03
 
-    ld e, $03
-
+    db $1e, $03
     db $1e, $03, $1e, $03, $1f, $00, $1f, $00
 
-    rra
-    nop
-
+    db $1f, $00
     db $1f, $00, $1f, $00
 
-    ld bc, $0100
-    nop
+    db $01, $00, $01, $00
     db $01
-    nop
-
+    db $00
     db $01, $00, $01, $00, $02, $03, $02, $03, $02, $03
 
-    ld [bc], a
-    inc bc
-
+    db $02, $03
     db $02, $03, $03, $02, $03, $02, $03, $02
 
-    inc bc
-    ld [bc], a
-    inc bc
-    ld [bc], a
-
+    db $03, $02, $03, $02
     db $04, $01
 
-    inc b
-    ld bc, HeaderLogo
-    inc b
-    ld bc, HeaderLogo
-    inc e
-    ld [bc], a
-    inc e
-    ld [bc], a
-    inc e
-    ld [bc], a
-    inc e
-    ld [bc], a
-    inc e
-    ld [bc], a
-    dec e
-    ld [bc], a
-    dec e
-    ld [bc], a
-    dec e
-    inc bc
-    dec e
-    inc bc
-    dec e
-    inc bc
-    ld e, $03
-    ld e, $03
-    ld e, $03
-    ld e, $00
-    ld e, $00
-    rra
-    nop
-    rra
-    nop
-    rra
-    nop
-    rra
-    nop
-    rra
-    nop
-    ld bc, $0100
-    nop
-    ld bc, $0100
-    nop
-    ld bc, $0200
-    nop
-    ld [bc], a
-    nop
-    ld [bc], a
-    inc bc
-    ld [bc], a
-    inc bc
-    ld [bc], a
-    inc bc
-    inc bc
-    inc bc
-    inc bc
-    inc bc
-    inc bc
-    inc bc
-    inc bc
-    ld [bc], a
-    inc bc
-    ld [bc], a
-    inc b
-    ld [bc], a
-    inc b
-    ld [bc], a
-    inc b
-    ld [bc], a
-    inc b
-    ld [bc], a
-    inc b
-    ld [bc], a
+    db $04, $01, $04, $01, $04, $01, $04, $01, $1c, $02, $1c, $02, $1c, $02, $1c, $02
+    db $1c, $02, $1d, $02, $1d, $02, $1d, $03, $1d, $03, $1d, $03, $1e, $03, $1e, $03
+    db $1e, $03, $1e, $00, $1e, $00, $1f, $00, $1f, $00, $1f, $00, $1f, $00, $1f, $00
+    db $01, $00, $01, $00, $01, $00, $01, $00, $01, $00, $02, $00, $02, $00, $02, $03
+    db $02, $03, $02, $03, $03, $03, $03, $03, $03, $03, $03, $02, $03, $02, $04, $02
+    db $04, $02, $04, $02, $04, $02, $04, $02
 
+BatExplosionFrames:
     db $04, $00, $00, $43, $0c, $00, $08, $4b, $0c, $00, $10, $43, $0c, $00, $18, $4b
     db $0c, $04, $00, $00, $44, $0c, $00, $08, $4a, $0c, $00, $10, $44, $0c, $00, $18
     db $4a, $0c, $04, $00, $00, $45, $0c, $00, $08, $49, $0c, $00, $10, $45, $0c, $00
@@ -4751,101 +2500,59 @@ jr_001_5f72:
     db $0c, $00, $10, $4b, $0c, $00, $18, $44, $0c, $04, $00, $00, $58, $0c, $00, $08
     db $58, $0c, $00, $10, $58, $0c, $00, $18, $58, $0c
 
-    sbc c
-
+BatExplosionSequence:
+    db $99
     db $99, $99, $99, $88, $88, $88, $88, $77, $77, $77, $77, $66, $66, $66, $66, $55
     db $55, $55, $55, $44, $44, $44, $44, $33, $33, $33, $33, $22, $22, $22, $22, $11
     db $11, $11, $11, $00, $00, $00, $00
 
-    nop
-    nop
-    nop
-    rst $38
-
+; X and Y velocity (two words) for each of the 32 ball directions.
+BallVelocityTable:
+    db $00, $00, $00, $ff
     db $30, $00, $08, $ff, $60, $00, $12, $ff, $8d, $00, $2d, $ff, $b5, $00, $4b, $ff
     db $d3, $00, $73, $ff
 
-    xor $00
-    and b
-    rst $38
-    ld hl, sp+$00
-    ret nc
-
-    rst $38
-
+    db $ee, $00, $a0, $ff, $f8, $00, $d0, $ff
     db $00, $01, $00, $00
 
-    ld hl, sp+$00
-    jr nc, jr_001_61a7
-
-jr_001_61a7:
-    xor $00
-    ld h, b
-    nop
-
+    db $f8, $00, $30, $00
+    db $ee, $00, $60, $00
     db $d3, $00, $8d, $00
 
     db $b5, $00, $b5, $00
 
-    adc l
-    nop
+    db $8d, $00
     db $d3
-    nop
-
+    db $00
     db $60, $00, $ee, $00, $30, $00, $f8, $00
 
-    nop
-    nop
-    nop
+    db $00, $00, $00
     db $01
 
     db $d0, $ff, $f8, $00, $a0, $ff, $ee, $00, $73, $ff, $d3, $00
 
     db $4b, $ff, $b5, $00
 
-    dec l
-    rst $38
-    adc l
-    nop
-    ld [de], a
-    rst $38
-    ld h, b
-    nop
-    ld [$30ff], sp
-    nop
-
+    db $2d, $ff, $8d, $00, $12, $ff, $60, $00, $08, $ff, $30, $00
     db $00, $ff, $00, $00
 
-    ld [$d0ff], sp
-    rst $38
-    ld [de], a
-    rst $38
-    and b
-    rst $38
-
+    db $08, $ff, $d0, $ff, $12, $ff, $a0, $ff
     db $2d, $ff, $73, $ff
 
     db $4b, $ff, $4b, $ff
 
-    ld [hl], e
-    rst $38
-    dec l
-    rst $38
-
+    db $73, $ff, $2d, $ff
     db $a0, $ff, $12, $ff, $d0, $ff, $08, $ff
 
-    nop
+BallReflectBottomTable:
+    db $00
     db $01
 
     db $02
 
     db $03
 
-    inc b
-    dec b
-    ld b, $07
-    ld [$0607], sp
-
+    db $04, $05, $06, $07, $08, $07, $06
     db $05
 
     db $04
@@ -4855,38 +2562,27 @@ jr_001_61a7:
     db $02
 
     db $01
-    nop
-
+    db $00
     db $1f, $1e, $1d
 
-    inc e
-    dec de
-    ld a, [de]
-    add hl, de
-    jr @+$1b
-
-    ld a, [de]
-
+    db $1c, $1b, $1a, $19, $18, $19, $1a
     db $1b, $1c
 
     db $1d
 
     db $1e
 
-    rra
+    db $1f
 
+BallReflectTopTable:
     db $10
 
     db $0f, $0e, $0d, $0c, $0b
 
-    ld a, [bc]
-    add hl, bc
-    ld [$0a09], sp
-    dec bc
-
+    db $0a, $09, $08, $09, $0a, $0b
     db $0c
 
-    dec c
+    db $0d
     db $0e
 
     db $0f
@@ -4899,31 +2595,23 @@ jr_001_61a7:
 
     db $14
 
-    dec d
-    ld d, $17
-    jr @+$19
-
+    db $15, $16, $17, $18, $17
     db $16
 
     db $15
 
     db $14
 
-    inc de
-
+    db $13
     db $12, $11
 
-    nop
-
+BallReflectRightTable:
+    db $00
     db $1f
 
     db $1e, $1d, $1c
 
-    dec de
-    ld a, [de]
-    add hl, de
-    jr @+$19
-
+    db $1b, $1a, $19, $18, $17
     db $16
 
     db $15
@@ -4939,14 +2627,7 @@ jr_001_61a7:
 
     db $13
 
-    inc d
-    dec d
-    ld d, $17
-    jr jr_001_6272
-
-    ld a, [de]
-    dec de
-
+    db $14, $15, $16, $17, $18, $19, $1a, $1b
     db $1c
 
     db $1d
@@ -4955,38 +2636,26 @@ jr_001_61a7:
 
     db $1f
 
-    nop
-
+BallReflectLeftTable:
+    db $00
     db $01
 
     db $02, $03
 
-    inc b
-    dec b
-    ld b, $07
-    ld [$0a09], sp
-    dec bc
-
+    db $04, $05, $06, $07, $08, $09, $0a, $0b
     db $0c
 
-    dec c
-    ld c, $0f
+    db $0d, $0e, $0f
     db $10
 
     db $0f
 
     db $0e
 
-jr_001_6272:
-    dec c
-
+    db $0d
     db $0c
 
-    dec bc
-    ld a, [bc]
-    add hl, bc
-    ld [$0607], sp
-
+    db $0b, $0a, $09, $08, $07, $06
     db $05
 
     db $04, $03
@@ -4995,35 +2664,41 @@ jr_001_6272:
 
     db $01
 
+; Empties all 14 slots of wBrickBreakEffects.
+; Called when a level is set up.
+ClearBrickBreakEffects:
     ld c, $0e
     xor a
     ld de, $0006
-    ld hl, $dc63
+    ld hl, wBrickBreakEffects
 
-jr_001_6288:
+.clearLoop:
     ld [hl], a
     add hl, de
     dec c
-    jr nz, jr_001_6288
+    jr nz, .clearLoop
 
     ret
 
-
+; Starts a brick break effect in the first free slot of wBrickBreakEffects.
+; A = X position of the effect, BC = tilemap address of the brick (its row gives the Y position).
+; Called when a plasma shot destroys a brick. Changes C only; HL, DE and AF are kept.
+SpawnBrickBreakEffect:
     push hl
     push de
     push af
-    ld hl, $dc63
+    ld hl, wBrickBreakEffects
     ld de, $0006
 
-jr_001_6297:
+.findFreeSlot:
     ld a, [hl]
     or a
-    jr z, jr_001_629e
+    jr z, .slotFound
 
     add hl, de
-    jr jr_001_6297
+    jr .findFreeSlot
 
-jr_001_629e:
+.slotFound:
     ld a, $1c
     ld [hl+], a
     xor a
@@ -5049,39 +2724,41 @@ jr_001_629e:
     pop hl
     ret
 
-
-Call_001_62bf:
+; Starts a brick break effect in the first free slot of wBrickBreakEffects at Y = B and X = C + 4.
+; A = 0 gives the effect no speed, otherwise it moves upward.
+; Called by UpdatePickupEffects. Keeps HL and AF, changes DE.
+FindFreeBrickBreakEffect:
     push hl
     push af
-    ld hl, $dc63
+    ld hl, wBrickBreakEffects
     ld de, $0006
 
-jr_001_62c7:
+.findFreeSlot:
     ld a, [hl]
     or a
-    jr z, jr_001_62ce
+    jr z, .slotFound
 
     add hl, de
-    jr jr_001_62c7
+    jr .findFreeSlot
 
-jr_001_62ce:
+.slotFound:
     ld a, $1c
     ld [hl+], a
     pop af
     or a
-    jr nz, jr_001_62d9
+    jr nz, .setUpwardSpeed
 
     ld [hl+], a
     ld [hl+], a
-    jr jr_001_62df
+    jr .writePosition
 
-jr_001_62d9:
+.setUpwardSpeed:
     ld a, $80
     ld [hl+], a
     ld a, $ff
     ld [hl+], a
 
-jr_001_62df:
+.writePosition:
     xor a
     ld [hl+], a
     ld a, b
@@ -5092,28 +2769,31 @@ jr_001_62df:
     pop hl
     ret
 
-
-    ld hl, $dc63
+; Called once per frame while a level is played.
+; Counts down each active entry of wBrickBreakEffects, moves it vertically, and adds one sprite for it to the OAM buffer.
+; The sprite tile comes from BrickBreakEffectFrames.
+UpdateBrickBreakEffects:
+    ld hl, wBrickBreakEffects
     ld c, $0e
 
-jr_001_62ee:
+.effectLoop:
     ld a, [hl]
     or a
-    jr z, jr_001_6336
+    jr z, .skipInactive
 
     dec a
     ld [hl+], a
     push hl
-    ld hl, $7b68
+    ld hl, BrickBreakEffectFrames
     ld d, $00
     ld e, a
     add hl, de
     ld a, [hl]
     ld b, a
     pop hl
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld e, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld d, a
     push bc
     ld a, [hl+]
@@ -5145,75 +2825,77 @@ jr_001_62ee:
     ld [de], a
     inc de
     ld a, e
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, d
-    ld [$c2b7], a
-    ld a, [$c2b5]
+    ld [wOamWritePtr + 1], a
+    ld a, [wOamUsed]
     inc a
-    ld [$c2b5], a
-    jr jr_001_633a
+    ld [wOamUsed], a
+    jr .nextEffect
 
-jr_001_6336:
+.skipInactive:
     ld de, $0006
     add hl, de
 
-jr_001_633a:
+.nextEffect:
     dec c
-    jr nz, jr_001_62ee
+    jr nz, .effectLoop
 
     ret
 
-
+; Writes 0 to the first byte (the counter) at four positions, 4 bytes apart, starting at wPickupEffects.
+; Called when a level starts and after a life is lost.
+ClearPickupEffects:
     ld c, $04
     xor a
     ld de, $0004
-    ld hl, $dcb7
+    ld hl, wPickupEffects
 
-jr_001_6347:
+.clearLoop:
     ld [hl], a
     add hl, de
     dec c
-    jr nz, jr_001_6347
+    jr nz, .clearLoop
 
     ret
 
-
-Call_001_634d:
+; Start the effect shown where a power-up was collected.
+SpawnPickupEffect:
     push bc
     ld c, d
     push af
     push de
-    ld hl, $dcb7
+    ld hl, wPickupEffects
     ld de, $0007
 
-jr_001_6357:
+.findFreeSlot:
     ld a, [hl]
     or a
-    jr z, jr_001_635e
+    jr z, .slotFound
 
     add hl, de
-    jr jr_001_6357
+    jr .findFreeSlot
 
-jr_001_635e:
+.slotFound:
     ld a, $28
     ld [hl+], a
     pop de
     ld a, e
     or a
-    jr nz, jr_001_636e
+    jr nz, .setZeroSpeed
 
     ld a, $80
     ld [hl+], a
     ld a, $ff
     ld [hl+], a
-    jr jr_001_6371
+    jr .writePosition
 
-jr_001_636e:
+.setZeroSpeed:
     xor a
     ld [hl+], a
     ld [hl+], a
 
-jr_001_6371:
+.writePosition:
     ld a, $00
     ld [hl+], a
     ld a, c
@@ -5224,7 +2906,7 @@ jr_001_6371:
     ld e, a
     ld d, $00
     push hl
-    ld hl, $7b84
+    ld hl, PickupEffectFrames
     add hl, de
     ld a, [hl]
     pop hl
@@ -5232,20 +2914,23 @@ jr_001_6371:
     pop bc
     ret
 
-
-    ld hl, $dcb7
+; Called once per frame while a level is played.
+; Counts down each active entry of wPickupEffects, moves it, and draws it as two sprites.
+; When the counter reaches $0f it also starts a brick break effect at its position.
+UpdatePickupEffects:
+    ld hl, wPickupEffects
     ld c, $04
 
-jr_001_638b:
+.effectLoop:
     push bc
     ld a, [hl]
     or a
-    jr z, jr_001_63f1
+    jr z, .skipInactive
 
     dec a
     ld [hl+], a
     cp $0f
-    jr nz, jr_001_63a5
+    jr nz, .moveAndDraw
 
     push hl
     inc hl
@@ -5258,10 +2943,10 @@ jr_001_638b:
     inc hl
     inc hl
     ld a, d
-    call Call_001_62bf
+    call FindFreeBrickBreakEffect
     pop hl
 
-jr_001_63a5:
+.moveAndDraw:
     ld a, [hl+]
     ld c, a
     ld a, [hl+]
@@ -5280,9 +2965,9 @@ jr_001_63a5:
     ld [hl-], a
     ld a, e
     ld [hl+], a
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld e, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld d, a
     ld a, [hl+]
     ld c, a
@@ -5314,86 +2999,94 @@ jr_001_63a5:
     ld [de], a
     inc de
     ld a, e
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, d
-    ld [$c2b7], a
-    ld a, [$c2b5]
+    ld [wOamWritePtr + 1], a
+    ld a, [wOamUsed]
     add $02
-    ld [$c2b5], a
-    jr jr_001_63f5
+    ld [wOamUsed], a
+    jr .nextEffect
 
-jr_001_63f1:
+.skipInactive:
     ld de, $0007
     add hl, de
 
-jr_001_63f5:
+.nextEffect:
     pop bc
     dec c
-    jr nz, jr_001_638b
+    jr nz, .effectLoop
 
     ret
 
-
-Call_001_63fa:
-    ld a, [$dae1]
+; Runs once when a level appears. A sweep crosses the bricks along 22 diagonals.
+; On each diagonal, tiles $27/$29 and $4c/$51 are drawn as $25/$26 and $4f/$50.
+; The row behind the sweep is restored from wLevelTilemapCopy.
+SweepBricks:
+    ld a, [wLevelSweepPending]
     or a
     ret z
 
     ld b, $16
     ld hl, $99d1
-    ld de, $7b8a
+    ld de, BrickSweepLengths
 
-Jump_001_6407:
+; Starts one diagonal of the sweep shown when a level appears.
+; Waits three frames, clears wBrickRedrawCount, and reads the length of the diagonal from BrickSweepLengths.
+; HL = tilemap address where the diagonal starts, B = diagonals left, DE = next entry of BrickSweepLengths.
+SweepBricks_Diagonal:
     push de
-    call Call_001_7c54
-    call Call_001_7c54
-    call Call_001_7c54
+    call WaitVBlank
+    call WaitVBlank
+    call WaitVBlank
     pop de
     xor a
-    ld [$d9bd], a
+    ld [wBrickRedrawCount], a
     ld a, [de]
     inc de
     ld c, a
     push de
-    ld de, $d9bf
+    ld de, wVBlankTileWrites
     push hl
 
-Jump_001_641e:
+; Handles one cell of the current diagonal of the sweep.
+; Queues the sweep tiles in wVBlankTileWrites when the tile in wLevelTilemapCopy is $27, $29, $4c or $51.
+; Also queues the tiles of the row below from wLevelTilemapCopy, then moves to the next cell.
+SweepBricks_Cell:
     push bc
     push hl
     ld bc, $6800
     add hl, bc
-    ld bc, $d32a
+    ld bc, wLevelTilemapCopy
     add hl, bc
     ld a, [hl]
     pop hl
     cp $27
-    jr nz, jr_001_6433
+    jr nz, .checkTile29
 
     ld bc, $2625
-    jr jr_001_644c
+    jr .queueSweepTiles
 
-jr_001_6433:
+.checkTile29:
     cp $29
-    jr nz, jr_001_643c
+    jr nz, .checkTile4c
 
     ld bc, $2625
-    jr jr_001_644c
+    jr .queueSweepTiles
 
-jr_001_643c:
+.checkTile4c:
     cp $4c
-    jr nz, jr_001_6445
+    jr nz, .checkTile51
 
     ld bc, $504f
-    jr jr_001_644c
+    jr .queueSweepTiles
 
-jr_001_6445:
+.checkTile51:
     cp $51
-    jr nz, jr_001_6468
+    jr nz, .restoreRowBelow
 
     ld bc, $504f
 
-jr_001_644c:
+.queueSweepTiles:
     ld a, l
     ld [de], a
     inc de
@@ -5414,18 +3107,18 @@ jr_001_644c:
     ld a, b
     ld [de], a
     inc de
-    ld a, [$d9bd]
+    ld a, [wBrickRedrawCount]
     add $02
-    ld [$d9bd], a
+    ld [wBrickRedrawCount], a
 
-jr_001_6468:
+.restoreRowBelow:
     push hl
     ld bc, $0020
     add hl, bc
     push hl
     ld bc, $6800
     add hl, bc
-    ld bc, $d32a
+    ld bc, wLevelTilemapCopy
     add hl, bc
     ld c, l
     ld b, h
@@ -5450,61 +3143,65 @@ jr_001_6468:
     ld a, [bc]
     ld [de], a
     inc de
-    ld a, [$d9bd]
+    ld a, [wBrickRedrawCount]
     add $02
-    ld [$d9bd], a
+    ld [wBrickRedrawCount], a
     pop hl
     ld bc, $ffe2
     add hl, bc
     pop bc
     ld a, c
     cp $ff
-    jr z, jr_001_64a8
+    jr z, .finalRestorePass
 
     cp $fe
-    jr z, jr_001_64ad
+    jr z, .diagonalDone
 
     dec c
-    jp nz, Jump_001_641e
+    jp nz, SweepBricks_Cell
 
-jr_001_64a8:
+.finalRestorePass:
     ld c, $fe
     push bc
-    jr jr_001_6468
+    jr .restoreRowBelow
 
-jr_001_64ad:
+.diagonalDone:
     pop hl
     ld de, $fffe
     add hl, de
     ld a, l
     and $1f
     cp $1f
-    jr nz, jr_001_64bd
+    jr nz, .nextDiagonal
 
     ld de, $ffe2
     add hl, de
 
-jr_001_64bd:
+.nextDiagonal:
     pop de
     dec b
-    jp nz, Jump_001_6407
+    jp nz, SweepBricks_Diagonal
 
     ret
 
-
+; Writes the $ff end marker after wUnbreakableHitEffects and points wUnbreakableHitEffectPtr at the first slot.
+; Does not clear the slots themselves.
+; Called when a level starts and after a life is lost. After a lost life the slots are already 0 (the effect lasts 18 frames, the lost-life countdown 40 and only a ball starts an effect). At level start a slot can still be alive: the effects stop counting when the level ends, so an effect started in the last frames of the previous level goes on counting and is drawn in the new level.
+ClearUnbreakableHitEffects:
     ld a, $ff
-    ld [$dcf3], a
-    ld hl, $dcd5
+    ld [wUnbreakableHitEffectsEnd], a
+    ld hl, wUnbreakableHitEffects
     ld a, l
-    ld [$dcd3], a
+    ld [wUnbreakableHitEffectPtr], a
     ld a, h
-    ld [$dcd4], a
+    ld [wUnbreakableHitEffectPtr + 1], a
     ret
 
-
-    ld a, [$dcd3]
+; Start the effect shown when the ball hits an unbreakable brick.
+SpawnUnbreakableHitEffect:
+    ld a, [wUnbreakableHitEffectPtr]
     ld l, a
-    ld a, [$dcd4]
+    ld a, [wUnbreakableHitEffectPtr + 1]
     ld h, a
     ld [hl], $12
     inc hl
@@ -5514,28 +3211,30 @@ jr_001_64bd:
     ld [hl+], a
     ld a, [hl]
     cp $ff
-    jr nz, jr_001_64eb
+    jr nz, .saveSlotPtr
 
-    ld hl, $dcd5
+    ld hl, wUnbreakableHitEffects
 
-jr_001_64eb:
+.saveSlotPtr:
     ld a, l
-    ld [$dcd3], a
+    ld [wUnbreakableHitEffectPtr], a
     ld a, h
-    ld [$dcd4], a
+    ld [wUnbreakableHitEffectPtr + 1], a
     ld a, $01
-    ld [$d8ab], a
+    ld [wUnbreakableHitSpawned], a
     ret
 
-
-    ld hl, $dcd5
+; Called once per frame while a level is played.
+; Counts down each active entry of wUnbreakableHitEffects and draws a sprite for it from UnbreakableHitEffectFrames.
+UpdateUnbreakableHitEffects:
+    ld hl, wUnbreakableHitEffects
     ld a, $0a
 
-jr_001_64fe:
+.effectLoop:
     push af
     ld a, [hl]
     or a
-    jr z, jr_001_653a
+    jr z, .skipInactive
 
     dec a
     ld [hl+], a
@@ -5548,13 +3247,13 @@ jr_001_64fe:
     ld b, a
     push hl
     ld d, $00
-    ld hl, $7b56
+    ld hl, UnbreakableHitEffectFrames
     add hl, de
     ld a, [hl]
     ld d, a
-    ld a, [$c2b6]
+    ld a, [wOamWritePtr]
     ld l, a
-    ld a, [$c2b7]
+    ld a, [wOamWritePtr + 1]
     ld h, a
     ld a, c
     ld [hl+], a
@@ -5565,142 +3264,199 @@ jr_001_64fe:
     ld a, $0b
     ld [hl+], a
     ld a, l
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, h
-    ld [$c2b7], a
-    ld a, [$c2b5]
+    ld [wOamWritePtr + 1], a
+    ld a, [wOamUsed]
     inc a
-    ld [$c2b5], a
+    ld [wOamUsed], a
     pop hl
-    jr jr_001_653e
+    jr .nextEffect
 
-jr_001_653a:
+.skipInactive:
     ld de, $0003
     add hl, de
 
-jr_001_653e:
+.nextEffect:
     pop af
     dec a
-    jr nz, jr_001_64fe
+    jr nz, .effectLoop
 
     ret
 
-
+; Start values of wTwinkles: 11 stars of 5 bytes (delay, frame, tilemap address, first tile).
+TwinkleInitData:
     db $01, $00, $2e, $99, $64, $0a, $00, $26, $99, $69, $14, $00, $d2, $98, $64, $1e
     db $00, $92, $99, $69, $28, $00, $90, $98, $64, $32, $00, $ad, $99, $69, $3c, $00
     db $87, $99, $64, $46, $00, $82, $99, $69, $50, $00, $20, $99, $64, $64, $00, $c1
-    db $98, $69, $5a, $00, $84, $98, $64, $55, $56, $57, $58, $59, $5a, $5b, $5c, $5d
-    db $5e, $5f, $60, $61, $62, $63, $64, $65, $66, $67, $68, $69, $6a, $6b, $6c, $6d
-    db $6e, $6f, $70, $71, $72, $73, $74, $75, $76, $77, $78, $59, $5a, $5b, $5c, $55
-    db $56, $57, $58, $00, $00, $00, $00, $7a, $65, $7a, $65, $7a, $65, $7a, $65, $7e
-    db $65, $7e, $65, $7e, $65, $7e, $65, $82, $65, $82, $65, $82, $65, $82, $65, $86
-    db $65, $86, $65, $86, $65, $86, $65, $8a, $65, $8a, $65, $8a, $65, $8a, $65, $8e
-    db $65, $8e, $65, $8e, $65, $8e, $65, $92, $65, $92, $65, $92, $65, $92, $65, $96
-    db $65, $96, $65, $96, $65, $96, $65, $9a, $65, $9a, $65, $9a, $65, $9a, $65, $9e
-    db $65, $9e, $65, $9e, $65, $9e, $65, $a2, $65, $a2, $65, $a2, $65, $a2, $65, $a6
-    db $65, $a6, $65, $a6, $65
+    db $98, $69, $5a, $00, $84, $98, $64
 
-    and [hl]
-    ld h, l
+LevelPasswordFrame_657a:
+    db $55, $56, $57, $58
 
-    db $5c, $fe, $32, $66, $a4, $01, $70, $66, $2e, $ff, $13, $67, $d2, $00, $13, $67
-    db $d4, $fe, $ae, $66, $2c, $01, $ae, $66, $1a, $ff, $e6, $66, $e6, $00, $e6, $66
-    db $52, $fe, $4d, $67, $ae, $01, $4d, $67, $fc, $fc, $fd, $fd, $fd, $fd, $fd, $fe
+LevelPasswordFrame_657e:
+    db $59, $5a, $5b, $5c
+
+LevelPasswordFrame_6582:
+    db $5d
+    db $5e, $5f, $60
+
+LevelPasswordFrame_6586:
+    db $61, $62, $63, $64
+
+LevelPasswordFrame_658a:
+    db $65, $66, $67, $68
+
+LevelPasswordFrame_658e:
+    db $69, $6a, $6b, $6c
+
+LevelPasswordFrame_6592:
+    db $6d
+    db $6e, $6f, $70
+
+LevelPasswordFrame_6596:
+    db $71, $72, $73, $74
+
+LevelPasswordFrame_659a:
+    db $75, $76, $77, $78
+
+LevelPasswordFrame_659e:
+    db $59, $5a, $5b, $5c
+
+LevelPasswordFrame_65a2:
+    db $55
+    db $56, $57, $58
+
+LevelPasswordFrame_65a6:
+    db $00, $00
+
+LevelPasswordFrames:
+    db $00, $00
+    dw LevelPasswordFrame_657a, LevelPasswordFrame_657a, LevelPasswordFrame_657a, LevelPasswordFrame_657a
+    dw LevelPasswordFrame_657e, LevelPasswordFrame_657e, LevelPasswordFrame_657e, LevelPasswordFrame_657e
+    dw LevelPasswordFrame_6582, LevelPasswordFrame_6582, LevelPasswordFrame_6582, LevelPasswordFrame_6582
+    dw LevelPasswordFrame_6586, LevelPasswordFrame_6586, LevelPasswordFrame_6586, LevelPasswordFrame_6586
+    dw LevelPasswordFrame_658a, LevelPasswordFrame_658a, LevelPasswordFrame_658a, LevelPasswordFrame_658a
+    dw LevelPasswordFrame_658e, LevelPasswordFrame_658e, LevelPasswordFrame_658e, LevelPasswordFrame_658e
+    dw LevelPasswordFrame_6592, LevelPasswordFrame_6592, LevelPasswordFrame_6592, LevelPasswordFrame_6592
+    dw LevelPasswordFrame_6596, LevelPasswordFrame_6596, LevelPasswordFrame_6596, LevelPasswordFrame_6596
+    dw LevelPasswordFrame_659a, LevelPasswordFrame_659a, LevelPasswordFrame_659a, LevelPasswordFrame_659a
+    dw LevelPasswordFrame_659e, LevelPasswordFrame_659e, LevelPasswordFrame_659e, LevelPasswordFrame_659e
+    dw LevelPasswordFrame_65a2, LevelPasswordFrame_65a2, LevelPasswordFrame_65a2, LevelPasswordFrame_65a2
+    dw LevelPasswordFrame_65a6, LevelPasswordFrame_65a6, LevelPasswordFrame_65a6, LevelPasswordFrame_65a6
+
+LevelPasswordCurves:
+    dw $fe5c, LevelPasswordCurve_6632
+    dw $01a4, LevelPasswordCurve_6670
+    dw $ff2e, LevelPasswordCurve_6713
+    dw $00d2, LevelPasswordCurve_6713
+    dw $fed4, LevelPasswordCurve_66ae
+    dw $012c, LevelPasswordCurve_66ae
+    dw $ff1a, LevelPasswordCurve_66e6
+    dw $00e6, LevelPasswordCurve_66e6
+    dw $fe52, LevelPasswordCurve_674d
+    dw $01ae, LevelPasswordCurve_674d
+
+LevelPasswordCurve_6632:
+    db $fc, $fc, $fd, $fd, $fd, $fd, $fd, $fe
     db $fe, $fe, $fe, $ff, $ff, $00, $00, $00, $00, $01, $01, $02, $02, $02, $03, $03
     db $03, $03, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
-    db $04, $04, $04, $04, $04, $80, $fc, $fc, $fd, $fd, $fd, $fd, $fd, $fe, $fe, $fe
+    db $04, $04, $04, $04, $04, $80
+
+LevelPasswordCurve_6670:
+    db $fc, $fc, $fd, $fd, $fd, $fd, $fd, $fe, $fe, $fe
     db $fe, $ff, $ff, $00, $00, $00, $00, $01, $01, $02, $02, $02, $03, $03, $03, $03
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04
 
-    ld a, a
+    db $7f
 
+LevelPasswordCurve_66ae:
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $01, $01, $02, $02, $02
     db $03, $03, $03, $03, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
-    db $04, $04, $04, $04, $04, $04, $04, $7f, $01, $01, $02, $02, $02, $03, $03, $03
+    db $04, $04, $04, $04, $04, $04, $04, $7f
+
+LevelPasswordCurve_66e6:
+    db $01, $01, $02, $02, $02, $03, $03, $03
     db $03, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
-    db $04, $04, $04, $04, $7f, $fc, $fc, $fd, $fd, $fd, $fe, $fe, $ff, $ff, $00, $00
+    db $04, $04, $04, $04, $7f
+
+LevelPasswordCurve_6713:
+    db $fc, $fc, $fd, $fd, $fd, $fe, $fe, $ff, $ff, $00, $00
     db $00, $00, $01, $01, $02, $02, $02, $03, $03, $03, $03, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
-    db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $7f, $01
+    db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $7f
+
+LevelPasswordCurve_674d:
+    db $01
     db $01, $01, $02, $02, $02, $02, $02, $02, $02, $03, $03, $03, $03, $03, $03, $03
     db $03, $03, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
     db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
-    db $04, $04, $04, $04, $04, $7f, $03, $03, $03, $03, $03, $03, $03, $03, $02, $01
+    db $04, $04, $04, $04, $04, $7f
+
+; Scroll steps that sway the logo on the level password screen, ending with 0.
+LogoSwaySteps:
+    db $03, $03, $03, $03, $03, $03, $03, $03, $02, $01
     db $ff, $fe, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd
-    db $fd, $fd, $fe, $ff, $01, $02, $03, $03, $03, $03, $03, $03, $03, $03, $00, $50
+    db $fd, $fd, $fe, $ff, $01, $02, $03, $03, $03, $03, $03, $03, $03, $03, $00
+
+FireworkScript_0:
+    db $50
     db $a0, $f4, $ff, $01, $04, $40, $a0, $eb, $ff, $1f, $05
 
-    rst $38
-    xor l
-    ld h, a
+    db $ff
+    dw FireworkScript_0
 
+FireworkScript_1:
     db $6e, $d8, $e9, $ff, $1e, $06, $1e, $d8, $f8, $ff, $02, $04
 
-    rst $38
-    cp h
-    ld h, a
+    db $ff
+    dw FireworkScript_1
 
+FireworkScript_2:
     db $6e, $c0, $f4, $ff, $01, $04, $82, $c0, $ed, $ff, $1f, $05
 
-    rst $38
-    bit 4, a
-    ld a, $80
-    ldh [rBCPS], a
-    ld c, $40
+    db $ff
+    dw FireworkScript_2
+    db $3e, $80, $e0, $68, $0e, $40
+    db $2a, $e0, $69, $0d, $20, $fa, $c9, $3e, $80, $e0, $6a, $0e, $40
+    db $2a, $e0, $6b, $0d, $20, $fa, $c9
 
-jr_001_67e0:
-    ld a, [hl+]
-    ldh [rBCPD], a
-    dec c
-    jr nz, jr_001_67e0
-
-    ret
-
-
-    ld a, $80
-    ldh [rOCPS], a
-    ld c, $40
-
-jr_001_67ed:
-    ld a, [hl+]
-    ldh [rOCPD], a
-    dec c
-    jr nz, jr_001_67ed
-
-    ret
-
-
-Call_001_67f4:
+; Writes 64 bytes of background palettes and 64 bytes of sprite palettes to the colour registers.
+; HL = background palette data, DE = sprite palette data.
+; FadePalettes_Step calls it after waiting for VBlank.
+CopyPalettesToHardware:
     ld a, $80
     ldh [rBCPS], a
     ldh [rOCPS], a
     ld c, $40
 
-jr_001_67fc:
+.copyLoop:
     ld a, [hl+]
     ldh [rBCPD], a
     ld a, [de]
     inc de
     ldh [rOCPD], a
     dec c
-    jr nz, jr_001_67fc
+    jr nz, .copyLoop
 
     ret
 
-
-Call_001_6807:
-    ld de, $c3b6
-    ld hl, $d6c0
+; Copies 8 bytes per row for 144 rows from wRasterPalettesFaded into wRasterTable, skipping 2 bytes between rows.
+; The source is read from WRAM bank 2.
+; Used by the palette fades when hPaletteMode is 2.
+CopyPaletteBuffer:
+    ld de, wRasterTable
+    ld hl, wRasterPalettesFaded
     ld b, $90
     ld a, $02
     ldh [rSVBK], a
 
-jr_001_6813:
+.copyRowLoop:
     ld a, [hl+]
     ld [de], a
     inc de
@@ -5728,61 +3484,63 @@ jr_001_6813:
     inc de
     inc de
     dec b
-    jr nz, jr_001_6813
+    jr nz, .copyRowLoop
 
     xor a
     ldh [rSVBK], a
     ret
 
-
     ld c, $10
-    jr jr_001_683a
+    jr FadePalettes_Step
 
-Call_001_6838:
+; Fade the palettes one step. Used by FrameLoop when a screen appears or disappears.
+FadePalettes:
     ld c, $20
 
-Jump_001_683a:
-jr_001_683a:
+; Runs a fade in steps. A = start value, B = amount added to it each step, C = number of steps.
+; Each step adds the current value to every colour component of the palettes, limits the result to 31, and shows it.
+; Uses the raster palettes when hPaletteMode is 2, otherwise the normal palettes.
+FadePalettes_Step:
     add b
     push af
     push bc
-    ld [$ff8d], a
+    ld [hTemp], a
     ld bc, $0040
-    ld hl, $c9dd
-    ld de, $ca9d
-    ld a, [$ff9c]
+    ld hl, wPaletteBuffer
+    ld de, wFadedPalettes
+    ld a, [hPaletteMode]
     cp $02
-    jr nz, jr_001_685d
+    jr nz, .nextColour
 
     ld bc, $0240
     ld a, $02
     ldh [rSVBK], a
-    ld hl, $d000
-    ld de, $d6c0
+    ld hl, wRasterPaletteBuffer
+    ld de, wRasterPalettesFaded
 
-jr_001_685d:
+.nextColour:
     push bc
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     add b
     cp $20
-    jr c, jr_001_686a
+    jr c, .redClamped
 
     ld a, $1f
 
-jr_001_686a:
+.redClamped:
     ld c, a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     add b
     cp $20
-    jr c, jr_001_6877
+    jr c, .greenClamped
 
     ld a, $1f
 
-jr_001_6877:
+.greenClamped:
     push af
     swap a
     sla a
@@ -5795,16 +3553,16 @@ jr_001_6877:
     swap a
     and $03
     ld c, a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     add b
     cp $20
-    jr c, jr_001_6895
+    jr c, .blueClamped
 
     ld a, $1f
 
-jr_001_6895:
+.blueClamped:
     sla a
     sla a
     or c
@@ -5814,84 +3572,88 @@ jr_001_6895:
     dec bc
     ld a, b
     or c
-    jr nz, jr_001_685d
+    jr nz, .nextColour
 
     xor a
     ldh [rSVBK], a
-    ld a, [$ff9c]
+    ld a, [hPaletteMode]
     cp $02
-    jr z, jr_001_68bd
+    jr z, .copyViaPaletteBuffer
 
-    call Call_001_7c54
-    ld hl, $ca9d
-    ld de, $cadd
-    call Call_001_67f4
-    call Call_001_693c
-    jr jr_001_68c3
+    call WaitVBlank
+    ld hl, wFadedPalettes
+    ld de, wFadedObjPalettes
+    call CopyPalettesToHardware
+    call AnimatePalettes
+    jr .stepDone
 
-jr_001_68bd:
-    call Call_001_7c54
-    call Call_001_6807
+.copyViaPaletteBuffer:
+    call WaitVBlank
+    call CopyPaletteBuffer
 
-jr_001_68c3:
+.stepDone:
     pop bc
     pop af
     dec c
-    jp nz, Jump_001_683a
+    jp nz, FadePalettes_Step
 
-    call Call_001_7c54
+    call WaitVBlank
     ret
 
-
     ld c, $10
-    jr jr_001_68dd
+    jr FadePalettes2_Step
 
-Call_001_68d1:
+; Fades the raster palettes in 8 steps. A = start value, B = 1 changes the value by +4 each step, any other B by -4.
+; Each step subtracts the current value from every colour component, limits the result to 0, and shows it.
+; FrameLoop calls it when hPaletteMode is 4, when a screen appears or disappears.
+FadePalettes2:
     ld h, a
     ld c, $08
     ld a, b
     ld b, $fc
     dec a
-    jr nz, jr_001_68dc
+    jr nz, .directionChosen
 
     ld b, $04
 
-jr_001_68dc:
+.directionChosen:
     ld a, h
 
-Jump_001_68dd:
-jr_001_68dd:
+; Fades the palettes of wRasterPaletteBuffer (3 bytes per colour) into wRasterPalettesFaded (2-byte colours), then copies them with CopyPaletteBuffer.
+; A = fade level, B = signed step added to the level before each pass, C = number of passes.
+; Each pass subtracts the level from every colour component (minimum 0) and waits for VBlank before the copy. Used for fades in palette mode 2.
+FadePalettes2_Step:
     add b
     push af
     push bc
-    ld [$ff8d], a
+    ld [hTemp], a
     ld bc, $0240
     ld a, $02
     ldh [rSVBK], a
-    ld hl, $d000
-    ld de, $d6c0
+    ld hl, wRasterPaletteBuffer
+    ld de, wRasterPalettesFaded
 
-jr_001_68f0:
+.nextColour:
     push bc
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     sub b
-    jr nc, jr_001_68fa
+    jr nc, .redFloored
 
     xor a
 
-jr_001_68fa:
+.redFloored:
     ld c, a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     sub b
-    jr nc, jr_001_6904
+    jr nc, .greenFloored
 
     xor a
 
-jr_001_6904:
+.greenFloored:
     push af
     swap a
     sla a
@@ -5904,15 +3666,15 @@ jr_001_6904:
     swap a
     and $03
     ld c, a
-    ld a, [$ff8d]
+    ld a, [hTemp]
     ld b, a
     ld a, [hl+]
     sub b
-    jr nc, jr_001_691f
+    jr nc, .blueFloored
 
     xor a
 
-jr_001_691f:
+.blueFloored:
     sla a
     sla a
     or c
@@ -5922,21 +3684,23 @@ jr_001_691f:
     dec bc
     ld a, b
     or c
-    jr nz, jr_001_68f0
+    jr nz, .nextColour
 
-    call Call_001_7c54
-    call Call_001_6807
+    call WaitVBlank
+    call CopyPaletteBuffer
     pop bc
     pop af
     dec c
-    jp nz, Jump_001_68dd
+    jp nz, FadePalettes2_Step
 
-    call Call_001_7c54
+    call WaitVBlank
     ret
 
-
-Call_001_693c:
-    ld a, [$ff9c]
+; Gathers nine records of three colours in wRasterColours from the faded palettes and copies them into wRasterTable.
+; Sets the palette index registers for the raster effect. Does nothing when hPaletteMode is 0, 3 or 4.
+; Called by the palette fade step after the faded palettes are copied to the hardware.
+AnimatePalettes:
+    ld a, [hPaletteMode]
     or a
     ret z
 
@@ -5946,125 +3710,125 @@ Call_001_693c:
     cp $04
     ret z
 
-    ld a, [$c958]
+    ld a, [wRasterObjPaletteIndex]
     ldh [rOCPS], a
     ld a, $9e
     ldh [rBCPS], a
-    ld hl, $cb1d
-    ld a, [$caf7]
+    ld hl, wRasterColours
+    ld a, [wFadedObjPalettes + $1a]
     ld [hl+], a
-    ld a, [$caf8]
+    ld a, [wFadedObjPalettes + $1b]
     ld [hl+], a
-    ld a, [$cafb]
+    ld a, [wFadedObjPalettes + $1e]
     ld [hl+], a
-    ld a, [$cafc]
+    ld a, [wFadedObjPalettes + $1f]
     ld [hl+], a
-    ld a, [$cab5]
+    ld a, [wFadedPalettes + $18]
     ld [hl+], a
-    ld a, [$cab6]
+    ld a, [wFadedPalettes + $19]
     ld [hl+], a
-    ld a, [$caf7]
+    ld a, [wFadedObjPalettes + $1a]
     ld [hl+], a
-    ld a, [$caf8]
+    ld a, [wFadedObjPalettes + $1b]
     ld [hl+], a
-    ld a, [$cafb]
+    ld a, [wFadedObjPalettes + $1e]
     ld [hl+], a
-    ld a, [$cafc]
+    ld a, [wFadedObjPalettes + $1f]
     ld [hl+], a
-    ld a, [$cafb]
+    ld a, [wFadedObjPalettes + $1e]
     ld [hl+], a
-    ld a, [$cafc]
+    ld a, [wFadedObjPalettes + $1f]
     ld [hl+], a
-    ld a, [$caf7]
+    ld a, [wFadedObjPalettes + $1a]
     ld [hl+], a
-    ld a, [$caf8]
+    ld a, [wFadedObjPalettes + $1b]
     ld [hl+], a
-    ld a, [$caf9]
+    ld a, [wFadedObjPalettes + $1c]
     ld [hl+], a
-    ld a, [$cafa]
+    ld a, [wFadedObjPalettes + $1d]
     ld [hl+], a
-    ld a, [$caf9]
+    ld a, [wFadedObjPalettes + $1c]
     ld [hl+], a
-    ld a, [$cafa]
+    ld a, [wFadedObjPalettes + $1d]
     ld [hl+], a
-    ld a, [$caf7]
+    ld a, [wFadedObjPalettes + $1a]
     ld [hl+], a
-    ld a, [$caf8]
+    ld a, [wFadedObjPalettes + $1b]
     ld [hl+], a
-    ld a, [$caf9]
+    ld a, [wFadedObjPalettes + $1c]
     ld [hl+], a
-    ld a, [$cafa]
+    ld a, [wFadedObjPalettes + $1d]
     ld [hl+], a
-    ld a, [$caf7]
+    ld a, [wFadedObjPalettes + $1a]
     ld [hl+], a
-    ld a, [$caf8]
+    ld a, [wFadedObjPalettes + $1b]
     ld [hl+], a
-    ld a, [$caf1]
+    ld a, [wFadedObjPalettes + $14]
     ld [hl+], a
-    ld a, [$caf2]
+    ld a, [wFadedObjPalettes + $15]
     ld [hl+], a
-    ld a, [$caf3]
+    ld a, [wFadedObjPalettes + $16]
     ld [hl+], a
-    ld a, [$caf4]
+    ld a, [wFadedObjPalettes + $17]
     ld [hl+], a
-    ld a, [$caed]
+    ld a, [wFadedObjPalettes + $10]
     ld [hl+], a
-    ld a, [$caee]
+    ld a, [wFadedObjPalettes + $11]
     ld [hl+], a
-    ld a, [$caf1]
+    ld a, [wFadedObjPalettes + $14]
     ld [hl+], a
-    ld a, [$caf2]
+    ld a, [wFadedObjPalettes + $15]
     ld [hl+], a
-    ld a, [$caf3]
+    ld a, [wFadedObjPalettes + $16]
     ld [hl+], a
-    ld a, [$caf4]
+    ld a, [wFadedObjPalettes + $17]
     ld [hl+], a
-    ld a, [$caf1]
+    ld a, [wFadedObjPalettes + $14]
     ld [hl+], a
-    ld a, [$caf2]
+    ld a, [wFadedObjPalettes + $15]
     ld [hl+], a
-    ld a, [$caf1]
+    ld a, [wFadedObjPalettes + $14]
     ld [hl+], a
-    ld a, [$caf2]
+    ld a, [wFadedObjPalettes + $15]
     ld [hl+], a
-    ld a, [$caf3]
+    ld a, [wFadedObjPalettes + $16]
     ld [hl+], a
-    ld a, [$caf4]
+    ld a, [wFadedObjPalettes + $17]
     ld [hl+], a
-    ld a, [$caf3]
+    ld a, [wFadedObjPalettes + $16]
     ld [hl+], a
-    ld a, [$caf4]
+    ld a, [wFadedObjPalettes + $17]
     ld [hl+], a
-    ld a, [$caf1]
+    ld a, [wFadedObjPalettes + $14]
     ld [hl+], a
-    ld a, [$caf2]
+    ld a, [wFadedObjPalettes + $15]
     ld [hl+], a
-    ld a, [$caf3]
+    ld a, [wFadedObjPalettes + $16]
     ld [hl+], a
-    ld a, [$caf4]
+    ld a, [wFadedObjPalettes + $17]
     ld [hl+], a
-    ld a, [$cab5]
+    ld a, [wFadedPalettes + $18]
     ld [hl+], a
-    ld a, [$cab6]
+    ld a, [wFadedPalettes + $19]
     ld [hl+], a
-    ld a, [$caf1]
+    ld a, [wFadedObjPalettes + $14]
     ld [hl+], a
-    ld a, [$caf2]
+    ld a, [wFadedObjPalettes + $15]
     ld [hl+], a
-    ld a, [$caf3]
+    ld a, [wFadedObjPalettes + $16]
     ld [hl+], a
-    ld a, [$caf4]
+    ld a, [wFadedObjPalettes + $17]
     ld [hl+], a
-    ld a, [$cabb]
+    ld a, [wFadedPalettes + $1e]
     ld [hl+], a
-    ld a, [$cabc]
+    ld a, [wFadedPalettes + $1f]
     ld [hl+], a
-    ld hl, $c3b6
+    ld hl, wRasterTable
     ld b, $09
     ld c, $81
-    ld de, $cb1d
+    ld de, wRasterColours
 
-jr_001_6a35:
+.copyEntryLoop:
     ld a, [de]
     inc de
     ld [hl+], a
@@ -6087,39 +3851,42 @@ jr_001_6a35:
     ld [hl+], a
     inc a
     cp $88
-    jr nz, jr_001_6a50
+    jr nz, .checkIndex09
 
     ld a, $08
 
-jr_001_6a50:
+.checkIndex09:
     cp $09
-    jr nz, jr_001_6a56
+    jr nz, .storeNextIndex
 
     ld a, $80
 
-jr_001_6a56:
+.storeNextIndex:
     ld c, a
     dec b
-    jr nz, jr_001_6a35
+    jr nz, .copyEntryLoop
 
     ret
 
-
+; Frame handler of the language selection screen. Highlights the row of the chosen language in the screen's colour attributes.
+; Down and Up move wLanguage by one step per press (limited to the five languages) and play a sound.
+; A, B, Select or Start confirms the choice and copies its language table, unless hGameState is already 5.
+LanguageSelect_Update:
     ld a, $01
     ldh [rVBK], a
-    ld a, [$defc]
+    ld a, [wLanguage]
     or a
-    jr nz, jr_001_6a71
+    jr nz, .checkLanguage1
 
     ld hl, $986c
     ld [hl], $04
     ld hl, $98cc
     ld [hl], $01
-    jr jr_001_6abe
+    jr .readJoypad
 
-jr_001_6a71:
+.checkLanguage1:
     cp $01
-    jr nz, jr_001_6a86
+    jr nz, .checkLanguage2
 
     ld hl, $986c
     ld [hl], $01
@@ -6127,11 +3894,11 @@ jr_001_6a71:
     ld [hl], $04
     ld hl, $992c
     ld [hl], $01
-    jr jr_001_6abe
+    jr .readJoypad
 
-jr_001_6a86:
+.checkLanguage2:
     cp $02
-    jr nz, jr_001_6a9b
+    jr nz, .checkLanguage3
 
     ld hl, $98cc
     ld [hl], $01
@@ -6139,11 +3906,11 @@ jr_001_6a86:
     ld [hl], $04
     ld hl, $998c
     ld [hl], $01
-    jr jr_001_6abe
+    jr .readJoypad
 
-jr_001_6a9b:
+.checkLanguage3:
     cp $03
-    jr nz, jr_001_6ab0
+    jr nz, .checkLanguage4
 
     ld hl, $992c
     ld [hl], $01
@@ -6151,173 +3918,190 @@ jr_001_6a9b:
     ld [hl], $04
     ld hl, $99ec
     ld [hl], $01
-    jr jr_001_6abe
+    jr .readJoypad
 
-jr_001_6ab0:
+.checkLanguage4:
     cp $04
-    jr nz, jr_001_6abe
+    jr nz, .readJoypad
 
     ld hl, $998c
     ld [hl], $01
     ld hl, $99ec
     ld [hl], $04
 
-jr_001_6abe:
-    ld a, [$ff8a]
+.readJoypad:
+    ld a, [hJoypad]
     ld b, a
-    ld a, [$defd]
+    ld a, [wLanguageDownHeld]
     or a
-    jr nz, jr_001_6ae2
+    jr nz, .checkNextKeyReleased
 
     bit 3, b
-    jr z, jr_001_6aea
+    jr z, .checkPrevKey
 
     ld a, b
-    ld [$defd], a
-    ld a, [$defc]
+    ld [wLanguageDownHeld], a
+    ld a, [wLanguage]
     cp $04
-    jr z, jr_001_6aea
+    jr z, .checkPrevKey
 
     inc a
-    ld [$defc], a
-    ld a, $19
-    call Call_000_3e64
-    jr jr_001_6aea
+    ld [wLanguage], a
+    ld a, SFX_MENU_MOVE
+    call PlaySound
+    jr .checkPrevKey
 
-jr_001_6ae2:
+.checkNextKeyReleased:
     bit 3, b
-    jr nz, jr_001_6aea
+    jr nz, .checkPrevKey
 
     xor a
-    ld [$defd], a
+    ld [wLanguageDownHeld], a
 
-jr_001_6aea:
-    ld a, [$defe]
+.checkPrevKey:
+    ld a, [wLanguageUpHeld]
     or a
-    jr nz, jr_001_6b09
+    jr nz, .checkPrevKeyReleased
 
     bit 2, b
-    jr z, jr_001_6b11
+    jr z, .checkConfirm
 
     ld a, b
-    ld [$defe], a
-    ld a, [$defc]
+    ld [wLanguageUpHeld], a
+    ld a, [wLanguage]
     or a
-    jr z, jr_001_6b11
+    jr z, .checkConfirm
 
     dec a
-    ld [$defc], a
-    ld a, $19
-    call Call_000_3e64
-    jr jr_001_6b11
+    ld [wLanguage], a
+    ld a, SFX_MENU_MOVE
+    call PlaySound
+    jr .checkConfirm
 
-jr_001_6b09:
+.checkPrevKeyReleased:
     bit 2, b
-    jr nz, jr_001_6b11
+    jr nz, .checkConfirm
 
     xor a
-    ld [$defe], a
+    ld [wLanguageUpHeld], a
 
-jr_001_6b11:
+.checkConfirm:
     ld a, b
     and $f0
     or a
-    jp z, Jump_001_6b8a
+    jp z, LanguageSelect_Done
 
-    ld a, [$ff9f]
+    ld a, [hGameState]
     cp $05
     ret z
 
-    ld a, [$defc]
-    ld hl, $70ab
+    ld a, [wLanguage]
+    ld hl, LanguageTable_English
     or a
-    jp z, Jump_001_6b40
+    jp z, LanguageSelect_CopyTable
 
-    ld hl, $70fc
+    ld hl, LanguageTable_Spanish
     dec a
-    jp z, Jump_001_6b40
+    jp z, LanguageSelect_CopyTable
 
-    ld hl, $714d
+    ld hl, LanguageTable_French
     dec a
-    jp z, Jump_001_6b40
+    jp z, LanguageSelect_CopyTable
 
-    ld hl, $719e
+    ld hl, LanguageTable_German
     dec a
-    jp z, Jump_001_6b40
+    jp z, LanguageSelect_CopyTable
 
-    ld hl, $705a
+    ld hl, LanguageTable_Italian
 
-Jump_001_6b40:
-    ld de, $df01
+; HL = language table of the chosen language. Copies its texts into wLangTextStartGame, wHighScoreTable and wLatestScoreText,
+; and writes the level letter of that language into the ten high score entries.
+; Then plays a sound, sets hGameState to 5 and starts hStateTimer.
+LanguageSelect_CopyTable:
+    ld de, wLangTextStartGame
     ld bc, $0051
     call DataTransfer
-    ld a, [$df4a]
+    ld a, [wLangTextHighScorePassword]
     ld l, a
-    ld a, [$df4b]
+    ld a, [wLangTextHighScorePassword + 1]
     ld h, a
-    ld de, $cb69
+    ld de, wHighScoreTable + $10
     ld bc, $0018
     call DataTransfer
-    ld a, [$df50]
+    ld a, [wLangTextLatestScore]
     ld l, a
-    ld a, [$df51]
+    ld a, [wLangTextLatestScore + 1]
     ld h, a
-    ld de, $cc99
+    ld de, wLatestScoreText
     ld bc, $001b
     call DataTransfer
-    ld a, [$df43]
-    ld hl, $cb96
+    ld a, [wLangLevelLetter]
+    ld hl, wHighScoreTable + $3d
     ld de, $001c
     ld b, $0a
 
-jr_001_6b76:
+.fillLoop:
     ld [hl], a
     add hl, de
     dec b
-    jr nz, jr_001_6b76
+    jr nz, .fillLoop
 
-    ld a, $1a
-    call Call_000_3e64
+    ld a, SFX_MENU_SELECT
+    call PlaySound
     ld a, $05
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $28
-    ld [$ffa0], a
+    ld [hStateTimer], a
 
-Jump_001_6b8a:
+; Exit of LanguageSelect_Update when no action button is pressed, and the end of LanguageSelect_CopyTable.
+LanguageSelect_Done:
     ret
 
+Text_English_HighScorePassword:
+    dw $987f
+    db $00, $84, "    PASSWORD ", $00, $81, "PTPP", $ff
 
-    db $7f, $98, $00, $84, $20, $20, $20, $20, $50, $41, $53, $53, $57, $4f, $52, $44
-    db $20, $00, $81, $50, $54, $50, $50, $ff
+Text_French_HighScorePassword:
+    dw $9881
+    db $00, $84, "MOT DE PASSE ", $00, $81, "PTPP", $ff
 
-    db $81, $98, $00, $84, $4d, $4f, $54, $20, $44, $45, $20, $50, $41, $53, $53, $45
-    db $20, $00, $81, $50, $54, $50, $50, $ff
+Text_German_HighScorePassword:
+    dw $987f
+    db $00, $84, "    PASSWORT ", $00, $81, "PTPP", $ff
 
-    db $7f, $98, $00, $84, $20, $20, $20, $20, $50, $41, $53, $53, $57, $4f, $52, $54
-    db $20, $00, $81, $50, $54, $50, $50, $ff
+Text_Spanish_HighScorePassword:
+    dw $9880
+    db $00, $84, "  CONTRASE", $f0, "A ", $00, $81, "PTPP", $ff
 
-    db $80, $98, $00, $84, $20, $20, $43, $4f, $4e, $54, $52, $41, $53, $45, $f0, $41
-    db $20, $00, $81, $50, $54, $50, $50, $ff
+Text_Italian_HighScorePassword:
+    dw $987f
+    db $00, $84, "    PASSWORD ", $00, $81, "PTPP", $ff
 
-    db $7f, $98, $00, $84, $20, $20, $20, $20, $50, $41, $53, $53, $57, $4f, $52, $44
-    db $20, $00, $81, $50, $54, $50, $50, $ff
+Text_English_LatestScore:
+    dw $99fc
+    db $00, $84, "       LATEST ", $00, $81, "000000", $ff
 
-    db $fc, $99, $00, $84, $20, $20, $20, $20, $20, $20, $20, $4c, $41, $54, $45, $53
-    db $54, $20, $00, $81, $30, $30, $30, $30, $30, $30, $ff
+Text_French_LatestScore:
+    dw $99fd
+    db $00, $84, "      DERNIER ", $00, $81, "000000", $ff
 
-    db $fd, $99, $00, $84, $20, $20, $20, $20, $20, $20, $44, $45, $52, $4e, $49, $45
-    db $52, $20, $00, $81, $30, $30, $30, $30, $30, $30, $ff
+Text_Spanish_LatestScore:
+    dw $99ff
+    db $00, $84, "  ", $ee, "LTIMA PUNT ", $00, $81, "000000", $ff
 
-    db $ff, $99, $00, $84, $20, $20, $ee, $4c, $54, $49, $4d, $41, $20, $50, $55, $4e
-    db $54, $20, $00, $81, $30, $30, $30, $30, $30, $30, $ff
+Text_Italian_LatestScore:
+    dw $99fc
+    db $00, $84, "       ULTIMO ", $00, $81, "000000", $ff
 
-    db $fc, $99, $00, $84, $20, $20, $20, $20, $20, $20, $20, $55, $4c, $54, $49, $4d
-    db $4f, $20, $00, $81, $30, $30, $30, $30, $30, $30, $ff
+Text_German_LatestScore:
+    dw $99fc
+    db $00, $84, "       LETZTE ", $00, $81, "000000", $ff
 
-    db $fc, $99, $00, $84, $20, $20, $20, $20, $20, $20, $20, $4c, $45, $54, $5a, $54
-    db $45, $20, $00, $81, $30, $30, $30, $30, $30, $30, $ff
-
-    ld a, [$db5a]
+; Called on every VBlank. When wTitleLetterArrived is not 0, draws that title letter on the background.
+; Writes its colour attributes in VRAM bank 1 and its tiles in bank 0, using TitleLetterAttrTable and TitleLetterTileTable.
+; Sets wTitleLetterArrived back to 0 so each letter is drawn once.
+TitleScreen_VBlank:
+    ld a, [wTitleLetterArrived]
     or a
     ret z
 
@@ -6327,7 +4111,7 @@ Jump_001_6b8a:
     add a
     ld l, a
     ld h, b
-    ld de, $5b44
+    ld de, TitleLetterAttrTable
     add hl, de
     add hl, bc
     ld a, [hl+]
@@ -6343,15 +4127,15 @@ Jump_001_6b8a:
     ldh [rVBK], a
     xor a
     ld c, $06
-    call Call_000_01d4
-    ld a, [$db5a]
+    call CopyTilemapRect
+    ld a, [wTitleLetterArrived]
     ld c, a
     ld b, $00
     add a
     add a
     ld l, a
     ld h, b
-    ld de, $5b26
+    ld de, TitleLetterTileTable
     add hl, de
     add hl, bc
     ld a, [hl+]
@@ -6365,223 +4149,216 @@ Jump_001_6b8a:
     ld l, a
     xor a
     ldh [rVBK], a
-    ld [$db5a], a
+    ld [wTitleLetterArrived], a
     ld a, $ad
     ld c, $06
-    call Call_000_01d4
+    call CopyTilemapRect
     ret
 
-
-    ld a, [$db6d]
+; Slide the six title letters in from the right, one after the other, as sprites.
+; When a letter reaches the end of its path, wTitleLetterArrived tells the caller to draw it on the background.
+TitleScreen_SlideLetters:
+    ld a, [wTitleLetterSliding]
     or a
     ret z
 
     push af
     ld a, $28
-    ld hl, $c200
-    call Call_001_6e9a
+    ld hl, wOamBuffer
+    call ClearOamEntries
     pop af
     cp $01
-    jr nz, jr_001_6d15
+    jr nz, .checkLetter2
 
-    ld a, [$db61]
+    ld a, [wTitleLetterPathPtrs]
     ld l, a
-    ld a, [$db62]
+    ld a, [wTitleLetterPathPtrs + 1]
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_6cfe
+    jr nz, .moveLetter1
 
     ld a, $02
-    ld [$db6d], a
+    ld [wTitleLetterSliding], a
     ld a, $01
-    ld [$db5a], a
+    ld [wTitleLetterArrived], a
     ret
 
-
-jr_001_6cfe:
+.moveLetter1:
     ld b, a
     ld a, l
-    ld [$db61], a
+    ld [wTitleLetterPathPtrs], a
     ld a, h
-    ld [$db62], a
-    ld a, [$db5b]
+    ld [wTitleLetterPathPtrs + 1], a
+    ld a, [wTitleLetterX]
     add b
-    ld [$db5b], a
+    ld [wTitleLetterX], a
     ld c, a
-    ld hl, $5855
-    jp Jump_001_6e0b
+    ld hl, TitleLetterSprites_1
+    jp TitleScreen_DrawLetterSprites
 
-
-jr_001_6d15:
+.checkLetter2:
     cp $02
-    jr nz, jr_001_6d47
+    jr nz, .checkLetter3
 
-    ld a, [$db63]
+    ld a, [wTitleLetterPathPtrs + 2]
     ld l, a
-    ld a, [$db64]
+    ld a, [wTitleLetterPathPtrs + 3]
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_6d30
+    jr nz, .moveLetter2
 
     ld a, $03
-    ld [$db6d], a
+    ld [wTitleLetterSliding], a
     ld a, $02
-    ld [$db5a], a
+    ld [wTitleLetterArrived], a
     ret
 
-
-jr_001_6d30:
+.moveLetter2:
     ld b, a
     ld a, l
-    ld [$db63], a
+    ld [wTitleLetterPathPtrs + 2], a
     ld a, h
-    ld [$db64], a
-    ld a, [$db5c]
+    ld [wTitleLetterPathPtrs + 3], a
+    ld a, [wTitleLetterX + 1]
     add b
-    ld [$db5c], a
+    ld [wTitleLetterX + 1], a
     ld c, a
-    ld hl, $589e
-    jp Jump_001_6e0b
+    ld hl, TitleLetterSprites_2
+    jp TitleScreen_DrawLetterSprites
 
-
-jr_001_6d47:
+.checkLetter3:
     cp $03
-    jr nz, jr_001_6d79
+    jr nz, .checkLetter4
 
-    ld a, [$db65]
+    ld a, [wTitleLetterPathPtrs + 4]
     ld l, a
-    ld a, [$db66]
+    ld a, [wTitleLetterPathPtrs + 5]
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_6d62
+    jr nz, .moveLetter3
 
     ld a, $04
-    ld [$db6d], a
+    ld [wTitleLetterSliding], a
     ld a, $03
-    ld [$db5a], a
+    ld [wTitleLetterArrived], a
     ret
 
-
-jr_001_6d62:
+.moveLetter3:
     ld b, a
     ld a, l
-    ld [$db65], a
+    ld [wTitleLetterPathPtrs + 4], a
     ld a, h
-    ld [$db66], a
-    ld a, [$db5d]
+    ld [wTitleLetterPathPtrs + 5], a
+    ld a, [wTitleLetterX + 2]
     add b
-    ld [$db5d], a
+    ld [wTitleLetterX + 2], a
     ld c, a
-    ld hl, $592f
-    jp Jump_001_6e0b
+    ld hl, TitleLetterSprites_3
+    jp TitleScreen_DrawLetterSprites
 
-
-jr_001_6d79:
+.checkLetter4:
     cp $04
-    jr nz, jr_001_6daa
+    jr nz, .checkLetter5
 
-    ld a, [$db67]
+    ld a, [wTitleLetterPathPtrs + 6]
     ld l, a
-    ld a, [$db68]
+    ld a, [wTitleLetterPathPtrs + 7]
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_6d94
+    jr nz, .moveLetter4
 
     ld a, $05
-    ld [$db6d], a
+    ld [wTitleLetterSliding], a
     ld a, $04
-    ld [$db5a], a
+    ld [wTitleLetterArrived], a
     ret
 
-
-jr_001_6d94:
+.moveLetter4:
     ld b, a
     ld a, l
-    ld [$db67], a
+    ld [wTitleLetterPathPtrs + 6], a
     ld a, h
-    ld [$db68], a
-    ld a, [$db5e]
+    ld [wTitleLetterPathPtrs + 7], a
+    ld a, [wTitleLetterX + 3]
     add b
-    ld [$db5e], a
+    ld [wTitleLetterX + 3], a
     ld c, a
-    ld hl, $59c0
-    jr jr_001_6e0b
+    ld hl, TitleLetterSprites_4
+    jr TitleScreen_DrawLetterSprites
 
-jr_001_6daa:
+.checkLetter5:
     cp $05
-    jr nz, jr_001_6ddb
+    jr nz, .checkLetter6
 
-    ld a, [$db69]
+    ld a, [wTitleLetterPathPtrs + 8]
     ld l, a
-    ld a, [$db6a]
+    ld a, [wTitleLetterPathPtrs + 9]
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_6dc5
+    jr nz, .moveLetter5
 
     ld a, $06
-    ld [$db6d], a
+    ld [wTitleLetterSliding], a
     ld a, $05
-    ld [$db5a], a
+    ld [wTitleLetterArrived], a
     ret
 
-
-jr_001_6dc5:
+.moveLetter5:
     ld b, a
     ld a, l
-    ld [$db69], a
+    ld [wTitleLetterPathPtrs + 8], a
     ld a, h
-    ld [$db6a], a
-    ld a, [$db5f]
+    ld [wTitleLetterPathPtrs + 9], a
+    ld a, [wTitleLetterX + 4]
     add b
-    ld [$db5f], a
+    ld [wTitleLetterX + 4], a
     ld c, a
-    ld hl, $5a51
-    jr jr_001_6e0b
+    ld hl, TitleLetterSprites_5
+    jr TitleScreen_DrawLetterSprites
 
-jr_001_6ddb:
+.checkLetter6:
     cp $06
-    jr nz, jr_001_6e0b
+    jr nz, TitleScreen_DrawLetterSprites
 
-    ld a, [$db6b]
+    ld a, [wTitleLetterPathPtrs + 10]
     ld l, a
-    ld a, [$db6c]
+    ld a, [wTitleLetterPathPtrs + 11]
     ld h, a
     ld a, [hl+]
     or a
-    jr nz, jr_001_6df5
+    jr nz, .moveLetter6
 
     xor a
-    ld [$db6d], a
+    ld [wTitleLetterSliding], a
     ld a, $06
-    ld [$db5a], a
+    ld [wTitleLetterArrived], a
     ret
 
-
-jr_001_6df5:
+.moveLetter6:
     ld b, a
     ld a, l
-    ld [$db6b], a
+    ld [wTitleLetterPathPtrs + 10], a
     ld a, h
-    ld [$db6c], a
-    ld a, [$db60]
+    ld [wTitleLetterPathPtrs + 11], a
+    ld a, [wTitleLetterX + 5]
     add b
-    ld [$db60], a
+    ld [wTitleLetterX + 5], a
     ld c, a
-    ld hl, $5ae2
-    jr jr_001_6e0b
+    ld hl, TitleLetterSprites_6
+    jr TitleScreen_DrawLetterSprites
 
-Jump_001_6e0b:
-jr_001_6e0b:
-    ld de, $c200
+; Write the sprites of one letter. HL = sprite list (count, then y, x, tile, attribute), C = x offset.
+TitleScreen_DrawLetterSprites:
+    ld de, wOamBuffer
     ld b, $10
     ld a, [hl+]
 
-jr_001_6e11:
+.nextSprite:
     push af
     ld a, [hl+]
     add b
@@ -6599,98 +4376,79 @@ jr_001_6e11:
     inc de
     pop af
     dec a
-    jr nz, jr_001_6e11
+    jr nz, .nextSprite
 
     ret
 
-
+; Prepares the title letter animation. Sets the X offset of all six letters in wTitleLetterX to $a8
+; and points each entry of wTitleLetterPathPtrs to the start of its path. Sets wTitleLetterSliding to 1 so the first letter starts to slide in.
+; Called once when the title screen is set up.
+TitleScreen_InitLetters:
     ld a, $a8
-    ld [$db5b], a
-    ld [$db5c], a
-    ld [$db5d], a
-    ld [$db5e], a
-    ld [$db5f], a
-    ld [$db60], a
-    ld hl, $583e
+    ld [wTitleLetterX], a
+    ld [wTitleLetterX + 1], a
+    ld [wTitleLetterX + 2], a
+    ld [wTitleLetterX + 3], a
+    ld [wTitleLetterX + 4], a
+    ld [wTitleLetterX + 5], a
+    ld hl, TitleLetterPath_1
     ld a, l
-    ld [$db61], a
+    ld [wTitleLetterPathPtrs], a
     ld a, h
-    ld [$db62], a
-    ld hl, $5841
+    ld [wTitleLetterPathPtrs + 1], a
+    ld hl, TitleLetterPath_2
     ld a, l
-    ld [$db63], a
+    ld [wTitleLetterPathPtrs + 2], a
     ld a, h
-    ld [$db64], a
-    ld hl, $5844
+    ld [wTitleLetterPathPtrs + 3], a
+    ld hl, TitleLetterPath_3
     ld a, l
-    ld [$db65], a
+    ld [wTitleLetterPathPtrs + 4], a
     ld a, h
-    ld [$db66], a
-    ld hl, $5847
+    ld [wTitleLetterPathPtrs + 5], a
+    ld hl, TitleLetterPath_4
     ld a, l
-    ld [$db67], a
+    ld [wTitleLetterPathPtrs + 6], a
     ld a, h
-    ld [$db68], a
-    ld hl, $584a
+    ld [wTitleLetterPathPtrs + 7], a
+    ld hl, TitleLetterPath_5
     ld a, l
-    ld [$db69], a
+    ld [wTitleLetterPathPtrs + 8], a
     ld a, h
-    ld [$db6a], a
-    ld hl, $584d
+    ld [wTitleLetterPathPtrs + 9], a
+    ld hl, TitleLetterPath_6
     ld a, l
-    ld [$db6b], a
+    ld [wTitleLetterPathPtrs + 10], a
     ld a, h
-    ld [$db6c], a
+    ld [wTitleLetterPathPtrs + 11], a
     ld a, $01
-    ld [$db6d], a
+    ld [wTitleLetterSliding], a
     ret
 
+    db $40, $98, $00, $0a, $20, $20, $20, $46, $45, $4c, $49, $43, $49, $54, $41, $54
+    db $49, $4f, $4e, $53, $20, $20, $20, $20, $ff
 
-    ld b, b
-    sbc b
-    nop
-    ld a, [bc]
-    jr nz, @+$22
-
-    jr nz, jr_001_6ecf
-
-    ld b, l
-    ld c, h
-    ld c, c
-    ld b, e
-    ld c, c
-    ld d, h
-    ld b, c
-    ld d, h
-    ld c, c
-    ld c, a
-    ld c, [hl]
-    ld d, e
-    jr nz, jr_001_6eb7
-
-    jr nz, jr_001_6eb9
-
-    rst $38
-
-Call_001_6e9a:
+; Hide A sprites starting at HL by clearing their Y position.
+ClearOamEntries:
     ld b, a
     xor a
     ld de, $0004
 
-jr_001_6e9f:
+.clearLoop:
     ld [hl], a
     add hl, de
     dec b
-    jr nz, jr_001_6e9f
+    jr nz, .clearLoop
 
     ret
 
-
-    ld hl, $c200
-    ld de, $7b0c
+; Copy the 9 sprites of the bat and ball to the OAM buffer.
+InitBatSprites:
+    ld hl, wOamBuffer
+    ld de, BatAndBallStartSprites
     ld b, $09
 
-jr_001_6ead:
+.copySpriteLoop:
     ld a, [de]
     inc de
     ld [hl+], a
@@ -6702,57 +4460,57 @@ jr_001_6ead:
     ld [hl+], a
     ld a, [de]
 
-jr_001_6eb7:
     inc de
     ld [hl+], a
 
-jr_001_6eb9:
     dec b
-    jr nz, jr_001_6ead
+    jr nz, .copySpriteLoop
 
     ld a, $01
-    ld [$c2b4], a
+    ld [wOamUsedLastFrame], a
     dec a
-    ld [$c2b5], a
-    ld [$db70], a
-    ld de, $c2b9
+    ld [wOamUsed], a
+    ld [wPowerupSpritesUsed], a
+    ld de, wExtraSprites
     ld a, e
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
 
-jr_001_6ecf:
     ld a, d
-    ld [$c2b7], a
+    ld [wOamWritePtr + 1], a
     ret
 
-
-    ld hl, $c204
-    ld a, [$c2b4]
-    call Call_001_6e9a
-    ld a, [$d76b]
+; Writes the bat sprites, the queued sprites from wExtraSprites, the balls and the falling power-ups into wOamBuffer.
+; Skips the bat sprites while wBatExplosionTimer is not 0. Stores the sprite count in wOamUsedLastFrame.
+; Called once per frame while a level is played, after the objects have moved, and once when a level is set up.
+DrawBatSprites:
+    ld hl, wOamBuffer + 4
+    ld a, [wOamUsedLastFrame]
+    call ClearOamEntries
+    ld a, [wBatExplosionTimer]
     or a
-    jr z, jr_001_6ee8
+    jr z, .batNotExploding
 
-    ld hl, $c200
-    jr jr_001_6f66
+    ld hl, wOamBuffer
+    jr .copyQueuedSprites
 
-jr_001_6ee8:
-    ld hl, $c204
-    ld a, [$c201]
+.batNotExploding:
+    ld hl, wOamBuffer + 4
+    ld a, [wBatX]
     add $08
     ld b, a
-    ld a, [$ff90]
+    ld a, [hTemp2]
     or a
-    jr nz, jr_001_6efe
+    jr nz, .fourSpriteLowerRow
 
-    ld de, $7b30
+    ld de, BatShadowTiles_Normal
     ld c, $03
-    jr jr_001_6f03
+    jr .lowerRowLoop
 
-jr_001_6efe:
-    ld de, $7b36
+.fourSpriteLowerRow:
+    ld de, BatShadowTiles_Wide
     ld c, $04
 
-jr_001_6f03:
+.lowerRowLoop:
     ld a, $98
     ld [hl+], a
     ld a, b
@@ -6766,58 +4524,58 @@ jr_001_6f03:
     inc de
     ld [hl+], a
     dec c
-    jr nz, jr_001_6f03
+    jr nz, .lowerRowLoop
 
-    ld de, $7b3e
-    ld a, [$dc3d]
+    ld de, BatTiles_Normal
+    ld a, [wWeaponFlag]
     or a
-    jr z, jr_001_6f20
+    jr z, .checkStickyBat
 
-    ld de, $7b46
+    ld de, BatTiles_Weapon
 
-jr_001_6f20:
-    ld a, [$d8a8]
+.checkStickyBat:
+    ld a, [wBallOnBat]
     or a
-    jr nz, jr_001_6f2f
+    jr nz, .upperRowDataChosen
 
-    ld a, [$d763]
+    ld a, [wBallSticks]
     or a
-    jr z, jr_001_6f2f
+    jr z, .upperRowDataChosen
 
-    ld de, $7b4e
+    ld de, BatTiles_Sticky
 
-jr_001_6f2f:
-    ld a, [$d764]
+.upperRowDataChosen:
+    ld a, [wBatWidth]
     cp $20
-    jr z, jr_001_6f3a
+    jr z, .normalWidth
 
     ld a, $01
-    jr jr_001_6f3b
+    jr .storeWideFlag
 
-jr_001_6f3a:
+.normalWidth:
     xor a
 
-jr_001_6f3b:
-    ld [$ff90], a
+.storeWideFlag:
+    ld [hTemp2], a
     ld c, $04
-    ld a, [$c201]
+    ld a, [wBatX]
     sub $08
     ld b, a
 
-jr_001_6f46:
-    ld a, [$ff90]
+.upperRowLoop:
+    ld a, [hTemp2]
     or a
-    jr z, jr_001_6f55
+    jr z, .writeUpperSprite
 
     ld a, c
     cp $02
-    jr nz, jr_001_6f55
+    jr nz, .writeUpperSprite
 
     ld a, b
     add $08
     ld b, a
 
-jr_001_6f55:
+.writeUpperSprite:
     ld a, $90
     ld [hl+], a
     ld a, b
@@ -6831,21 +4589,21 @@ jr_001_6f55:
     inc de
     ld [hl+], a
     dec c
-    jr nz, jr_001_6f46
+    jr nz, .upperRowLoop
 
-jr_001_6f66:
-    ld a, [$c2b5]
+.copyQueuedSprites:
+    ld a, [wOamUsed]
     or a
-    jr z, jr_001_6f87
+    jr z, .stepNinjaFrame
 
     ld c, a
-    ld de, $c2b9
+    ld de, wExtraSprites
     ld a, e
-    ld [$c2b6], a
+    ld [wOamWritePtr], a
     ld a, d
-    ld [$c2b7], a
+    ld [wOamWritePtr + 1], a
 
-jr_001_6f78:
+.queuedSpriteLoop:
     ld a, [de]
     inc de
     ld [hl+], a
@@ -6859,32 +4617,32 @@ jr_001_6f78:
     inc de
     ld [hl+], a
     dec c
-    jr nz, jr_001_6f78
+    jr nz, .queuedSpriteLoop
 
-jr_001_6f87:
-    ld a, [$d76e]
+.stepNinjaFrame:
+    ld a, [wNinjaActive]
     or a
-    jr z, jr_001_6f99
+    jr z, .drawBalls
 
-    ld a, [$c2b8]
+    ld a, [wNinjaBallFrame]
     inc a
     cp $03
-    jr nz, jr_001_6f96
+    jr nz, .storeNinjaFrame
 
     xor a
 
-jr_001_6f96:
-    ld [$c2b8], a
+.storeNinjaFrame:
+    ld [wNinjaBallFrame], a
 
-jr_001_6f99:
-    ld a, [$d77c]
+.drawBalls:
+    ld a, [wBallCount]
     or a
-    jr z, jr_001_6fdb
+    jr z, .drawPowerups
 
-    ld de, $d77d
+    ld de, wBalls
     ld c, a
 
-jr_001_6fa3:
+.nextBall:
     inc de
     ld a, [de]
     inc de
@@ -6896,56 +4654,56 @@ jr_001_6fa3:
     inc de
     inc de
     inc de
-    ld a, [$d76e]
+    ld a, [wNinjaActive]
     or a
-    jr z, jr_001_6fd4
+    jr z, .normalBall
 
-    ld a, [$c2b8]
+    ld a, [wNinjaBallFrame]
     or a
-    jr nz, jr_001_6fbf
+    jr nz, .ninjaFrameNot0
 
     ld a, $13
     ld [hl+], a
-    jr jr_001_6fcf
+    jr .ninjaAttr
 
-jr_001_6fbf:
+.ninjaFrameNot0:
     cp $01
-    jr nz, jr_001_6fc8
+    jr nz, .ninjaFrameNot1
 
     ld a, $14
     ld [hl+], a
-    jr jr_001_6fcf
+    jr .ninjaAttr
 
-jr_001_6fc8:
+.ninjaFrameNot1:
     cp $02
-    jr nz, jr_001_6fcf
+    jr nz, .ninjaAttr
 
     ld a, $15
     ld [hl+], a
 
-jr_001_6fcf:
+.ninjaAttr:
     ld a, $0d
     ld [hl+], a
-    jr jr_001_6fd8
+    jr .ballDone
 
-jr_001_6fd4:
+.normalBall:
     ld [hl+], a
     ld a, $03
     ld [hl+], a
 
-jr_001_6fd8:
+.ballDone:
     dec c
-    jr nz, jr_001_6fa3
+    jr nz, .nextBall
 
-jr_001_6fdb:
-    ld de, $db71
+.drawPowerups:
+    ld de, wFallingPowerups
     ld a, $08
-    ld [$ff8d], a
+    ld [hTemp], a
 
-jr_001_6fe3:
+.powerupLoop:
     ld a, [de]
     or a
-    jr z, jr_001_7028
+    jr z, .skipEmptySlot
 
     inc de
     ld a, [de]
@@ -6999,110 +4757,290 @@ jr_001_6fe3:
     ld a, [de]
     inc de
     ld [hl+], a
-    ld a, [$db70]
+    ld a, [wPowerupSpritesUsed]
     add $04
-    ld [$db70], a
-    jr jr_001_702f
+    ld [wPowerupSpritesUsed], a
+    jr .nextPowerup
 
-jr_001_7028:
+.skipEmptySlot:
     ld a, e
     add $0c
     ld e, a
-    jr nc, jr_001_702f
+    jr nc, .nextPowerup
 
     inc d
 
-jr_001_702f:
-    ld a, [$ff8d]
+.nextPowerup:
+    ld a, [hTemp]
     dec a
-    ld [$ff8d], a
-    jr nz, jr_001_6fe3
+    ld [hTemp], a
+    jr nz, .powerupLoop
 
     ld b, $08
-    ld a, [$ff90]
+    ld a, [hTemp2]
     or a
-    jr z, jr_001_7041
+    jr z, .storeOamUsed
 
     inc b
 
-jr_001_7041:
-    ld a, [$d77c]
+.storeOamUsed:
+    ld a, [wBallCount]
     add b
     ld b, a
-    ld a, [$db70]
+    ld a, [wPowerupSpritesUsed]
     add b
     ld b, a
-    ld a, [$c2b5]
+    ld a, [wOamUsed]
     add b
-    ld [$c2b4], a
+    ld [wOamUsedLastFrame], a
     xor a
-    ld [$c2b5], a
-    ld [$db70], a
+    ld [wOamUsed], a
+    ld [wPowerupSpritesUsed], a
     ret
 
+; Language tables, $51 bytes each. The table of the chosen language is copied to wLangTable.
+; Fields: 7 menu and ending strings, 15 power-up messages, then HUD strings, tile map
+; addresses and the bank that holds the language's graphics. See include/ram.inc.
+LanguageTable_Italian:
+    dw Text_Italian_StartGame
+    dw Text_Italian_SfxOn
+    dw Text_Italian_SfxOff
+    dw Text_Italian_MusicOn
+    dw Text_Italian_MusicOff
+    dw Text_Italian_EnterPassword
+    dw Text_Italian_Ending
+    dw PowerupText_Italian_MultiBall
+    dw PowerupText_Italian_SlowBall
+    dw PowerupText_Italian_AntigravityBall
+    dw PowerupText_Italian_SleepyBall
+    dw PowerupText_Italian_RocketBat
+    dw PowerupText_Italian_PlasmaBat
+    dw PowerupText_Italian_BigBat
+    dw PowerupText_Italian_StunBat
+    dw PowerupText_Italian_MagneticBat
+    dw PowerupText_Italian_ExtraLife
+    dw PowerupText_Italian_LazerBat
+    dw PowerupText_Italian_ReverseBat
+    dw PowerupText_Italian_GhostUp
+    dw PowerupText_Italian_GrenadeBat
+    dw PowerupText_Italian_NinjaUp
+    dw GrenadeTexts_Italian
+    dw Text_Italian_Hud
+    dw Text_Italian_LevelTitle
+    dw Text_Italian_LevelPassword
+    dw $dd2a
+    dw $dd3f
+    dw $996c
+    dw $998d
+    db $1d, $13, $00, $18, $19, $00
+    db $4c
+    db $10  ; bank of this language's graphics
+    db $08
+    dw Text_Italian_StartLevel
+    dw $98ec
+    dw Text_Italian_HighScorePassword
+    dw Text_Italian_Pause
+    dw Text_Italian_GameOver
+    dw Text_Italian_LatestScore
 
-    db $ee, $41, $46, $42, $57, $42, $24, $42, $35, $42, $11, $42, $23, $66, $a7, $42
-    db $10, $43, $79, $43, $e2, $43, $4b, $44, $b4, $44, $1d, $45, $86, $45, $ef, $45
-    db $58, $46, $c1, $46, $2a, $47, $93, $47, $fc, $47, $65, $48, $02, $58, $c2, $73
-    db $45, $74, $a6, $4d, $2a, $dd, $3f, $dd, $6c, $99, $8d, $99, $1d, $13, $00, $18
-    db $19, $00, $4c, $10, $08, $fd, $41, $ec, $98, $eb, $6b, $b7, $48, $53, $49, $54
-    db $6c
+LanguageTable_English:
+    dw Text_English_StartGame
+    dw Text_English_SfxOn
+    dw Text_English_SfxOff
+    dw Text_English_MusicOn
+    dw Text_English_MusicOff
+    dw Text_English_EnterPassword
+    dw Text_English_Ending
+    dw PowerupText_English_MultiBall
+    dw PowerupText_English_SlowBall
+    dw PowerupText_English_AntigravityBall
+    dw PowerupText_English_SleepyBall
+    dw PowerupText_English_RocketBat
+    dw PowerupText_English_PlasmaBat
+    dw PowerupText_English_BigBat
+    dw PowerupText_English_StunBat
+    dw PowerupText_English_MagneticBat
+    dw PowerupText_English_ExtraLife
+    dw PowerupText_English_LazerBat
+    dw PowerupText_English_ReverseBat
+    dw PowerupText_English_GhostUp
+    dw PowerupText_English_GrenadeBat
+    dw PowerupText_English_NinjaUp
+    dw GrenadeTexts_English
+    dw Text_English_Hud
+    dw Text_English_LevelTitle
+    dw Text_English_LevelPassword
+    dw $dd2a
+    dw $dd3f
+    dw $996d
+    dw $998c
+    db $19, $18, $00, $19, $10, $10
+    db $4c
+    db $0b  ; bank of this language's graphics
+    db $08
+    dw Text_English_StartLevel
+    dw $98eb
+    dw Text_English_HighScorePassword
+    dw Text_English_Pause
+    dw Text_English_GameOver
+    dw Text_English_LatestScore
 
-    db $86, $40, $de, $40, $ee, $40, $bc, $40, $cd, $40, $a9, $40, $61, $64, $68, $42
-    db $d1, $42, $3a, $43, $a3, $43, $0c, $44, $75, $44, $de, $44, $47, $45, $b0, $45
-    db $19, $46, $82, $46, $eb, $46, $54, $47, $bd, $47, $26, $48, $c2, $57, $46, $73
-    db $e1, $73, $ae, $4c, $2a, $dd, $3f, $dd, $6d, $99, $8c, $99, $19, $18, $00, $19
-    db $10, $10, $4c, $0b, $08, $95, $40, $eb, $98, $8b, $6b, $8f, $48, $f0, $48, $03
-    db $6c
+LanguageTable_Spanish:
+    dw Text_Spanish_StartGame
+    dw Text_Spanish_SfxOn
+    dw Text_Spanish_SfxOff
+    dw Text_Spanish_MusicOn
+    dw Text_Spanish_MusicOff
+    dw Text_Spanish_EnterPassword
+    dw Text_Spanish_Ending
+    dw PowerupText_Spanish_MultiBall
+    dw PowerupText_Spanish_SlowBall
+    dw PowerupText_Spanish_AntigravityBall
+    dw PowerupText_Spanish_SleepyBall
+    dw PowerupText_Spanish_RocketBat
+    dw PowerupText_Spanish_PlasmaBat
+    dw PowerupText_Spanish_BigBat
+    dw PowerupText_Spanish_StunBat
+    dw PowerupText_Spanish_MagneticBat
+    dw PowerupText_Spanish_ExtraLife
+    dw PowerupText_Spanish_LazerBat
+    dw PowerupText_Spanish_ReverseBat
+    dw PowerupText_Spanish_GhostUp
+    dw PowerupText_Spanish_GrenadeBat
+    dw PowerupText_Spanish_NinjaUp
+    dw GrenadeTexts_Spanish
+    dw Text_Spanish_Hud
+    dw Text_Spanish_LevelTitle
+    dw Text_Spanish_LevelPassword
+    dw $dd2b
+    dw $dd43
+    dw $996d
+    dw $998b
+    db $1d, $b9, $00, $18, $19, $00
+    db $4e
+    db $12  ; bank of this language's graphics
+    db $0b
+    dw Text_Spanish_StartLevel
+    dw $98ed
+    dw Text_Spanish_HighScorePassword
+    dw Text_Spanish_Pause
+    dw Text_Spanish_GameOver
+    dw Text_Spanish_LatestScore
 
-    db $0e, $40, $66, $40, $76, $40, $44, $40, $55, $40, $31, $40, $b9, $66, $bc, $42
-    db $25, $43, $8e, $43, $f7, $43, $60, $44, $c9, $44, $32, $45, $9b, $45, $04, $46
-    db $6d, $46, $d6, $46, $3f, $47, $a8, $47, $11, $48, $7a, $48, $f2, $57, $84, $73
-    db $13, $74, $2a, $4d, $2b, $dd, $43, $dd, $6d, $99, $8b, $99, $1d, $b9, $00, $18
-    db $19, $00, $4e, $12, $0b, $1d, $40, $ed, $98, $d3, $6b, $a3, $48, $22, $49, $39
-    db $6c
+LanguageTable_French:
+    dw Text_French_StartGame
+    dw Text_French_SfxOn
+    dw Text_French_SfxOff
+    dw Text_French_MusicOn
+    dw Text_French_MusicOff
+    dw Text_French_EnterPassword
+    dw Text_French_Ending
+    dw PowerupText_French_MultiBall
+    dw PowerupText_French_SlowBall
+    dw PowerupText_French_AntigravityBall
+    dw PowerupText_French_SleepyBall
+    dw PowerupText_French_RocketBat
+    dw PowerupText_French_PlasmaBat
+    dw PowerupText_French_BigBat
+    dw PowerupText_French_StunBat
+    dw PowerupText_French_MagneticBat
+    dw PowerupText_French_ExtraLife
+    dw PowerupText_French_LazerBat
+    dw PowerupText_French_ReverseBat
+    dw PowerupText_French_GhostUp
+    dw PowerupText_French_GrenadeBat
+    dw PowerupText_French_NinjaUp
+    dw GrenadeTexts_French
+    dw Text_French_Hud
+    dw Text_French_LevelTitle
+    dw Text_French_LevelPassword
+    dw $dd2c
+    dw $dd3f
+    dw $996c
+    dw $998c
+    db $19, $1f, $13, $18, $19, $18
+    db $45
+    db $11  ; bank of this language's graphics
+    db $09
+    dw Text_French_StartLevel
+    dw $98ec
+    dw Text_French_HighScorePassword
+    dw Text_French_Pause
+    dw Text_French_GameOver
+    dw Text_French_LatestScore
 
-    db $fe, $40, $56, $41, $66, $41, $45, $41, $34, $41, $21, $41, $f7, $64, $7d, $42
-    db $e6, $42, $4f, $43, $b8, $43, $21, $44, $8a, $44, $f3, $44, $5c, $45, $c5, $45
-    db $2e, $46, $97, $46, $00, $47, $69, $47, $d2, $47, $3b, $48, $d2, $57, $65, $73
-    db $fa, $73, $ec, $4c, $2c, $dd, $3f, $dd, $6c, $99, $8c, $99, $19, $1f, $13, $18
-    db $19, $18, $45, $11, $09, $0d, $41, $ec, $98, $a3, $6b, $99, $48, $09, $49, $1e
-    db $6c
+LanguageTable_German:
+    dw Text_German_StartGame
+    dw Text_German_SfxOn
+    dw Text_German_SfxOff
+    dw Text_German_MusicOn
+    dw Text_German_MusicOff
+    dw Text_German_EnterPassword
+    dw Text_German_Ending
+    dw PowerupText_German_MultiBall
+    dw PowerupText_German_SlowBall
+    dw PowerupText_German_AntigravityBall
+    dw PowerupText_German_SleepyBall
+    dw PowerupText_German_RocketBat
+    dw PowerupText_German_PlasmaBat
+    dw PowerupText_German_BigBat
+    dw PowerupText_German_StunBat
+    dw PowerupText_German_MagneticBat
+    dw PowerupText_German_ExtraLife
+    dw PowerupText_German_LazerBat
+    dw PowerupText_German_ReverseBat
+    dw PowerupText_German_GhostUp
+    dw PowerupText_German_GrenadeBat
+    dw PowerupText_German_NinjaUp
+    dw GrenadeTexts_German
+    dw Text_German_Hud
+    dw Text_German_LevelTitle
+    dw Text_German_LevelPassword
+    dw $dd2a
+    dw $dd3f
+    dw $996c
+    dw $998a
+    db $0b, $18, $00, $0b, $1f, $1d
+    db $4c
+    db $13  ; bank of this language's graphics
+    db $08
+    dw Text_German_StartLevel
+    dw $98ed
+    dw Text_German_HighScorePassword
+    dw Text_German_Pause
+    dw Text_German_GameOver
+    dw Text_German_LatestScore
 
-    db $76, $41, $ce, $41, $de, $41, $ac, $41, $bd, $41, $99, $41, $8d, $65, $92, $42
-    db $fb, $42, $64, $43, $cd, $43, $36, $44, $9f, $44, $08, $45, $71, $45, $da, $45
-    db $43, $46, $ac, $46, $15, $47, $7e, $47, $e7, $47, $50, $48, $e2, $57, $a3, $73
-    db $2c, $74, $68, $4d, $2a, $dd, $3f, $dd, $6c, $99, $8a, $99, $0b, $18, $00, $0b
-    db $1f, $1d, $4c, $13, $08, $85, $41, $ed, $98, $bb, $6b, $ad, $48, $3a, $49, $6f
-    db $6c
-
-    ld hl, $dae3
-    ld de, $7592
+; Copies the start positions of the five BOING letters, their bob curve pointers and the 11 twinkle records into RAM.
+; Also points wMenuScrollStepPtr at MenuSlideInSteps. Called once when the main menu is entered.
+InitMenuSparkles:
+    ld hl, wMenuSparkles
+    ld de, BoingLetterStartPositions
     ld b, $0a
 
-jr_001_71f7:
+.copyPositionsLoop:
     ld a, [de]
     inc de
     ld [hl+], a
     dec b
-    jr nz, jr_001_71f7
+    jr nz, .copyPositionsLoop
 
-    ld de, $75ba
-    ld hl, $daed
+    ld de, MenuSparkleCurveStarts
+    ld hl, wMenuSparkleCurvePtrs
     ld b, $0a
 
-jr_001_7205:
+.copyCurveStartsLoop:
     ld a, [de]
     inc de
     ld [hl+], a
     dec b
-    jr nz, jr_001_7205
+    jr nz, .copyCurveStartsLoop
 
-    ld hl, $daf7
-    ld de, $74b4
+    ld hl, wMenuTwinkles
+    ld de, MenuSparkleStartData
     ld b, $0b
 
-jr_001_7213:
+.initAnimRecordLoop:
     ld a, [de]
     inc de
     ld [hl+], a
@@ -7126,22 +5064,25 @@ jr_001_7213:
     inc de
     ld [hl+], a
     dec b
-    jr nz, jr_001_7213
+    jr nz, .initAnimRecordLoop
 
-    ld hl, $749b
+    ld hl, MenuSlideInSteps
     ld a, l
-    ld [$db4f], a
+    ld [wMenuScrollStepPtr], a
     ld a, h
-    ld [$db50], a
+    ld [wMenuScrollStepPtr + 1], a
     ret
 
-
-    ld hl, $c200
-    ld de, $7542
+; Draws the five BOING letter sprites and moves them along their bob curves.
+; While hMenuScrollY is not 0 it adds the next slide-in step to it and stops. Otherwise it redraws the twinkle sprites.
+; Called once per frame by the main menu.
+UpdateMenuSparkles:
+    ld hl, wOamBuffer
+    ld de, BoingLetterSprites
     ld a, $05
-    ld bc, $dae3
+    ld bc, wMenuSparkles
 
-jr_001_7243:
+.drawSparkleLoop:
     push af
     push bc
     ld a, [bc]
@@ -7153,7 +5094,7 @@ jr_001_7243:
     ld c, a
     ld a, $04
 
-jr_001_724e:
+.spriteLoop:
     push af
     ld a, [de]
     inc de
@@ -7171,20 +5112,20 @@ jr_001_724e:
     ld [hl+], a
     pop af
     dec a
-    jr nz, jr_001_724e
+    jr nz, .spriteLoop
 
     pop bc
     inc bc
     inc bc
     pop af
     dec a
-    jr nz, jr_001_7243
+    jr nz, .drawSparkleLoop
 
-    ld de, $dae3
-    ld hl, $daed
+    ld de, wMenuSparkles
+    ld hl, wMenuSparkleCurvePtrs
     ld a, $05
 
-jr_001_7270:
+.moveSparkleLoop:
     push af
     ld a, [hl+]
     ld c, a
@@ -7192,12 +5133,12 @@ jr_001_7270:
     ld b, a
     ld a, [bc]
     or a
-    jr nz, jr_001_727d
+    jr nz, .stepLoaded
 
-    ld bc, $75af
+    ld bc, BoingLetterBobSteps
     ld a, [bc]
 
-jr_001_727d:
+.stepLoaded:
     inc bc
     push af
     ld a, c
@@ -7213,47 +5154,46 @@ jr_001_727d:
     inc de
     pop af
     dec a
-    jr nz, jr_001_7270
+    jr nz, .moveSparkleLoop
 
-    ld a, [$ff9e]
+    ld a, [hMenuScrollY]
     or a
-    jr z, jr_001_72ae
+    jr z, .scrollIsZero
 
-    ld a, [$db4f]
+    ld a, [wMenuScrollStepPtr]
     ld l, a
-    ld a, [$db50]
+    ld a, [wMenuScrollStepPtr + 1]
     ld h, a
     ld a, [hl+]
     ld b, a
     ld a, l
-    ld [$db4f], a
+    ld [wMenuScrollStepPtr], a
     ld a, h
-    ld [$db50], a
-    ld a, [$ff9e]
+    ld [wMenuScrollStepPtr + 1], a
+    ld a, [hMenuScrollY]
     add b
-    ld [$ff9e], a
+    ld [hMenuScrollY], a
     ret
 
-
-jr_001_72ae:
+.scrollIsZero:
     ld a, $14
-    ld hl, $c250
-    call Call_001_6e9a
-    ld a, [$ff8f]
+    ld hl, wOamBuffer + $50
+    call ClearOamEntries
+    ld a, [hMenuSparkleTick]
     inc a
-    ld [$ff8f], a
+    ld [hMenuSparkleTick], a
     ld a, $0b
-    ld hl, $daf7
-    ld de, $c250
+    ld hl, wMenuTwinkles
+    ld de, wOamBuffer + $50
 
-jr_001_72c5:
+.animRecordLoop:
     push af
     ld a, [hl+]
     ld c, a
     ld a, [hl+]
     ld b, a
     or c
-    jr z, jr_001_72da
+    jr z, .delayExpired
 
     dec bc
     dec hl
@@ -7264,26 +5204,26 @@ jr_001_72c5:
     ld [hl], a
     ld bc, $0007
     add hl, bc
-    jr jr_001_7341
+    jr .nextAnimRecord
 
-jr_001_72da:
+.delayExpired:
     ld b, [hl]
-    ld a, [$ff8f]
+    ld a, [hMenuSparkleTick]
     and $03
-    jr nz, jr_001_72e3
+    jr nz, .checkAnimEnd
 
     inc b
 
-jr_001_72e3:
+.checkAnimEnd:
     ld a, b
     cp $0b
-    jr nz, jr_001_7305
+    jr nz, .drawFrame
 
     ld a, $00
     ld [hl+], a
     ld bc, $0002
     add hl, bc
-    ld a, [$ff8c]
+    ld a, [hFrameCounter]
     and $07
     ld [hl+], a
     push de
@@ -7296,11 +5236,11 @@ jr_001_72e3:
     ld bc, $0007
     add hl, bc
     pop de
-    jr jr_001_7341
+    jr .nextAnimRecord
 
-jr_001_7305:
+.drawFrame:
     ld [hl+], a
-    ld [$ff8e], a
+    ld [hTemp + 1], a
     ld a, [hl+]
     ld c, a
     ld a, [hl+]
@@ -7309,20 +5249,20 @@ jr_001_7305:
     push hl
     push af
     push de
-    ld a, [$ff8e]
+    ld a, [hTemp + 1]
     add a
     ld l, a
     ld h, $00
-    ld de, $752c
+    ld de, MenuSparkleFrames
     add hl, de
     pop de
     ld a, [hl+]
     ld h, [hl]
     ld l, a
     ld a, $02
-    ld [$ff8d], a
+    ld [hTemp], a
 
-jr_001_7325:
+.frameSpriteLoop:
     ld a, [hl+]
     add b
     ld [de], a
@@ -7338,89 +5278,188 @@ jr_001_7325:
     ld [de], a
     inc de
     push af
-    ld a, [$ff8d]
+    ld a, [hTemp]
     dec a
-    ld [$ff8d], a
-    jr nz, jr_001_7325
+    ld [hTemp], a
+    jr nz, .frameSpriteLoop
 
     pop af
     pop hl
     inc hl
     inc hl
 
-jr_001_7341:
+.nextAnimRecord:
     pop af
     dec a
-    jr nz, jr_001_72c5
+    jr nz, .animRecordLoop
 
     ret
 
+Text_English_Hud:
+    dw $9800
+    db $00, $04, "SCORE ", $00, $01, "000000 ", $00, $04, "LIVES ", $00, $01, "0", $ff
 
-    db $00, $98, $00, $04, $53, $43, $4f, $52, $45, $20, $00, $01, $30, $30, $30, $30
-    db $30, $30, $20, $00, $04, $4c, $49, $56, $45, $53, $20, $00, $01, $30, $ff
+Text_French_Hud:
+    dw $9800
+    db $00, $04, "SCORE ", $00, $01, "000000 ", $00, $04, " VIES ", $00, $01, "0", $ff
 
-    db $00, $98, $00, $04, $53, $43, $4f, $52, $45, $20, $00, $01, $30, $30, $30, $30
-    db $30, $30, $20, $00, $04, $20, $56, $49, $45, $53, $20, $00, $01, $30, $ff
+Text_Spanish_Hud:
+    dw $9800
+    db $00, $04, $ae, $af, $b0, $b1, $b2, " ", $00, $01, "000000 ", $00, $04, "VIDAS ", $00, $01, "0", $ff
 
-    db $00, $98, $00, $04, $ae, $af, $b0, $b1, $b2, $20, $00, $01, $30, $30, $30, $30
-    db $30, $30, $20, $00, $04, $56, $49, $44, $41, $53, $20, $00, $01, $30, $ff
+Text_German_Hud:
+    dw $9800
+    db $00, $04, $ae, $af, $b3, $b4, $b5, " ", $00, $01, "000000 ", $00, $04, "LEBEN ", $00, $01, "0", $ff
 
-    db $00, $98, $00, $04, $ae, $af, $b3, $b4, $b5, $20, $00, $01, $30, $30, $30, $30
-    db $30, $30, $20, $00, $04, $4c, $45, $42, $45, $4e, $20, $00, $01, $30, $ff
+Text_Italian_Hud:
+    dw $9800
+    db $00, $04, "SCORE ", $00, $01, "000000 ", $00, $04, " VITE ", $00, $01, "0", $ff
 
-    db $00, $98, $00, $04, $53, $43, $4f, $52, $45, $20, $00, $01, $30, $30, $30, $30
-    db $30, $30, $20, $00, $04, $20, $56, $49, $54, $45, $20, $00, $01, $30, $ff
+Text_English_LevelTitle:
+    dw $9801
+    db $00, $04, "     LEVEL ", $00, $01, "000    ", $ff
 
-    db $01, $98, $00, $04, $20, $20, $20, $20, $20, $4c, $45, $56, $45, $4c, $20, $00
-    db $01, $30, $30, $30, $20, $20, $20, $20, $ff
+Text_French_LevelTitle:
+    dw $9801
+    db $00, $04, "     ETAGE ", $00, $01, "000    ", $ff
 
-    db $01, $98, $00, $04, $20, $20, $20, $20, $20, $45, $54, $41, $47, $45, $20, $00
-    db $01, $30, $30, $30, $20, $20, $20, $20, $ff
+Text_Spanish_LevelTitle:
+    dw $9801
+    db $00, $04, "     NIVEL ", $00, $01, "000    ", $ff
 
-    db $01, $98, $00, $04, $20, $20, $20, $20, $20, $4e, $49, $56, $45, $4c, $20, $00
-    db $01, $30, $30, $30, $20, $20, $20, $20, $ff
+Text_German_LevelTitle:
+    dw $9801
+    db $00, $04, "     LEVEL ", $00, $01, "000    ", $ff
 
-    db $01, $98, $00, $04, $20, $20, $20, $20, $20, $4c, $45, $56, $45, $4c, $20, $00
-    db $01, $30, $30, $30, $20, $20, $20, $20, $ff
+Text_Italian_LevelTitle:
+    dw $9801
+    db $00, $04, "    LEVELLO ", $00, $01, "000   ", $ff
 
-    db $01, $98, $00, $04, $20, $20, $20, $20, $4c, $45, $56, $45, $4c, $4c, $4f, $20
-    db $00, $01, $30, $30, $30, $20, $20, $20, $ff
+; A DrawString record that writes 20 spaces over the top tile row at $9800, drawn in the off phase of the blinking level title.
+Text_LevelTitleBlank:
+    dw $9800
+    db $00, $04, "                    ", $ff
 
-    db $00, $98, $00, $04, $20, $20, $20, $20, $20, $20, $20, $20, $20, $20, $20, $20
-    db $20, $20, $20, $20, $20, $20, $20, $20, $ff, $06, $08, $0a, $0a, $0a, $43, $44
-    db $45, $0a, $0a, $0a, $0a, $43, $44, $45, $0a, $0a, $0a, $08, $07, $0b, $0c, $2f
-    db $49, $0c, $0c, $0d, $0e, $0c, $0c, $31, $37, $0c, $2e, $2f, $30
+Tilemap_Level_001_7477:
+    db $06, $08, $0a, $0a, $0a, $43, $44, $45, $0a, $0a, $0a, $0a, $43, $44, $45, $0a, $0a, $0a, $08, $07
 
+Tilemap_Level_001_748b:
+    db $0b
+    db $0c
+    db $2f
+    db $49
+    db $0c
+    db $0c
+    db $0d
+    db $0e
+    db $0c
+    db $0c
+    db $31
+    db $37
+    db $0c
+    db $2e
+    db $2f
+    db $30
+
+; Value added to hMenuScrollY each frame while the main menu slides in: -8 seventeen times, then -7, +4, +4, -3, -3, -2, -1 for a small bounce, followed by a 0.
+MenuSlideInSteps:
     db $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8, $f8
     db $f8, $f9, $04, $04, $fd, $fd, $fe, $ff
 
-    nop
+    db $00
 
+; Start values of the 11 menu sparkles, 6 bytes each: dw frames until the first twinkle, db x, db y, dw delay reloaded after each twinkle.
+MenuSparkleStartData:
     db $01, $00, $82, $79, $c8, $00, $0a, $00, $51, $81, $c9, $00, $14, $00, $70, $38
     db $cb, $00, $1e, $00, $18, $50, $cc, $00, $64, $00, $0a, $3a, $cd, $00, $6e, $00
     db $8e, $35, $ce, $00, $78, $00, $51, $40, $cf, $00, $b4, $00, $40, $57, $d0, $00
     db $be, $00, $94, $6a, $d1, $00, $c8, $00, $18, $73, $d2, $00, $d3, $00, $2c, $8a
-    db $d3, $00, $00, $00, $28, $00, $08, $2a, $00, $00, $2c, $00, $08, $2e, $00, $00
-    db $30, $00, $08, $32, $00, $00, $34, $00, $08, $36, $00, $00, $38, $00, $08, $3a
-    db $00, $00, $3c, $00, $08, $3e, $00, $00, $40, $00, $08, $42, $00, $00, $44, $00
-    db $08, $46, $00, $00, $48, $00, $08, $4a, $f6, $74, $fc, $74, $02, $75, $08, $75
-    db $0e, $75, $14, $75, $1a, $75, $20, $75, $26, $75, $fc, $74, $f6, $74, $00, $00
+    db $d3, $00
+
+MenuSparkleFrame_74f6:
+    db $00, $00, $28, $00, $08, $2a
+
+MenuSparkleFrame_74fc:
+    db $00, $00, $2c, $00, $08, $2e
+
+MenuSparkleFrame_7502:
+    db $00, $00
+    db $30, $00, $08, $32
+
+MenuSparkleFrame_7508:
+    db $00, $00, $34, $00, $08, $36
+
+MenuSparkleFrame_750e:
+    db $00, $00, $38, $00, $08, $3a
+
+MenuSparkleFrame_7514:
+    db $00, $00, $3c, $00, $08, $3e
+
+MenuSparkleFrame_751a:
+    db $00, $00, $40, $00, $08, $42
+
+MenuSparkleFrame_7520:
+    db $00, $00, $44, $00
+    db $08, $46
+
+MenuSparkleFrame_7526:
+    db $00, $00, $48, $00, $08, $4a
+
+MenuSparkleFrames:
+    dw MenuSparkleFrame_74f6
+    dw MenuSparkleFrame_74fc
+    dw MenuSparkleFrame_7502
+    dw MenuSparkleFrame_7508
+    dw MenuSparkleFrame_750e
+    dw MenuSparkleFrame_7514
+    dw MenuSparkleFrame_751a
+    dw MenuSparkleFrame_7520
+    dw MenuSparkleFrame_7526
+    dw MenuSparkleFrame_74fc
+    dw MenuSparkleFrame_74f6
+
+; Sprite layout of the five 16x32 letter objects B, O, I, N, G: 4 sprites each of (y offset, x offset, tile, attribute), top tiles $00-$12 with palette 1 and bottom tiles $14-$26 with palette 0.
+BoingLetterSprites:
+    db $00, $00
     db $00, $01, $00, $08, $02, $01, $10, $00, $14, $00, $10, $08, $16, $00, $00, $00
     db $04, $01, $00, $08, $06, $01, $10, $00, $18, $00, $10, $08, $1a, $00, $00, $00
     db $08, $01, $00, $08, $0a, $01, $10, $00, $1c, $00, $10, $08, $1e, $00, $00, $00
     db $0c, $01, $00, $08, $0e, $01, $10, $00, $20, $00, $10, $08, $22, $00, $00, $00
-    db $10, $01, $00, $08, $12, $01, $10, $00, $24, $00, $10, $08, $26, $00, $90, $a4
-    db $90, $a4, $90, $a4, $90, $a4, $90, $a4, $04, $04, $04, $04, $04, $04, $04, $04
-    db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $fe, $fe, $fe, $ff, $ff
-    db $01, $01, $02, $02, $02, $00, $a4, $75, $a2, $75, $a0, $75, $9e, $75, $9c, $75
+    db $10, $01, $00, $08, $12, $01, $10, $00, $24, $00, $10, $08, $26, $00
 
-    ld hl, $7ba0
-    jr jr_001_75cc
+; Start position (x, y) of the five 16x32 letter objects B, O, I, N, G drawn by UpdateMenuSparkles: x $90, y $a4 each, which is below the visible screen.
+BoingLetterStartPositions:
+    db $90, $a4
+    db $90, $a4, $90, $a4, $90, $a4, $90, $a4
 
-    ld hl, $7bbc
+; Movement steps of the menu sparkles. MenuSparkleCurveStarts points into this list.
+MenuSparkleCurve:
+    db $04, $04, $04, $04, $04, $04, $04, $04
+    db $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04
 
-jr_001_75cc:
-    ld a, [$ff9f]
+; Looping y steps of the menu letter objects: -2, -2, -2, -1, -1, +1, +1, +2, +2, +2, then a 0 that restarts the list here.
+BoingLetterBobSteps:
+    db $fe, $fe, $fe, $ff, $ff
+    db $01, $01, $02, $02, $02, $00
+
+MenuSparkleCurveStarts:
+    dw MenuSparkleCurve + $8
+    dw MenuSparkleCurve + $6
+    dw MenuSparkleCurve + $4
+    dw MenuSparkleCurve + $2
+    dw MenuSparkleCurve
+
+; Jump to the init handler of game state hGameState.
+RunStateInit:
+    ld hl, StateInitHandlers
+    jr RunStateUpdate.dispatch
+
+; Jump to the update handler of game state hGameState.
+RunStateUpdate:
+    ld hl, StateUpdateHandlers
+
+.dispatch:
+    ld a, [hGameState]
     add a
     ld e, a
     ld d, $00
@@ -7430,355 +5469,319 @@ jr_001_75cc:
     ld l, a
     jp hl
 
-
-Call_001_75d8:
+; Runs the code at the address in HL and returns to the caller of this routine.
+; Called by FrameLoop with HL = the handler stored in hFrameHandler.
+CallHL:
     jp hl
 
-
-Jump_001_75d9:
+; The frame loop of the current game state: wait for VBlank and call hFrameHandler.
+FrameLoop:
     ld b, $ff
     ld a, $20
-    call Call_001_6838
-    ld a, [$ff9c]
+    call FadePalettes
+    ld a, [hPaletteMode]
     cp $04
-    jr nz, jr_001_75fc
+    jr nz, .checkPaletteMode3
 
     ld a, $02
-    ld [$ff9c], a
+    ld [hPaletteMode], a
     ld a, $03
     ldh [rIE], a
     ld b, $ff
     ld a, $20
-    call Call_001_68d1
+    call FadePalettes2
     ld a, $04
-    ld [$ff9c], a
+    ld [hPaletteMode], a
 
-jr_001_75fc:
-    ld a, [$ff9c]
+.checkPaletteMode3:
+    ld a, [hPaletteMode]
     cp $03
-    jr nz, jr_001_7615
+    jr nz, .startLoop
 
     ld a, $82
     ldh [rOCPS], a
     ld a, $03
     ldh [rIE], a
     ld d, $04
-    call Call_001_7929
+    call HighScores_SlideSprites
     ld a, $02
-    ld [$cb53], a
+    ld [wHdmaMode], a
 
-jr_001_7615:
-    call Call_001_63fa
+.startLoop:
+    call SweepBricks
 
-jr_001_7618:
-    call Call_001_7c54
-    call Call_000_3e7f
-    ld a, [$ffa3]
+.frameLoop:
+    call WaitVBlank
+    call UpdateSound
+    ld a, [hFrameHandler]
     ld l, a
-    ld a, [$ffa4]
+    ld a, [hFrameHandler + 1]
     ld h, a
-    call Call_001_75d8
-    ld a, [$ffa0]
+    call CallHL
+    ld a, [hStateTimer]
     or a
-    jr z, jr_001_7618
+    jr z, .frameLoop
 
     dec a
-    ld [$ffa0], a
-    jr nz, jr_001_7618
+    ld [hStateTimer], a
+    jr nz, .frameLoop
 
-    ld e, $00
-    call Call_000_3e56
+    ld e, SONG_SILENCE
+    call StartSong
     xor a
-    call Call_000_3e64
+    call PlaySound
     ld a, $09
 
-jr_001_7640:
+.waitNineFramesLoop:
     push af
-    call Call_001_7c54
-    call Call_000_3e7f
+    call WaitVBlank
+    call UpdateSound
     pop af
     dec a
-    jr nz, jr_001_7640
+    jr nz, .waitNineFramesLoop
 
-    ld a, [$ff9c]
+    ld a, [hPaletteMode]
     cp $03
-    jr nz, jr_001_7665
+    jr nz, .checkPaletteMode4
 
-    ld [$cb53], a
+    ld [wHdmaMode], a
     ld d, $fc
-    call Call_001_7929
-    call Call_001_7c54
+    call HighScores_SlideSprites
+    call WaitVBlank
     ld a, $01
     ldh [rIE], a
     xor a
-    ld [$ff9c], a
+    ld [hPaletteMode], a
 
-jr_001_7665:
-    ld a, [$ff9c]
+.checkPaletteMode4:
+    ld a, [hPaletteMode]
     cp $04
-    jr nz, jr_001_7680
+    jr nz, .finalFade
 
     ld a, $02
-    ld [$ff9c], a
+    ld [hPaletteMode], a
     ld b, $01
     xor a
-    call Call_001_68d1
+    call FadePalettes2
     ld a, $01
     ldh [rIE], a
     ld a, $04
-    ld [$ff9c], a
+    ld [hPaletteMode], a
 
-jr_001_7680:
+.finalFade:
     ld b, $01
     xor a
-    call Call_001_6838
+    call FadePalettes
     ret
 
-
-Jump_001_7687:
+; Store HL as the per-frame handler (hFrameHandler) and enter the frame loop.
+SetFrameHandler:
     ld a, l
-    ld [$ffa3], a
+    ld [hFrameHandler], a
     ld a, h
-    ld [$ffa4], a
-    jp Jump_001_75d9
+    ld [hFrameHandler + 1], a
+    jp FrameLoop
 
+; Makes Gameplay_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 2 (playing a level).
+StateUpdate_Gameplay:
+    ld hl, Gameplay_Update
+    jp SetFrameHandler
 
-    ld hl, $0f30
-    jp Jump_001_7687
+; Makes TitleScreen_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 5 (title picture).
+StateUpdate_TitleScreen:
+    ld hl, TitleScreen_Update
+    jp SetFrameHandler
 
+; Makes GameOver_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 3 (game over).
+StateUpdate_GameOver:
+    ld hl, GameOver_Update
+    jp SetFrameHandler
 
-    ld hl, $2665
-    jp Jump_001_7687
+; Makes Pause_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 4 (pause).
+StateUpdate_Pause:
+    ld hl, Pause_Update
+    jp SetFrameHandler
 
+; Makes DeveloperLogos_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 6 ("Developed by" logos).
+StateUpdate_DeveloperLogos:
+    ld hl, DeveloperLogos_Update
+    jp SetFrameHandler
 
-    ld hl, $7bd8
-    jp Jump_001_7687
+; Makes PublisherLogo_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 12 (SCi logo).
+StateUpdate_PublisherLogo:
+    ld hl, PublisherLogo_Update
+    jp SetFrameHandler
 
+; Makes HighScores_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 7 (high score table).
+StateUpdate_HighScores:
+    ld hl, HighScores_Update
+    jp SetFrameHandler
 
-    ld hl, $7c03
-    jp Jump_001_7687
+; Makes MainMenu_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 1 (main menu and password entry).
+StateUpdate_MainMenu:
+    ld hl, MainMenu_Update
+    jp SetFrameHandler
 
+; Makes Credits_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 8 (credits).
+StateUpdate_Credits:
+    ld hl, Credits_Update
+    jp SetFrameHandler
 
-    ld hl, $7c92
-    jp Jump_001_7687
+; Makes LevelPassword_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 9 (password screen after every fourth level).
+StateUpdate_LevelPassword:
+    ld hl, LevelPassword_Update
+    jp SetFrameHandler
 
+; Makes ColorOnly_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 10 ("Please use a Game Boy Color" screen).
+StateUpdate_ColorOnly:
+    ld hl, ColorOnly_Update
+    jp SetFrameHandler
 
-    ld hl, $3ad8
-    jp Jump_001_7687
+; Makes LanguageSelect_Update the per-frame handler and starts FrameLoop.
+; Reached through RunStateUpdate while hGameState is 11 (language selection).
+StateUpdate_LanguageSelect:
+    ld hl, LanguageSelect_Update
+    jp SetFrameHandler
 
+; Makes Copyright_Update the per-frame handler.
+; Reached through StateUpdateHandlers when the state changes to the copyright screen.
+StateUpdate_Copyright:
+    ld hl, Copyright_Update
+    jp SetFrameHandler
 
-    ld hl, $06da
-    jp Jump_001_7687
+; Makes Ending_Update the per-frame handler.
+; Reached through StateUpdateHandlers when the state changes to the ending screen.
+StateUpdate_Ending:
+    ld hl, Ending_Update
+    jp SetFrameHandler
 
+; Pick-up handler for each power-up type.
+PowerupHandlers:
+    dw Powerup_Slowball
+    dw Powerup_Rocket
+    dw Powerup_Smiley
+    dw Powerup_Plasma
+    dw Powerup_Poison
+    dw Powerup_Milk
+    dw Powerup_Clock
+    dw Powerup_Pepper
+    dw Powerup_Magnet
+    dw Powerup_TripleBall
+    dw Powerup_ExtraLife
+    dw Powerup_Laser
+    dw Powerup_Reverse
+    dw Powerup_Ninja
+    dw Powerup_Ghost
+    dw Powerup_Grenade
 
-    ld hl, $20fa
-    jp Jump_001_7687
-
-
-    ld hl, $7a5e
-    jp Jump_001_7687
-
-
-    ld hl, $5c66
-    jp Jump_001_7687
-
-
-    ld hl, $7ca8
-    jp Jump_001_7687
-
-
-    ld hl, $6a5b
-    jp Jump_001_7687
-
-
-    ld hl, $3eed
-    jp Jump_001_7687
-
-
-    ld hl, $7c74
-    jp Jump_001_7687
-
-
-    db $d4, $51
-
-    db $0a, $52
-
-    ld d, [hl]
-    ld d, d
-
-    db $89, $52
-
-    and b
-    ld d, d
-    push de
-    ld d, d
-
-    db $09, $53
-
-    db $2d, $53
-
-    ld c, b
-    ld d, e
-    ld a, b
-    ld d, e
-    sbc h
-    ld d, e
-
-    db $b5, $53
-
-    ret z
-
-    ld d, e
-
-    db $f9, $53, $23, $54
-
-    dec [hl]
-    ld d, h
-
+; Fall speed of each of the 16 power-up types, a word added to the power-up's 16-bit y (low byte = fraction) each frame; all are $0080, half a pixel per frame.
+PowerupFallSpeeds:
     db $80, $00
 
     db $80, $00
 
-    add b
-    nop
-
     db $80, $00
-
-    add b
-    nop
-    add b
-    nop
-
     db $80, $00
-
-    db $80, $00
-
-    add b
-    nop
-    add b
-    nop
-    add b
-    nop
-
-    db $80, $00
-
-    add b
-    nop
 
     db $80, $00, $80, $00
+    db $80, $00
 
-    add b
-    nop
+    db $80, $00
 
-    db $46, $77
+    db $80, $00, $80, $00, $80, $00
+    db $80, $00
 
-    db $4e, $77
+    db $80, $00
+    db $80, $00, $80, $00
 
-    ld d, [hl]
-    ld [hl], a
+    db $80, $00
 
-    db $5e, $77
-
-    ld h, [hl]
-    ld [hl], a
-    ld l, [hl]
-    ld [hl], a
-
-    db $76, $77
-
-    db $7e, $77
-
-    add [hl]
-    ld [hl], a
-    adc [hl]
-    ld [hl], a
-    sub [hl]
-    ld [hl], a
-
-    db $9e, $77
-
-    and [hl]
-    ld [hl], a
-
-    db $ae, $77, $b6, $77
-
-    cp [hl]
-    ld [hl], a
-
+; Sprite of each power-up type: 4 x (tile, attribute), in the order
+; top-left, top-right, bottom-right, bottom-left.
+PowerupSprites:
+    dw PowerupSprite_Slowball
+    dw PowerupSprite_Rocket
+    dw PowerupSprite_Smiley
+    dw PowerupSprite_Plasma
+    dw PowerupSprite_Poison
+    dw PowerupSprite_Milk
+    dw PowerupSprite_Clock
+    dw PowerupSprite_Pepper
+    dw PowerupSprite_Magnet
+    dw PowerupSprite_TripleBall
+    dw PowerupSprite_ExtraLife
+    dw PowerupSprite_Laser
+    dw PowerupSprite_Reverse
+    dw PowerupSprite_Ninja
+    dw PowerupSprite_Ghost
+    dw PowerupSprite_Grenade
+PowerupSprite_Slowball:
     db $22, $06, $23, $06, $25, $06, $24, $06
-
+PowerupSprite_Rocket:
     db $08, $0e, $09, $0e, $0b, $0e, $0a, $0e
-
-    ld a, [hl+]
-    nop
-    dec hl
-    nop
-    dec l
-    nop
-    inc l
-    nop
-
+PowerupSprite_Smiley:
+    db $2a, $00, $2b, $00, $2d, $00, $2c, $00
+PowerupSprite_Plasma:
     db $2e, $05, $2f, $05, $31, $05, $30, $05
-
-    ld [hl-], a
-    ld b, $33
-    ld b, $35
-    ld b, $34
-    ld b, $36
-    ld bc, $0137
-    add hl, sp
-    ld bc, $0138
-
+PowerupSprite_Poison:
+    db $32, $06, $33, $06, $35, $06, $34, $06
+PowerupSprite_Milk:
+    db $36, $01, $37, $01, $39, $01, $38, $01
+PowerupSprite_Clock:
     db $3a, $01, $3b, $01, $3d, $01, $3c, $01
-
+PowerupSprite_Pepper:
     db $3e, $07, $3f, $07, $41, $07, $40, $07
-
-    ld b, d
-    ld b, $43
-    ld b, $45
-    ld b, $44
-    ld b, $46
-    ld b, $47
-    ld b, $49
-    ld b, $48
-    ld b, $7b
-    ld b, $7c
-    ld b, $7e
-    ld b, $7d
-    db $06
-
+PowerupSprite_Magnet:
+    db $42, $06, $43, $06, $45, $06, $44, $06
+PowerupSprite_TripleBall:
+    db $46, $06, $47, $06, $49, $06, $48, $06
+PowerupSprite_ExtraLife:
+    db $7b, $06, $7c, $06, $7e, $06, $7d, $06
+PowerupSprite_Laser:
     db $26, $04, $28, $04, $29, $04, $27, $04
+PowerupSprite_Reverse:
+    db $77, $01, $78, $01, $7a, $01, $79, $01
+PowerupSprite_Ninja:
+    db $04, $0a, $05, $0a, $07, $0a, $06, $0a
+PowerupSprite_Ghost:
+    db $00, $09, $02, $09, $03, $09, $01, $09
+PowerupSprite_Grenade:
+    db $0c, $09, $0d, $09, $0f, $09, $0e, $09
 
-    ld [hl], a
-    ld bc, $0178
-    ld a, d
-    ld bc, $0179
-
-    db $04, $0a, $05, $0a, $07, $0a, $06, $0a, $00, $09, $02, $09, $03, $09, $01, $09
-
-    inc c
-    add hl, bc
-    dec c
-    add hl, bc
-    rrca
-    add hl, bc
-    ld c, $09
-
+; Draw the 16 rows of 9 bricks from wBrickMap. The high nibble of each cell is its palette and is
+; removed from the map here. Every cell that is not empty and not unbreakable is counted in wBricksLeft.
+SetUpBricks:
     xor a
-    ld [$cce7], a
+    ld [wBricksLeft], a
     ld a, $01
     ldh [rVBK], a
     ld hl, $9841
-    ld de, $ccfb
+    ld de, wBrickMap + $11
     ld b, $10
 
-Jump_001_77d6:
+; Starts one of the 16 brick rows of SetUpBricks. B = rows left.
+; Sets C to 9, the number of cells in the row, then draws the cells.
+SetUpBricks_Row:
     ld c, $09
 
-Jump_001_77d8:
+; Draws one cell of wBrickMap. DE = its map entry, HL = its tile map address.
+; Removes the palette nibble from the entry and counts every brick that is not unbreakable in wBricksLeft.
+; Empty cells only get shadow graphics next to a brick.
+SetUpBricks_Cell:
     ld a, [de]
     or a
-    jr z, jr_001_783a
+    jr z, .emptyCell
 
     push af
     swap a
@@ -7789,7 +5792,7 @@ Jump_001_77d8:
     and $0f
     ld [de], a
     cp $0e
-    jr nz, jr_001_780f
+    jr nz, .breakableBrick
 
     xor a
     ldh [rVBK], a
@@ -7800,30 +5803,30 @@ Jump_001_77d8:
     dec l
     ld a, b
     cp $10
-    jr z, jr_001_7803
+    jr z, .unbreakableTopRow
 
     ld a, c
     cp $09
-    jr nz, jr_001_7809
+    jr nz, .unbreakableDrawn
 
     ld [hl], $51
-    jr jr_001_7809
+    jr .unbreakableDrawn
 
-jr_001_7803:
+.unbreakableTopRow:
     ld [hl], $51
     inc l
     ld [hl], $52
     dec l
 
-jr_001_7809:
+.unbreakableDrawn:
     ld a, $01
     ldh [rVBK], a
-    jr jr_001_787f
+    jr .nextCell
 
-jr_001_780f:
-    ld a, [$cce7]
+.breakableBrick:
+    ld a, [wBricksLeft]
     inc a
-    ld [$cce7], a
+    ld [wBricksLeft], a
     dec l
     xor a
     ldh [rVBK], a
@@ -7833,27 +5836,27 @@ jr_001_780f:
     dec l
     ld a, b
     cp $10
-    jr z, jr_001_782e
+    jr z, .breakableTopRow
 
     ld a, c
     cp $09
-    jr nz, jr_001_7834
+    jr nz, .breakableDrawn
 
     ld [hl], $29
-    jr jr_001_7834
+    jr .breakableDrawn
 
-jr_001_782e:
+.breakableTopRow:
     ld [hl], $29
     inc l
     ld [hl], $2a
     dec l
 
-jr_001_7834:
+.breakableDrawn:
     ld a, $01
     ldh [rVBK], a
-    jr jr_001_787f
+    jr .nextCell
 
-jr_001_783a:
+.emptyCell:
     xor a
     ldh [rVBK], a
     push hl
@@ -7862,7 +5865,7 @@ jr_001_783a:
     ld a, [hl]
     pop hl
     cp $0f
-    jr z, jr_001_7852
+    jr z, .setLeftHalfAttr
 
     push hl
     ld hl, $ffef
@@ -7870,23 +5873,23 @@ jr_001_783a:
     ld a, [hl]
     pop hl
     or a
-    jr z, jr_001_785b
+    jr z, .checkRightHalf
 
-jr_001_7852:
+.setLeftHalfAttr:
     ld a, $01
     ldh [rVBK], a
     ld [hl], $0a
     xor a
     ldh [rVBK], a
 
-jr_001_785b:
+.checkRightHalf:
     push hl
     ld hl, $ffdf
     add hl, de
     ld a, [hl]
     pop hl
     cp $0f
-    jr z, jr_001_7870
+    jr z, .setRightHalfAttr
 
     push hl
     ld hl, $fff0
@@ -7894,9 +5897,9 @@ jr_001_785b:
     ld a, [hl]
     pop hl
     or a
-    jr z, jr_001_787b
+    jr z, .emptyCellDone
 
-jr_001_7870:
+.setRightHalfAttr:
     inc hl
     ld a, $01
     ldh [rVBK], a
@@ -7905,74 +5908,78 @@ jr_001_7870:
     xor a
     ldh [rVBK], a
 
-jr_001_787b:
+.emptyCellDone:
     ld a, $01
     ldh [rVBK], a
 
-jr_001_787f:
+.nextCell:
     inc de
     inc l
     inc l
     dec c
-    jp nz, Jump_001_77d8
+    jp nz, SetUpBricks_Cell
 
     ld a, l
     add $0e
     ld l, a
-    jr nc, jr_001_788d
+    jr nc, .noCarryTilemap
 
     inc h
 
-jr_001_788d:
+.noCarryTilemap:
     ld a, e
     add $07
     ld e, a
-    jr nc, jr_001_7894
+    jr nc, .noCarryMap
 
     inc d
 
-jr_001_7894:
+.noCarryMap:
     dec b
-    jp nz, Jump_001_77d6
+    jp nz, SetUpBricks_Row
 
     ret
 
-
-    ld a, [$cb58]
+; Every third frame, point the HDMA transfer at the next frame of the "HIGH SCORE" animation.
+HighScores_AdvanceAnim:
+    ld a, [wHighScoreAnimTick]
     inc a
-    ld [$cb58], a
+    ld [wHighScoreAnimTick], a
     cp $03
     ret nz
 
     xor a
-    ld [$cb58], a
-    ld a, [$cb56]
+    ld [wHighScoreAnimTick], a
+    ld a, [wHighScoreAnimPtr]
     ld l, a
-    ld a, [$cb57]
+    ld a, [wHighScoreAnimPtr + 1]
     ld h, a
     ld a, [hl]
     cp $01
-    jr nz, jr_001_78b7
+    jr nz, .readFrame
 
-    ld hl, $79b8
+    ld hl, HighScoreAnimFrames
 
-jr_001_78b7:
+.readFrame:
     ld a, [hl+]
-    ld [$cb54], a
+    ld [wHdmaSource], a
     ld a, [hl+]
-    ld [$cb55], a
+    ld [wHdmaSource + 1], a
     ld a, l
-    ld [$cb56], a
+    ld [wHighScoreAnimPtr], a
     ld a, h
-    ld [$cb57], a
+    ld [wHighScoreAnimPtr + 1], a
     ret
 
-
+; Sets up the 20 sprite pairs of the high score screen in wOamBuffer from HighScoreSpritePositions.
+; Also fills wHighScoreSpriteFrames with the starting animation step of each sprite.
+; Called once when the high score screen is built.
+HighScores_InitSprites:
     ld b, $14
-    ld hl, $c200
-    ld de, $7990
+    ld hl, wOamBuffer
+    ld de, HighScoreSpritePositions
 
-jr_001_78d0:
+.nextSpritePair:
     ld a, [de]
     inc de
     ld [hl+], a
@@ -7993,37 +6000,39 @@ jr_001_78d0:
     ld [hl+], a
     ld [hl+], a
     dec b
-    jr nz, jr_001_78d0
+    jr nz, .nextSpritePair
 
     ld b, $04
-    ld hl, $cccf
+    ld hl, wHighScoreSpriteFrames
     xor a
 
-jr_001_78ed:
+.nextFrameRow:
     ld c, $05
     push af
 
-jr_001_78f0:
+.nextFrameInRow:
     ld [hl+], a
     add $04
     dec c
-    jr nz, jr_001_78f0
+    jr nz, .nextFrameInRow
 
     pop af
     add $04
     dec b
-    jr nz, jr_001_78ed
+    jr nz, .nextFrameRow
 
     ret
 
-
-Call_001_78fd:
+; Advances the animation of all 20 high score sprite pairs by one step, wrapping at 32 steps.
+; Writes the new tile numbers from HighScoreSpriteTiles into wOamBuffer.
+; Called once after the sprites are set up, once per frame by HighScores_Update and by HighScores_SlideSprites.
+HighScores_MoveSprites:
     ld a, $14
-    ld de, $cccf
-    ld hl, $c202
+    ld de, wHighScoreSpriteFrames
+    ld hl, wOamBuffer + 2
     ld bc, $0004
 
-jr_001_7908:
+.nextSpritePair:
     push af
     ld a, [de]
     inc a
@@ -8035,7 +6044,7 @@ jr_001_7908:
     add a
     ld l, a
     ld h, $00
-    ld de, $7950
+    ld de, HighScoreSpriteTiles
     add hl, de
     ld d, h
     ld e, l
@@ -8050,27 +6059,27 @@ jr_001_7908:
     pop de
     pop af
     dec a
-    jr nz, jr_001_7908
+    jr nz, .nextSpritePair
 
     ret
 
-
-Call_001_7929:
+; Slide the four rows of sprites sideways for 32 frames. D is the step per frame; rows alternate direction.
+HighScores_SlideSprites:
     ld a, $20
 
-jr_001_792b:
+.frameLoop:
     push af
-    call Call_001_7c54
+    call WaitVBlank
     push de
-    call Call_001_78fd
+    call HighScores_MoveSprites
     pop de
-    ld hl, $c201
+    ld hl, wBatX
     ld c, $04
 
-jr_001_7939:
+.nextRow:
     ld b, $0a
 
-jr_001_793b:
+.nextSpriteInRow:
     ld a, [hl]
     add d
     ld [hl+], a
@@ -8078,230 +6087,195 @@ jr_001_793b:
     inc hl
     inc hl
     dec b
-    jr nz, jr_001_793b
+    jr nz, .nextSpriteInRow
 
     ld a, d
     cpl
     inc a
     ld d, a
     dec c
-    jr nz, jr_001_7939
+    jr nz, .nextRow
 
     pop af
     dec a
-    jr nz, jr_001_792b
+    jr nz, .frameLoop
 
     ret
 
-
+; Tile pair for each of the 32 animation steps of a high score sprite.
+HighScoreSpriteTiles:
     db $00, $02, $00, $02, $04, $06, $04, $06, $08, $0a, $08, $0a, $0c, $0e, $0c, $0e
     db $10, $12, $10, $12, $14, $16, $14, $16, $18, $1a, $18, $1a, $1c, $1e, $1c, $1e
     db $20, $22, $20, $22, $24, $26, $24, $26, $28, $2a, $28, $2a, $2c, $2e, $2c, $2e
     db $30, $32, $30, $32, $34, $36, $34, $36, $38, $3a, $38, $3a, $3c, $3e, $3c, $3e
+
+; Y and X of the 20 sprite pairs on the high score screen.
+HighScoreSpritePositions:
     db $37, $a6, $37, $ba, $37, $ce, $37, $e2, $37, $f6, $4f, $a6, $4f, $ba, $4f, $ce
     db $4f, $e2, $4f, $f6, $67, $a6, $67, $ba, $67, $ce, $67, $e2, $67, $f6, $7f, $a6
-    db $7f, $ba, $7f, $ce, $7f, $e2, $7f, $f6, $00, $40, $60, $43, $c0, $46, $20, $4a
-    db $80, $4d, $e0, $50, $40, $54, $a0, $57, $00, $5b, $60, $5e, $c0, $61, $20, $65
-    db $80, $68, $e0, $6b, $40, $6f, $a0, $72, $00, $76, $60, $79, $01
+    db $7f, $ba, $7f, $ce, $7f, $e2, $7f, $f6
 
-    nop
+; Frames of the animated "HIGH SCORE" title, in the language graphics bank. A value of 1 restarts the list.
+; The labels are the English ones. Every language bank has its frames at the same addresses.
+HighScoreAnimFrames:
+    dw HighScoreAnim_English_00
 
-    db $0a, $1d
+HighScoreAnimFrames_Second:
+    dw HighScoreAnim_English_01
+    dw HighScoreAnim_English_02
+    dw HighScoreAnim_English_03
+    dw HighScoreAnim_English_04
+    dw HighScoreAnim_English_05
+    dw HighScoreAnim_English_06
+    dw HighScoreAnim_English_07
+    dw HighScoreAnim_English_08
+    dw HighScoreAnim_English_09
+    dw HighScoreAnim_English_10
+    dw HighScoreAnim_English_11
+    dw HighScoreAnim_English_12
+    dw HighScoreAnim_English_13
+    dw HighScoreAnim_English_14
+    dw HighScoreAnim_English_15
+    dw HighScoreAnim_English_16
+    dw HighScoreAnim_English_17
+    db $01
 
-    ld de, $181d
-    dec e
-    rra
-    dec e
-    inc hl
-    dec e
-    ld a, [hl+]
-    dec e
+    db $00
 
-    db $31, $1d
+; Brick redraw routine, indexed by wHitRedrawIndex.
+BrickRedrawHandlers:
+    dw BrickRedrawCase_Lit_Below
+    dw BrickRedrawCase_Lit_BelowRight
+    dw BrickRedrawCase_Lit_BelowLeft
+    dw BrickRedrawCase_Lit
+    dw BrickRedrawCase_ShadowRight_Below
+    dw BrickRedrawCase_ShadowRight_BelowRight
+    dw BrickRedrawCase_ShadowRight_BelowLeft
+    dw BrickRedrawCase_ShadowRight
+    dw BrickRedrawCase_ShadowLeft_Below
+    dw BrickRedrawCase_ShadowLeft_BelowRight
+    dw BrickRedrawCase_ShadowLeft_BelowLeft
+    dw BrickRedrawCase_ShadowLeft
+    dw BrickRedrawCase_Shadow_Below
+    dw BrickRedrawCase_Shadow_BelowRight
+    dw BrickRedrawCase_Shadow_BelowLeft
+    dw BrickRedrawCase_Shadow
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw BrickRedrawCase_Shadow_BelowHalfShadow
+    dw BrickRedrawCase_Shadow_BelowRight
+    dw BrickRedrawCase_Shadow_BelowLeftShadow
+    dw BrickRedrawCase_Shadow
+    dw BrickRedrawCase_Shadow_BelowHalfShadow
+    dw BrickRedrawCase_Shadow_BelowRight
+    dw BrickRedrawCase_Shadow_BelowLeftShadow
+    dw BrickRedrawCase_Shadow
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw $0000 ; not used
+    dw BrickRedrawCase_Shadow
+    dw BrickRedrawCase_Shadow
+    dw BrickRedrawCase_Shadow_BelowLeftShadow
+    dw BrickRedrawCase_Shadow
 
-    jr c, jr_001_7a0b
-
-    db $3c, $1d
-
-    ld b, e
-    dec e
-
-    db $4a, $1d
-
-    db $51, $1d
-
-    db $55, $1d
-
-    ld e, h
-    dec e
-
-    db $63, $1d
-
-    ld l, d
-    dec e
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-
-jr_001_7a0b:
-    nop
-    nop
-    nop
-
-    db $6e, $1d
-
-    ld e, h
-    dec e
-    ld [hl], l
-    dec e
-    ld l, d
-    dec e
-
-    db $6e, $1d, $5c, $1d
-
-    ld [hl], l
-    dec e
-    ld l, d
-    dec e
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-
-    db $6a, $1d
-
-    db $6a, $1d
-
-    db $75, $1d
-
-    ld l, d
-    dec e
-
-    ld hl, $dcf4
+; Called once per frame on the credits screen. Does nothing while wCreditsRowColour is $ff.
+; Scrolls the credits one pixel by increasing wCreditsScrollY and moving the raster table entries up one row.
+; Any button press sets wCreditsScrollDone, plays a sound and returns to the main menu state.
+Credits_Update:
+    ld hl, wCreditsRowColour
     ld a, [hl]
     inc a
     ret z
 
     ld [hl], $ff
     cp $ff
-    jr z, jr_001_7a6e
+    jr z, .advanceScroll
 
     dec a
-    ld [$c954], a
+    ld [wRasterTable + 143 * 10 + 8], a
 
-jr_001_7a6e:
-    ld a, [$dcf7]
+.advanceScroll:
+    ld a, [wCreditsScrollY]
     inc a
-    ld [$dcf7], a
-    ld de, $c3be
-    ld hl, $c3c8
+    ld [wCreditsScrollY], a
+    ld de, wRasterTable + 8
+    ld hl, wRasterTable + 18
     ld b, $8f
 
-jr_001_7a7d:
+.shiftEntryLoop:
     ld a, [hl]
     ld [de], a
     ld a, l
     add $0a
     ld l, a
-    jr nc, jr_001_7a86
+    jr nc, .noCarrySource
 
     inc h
 
-jr_001_7a86:
+.noCarrySource:
     ld a, e
     add $0a
     ld e, a
-    jr nc, jr_001_7a8d
+    jr nc, .noCarryDest
 
     inc d
 
-jr_001_7a8d:
+.noCarryDest:
     dec b
-    jr nz, jr_001_7a7d
+    jr nz, .shiftEntryLoop
 
     xor a
-    ld [$dcf5], a
-    ld a, [$ff9f]
+    ld [wCreditsScrollDone], a
+    ld a, [hGameState]
     cp $01
     ret z
 
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     and $f0
     or a
-    jr z, jr_001_7ab6
+    jr z, .noButton
 
     ld a, $ff
-    ld [$dcf5], a
+    ld [wCreditsScrollDone], a
     ld a, $01
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $28
-    ld [$ffa0], a
-    ld a, $1a
-    call Call_000_3e64
+    ld [hStateTimer], a
+    ld a, SFX_MENU_SELECT
+    call PlaySound
 
-jr_001_7ab6:
+.noButton:
     ret
 
 GBC_Check:
@@ -8309,13 +6283,13 @@ GBC_Check:
     xor a                       ; switch WRAM1 to Bank 0
     ldh [rSVBK], a
     xor a                       ; store 0 to first byte of WRAM1
-    ld [$d000], a
+    ld [wRasterPaletteBuffer], a
     ld a, $02                   ; switch WRAM to Bank 2
     ldh [rSVBK], a
-    ld [$d000], a               ; Store value $02 to the first byte of WRAM1 Bank 2
+    ld [wRasterPaletteBuffer], a               ; Store value $02 to the first byte of WRAM1 Bank 2
     xor a                       ; switch WRAM1 back to Bank 0
     ldh [rSVBK], a
-    ld a, [$d000]               ; Read value from first byte of WRAM1
+    ld a, [wRasterPaletteBuffer]               ; Read value from first byte of WRAM1
     or a                        ; Bitwise OR with itself, Zero flag should be set. LD instruction doesn't change register flags in Z80...
     jr z, .RAMCheckPass         ; RAM check passed, WRAM bank switching works so this is a GBC with a MBC
 
@@ -8347,158 +6321,161 @@ GBC_Check:
 
     ; Clear part of start of WRAM0
     ld bc, $0068
-    ld hl, $c000
+    ld hl, wSoundState
     call ClearRAM
-    
-    ; Clear HRAM 
-    ld hl, $ff80
+
+    ; Clear HRAM
+    ld hl, hOamDmaRoutine
     ld bc, $007f
     call ClearRAM
     call LoadOAMCode            ; Load OAM DMA code
     call LoadHighScores         ; Load High Scores info
     pop af                      ; Get RAM Check info back to A
-    ld [$ff9f], a               ; Store to RAM
+    ld [hGameState], a               ; Store to RAM
     ret                         ; return
 
-
+; Start values of the first 9 OAM entries: 4 bat shadow sprites at y $98 (tiles $1e-$21), the 4 bat sprites at y $90 (tiles $56, $57) and the ball (tile 0, palette 3) at y $89, x $54.
+BatAndBallStartSprites:
     db $98, $50, $1e, $02, $98, $58, $1f, $02, $98, $60, $20, $02, $98, $68, $21, $02
     db $90, $48, $56, $02, $90, $50, $57, $02, $90, $58, $57, $22, $90, $60, $56, $22
-    db $89, $54, $00, $03, $1f, $02, $20, $02, $21, $02, $1f, $02, $20, $02, $20, $02
+    db $89, $54, $00, $03
+
+; Tile and attribute of shadow sprites 1 to 3 of the bat (dither tiles $1f, $20, $21, palette 2), drawn at y $98 when hTemp2 is 0 on entry.
+BatShadowTiles_Normal:
+    db $1f, $02, $20, $02, $21, $02
+
+; Four-sprite version of the bat shadow row ($1f, $20, $20, $21), used when hTemp2 is not 0 on entry. hTemp2 is a scratch byte: ProcessBrickHitQueue leaves it 0 at the end of a frame and Gameplay_UpdateBalls clears it and then counts the balls it removes, so on entry it is the number of balls removed in that frame. The row is drawn only in a frame in which a ball is removed while others stay (Triple ball loses one, or the blob catches one), whatever the bat width. It is almost never drawn (6 of 21615 frames with a normal-width bat). Seen with a real Milk bat (wBatWidth $28) when one of three balls was lost; it is not a wide-bat flag.
+BatShadowTiles_Wide:
+    db $1f, $02, $20, $02, $20, $02
     db $21, $02
 
-    db $56, $02, $57, $02, $57, $22, $56, $22, $56, $02, $08, $01, $08, $21, $56, $22
+; Tile and attribute of the 4 sprites of the bat itself (y $90, from x = wBatX - 8): $56, $57, $57 flipped, $56 flipped, palette 2.
+BatTiles_Normal:
+    db $56, $02, $57, $02, $57, $22, $56, $22
 
-    ld d, [hl]
-    ld [bc], a
-    rlca
-    ld bc, $2107
-    ld d, [hl]
-    ld [hl+], a
-    ld h, d
-    ld h, d
-    ld h, d
-    ld h, c
-    ld h, c
-    ld h, c
-    ld h, b
-    ld h, b
-    ld h, b
-    ld e, a
-    ld e, a
-    ld e, a
-    ld e, [hl]
-    ld e, [hl]
-    ld e, [hl]
-    ld e, l
-    ld e, l
-    ld e, l
+; Bat sprites while wWeaponFlag is set: the two middle sprites become tile $08 (palette 1), the weapon bat.
+BatTiles_Weapon:
+    db $56, $02, $08, $01, $08, $21, $56, $22
 
+; Bat sprites while wBallSticks is set and no ball is on the bat: the two middle sprites become tile $07 (palette 1).
+BatTiles_Sticky:
+    db $56, $02, $07, $01, $07, $21, $56, $22
+
+UnbreakableHitEffectFrames:
+    db $62, $62, $62, $61, $61, $61, $60, $60
+    db $60, $5f, $5f, $5f, $5e, $5e, $5e, $5d, $5d, $5d
+
+BrickBreakEffectFrames:
     db $58, $58, $58, $58, $59, $59, $59, $59, $5a, $5a
 
     db $5a, $5a, $5b, $5b, $5b, $5b, $5a, $5a, $5a, $5a, $59, $59, $59, $59, $58, $58
     db $58, $58
 
+PickupEffectFrames:
     db $11
 
     db $13
 
-    dec d
-    rla
-    add hl, de
-    dec de
+    db $15, $17, $19, $1b
 
+; Number of cells on each diagonal of SweepBricks.
+BrickSweepLengths:
     db $01, $02, $03, $04, $05, $06, $07, $08, $09, $09, $09, $09, $09, $08, $07, $06
     db $05, $04, $03, $02, $01, $ff
 
-    db $8d, $3e, $7b, $1f
+; Init handler for each game state.
+StateInitHandlers:
+    dw StateInit_Copyright
+    dw StateInit_MainMenu
+    dw LoadLevel
+    dw StateInit_GameOver
+    dw StateInit_Pause
+    dw StateInit_TitleScreen
+    dw StateInit_DeveloperLogos
+    dw StateInit_HighScores
+    dw StateInit_Credits
+    dw StateInit_LevelPassword
+    dw StateInit_ColorOnly
+    dw StateInit_LanguageSelect
+    dw StateInit_PublisherLogo
+    dw StateInit_Ending
 
-    inc bc
-    dec bc
-    add a
-    db $26
+; Update handler for each game state.
+StateUpdateHandlers:
+    dw StateUpdate_Copyright
+    dw StateUpdate_MainMenu
+    dw StateUpdate_Gameplay
+    dw StateUpdate_GameOver
+    dw StateUpdate_Pause
+    dw StateUpdate_TitleScreen
+    dw StateUpdate_DeveloperLogos
+    dw StateUpdate_HighScores
+    dw StateUpdate_Credits
+    dw StateUpdate_LevelPassword
+    dw StateUpdate_ColorOnly
+    dw StateUpdate_LanguageSelect
+    dw StateUpdate_PublisherLogo
+    dw StateUpdate_Ending
 
-    db $59, $39
-
-    db $4f, $25, $ed, $39, $d9, $05, $ee, $3a
-
-    ld b, l
-    inc a
-    and [hl]
-    nop
-
-    db $ee, $3d, $6c, $3a
-
-    inc bc
-    ccf
-
-    db $da, $76, $bc, $76, $92, $76
-
-    sbc [hl]
-    db $76
-
-    db $a4, $76
-
-    db $98, $76, $aa, $76, $b6, $76, $c2, $76
-
-    ret z
-
-    db $76
-    adc $76
-
-    db $d4, $76, $b0, $76
-
-    ldh [rPCM12], a
-
-    ld a, [$ff9f]
+; Called once per frame on the game over screen.
+; Any button press builds the score text, plays a sound and changes the state to the high score screen.
+; wHighScoresNextState is set so that screen leads on to the title picture.
+GameOver_Update:
+    ld a, [hGameState]
     cp $07
     ret z
 
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     and $f0
     or a
-    jr z, jr_001_7c02
+    jr z, .noButton
 
     ld a, $07
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $28
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ld a, $05
-    ld [$ccb6], a
+    ld [wHighScoresNextState], a
     ld a, $ff
-    ld [$ccb7], a
-    call Call_000_08c8
-    ld a, $1a
-    call Call_000_3e64
+    ld [wMenuIdleTimer], a
+    call BuildScoreText
+    ld a, SFX_MENU_SELECT
+    call PlaySound
 
-jr_001_7c02:
+.noButton:
     ret
 
-
-    ld a, [$ff9f]
+; Called once per frame while the game is paused.
+; Start returns to the playing state, plays a sound and clears the joypad and bat movement flags.
+; hStateTimer is set to $28 so gameplay input is ignored for a short time.
+Pause_Update:
+    ld a, [hGameState]
     cp $02
     ret z
 
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     bit 7, a
-    jr z, jr_001_7c2c
+    jr z, .startNotPressed
 
     ld a, $02
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $28
-    ld [$ffa0], a
+    ld [hStateTimer], a
     xor a
-    ld [$ff8a], a
-    ld [$ff8b], a
-    ld [$d75f], a
-    ld [$d760], a
-    ld a, $1a
-    call Call_000_3e64
+    ld [hJoypad], a
+    ld [hLastDirection], a
+    ld [wBatMovingRight], a
+    ld [wBatMovingLeft], a
+    ld a, SFX_MENU_SELECT
+    call PlaySound
 
-jr_001_7c2c:
+.startNotPressed:
     ret
 
-
-    ld hl, $d8ad
+; Sets all 6 digits of wScoreDigits to 1, which is the value for a zero digit.
+; Called by StartGame when a new game begins.
+ResetScore:
+    ld hl, wScoreDigits
     ld a, $01
     ld [hl+], a
     ld [hl+], a
@@ -8508,462 +6485,159 @@ jr_001_7c2c:
     ld [hl+], a
     ret
 
-
-Call_001_7c39:
+; Add B to the score. One unit is 10 points on screen.
+AddScore:
     ld c, b
     ld b, $00
 
-Call_001_7c3c:
-jr_001_7c3c:
+; Add BC to the score.
+AddScoreBC:
     ld a, $0b
-    ld hl, $d8b2
+    ld hl, wScoreDigits + 5
 
-jr_001_7c41:
+.incDigit:
     inc [hl]
     cp [hl]
-    jr nz, jr_001_7c4a
+    jr nz, .noDigitCarry
 
     ld [hl], $01
     dec hl
-    jr jr_001_7c41
+    jr .incDigit
 
-jr_001_7c4a:
+.noDigitCarry:
     xor a
-    ld [$d8ad], a
+    ld [wScoreDigits], a
     dec bc
     ld a, b
     or c
-    jr nz, jr_001_7c3c
+    jr nz, AddScoreBC
 
     ret
 
-
-Call_001_7c54:
-    call Call_000_0223
-    ld a, [$ff9f]
+; Wait for the next frame. A+B+Select+Start resets the game.
+WaitVBlank:
+    call ReadJoypad
+    ld a, [hGameState]
     or a
-    jr z, jr_001_7c67
+    jr z, .waitForVBlank
 
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     and $f0
     cp $f0
     jp z, Boot
 
-jr_001_7c67:
+.waitForVBlank:
     halt
     nop
-    ld a, [$ff95]
+    ld a, [hVBlankDone]
     or a
-    jr z, jr_001_7c67
+    jr z, .waitForVBlank
 
     xor a
-    ld [$ff95], a
+    ld [hVBlankDone], a
     ret
 
-
-    ld a, [$ff9f]
+; Called once per frame on the ending screen shown after the last level.
+; Any button press plays a sound and changes the state to 2, the playing state.
+; hStateTimer is set to $28.
+Ending_Update:
+    ld a, [hGameState]
     cp $02
     ret z
 
-    ld a, [$ff8a]
+    ld a, [hJoypad]
     and $f0
     or a
-    jr z, jr_001_7c91
+    jr z, .noButtonPressed
 
     ld a, $02
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $28
-    ld [$ffa0], a
-    ld a, $1a
-    call Call_000_3e64
+    ld [hStateTimer], a
+    ld a, SFX_MENU_SELECT
+    call PlaySound
 
-jr_001_7c91:
+.noButtonPressed:
     ret
 
-
-    ld a, [$ff91]
+; Called once per frame while the developer logos are shown.
+; Counts down hLogoTimer.
+; When it reaches 0 the state changes to $0B, the language select screen.
+DeveloperLogos_Update:
+    ld a, [hLogoTimer]
     or a
-    jr z, jr_001_7c9d
+    jr z, .timerExpired
 
     dec a
-    ld [$ff91], a
+    ld [hLogoTimer], a
     ret
 
-
-jr_001_7c9d:
+.timerExpired:
     ld a, $0b
-    ld [$ff9f], a
+    ld [hGameState], a
     ld a, $01
-    ld [$ffa0], a
+    ld [hStateTimer], a
     ret
 
+; Frame handler of the screen shown on a console that is not a Game Boy Color.
+; Loops on itself, so the game stays on this screen. Reached only from StateUpdate_ColorOnly (state 10), which GBC_Check selects when the WRAM bank test fails (not a Game Boy Color). Seen with PyBoy in DMG mode: state 10, PC $7ca8 on every frame, no poke (tools/playtest_close1.py close_dmg).
+ColorOnly_Update:
+    jr ColorOnly_Update
 
-jr_001_7ca8:
-    jr jr_001_7ca8
-
-    ld bc, $0090
-    call DataTransfer
-    ld hl, $5574
-    ld de, $8000
-    ld bc, $0010
-    call DataTransfer
-    ld a, $26
-    ld de, $9800
-    ld hl, $5614
-    ld b, $14
-    ld c, $12
-    call Call_000_01d4
-    ld hl, $4ca8
-    ld de, $dd03
-    ld bc, $0006
-    call DataTransfer
-    ld a, [$df33]
-    ld l, a
-    ld a, [$df34]
-    ld h, a
-    ld de, $dd0b
-    ld bc, $003e
-    call DataTransfer
-    ld a, $01
-    call ChangeROMBank
-    ld hl, $6784
-    ld a, l
-    ld [$dd09], a
-    ld a, h
-    ld [$dd0a], a
-    call Call_000_0dde
-    ld hl, $dd17
-    ld a, [$defc]
-    cp $04
-    jr nz, jr_001_7d12
-
-    ld a, [$d73c]
-    ld [hl+], a
-    ld a, [$d73d]
-    ld [hl+], a
-    ld a, [$d73e]
-    jr jr_001_7d1d
-
-jr_001_7d12:
-    ld a, [$d73b]
-    ld [hl+], a
-    ld a, [$d73c]
-    ld [hl+], a
-    ld a, [$d73d]
-
-jr_001_7d1d:
-    ld [hl-], a
-    dec hl
-    call Call_000_0974
-    ld a, [$df35]
-    ld l, a
-    ld a, [$df36]
-    ld h, a
-    ld de, $cce3
-    ld a, [$cb7c]
-    ld [hl+], a
-    ld [de], a
-    inc de
-    ld a, [$cb7d]
-    ld [hl+], a
-    ld [de], a
-    inc de
-    ld a, [$cb7e]
-    ld [hl+], a
-    ld [de], a
-    inc de
-    ld a, [$cb7f]
-    ld [hl+], a
-    ld [de], a
-    ld a, [$dd4d]
-    ld l, a
-    ld a, [$dd4e]
-    ld h, a
-    ld de, $01f4
-    add hl, de
-    ld a, l
-    ld [$dd4d], a
-    ld a, h
-    ld [$dd4e], a
-    ld a, l
-    ld [$dd49], a
-    ld a, h
-    ld [$dd4a], a
-    call Call_001_5c09
-    ld a, [$dd4f]
-    ld l, a
-    ld a, [$dd50]
-    ld h, a
-    ld de, $0032
-    add hl, de
-    ld a, l
-    ld [$dd4f], a
-    ld a, h
-    ld [$dd50], a
-    ld b, h
-    ld c, l
-    call Call_001_7c3c
-    ld hl, $dd0b
-    call Call_000_0e54
-    call Call_000_0e54
-    call Call_000_0e54
-    ld a, $2d
-    ld [$dd4b], a
-    ld hl, $67ad
-    ld a, l
-    ld [$dd60], a
-    ld a, h
-    ld [$dd61], a
-    ld hl, $67bc
-    ld a, l
-    ld [$dd6f], a
-    ld a, h
-    ld [$dd70], a
-    ld hl, $67cb
-    ld a, l
-    ld [$dd7e], a
-    ld a, h
-    ld [$dd7f], a
-    ld hl, $dd60
-    call Call_001_5d2e
-    ld hl, $dd6f
-    call Call_001_5d2e
-    ld hl, $dd7e
-    call Call_001_5d2e
-    ld hl, $dd8d
-    ld a, l
-    ld [$dd6d], a
-    ld a, h
-    ld [$dd6e], a
-    ld hl, $dddd
-    ld a, l
-    ld [$dd7c], a
-    ld a, h
-    ld [$dd7d], a
-    ld hl, $de2d
-    ld a, l
-    ld [$dd8b], a
-    ld a, h
-    ld [$dd8c], a
-    ld hl, $6543
-    ld de, $de81
-    ld bc, $0037
-    call DataTransfer
-    ret
-
-
-    ld hl, $02b3
-    ld a, l
-    ld [$ff96], a
-    ld a, h
-    ld [$ff97], a
-    ld a, $01
-    ld [$ff9c], a
-    ld [$ff9b], a
-    ld a, $01
-    ld [$ff9a], a
-    xor a
-    ldh [rSCX], a
-    ld de, $43b0
-    call Call_000_0061
-    ld a, $0d
-    call ChangeROMBank
-    ld a, $01
-    ldh [rVBK], a
-    xor a
-    ld de, $9800
-    ld hl, $5150
-    ld b, $14
-    ld c, $12
-    call Call_000_01d4
-    xor a
-    ld [$defc], a
-    ld [$defd], a
-    ld [$defe], a
-    ldh [rVBK], a
-    ld hl, $49b8
-    ld de, $9000
-    ld bc, $0630
-    call DataTransfer
-    ld de, $9800
-    ld hl, $4fe8
-    ld b, $14
-    ld c, $12
-    call Call_000_01d4
-    ld a, $01
-    call ChangeROMBank
-    ret
-
-
-    ld a, [$dabb]
-    or a
-    ret nz
-
-    ld a, $06
-    ld [ROM_BANK], a
-    call $473f
-    ld a, $01
-    ld [ROM_BANK], a
-    ret
-
-
-    push de
-    push hl
-    push bc
-    ld e, a
-    ld a, [$dabc]
-    or a
-    jr nz, jr_001_7e7b
-
-    ld a, $06
-    ld [ROM_BANK], a
-    call $4819
-    ld a, $01
-    ld [ROM_BANK], a
-
-jr_001_7e7b:
-    pop bc
-    pop hl
-    pop de
-    ret
-
-
-    ld a, $06
-    ld [ROM_BANK], a
-    call $4000
-    ld a, $01
-    ld [ROM_BANK], a
-    ret
-
-
-    ld a, $46
-    ld [$ff91], a
-    ld hl, $02b3
-    ld a, l
-    ld [$ff96], a
-    ld a, h
-    ld [$ff97], a
-    ld a, $01
-    ld [$ff9c], a
-    ld [$ff9b], a
-    ld a, $01
-    ld [$ff9a], a
-    xor a
-    ldh [rSCX], a
-    ld de, $4530
-    call Call_000_0061
-    ld a, $03
-    call ChangeROMBank
-    ld a, $01
-    ldh [rVBK], a
-    xor a
-    ld de, $9800
-    ld hl, $5e98
-    ld b, $14
-    ld c, $12
-    call Call_000_01d4
-    xor a
-    ldh [rVBK], a
-    ld hl, $5580
-    ld de, $9000
-    ld bc, $07b0
-    call DataTransfer
-    xor a
-    ld de, $9800
-    ld hl, $5d30
-    ld b, $14
-    ld c, $12
-    call Call_000_01d4
-    ld a, $01
-    call ChangeROMBank
-    ret
-
-
-    ld a, [$ff91]
-    or a
-    jr z, jr_001_7ef8
-
-    dec a
-    ld [$ff91], a
-    ret
-
-
-jr_001_7ef8:
-    ld a, $0c
-    ld [$ff9f], a
-    ld a, $01
-    ld [$ffa0], a
-    ret
-
-
-    ld e, $08
-    call Call_000_3e51
-    xor a
-    ldh [rSCX], a
-    ld hl, $02b3
-    ld a, l
-    ld [$ff96], a
-    ld a, h
-    ld [$ff97], a
-    xor a
-    ld [$ff9c], a
-    ld [$dcfe], a
-    ld a, $01
-    ld [$ff9a], a
-    ld de, $44b0
-    call Call_000_0061
-    ld a, $0e
-    ld [$dcff], a
-    call ChangeROMBank
-    ld a, $01
-    ldh [rVBK], a
-    ld hl, $674f
-    ld de, $9000
-    ld bc, $0800
-    call DataTransfer
-    ld hl, $6f4f
-    ld de, $8800
-    ld bc, $0790
-    call DataTransfer
-    xor a
-    ld de, $9800
-    ld hl, $7e87
-    ld b, $14
-    ld c, $12
-    call Call_000_01d4
-    xor a
-    ldh [rVBK], a
-    ld hl, $73cf
-    ld de, $9000
-    ld bc, $0800
-    call DataTransfer
-    ld hl, $7bcf
-    ld de, $8800
-    ld bc, $0150
-    call DataTransfer
-    ld a, $09
-    ld de, $9800
-    ld hl, $7d1f
-    ld b, $14
-    ld c, $09
-    call Call_000_01d4
-    xor a
-    ld de, $9920
-    ld b, $14
-    ld c, $09
-    call Call_000_01d4
-    ld a, [$df0d]
-    ld l, a
-    ld a, [$df0e]
-    ld h, a
-    call Call_000_0e84
-    call Call_000_0e84
-    call Call_000_0e84
-    call Call_000_0e84
-    call Call_000_0e84
-    call Call_000_0e84
-    ld a, $01
-    ld [$d8ac], a
-    call ChangeROMBank
-    ret
-
+; Filler. The rest of the bank is a stale copy of the last 854 bytes of bank 0 ($3CAA-$3FFF).
+; Nothing runs or reads it.
+BankFiller_001:
+    db $01, $90, $00, $cd, $b0, $01, $21, $74, $55, $11, $00, $80, $01, $10, $00, $cd
+    db $b0, $01, $3e, $26, $11, $00, $98, $21, $14, $56, $06, $14, $0e, $12, $cd, $d4
+    db $01, $21, $a8, $4c, $11, $03, $dd, $01, $06, $00, $cd, $b0, $01, $fa, $33, $df
+    db $6f, $fa, $34, $df, $67, $11, $0b, $dd, $01, $3e, $00, $cd, $b0, $01, $3e, $01
+    db $cd, $06, $02, $21, $84, $67, $7d, $ea, $09, $dd, $7c, $ea, $0a, $dd, $cd, $de
+    db $0d, $21, $17, $dd, $fa, $fc, $de, $fe, $04, $20, $0d, $fa, $3c, $d7, $22, $fa
+    db $3d, $d7, $22, $fa, $3e, $d7, $18, $0b, $fa, $3b, $d7, $22, $fa, $3c, $d7, $22
+    db $fa, $3d, $d7, $32, $2b, $cd, $74, $09, $fa, $35, $df, $6f, $fa, $36, $df, $67
+    db $11, $e3, $cc, $fa, $7c, $cb, $22, $12, $13, $fa, $7d, $cb, $22, $12, $13, $fa
+    db $7e, $cb, $22, $12, $13, $fa, $7f, $cb, $22, $12, $fa, $4d, $dd, $6f, $fa, $4e
+    db $dd, $67, $11, $f4, $01, $19, $7d, $ea, $4d, $dd, $7c, $ea, $4e, $dd, $7d, $ea
+    db $49, $dd, $7c, $ea, $4a, $dd, $cd, $09, $5c, $fa, $4f, $dd, $6f, $fa, $50, $dd
+    db $67, $11, $32, $00, $19, $7d, $ea, $4f, $dd, $7c, $ea, $50, $dd, $44, $4d, $cd
+    db $3c, $7c, $21, $0b, $dd, $cd, $54, $0e, $cd, $54, $0e, $cd, $54, $0e, $3e, $2d
+    db $ea, $4b, $dd, $21, $ad, $67, $7d, $ea, $60, $dd, $7c, $ea, $61, $dd, $21, $bc
+    db $67, $7d, $ea, $6f, $dd, $7c, $ea, $70, $dd, $21, $cb, $67, $7d, $ea, $7e, $dd
+    db $7c, $ea, $7f, $dd, $21, $60, $dd, $cd, $2e, $5d, $21, $6f, $dd, $cd, $2e, $5d
+    db $21, $7e, $dd, $cd, $2e, $5d, $21, $8d, $dd, $7d, $ea, $6d, $dd, $7c, $ea, $6e
+    db $dd, $21, $dd, $dd, $7d, $ea, $7c, $dd, $7c, $ea, $7d, $dd, $21, $2d, $de, $7d
+    db $ea, $8b, $dd, $7c, $ea, $8c, $dd, $21, $43, $65, $11, $81, $de, $01, $37, $00
+    db $cd, $b0, $01, $c9, $21, $b3, $02, $7d, $ea, $96, $ff, $7c, $ea, $97, $ff, $3e
+    db $01, $ea, $9c, $ff, $ea, $9b, $ff, $3e, $01, $ea, $9a, $ff, $af, $e0, $43, $11
+    db $b0, $43, $cd, $61, $00, $3e, $0d, $cd, $06, $02, $3e, $01, $e0, $4f, $af, $11
+    db $00, $98, $21, $50, $51, $06, $14, $0e, $12, $cd, $d4, $01, $af, $ea, $fc, $de
+    db $ea, $fd, $de, $ea, $fe, $de, $e0, $4f, $21, $b8, $49, $11, $00, $90, $01, $30
+    db $06, $cd, $b0, $01, $11, $00, $98, $21, $e8, $4f, $06, $14, $0e, $12, $cd, $d4
+    db $01, $3e, $01, $cd, $06, $02, $c9, $fa, $bb, $da, $b7, $c0, $3e, $06, $ea, $00
+    db $21, $cd, $3f, $47, $3e, $01, $ea, $00, $21, $c9, $d5, $e5, $c5, $5f, $fa, $bc
+    db $da, $b7, $20, $0d, $3e, $06, $ea, $00, $21, $cd, $19, $48, $3e, $01, $ea, $00
+    db $21, $c1, $e1, $d1, $c9, $3e, $06, $ea, $00, $21, $cd, $00, $40, $3e, $01, $ea
+    db $00, $21, $c9, $3e, $46, $ea, $91, $ff, $21, $b3, $02, $7d, $ea, $96, $ff, $7c
+    db $ea, $97, $ff, $3e, $01, $ea, $9c, $ff, $ea, $9b, $ff, $3e, $01, $ea, $9a, $ff
+    db $af, $e0, $43, $11, $30, $45, $cd, $61, $00, $3e, $03, $cd, $06, $02, $3e, $01
+    db $e0, $4f, $af, $11, $00, $98, $21, $98, $5e, $06, $14, $0e, $12, $cd, $d4, $01
+    db $af, $e0, $4f, $21, $80, $55, $11, $00, $90, $01, $b0, $07, $cd, $b0, $01, $af
+    db $11, $00, $98, $21, $30, $5d, $06, $14, $0e, $12, $cd, $d4, $01, $3e, $01, $cd
+    db $06, $02, $c9, $fa, $91, $ff, $b7, $28, $05, $3d, $ea, $91, $ff, $c9, $3e, $0c
+    db $ea, $9f, $ff, $3e, $01, $ea, $a0, $ff, $c9, $1e, $08, $cd, $51, $3e, $af, $e0
+    db $43, $21, $b3, $02, $7d, $ea, $96, $ff, $7c, $ea, $97, $ff, $af, $ea, $9c, $ff
+    db $ea, $fe, $dc, $3e, $01, $ea, $9a, $ff, $11, $b0, $44, $cd, $61, $00, $3e, $0e
+    db $ea, $ff, $dc, $cd, $06, $02, $3e, $01, $e0, $4f, $21, $4f, $67, $11, $00, $90
+    db $01, $00, $08, $cd, $b0, $01, $21, $4f, $6f, $11, $00, $88, $01, $90, $07, $cd
+    db $b0, $01, $af, $11, $00, $98, $21, $87, $7e, $06, $14, $0e, $12, $cd, $d4, $01
+    db $af, $e0, $4f, $21, $cf, $73, $11, $00, $90, $01, $00, $08, $cd, $b0, $01, $21
+    db $cf, $7b, $11, $00, $88, $01, $50, $01, $cd, $b0, $01, $3e, $09, $11, $00, $98
+    db $21, $1f, $7d, $06, $14, $0e, $09, $cd, $d4, $01, $af, $11, $20, $99, $06, $14
+    db $0e, $09, $cd, $d4, $01, $fa, $0d, $df, $6f, $fa, $0e, $df, $67, $cd, $84, $0e
+    db $cd, $84, $0e, $cd, $84, $0e, $cd, $84, $0e, $cd, $84, $0e, $cd, $84, $0e, $3e
+    db $01, $ea, $ac, $d8, $cd, $06, $02, $c9, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00

@@ -1,0 +1,6 @@
+*.gb
+*.gbc
+*.o
+*.sym
+*.map
+__pycache__/

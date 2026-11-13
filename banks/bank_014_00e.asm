@@ -5,1493 +5,527 @@
 
 SECTION "ROM Bank $00e", ROMX[$4000], BANK[$e]
 
-    db $a6, $98, $00, $04, $56, $45, $52, $20, $32, $33, $20, $30, $32, $ff
-
-    db $c4, $98, $00, $04, $20, $20, $43, $4f, $4d, $45, $4e, $5a, $41, $52, $ff, $e3
-    db $98, $00, $01, $43, $4f, $4d, $45, $4e, $5a, $41, $52, $20, $00, $01, $4c, $30
-    db $30, $30, $ff, $23, $99, $00, $01, $20, $20, $43, $4f, $4e, $54, $52, $41, $53
-    db $45, $f0, $41, $20, $20, $ff, $64, $99, $00, $01, $20, $20, $4d, $ee, $53, $49
-    db $43, $41, $20, $53, $ef, $20, $ff
-
-    ld h, h
-    sbc c
-    nop
-    ld bc, $2020
-    ld c, l
-    xor $53
-    ld c, c
-    ld b, e
-    ld b, c
-    jr nz, @+$50
-
-    ld c, a
-    jr nz, @+$01
-
-    db $84, $99, $00, $01, $20, $20, $20, $53, $46, $58, $20, $53, $ef, $20, $20, $ff
-
-    add h
-    sbc c
-    nop
-    ld bc, $2020
-    jr nz, @+$55
-
-    ld b, [hl]
-    ld e, b
-    jr nz, jr_00e_40d0
-
-    ld c, a
-    jr nz, @+$22
-
-    rst $38
-
-    db $c4, $98, $00, $04, $53, $54, $41, $52, $54, $20, $47, $41, $4d, $45, $ff, $e1
-    db $98, $00, $01, $20, $20, $20, $53, $54, $41, $52, $54, $20, $00, $01, $4c, $30
-    db $30, $30, $ff, $23, $99, $00, $01, $45, $4e, $54, $45, $52, $20, $50, $41, $53
-    db $53, $57, $4f, $52, $44, $ff, $64, $99, $00, $01, $4d, $55, $53, $49, $43, $20
-    db $49, $53, $20, $4f, $4e, $20, $ff
-
-    ld h, h
-    sbc c
-    nop
-
-jr_00e_40d0:
-    ld bc, $554d
-    ld d, e
-    ld c, c
-    ld b, e
-    jr nz, @+$4b
-
-    ld d, e
-    jr nz, @+$51
-
-    ld b, [hl]
-    ld b, [hl]
-    rst $38
-
-    db $84, $99, $00, $01, $53, $46, $58, $20, $41, $52, $45, $20, $4f, $4e, $20, $ff
-
-    add h
-    sbc c
-    nop
-    ld bc, $4653
-    ld e, b
-    jr nz, @+$43
-
-    ld d, d
-    ld b, l
-    jr nz, @+$51
-
-    ld b, [hl]
-    ld b, [hl]
-    rst $38
-
-    db $c4, $98, $00, $04, $20, $43, $4f, $4d, $4d, $45, $4e, $43, $45, $52, $ff, $e2
-    db $98, $00, $01, $20, $20, $20, $41, $4c, $4c, $45, $52, $20, $00, $01, $4c, $30
-    db $30, $30, $ff, $23, $99, $00, $01, $20, $4d, $4f, $54, $20, $44, $45, $20, $50
-    db $41, $53, $53, $45, $20, $ff
-
-    ld h, h
-    sbc c
-    nop
-    ld bc, $554d
-    ld d, e
-    ld c, c
-    ld d, c
-    ld d, l
-    ld b, l
-    jr nz, @+$50
-
-    ld c, a
-    ld c, [hl]
-    jr nz, @+$01
-
-    db $64, $99, $00, $01, $4d, $55, $53, $49, $51, $55, $45, $20, $4f, $55, $49, $20
-    db $ff, $84, $99, $00, $01, $53, $4f, $4e, $4f, $52, $45, $53, $20, $4f, $55, $49
-    db $ff
-
-    add h
-    sbc c
-    nop
-    ld bc, $4f53
-    ld c, [hl]
-    ld c, a
-    ld d, d
-    ld b, l
-    ld d, e
-    jr nz, @+$50
-
-    ld c, a
-    ld c, [hl]
-    rst $38
-
-    db $c4, $98, $00, $04, $20, $20, $42, $45, $47, $49, $4e, $4e, $45, $4e, $ff, $e3
-    db $98, $00, $01, $42, $45, $47, $49, $4e, $4e, $45, $4e, $20, $00, $01, $4c, $30
-    db $30, $30, $ff, $23, $99, $00, $01, $20, $20, $20, $50, $41, $53, $53, $57, $4f
-    db $52, $54, $20, $20, $20, $ff, $64, $99, $00, $01, $20, $20, $4d, $55, $53, $49
-    db $4b, $20, $41, $4e, $20, $20, $ff
-
-    ld h, h
-    sbc c
-    nop
-    ld bc, $2020
-    ld c, l
-    ld d, l
-    ld d, e
-    ld c, c
-    ld c, e
-    jr nz, @+$43
-
-    ld d, l
-    ld d, e
-    jr nz, @+$01
-
-    db $84, $99, $00, $01, $20, $20, $53, $46, $58, $20, $41, $4e, $20, $20, $20, $ff
-
-    add h
-    sbc c
-    nop
-    ld bc, $2020
-    ld d, e
-    ld b, [hl]
-    ld e, b
-    jr nz, @+$43
-
-    ld d, l
-    ld d, e
-    jr nz, @+$22
-
-    rst $38
-
-    db $c4, $98, $00, $04, $20, $20, $49, $4e, $49, $5a, $49, $4f, $20, $20, $ff, $e2
-    db $98, $00, $01, $20, $20, $49, $4e, $49, $5a, $49, $4f, $20, $00, $01, $4c, $30
-    db $30, $30, $ff, $23, $99, $00, $01, $20, $20, $20, $50, $41, $53, $53, $57, $4f
-    db $52, $44, $20, $20, $20, $ff, $64, $99, $00, $01, $20, $4d, $55, $53, $49, $43
-    db $41, $20, $53, $ed, $20, $20, $ff, $64, $99, $00, $01, $20, $4d, $55, $53, $49
-    db $43, $41, $20, $4e, $4f, $20, $20, $ff, $84, $99, $00, $01, $20, $45, $46, $46
-    db $45, $54, $54, $49, $20, $53, $ed, $20, $ff, $84, $99, $00, $01, $20, $45, $46
-    db $46, $45, $54, $54, $49, $20, $4e, $4f, $20, $ff
-
-    db $00, $20, $20, $20, $20, $20, $4d, $55, $4c, $54, $49, $a6, $42, $41, $4c, $4c
-    db $20, $20, $20, $20, $20
-
-    nop
-    jr nz, jr_00e_42a0
-
-    jr nz, jr_00e_42a2
-
-    ld c, l
-    ld d, l
-    ld c, h
-    ld d, h
-    ld c, c
-    and [hl]
-    ld b, d
-    ld b, c
-    ld c, h
-    ld c, h
-    ld b, l
-    ld d, e
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    nop
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    jr nz, jr_00e_42e6
-
-    ld d, l
-    ld c, h
-    ld d, h
-    ld c, c
-    and [hl]
-    ld b, d
-    ld b, c
-
-jr_00e_42a0:
-    ld c, h
-    ld c, h
-
-jr_00e_42a2:
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    db $20
-
-    db $04, $20, $20, $20, $20, $20, $4d, $55, $4c, $54, $49, $20, $50, $41, $4c, $4c
-    db $41, $20, $20, $20, $20
-
-    db $04, $20, $20, $20, $20, $20, $4d, $55, $4c, $54, $49, $a6, $42, $4f, $4c, $41
-    db $53, $20, $20, $20, $20
-
-    db $04, $20, $20, $20, $20, $20, $20, $53, $4c, $4f, $57, $20, $42, $41, $4c, $4c
-    db $20, $20, $20, $20, $20
-
-jr_00e_42e6:
-    inc b
-    jr nz, jr_00e_4309
-
-    jr nz, jr_00e_430b
-
-    jr nz, @+$44
-
-    ld b, c
-    ld c, h
-    ld c, h
-    ld b, l
-    jr nz, @+$4e
-
-    ld b, l
-    ld c, [hl]
-    ld d, h
-    ld b, l
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    nop
-    jr nz, @+$22
-
-    jr nz, @+$55
-
-    ld b, e
-    ld c, b
-    ld c, [hl]
-    ld b, l
-    ld b, e
-    ld c, e
-    ld b, l
-    ld c, [hl]
-    and [hl]
-
-jr_00e_4309:
-    ld b, d
-    ld b, c
-
-jr_00e_430b:
-    ld c, h
-    ld c, h
-    jr nz, @+$22
-
-    db $20
-
-    db $04, $20, $20, $20, $20, $20, $50, $41, $4c, $4c, $41, $20, $4c, $45, $4e, $54
-    db $41, $20, $20, $20, $20
-
-    db $00, $20, $20, $20, $20, $20, $42, $4f, $4c, $41, $20, $4c, $45, $4e, $54, $41
-    db $20, $20, $20, $20, $20
-
-    db $00, $20, $20, $41, $4e, $54, $49, $47, $52, $41, $56, $49, $54, $59, $20, $42
-    db $41, $4c, $4c, $20, $20
-
-    db $04, $20, $20, $42, $41, $4c, $4c, $45, $20, $41, $4e, $54, $49, $47, $52, $41
-    db $56, $49, $54, $ac, $20
-
-    nop
-    jr nz, @+$22
-
-    ld b, c
-    ld c, [hl]
-    ld d, h
-    ld c, c
-    and [hl]
-    ld d, e
-    ld b, e
-    ld c, b
-    ld d, a
-    ld b, l
-    ld d, d
-    ld c, e
-    ld d, d
-    ld b, c
-    ld b, [hl]
-    ld d, h
-    jr nz, @+$22
-
-    db $00, $20, $41, $4e, $54, $49, $47, $52, $41, $56, $49, $54, $41, $5a, $49, $4f
-    db $4e, $41, $4c, $45, $20
-
-    db $00, $20, $42, $4f, $4c, $41, $20, $41, $4e, $54, $49, $a6, $47, $52, $41, $56
-    db $45, $44, $41, $44, $20
-
-    db $04, $20, $20, $20, $20, $20, $53, $4c, $45, $45, $50, $59, $20, $42, $41, $4c
-    db $4c, $20, $20, $20, $20
-
-    nop
-    jr nz, jr_00e_43db
-
-    jr nz, @+$44
-
-    ld b, c
-    ld c, h
-    ld c, h
-    ld b, l
-    jr nz, @+$47
-
-    ld c, [hl]
-    ld b, h
-    ld c, a
-    ld d, d
-    ld c, l
-    ld c, c
-    ld b, l
-    jr nz, @+$22
-
-    jr nz, jr_00e_43d2
-
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-jr_00e_43d2:
-    jr nz, @+$55
-
-    ld b, e
-    ld c, b
-    ld c, h
-    ld b, c
-    ld b, [hl]
-    and [hl]
-    ld b, d
-
-jr_00e_43db:
-    ld b, c
-    ld c, h
-    ld c, h
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    db $00, $20, $50, $41, $4c, $4c, $41, $20, $41, $44, $44, $4f, $52, $4d, $45, $4e
-    db $54, $41, $54, $41, $20
-
-    db $04, $20, $20, $20, $42, $4f, $4c, $41, $20, $41, $4c, $45, $54, $41, $52, $47
-    db $41, $44, $41, $20, $20
-
-    db $00, $20, $20, $20, $20, $20, $52, $4f, $43, $4b, $45, $54, $20, $42, $41, $54
-    db $20, $20, $20, $20, $20
-
-    db $04, $20, $20, $20, $20, $20, $42, $41, $54, $54, $45, $20, $46, $55, $53, $ac
-    db $45, $20, $20, $20, $20
-
-    db $00, $20, $20, $52, $41, $4b, $45, $54, $45, $4e, $a6, $53, $43, $48, $4c, $a7
-    db $47, $45, $52, $20, $20
-
-    db $04, $20, $20, $4d, $41, $5a, $5a, $41, $20, $4c, $41, $4e, $43, $49, $41, $52
-    db $41, $5a, $5a, $49, $20
-
-    db $04, $20, $20, $20, $20, $20, $42, $41, $54, $45, $20, $43, $4f, $48, $45, $54
-    db $45, $20, $20, $20, $20
-
-    db $00, $20, $20, $20, $20, $20, $50, $4c, $41, $53, $4d, $41, $20, $42, $41, $54
-    db $20, $20, $20, $20, $20
-
-    inc b
-    jr nz, jr_00e_44ad
-
-    jr nz, jr_00e_44af
-
-    jr nz, @+$4f
-
-    ld c, a
-    ld b, h
-    ld b, l
-    jr nz, @+$52
-
-    ld c, h
-    ld b, c
-    ld d, e
-    ld c, l
-    ld b, c
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    inc b
-    jr nz, @+$22
-
-    jr nz, jr_00e_44f4
-
-    ld c, h
-    ld b, c
-    ld d, e
-    ld c, l
-    ld b, c
-    and [hl]
-    ld d, e
-    ld b, e
-    ld c, b
-
-jr_00e_44ad:
-    ld c, h
-    and a
-
-jr_00e_44af:
-    ld b, a
-    ld b, l
-    ld d, d
-    jr nz, @+$22
-
-    db $04, $20, $20, $20, $4d, $41, $5a, $5a, $41, $20, $41, $4c, $20, $50, $4c, $41
-    db $53, $4d, $41, $20, $20
-
-    db $04, $20, $20, $20, $20, $20, $42, $41, $54, $45, $20, $50, $4c, $41, $53, $4d
-    db $41, $20, $20, $20, $20
-
-    db $04, $20, $20, $20, $20, $20, $20, $20, $42, $49, $47, $20, $42, $41, $54, $20
-    db $20, $20, $20, $20, $20
-
-    nop
-
-jr_00e_44f4:
-    jr nz, jr_00e_4516
+; Shown on the title menu by the NXRZ cheat.
+Text_Version:
+    dw $98a6
+    db $00, $04, "VER 23 02", $ff
+
+Text_Spanish_StartGame:
+    dw $98c4
+    db $00, $04, "  COMENZAR", $ff
+
+Text_Spanish_StartLevel:
+    dw $98e3
+    db $00, $01, "COMENZAR ", $00, $01, "L000", $ff
+
+Text_Spanish_EnterPassword:
+    dw $9923
+    db $00, $01, "  CONTRASE", $f0, "A  ", $ff
+
+Text_Spanish_MusicOn:
+    dw $9964
+    db $00, $01, "  M", $ee, "SICA S", $ef, " ", $ff
+
+Text_Spanish_MusicOff:
+    dw $9964
+    db $00, $01, "  M", $ee, "SICA NO ", $ff
+
+Text_Spanish_SfxOn:
+    dw $9984
+    db $00, $01, "   SFX S", $ef, "  ", $ff
+
+Text_Spanish_SfxOff:
+    dw $9984
+    db $00, $01, "   SFX NO  ", $ff
+
+Text_English_StartGame:
+    dw $98c4
+    db $00, $04, "START GAME", $ff
+
+Text_English_StartLevel:
+    dw $98e1
+    db $00, $01, "   START ", $00, $01, "L000", $ff
+
+Text_English_EnterPassword:
+    dw $9923
+    db $00, $01, "ENTER PASSWORD", $ff
+
+Text_English_MusicOn:
+    dw $9964
+    db $00, $01, "MUSIC IS ON ", $ff
 
-    jr nz, jr_00e_4518
-
-    jr nz, @+$4f
+Text_English_MusicOff:
+    dw $9964
+    db $00, $01, "MUSIC IS OFF", $ff
 
-    xor h
-    ld b, a
-    ld b, c
-    jr nz, jr_00e_4541
+Text_English_SfxOn:
+    dw $9984
+    db $00, $01, "SFX ARE ON ", $ff
 
-    ld b, c
-    ld d, h
-    ld d, h
-    ld b, l
-    jr nz, jr_00e_4525
-
-    jr nz, jr_00e_4527
+Text_English_SfxOff:
+    dw $9984
+    db $00, $01, "SFX ARE OFF", $ff
 
-    jr nz, jr_00e_450d
-
-    jr nz, jr_00e_452b
-
-    jr nz, jr_00e_455f
-
-jr_00e_450d:
-    ld c, c
-    ld b, l
-    ld d, e
-    ld b, l
-    ld c, [hl]
-    and [hl]
-    ld d, e
-    ld b, e
-    ld c, b
-
-jr_00e_4516:
-    ld c, h
-    and a
-
-jr_00e_4518:
-    ld b, a
-    ld b, l
-    ld d, d
-    jr nz, @+$22
-
-    inc b
-    jr nz, jr_00e_4540
-
-    jr nz, jr_00e_4542
-
-    ld c, l
-    ld b, c
-    ld e, d
-
-jr_00e_4525:
-    ld e, d
-    ld b, c
+Text_French_StartGame:
+    dw $98c4
+    db $00, $04, " COMMENCER", $ff
 
-jr_00e_4527:
-    jr nz, jr_00e_4570
+Text_French_StartLevel:
+    dw $98e2
+    db $00, $01, "   ALLER ", $00, $01, "L000", $ff
 
-    ld c, c
-    ld b, a
+Text_French_EnterPassword:
+    dw $9923
+    db $00, $01, " MOT DE PASSE ", $ff
 
-jr_00e_452b:
-    ld b, c
-    ld c, [hl]
-    ld d, h
-    ld b, l
-    jr nz, @+$22
-
-    jr nz, jr_00e_4537
+Text_French_MusicOff:
+    dw $9964
+    db $00, $01, "MUSIQUE NON ", $ff
 
-    jr nz, @+$22
-
-    jr nz, @+$22
+Text_French_MusicOn:
+    dw $9964
+    db $00, $01, "MUSIQUE OUI ", $ff
 
-jr_00e_4537:
-    jr nz, jr_00e_457b
-
-    ld b, c
-    ld d, h
-    ld b, l
-    jr nz, jr_00e_4585
+Text_French_SfxOn:
+    dw $9984
+    db $00, $01, "SONORES OUI", $ff
 
-    ld d, d
-    ld b, c
+Text_French_SfxOff:
+    dw $9984
+    db $00, $01, "SONORES NON", $ff
 
-jr_00e_4540:
-    ld c, [hl]
+Text_German_StartGame:
+    dw $98c4
+    db $00, $04, "  BEGINNEN", $ff
 
-jr_00e_4541:
-    ld b, h
+Text_German_StartLevel:
+    dw $98e3
+    db $00, $01, "BEGINNEN ", $00, $01, "L000", $ff
 
-jr_00e_4542:
-    ld b, l
-    jr nz, @+$22
+Text_German_EnterPassword:
+    dw $9923
+    db $00, $01, "   PASSWORT   ", $ff
 
-    jr nz, jr_00e_4567
+Text_German_MusicOn:
+    dw $9964
+    db $00, $01, "  MUSIK AN  ", $ff
 
-    db $00, $20, $20, $20, $20, $20, $20, $53, $54, $55, $4e, $20, $42, $41, $54, $20
-    db $20, $20, $20, $20, $20
-
-    inc b
-    jr nz, jr_00e_457f
-
-jr_00e_455f:
-    ld b, d
-    ld b, c
-    ld d, h
-    ld d, h
-    ld b, l
-    jr nz, @+$47
-
-    ld c, l
-
-jr_00e_4567:
-    ld d, b
-    ld c, a
-    ld c, c
-    ld d, e
-    ld c, a
-    ld c, [hl]
-    ld c, [hl]
-    xor h
-    ld b, l
-
-jr_00e_4570:
-    jr nz, jr_00e_4572
-
-jr_00e_4572:
-    jr nz, jr_00e_4594
-
-    jr nz, jr_00e_4596
-
-    jr nz, @+$58
-
-    ld b, l
-    ld d, d
-    ld d, a
-
-jr_00e_457b:
-    ld c, c
-    ld d, d
-    ld d, d
-    ld d, h
-
-jr_00e_457f:
-    ld b, l
-    ld d, d
-    jr nz, @+$22
-
-    jr nz, @+$22
+Text_German_MusicOff:
+    dw $9964
+    db $00, $01, "  MUSIK AUS ", $ff
 
-jr_00e_4585:
-    jr nz, jr_00e_4587
-
-jr_00e_4587:
-    jr nz, @+$22
-
-    jr nz, jr_00e_45d8
-
-    ld b, c
-    ld e, d
-    ld e, d
-    ld b, c
-    jr nz, jr_00e_45e4
-
-    ld d, h
-    ld c, a
-    ld d, d
+Text_German_SfxOn:
+    dw $9984
+    db $00, $01, "  SFX AN   ", $ff
 
-jr_00e_4594:
-    ld b, h
-    ld c, c
+Text_German_SfxOff:
+    dw $9984
+    db $00, $01, "  SFX AUS  ", $ff
 
-jr_00e_4596:
-    ld d, h
-    ld b, c
-    jr nz, @+$22
+Text_Italian_StartGame:
+    dw $98c4
+    db $00, $04, "  INIZIO  ", $ff
 
-    db $20
+Text_Italian_StartLevel:
+    dw $98e2
+    db $00, $01, "  INIZIO ", $00, $01, "L000", $ff
 
-    db $04, $20, $20, $20, $20, $42, $41, $54, $45, $20, $41, $54, $55, $52, $44, $49
-    db $44, $4f, $20, $20, $20
+Text_Italian_EnterPassword:
+    dw $9923
+    db $00, $01, "   PASSWORD   ", $ff
 
-    db $00, $20, $20, $20, $20, $4d, $41, $47, $4e, $45, $54, $49, $43, $20, $42, $41
-    db $54, $20, $20, $20, $20
+Text_Italian_MusicOn:
+    dw $9964
+    db $00, $01, " MUSICA S", $ed, "  ", $ff
 
-    nop
-    jr nz, jr_00e_45e8
+Text_Italian_MusicOff:
+    dw $9964
+    db $00, $01, " MUSICA NO  ", $ff
 
-    ld b, d
-    ld b, c
-    ld d, h
-    ld d, h
-    ld b, l
-    jr nz, @+$4f
+Text_Italian_SfxOn:
+    dw $9984
+    db $00, $01, " EFFETTI S", $ed, " ", $ff
 
-    ld b, c
-    ld b, a
-    ld c, [hl]
-    xor h
-    ld d, h
-    ld c, c
-    ld d, c
-    ld d, l
-    ld b, l
+Text_Italian_SfxOff:
+    dw $9984
+    db $00, $01, " EFFETTI NO ", $ff
 
-jr_00e_45d8:
-    jr nz, @+$22
+PowerupText_English_MultiBall:
+    db $00, "     MULTI", $a6, "BALL     "
 
-    inc b
-    jr nz, @+$22
+PowerupText_French_MultiBall:
+    db $00, "    MULTI", $a6, "BALLES    "
 
-    jr nz, @+$4f
+PowerupText_German_MultiBall:
+    db $00, "     MULTI", $a6, "BALL     "
 
-    ld b, c
-    ld b, a
-    ld c, [hl]
-    ld b, l
-    ld d, h
+PowerupText_Italian_MultiBall:
+    db $04, "     MULTI PALLA    "
 
-jr_00e_45e4:
-    and [hl]
-    ld d, e
-    ld b, e
-    ld c, b
+PowerupText_Spanish_MultiBall:
+    db $04, "     MULTI", $a6, "BOLAS    "
 
-jr_00e_45e8:
-    ld c, h
-    and a
-    ld b, a
-    ld b, l
-    ld d, d
-    jr nz, @+$22
+PowerupText_English_SlowBall:
+    db $04, "      SLOW BALL     "
 
-    db $04, $20, $20, $20, $4d, $41, $5a, $5a, $41, $20, $4d, $41, $47, $4e, $45, $54
-    db $49, $43, $41, $20, $20
+PowerupText_French_SlowBall:
+    db $04, "     BALLE LENTE    "
 
-    db $00, $20, $20, $20, $42, $41, $54, $45, $20, $4d, $41, $47, $4e, $ac, $54, $49
-    db $43, $4f, $20, $20, $20
+PowerupText_German_SlowBall:
+    db $00, "   SCHNECKEN", $a6, "BALL   "
 
-    db $00, $20, $20, $20, $20, $20, $45, $58, $54, $52, $41, $20, $4c, $49, $46, $45
-    db $20, $20, $20, $20, $20
+PowerupText_Italian_SlowBall:
+    db $04, "     PALLA LENTA    "
 
-    inc b
-    jr nz, jr_00e_4651
+PowerupText_Spanish_SlowBall:
+    db $00, "     BOLA LENTA     "
 
-    jr nz, jr_00e_4653
+PowerupText_English_AntigravityBall:
+    db $00, "  ANTIGRAVITY BALL  "
 
-    jr nz, @+$22
+PowerupText_French_AntigravityBall:
+    db $04, "  BALLE ANTIGRAVIT", $ac, " "
 
-    ld b, d
-    ld c, a
-    ld c, [hl]
-    ld d, l
-    ld d, e
-    jr nz, @+$58
+PowerupText_German_AntigravityBall:
+    db $00, "  ANTI", $a6, "SCHWERKRAFT  "
 
-    ld c, c
-    ld b, l
-    jr nz, jr_00e_4660
+PowerupText_Italian_AntigravityBall:
+    db $00, " ANTIGRAVITAZIONALE "
 
-    jr nz, jr_00e_4662
+PowerupText_Spanish_AntigravityBall:
+    db $00, " BOLA ANTI", $a6, "GRAVEDAD "
 
-    jr nz, jr_00e_4648
+PowerupText_English_SleepyBall:
+    db $04, "     SLEEPY BALL    "
 
-    jr nz, jr_00e_4666
+PowerupText_French_SleepyBall:
+    db $00, "   BALLE ENDORMIE   "
 
-    jr nz, jr_00e_4668
+PowerupText_German_SleepyBall:
+    db $04, "     SCHLAF", $a6, "BALL    "
 
-jr_00e_4648:
-    jr nz, @+$47
+PowerupText_Italian_SleepyBall:
+    db $00, " PALLA ADDORMENTATA "
 
-    ld e, b
-    ld d, h
-    ld d, d
-    ld b, c
-    jr nz, jr_00e_469c
+PowerupText_Spanish_SleepyBall:
+    db $04, "   BOLA ALETARGADA  "
 
-    ld b, l
+PowerupText_English_RocketBat:
+    db $00, "     ROCKET BAT     "
 
-jr_00e_4651:
-    ld b, d
-    ld b, l
+PowerupText_French_RocketBat:
+    db $04, "     BATTE FUS", $ac, "E    "
 
-jr_00e_4653:
-    ld c, [hl]
-    jr nz, jr_00e_4676
+PowerupText_German_RocketBat:
+    db $00, "  RAKETEN", $a6, "SCHL", $a7, "GER  "
 
-    jr nz, @+$22
+PowerupText_Italian_RocketBat:
+    db $04, "  MAZZA LANCIARAZZI "
 
-    nop
-    jr nz, jr_00e_467b
+PowerupText_Spanish_RocketBat:
+    db $04, "     BATE COHETE    "
 
-    jr nz, jr_00e_467d
+PowerupText_English_PlasmaBat:
+    db $00, "     PLASMA BAT     "
 
-    jr nz, jr_00e_46b5
+PowerupText_French_PlasmaBat:
+    db $04, "     MODE PLASMA    "
 
-    ld c, c
+PowerupText_German_PlasmaBat:
+    db $04, "   PLASMA", $a6, "SCHL", $a7, "GER  "
 
-jr_00e_4660:
-    ld d, h
-    ld b, c
+PowerupText_Italian_PlasmaBat:
+    db $04, "   MAZZA AL PLASMA  "
 
-jr_00e_4662:
-    jr nz, jr_00e_46a9
+PowerupText_Spanish_PlasmaBat:
+    db $04, "     BATE PLASMA    "
 
-    ld e, b
-    ld d, h
+PowerupText_English_BigBat:
+    db $04, "       BIG BAT      "
 
-jr_00e_4666:
-    ld d, d
-    ld b, c
+PowerupText_French_BigBat:
+    db $00, "     M", $ac, "GA BATTE     "
 
-jr_00e_4668:
-    jr nz, @+$22
+PowerupText_German_BigBat:
+    db $04, "   RIESEN", $a6, "SCHL", $a7, "GER  "
 
-    jr nz, @+$22
+PowerupText_Italian_BigBat:
+    db $04, "    MAZZA GIGANTE   "
 
-    jr nz, jr_00e_466e
+PowerupText_Spanish_BigBat:
+    db $04, "     BATE GRANDE    "
 
-jr_00e_466e:
-    jr nz, @+$22
+PowerupText_English_StunBat:
+    db $00, "      STUN BAT      "
 
-    jr nz, @+$22
+PowerupText_French_StunBat:
+    db $04, "  BATTE EMPOISONN", $ac, "E "
 
-    jr nz, @+$58
+PowerupText_German_StunBat:
+    db $00, "     VERWIRRTER     "
 
-    ld c, c
-    ld b, h
+PowerupText_Italian_StunBat:
+    db $00, "   MAZZA STORDITA   "
 
-jr_00e_4676:
-    ld b, c
-    jr nz, jr_00e_46be
+PowerupText_Spanish_StunBat:
+    db $04, "    BATE ATURDIDO   "
 
-    ld e, b
-    ld d, h
+PowerupText_English_MagneticBat:
+    db $00, "    MAGNETIC BAT    "
 
-jr_00e_467b:
-    ld d, d
-    ld b, c
+PowerupText_French_MagneticBat:
+    db $00, "  BATTE MAGN", $ac, "TIQUE  "
 
-jr_00e_467d:
-    jr nz, jr_00e_469f
+PowerupText_German_MagneticBat:
+    db $04, "   MAGNET", $a6, "SCHL", $a7, "GER  "
 
-    jr nz, jr_00e_46a1
+PowerupText_Italian_MagneticBat:
+    db $04, "   MAZZA MAGNETICA  "
 
-    db $20
+PowerupText_Spanish_MagneticBat:
+    db $00, "   BATE MAGN", $ac, "TICO   "
 
-    db $04, $20, $20, $20, $20, $20, $20, $4c, $41, $5a, $45, $52, $20, $42, $41, $54
-    db $20, $20, $20, $20, $20
+PowerupText_English_ExtraLife:
+    db $00, "     EXTRA LIFE     "
 
-    nop
-    jr nz, jr_00e_46ba
+PowerupText_French_ExtraLife:
+    db $04, "      BONUS VIE     "
 
-    jr nz, jr_00e_46bc
+PowerupText_German_ExtraLife:
+    db $04, "     EXTRA LEBEN    "
 
-jr_00e_469c:
-    jr nz, @+$4f
+PowerupText_Italian_ExtraLife:
+    db $00, "     VITA EXTRA     "
 
-    ld c, a
+PowerupText_Spanish_ExtraLife:
+    db $00, "     VIDA EXTRA     "
 
-jr_00e_469f:
-    ld b, h
-    ld b, l
+PowerupText_English_LazerBat:
+    db $04, "      LAZER BAT     "
 
-jr_00e_46a1:
-    jr nz, @+$4e
+PowerupText_French_LazerBat:
+    db $00, "     MODE LASER     "
 
-    ld b, c
-    ld d, e
-    ld b, l
-    ld d, d
-    jr nz, @+$22
+PowerupText_German_LazerBat:
+    db $00, "   LASER", $a6, "SCHL", $a7, "GER   "
 
-jr_00e_46a9:
-    jr nz, @+$22
+PowerupText_Italian_LazerBat:
+    db $04, "  MAZZA SPARA LASER "
 
-    jr nz, jr_00e_46ad
+PowerupText_Spanish_LazerBat:
+    db $00, "     BATE L", $ad, "SER     "
 
-jr_00e_46ad:
-    jr nz, @+$22
+PowerupText_English_ReverseBat:
+    db $04, "     REVERSE BAT    "
 
-    jr nz, @+$4e
+PowerupText_French_ReverseBat:
+    db $00, "   BATTE INVERS", $ac, "E   "
 
-    ld b, c
-    ld d, e
-    ld b, l
-    ld d, d
+PowerupText_German_ReverseBat:
+    db $00, "     VERKEHRTER     "
 
-jr_00e_46b5:
-    and [hl]
-    ld d, e
-    ld b, e
-    ld c, b
-    ld c, h
+PowerupText_Italian_ReverseBat:
+    db $04, "   MAZZA IMPAZZITA  "
 
-jr_00e_46ba:
-    and a
-    ld b, a
+PowerupText_Spanish_ReverseBat:
+    db $00, "   BATE INVERTIDO   "
 
-jr_00e_46bc:
-    ld b, l
-    ld d, d
+PowerupText_English_GhostUp:
+    db $00, "      GHOST UP      "
 
-jr_00e_46be:
-    jr nz, @+$22
+PowerupText_French_GhostUp:
+    db $04, "        MAGIE       "
 
-    db $20
+PowerupText_German_GhostUp:
+    db $04, "   GHOST AKTIVIERT  "
 
-    db $04, $20, $20, $4d, $41, $5a, $5a, $41, $20, $53, $50, $41, $52, $41, $20, $4c
-    db $41, $53, $45, $52, $20
+PowerupText_Italian_GhostUp:
+    db $04, "        MAGIA       "
 
-    db $00, $20, $20, $20, $20, $20, $42, $41, $54, $45, $20, $4c, $ad, $53, $45, $52
-    db $20, $20, $20, $20, $20
+PowerupText_Spanish_GhostUp:
+    db $00, "     MODO MAGIA     "
 
-    db $04, $20, $20, $20, $20, $20, $52, $45, $56, $45, $52, $53, $45, $20, $42, $41
-    db $54, $20, $20, $20, $20
+PowerupText_English_GrenadeBat:
+    db $04, "     GRENADE BAT    "
 
-    nop
-    jr nz, jr_00e_4723
+PowerupText_French_GrenadeBat:
+    db $00, "    MODE GRENADE    "
 
-    jr nz, jr_00e_4747
+PowerupText_German_GrenadeBat:
+    db $04, "  GRANATEN", $a6, "SCHL", $a7, "GER "
 
-    ld b, c
-    ld d, h
-    ld d, h
-    ld b, l
-    jr nz, @+$4b
+PowerupText_Italian_GrenadeBat:
+    db $04, "    LANCIAGRANATE   "
 
-    ld c, [hl]
-    ld d, [hl]
-    ld b, l
-    ld d, d
-    ld d, e
-    xor h
-    ld b, l
-    jr nz, @+$22
+PowerupText_Spanish_GrenadeBat:
+    db $00, "    BATE GRANADA    "
 
-    jr nz, jr_00e_4716
+PowerupText_English_NinjaUp:
+    db $00, "      NINJA UP      "
 
-jr_00e_4716:
-    jr nz, jr_00e_4738
+PowerupText_French_NinjaUp:
+    db $04, "        NINJA       "
 
-    jr nz, jr_00e_473a
+PowerupText_German_NinjaUp:
+    db $04, "   NINJA AKTIVIERT  "
 
-    jr nz, jr_00e_4772
+PowerupText_Italian_NinjaUp:
+    db $04, "     COLPO NINJA    "
 
-    ld b, l
-    ld d, d
-    ld c, e
-    ld b, l
-    ld c, b
-    ld d, d
-    ld d, h
+PowerupText_Spanish_NinjaUp:
+    db $00, "     MODO NINJA     "
 
-jr_00e_4723:
-    ld b, l
-    ld d, d
-    jr nz, jr_00e_4747
+Text_English_Pause:
+    dw $9d08
+    db $00, $02, "PAUSE", $ff
 
-    jr nz, jr_00e_4749
+Text_French_Pause:
+    dw $9d08
+    db $00, $02, "PAUSE", $ff
 
-    jr nz, jr_00e_472f
+Text_Spanish_Pause:
+    dw $9d08
+    db $00, $02, "PAUSA", $ff
 
-    jr nz, jr_00e_474d
+Text_German_Pause:
+    dw $9d08
+    db $00, $02, "PAUSE", $ff
 
-    jr nz, @+$4f
+Text_Italian_Pause:
+    dw $9d08
+    db $00, $02, "PAUSA", $ff
 
-jr_00e_472f:
-    ld b, c
-    ld e, d
-    ld e, d
-    ld b, c
-    jr nz, @+$4b
-
-    ld c, l
-    ld d, b
-    ld b, c
-
-jr_00e_4738:
-    ld e, d
-    ld e, d
-
-jr_00e_473a:
-    ld c, c
-    ld d, h
-    ld b, c
-    jr nz, @+$22
-
-    nop
-    jr nz, @+$22
-
-    jr nz, jr_00e_4786
-
-    ld b, c
-    ld d, h
-    ld b, l
-
-jr_00e_4747:
-    jr nz, @+$4b
-
-jr_00e_4749:
-    ld c, [hl]
-    ld d, [hl]
-    ld b, l
-    ld d, d
-
-jr_00e_474d:
-    ld d, h
-    ld c, c
-    ld b, h
-    ld c, a
-    jr nz, jr_00e_4773
-
-    db $20
-
-    db $00, $20, $20, $20, $20, $20, $20, $47, $48, $4f, $53, $54, $20, $55, $50, $20
-    db $20, $20, $20, $20, $20
-
-    inc b
-    jr nz, jr_00e_478c
-
-    jr nz, jr_00e_478e
-
-    jr nz, jr_00e_4790
-
-    jr nz, @+$22
-
-jr_00e_4772:
-    ld c, l
-
-jr_00e_4773:
-    ld b, c
-    ld b, a
-    ld c, c
-    ld b, l
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    jr nz, jr_00e_4783
-
-    jr nz, @+$22
-
-    jr nz, @+$49
-
-jr_00e_4783:
-    ld c, b
-    ld c, a
-    ld d, e
-
-jr_00e_4786:
-    ld d, h
-    jr nz, @+$43
-
-    ld c, e
-    ld d, h
-    ld c, c
-
-jr_00e_478c:
-    ld d, [hl]
-    ld c, c
-
-jr_00e_478e:
-    ld b, l
-    ld d, d
-
-jr_00e_4790:
-    ld d, h
-    jr nz, @+$22
-
-    db $04, $20, $20, $20, $20, $20, $20, $20, $20, $4d, $41, $47, $49, $41, $20, $20
-    db $20, $20, $20, $20, $20
-
-    db $00, $20, $20, $20, $20, $20, $4d, $4f, $44, $4f, $20, $4d, $41, $47, $49, $41
-    db $20, $20, $20, $20, $20
-
-    db $04, $20, $20, $20, $20, $20, $47, $52, $45, $4e, $41, $44, $45, $20, $42, $41
-    db $54, $20, $20, $20, $20
-
-    nop
-    jr nz, jr_00e_47f5
-
-    jr nz, jr_00e_47f7
-
-    ld c, l
-    ld c, a
-    ld b, h
-    ld b, l
-    jr nz, jr_00e_4824
-
-    ld d, d
-    ld b, l
-    ld c, [hl]
-    ld b, c
-    ld b, h
-    ld b, l
-    jr nz, jr_00e_4805
-
-    jr nz, jr_00e_4807
-
-    inc b
-    jr nz, jr_00e_480a
-
-    ld b, a
-    ld d, d
-    ld b, c
-    ld c, [hl]
-    ld b, c
-    ld d, h
-    ld b, l
-    ld c, [hl]
-    and [hl]
-    ld d, e
-    ld b, e
-
-jr_00e_47f5:
-    ld c, b
-    ld c, h
-
-jr_00e_47f7:
-    and a
-    ld b, a
-    ld b, l
-    ld d, d
-    jr nz, jr_00e_4801
-
-    jr nz, jr_00e_481f
-
-    jr nz, jr_00e_4821
-
-jr_00e_4801:
-    ld c, h
-    ld b, c
-    ld c, [hl]
-    ld b, e
-
-jr_00e_4805:
-    ld c, c
-    ld b, c
-
-jr_00e_4807:
-    ld b, a
-    ld d, d
-    ld b, c
-
-jr_00e_480a:
-    ld c, [hl]
-    ld b, c
-    ld d, h
-    ld b, l
-    jr nz, @+$22
-
-    jr nz, jr_00e_4812
-
-jr_00e_4812:
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    ld b, d
-    ld b, c
-    ld d, h
-    ld b, l
-    jr nz, jr_00e_4863
-
-    ld d, d
-    ld b, c
-    ld c, [hl]
-
-jr_00e_481f:
-    ld b, c
-    ld b, h
-
-jr_00e_4821:
-    ld b, c
-    jr nz, jr_00e_4844
-
-jr_00e_4824:
-    jr nz, jr_00e_4846
-
-    db $00, $20, $20, $20, $20, $20, $20, $4e, $49, $4e, $4a, $41, $20, $55, $50, $20
-    db $20, $20, $20, $20, $20
-
-    inc b
-    jr nz, jr_00e_485e
-
-    jr nz, jr_00e_4860
-
-    jr nz, jr_00e_4862
-
-    jr nz, @+$22
-
-jr_00e_4844:
-    ld c, [hl]
-    ld c, c
-
-jr_00e_4846:
-    ld c, [hl]
-    ld c, d
-    ld b, c
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    jr nz, jr_00e_4855
-
-    jr nz, @+$22
-
-    jr nz, @+$50
-
-jr_00e_4855:
-    ld c, c
-    ld c, [hl]
-    ld c, d
-    ld b, c
-    jr nz, @+$43
-
-    ld c, e
-    ld d, h
-    ld c, c
-
-jr_00e_485e:
-    ld d, [hl]
-    ld c, c
-
-jr_00e_4860:
-    ld b, l
-    ld d, d
-
-jr_00e_4862:
-    ld d, h
-
-jr_00e_4863:
-    jr nz, @+$22
-
-    db $04, $20, $20, $20, $20, $20, $43, $4f, $4c, $50, $4f, $20, $4e, $49, $4e, $4a
-    db $41, $20, $20, $20, $20
-
-    db $00, $20, $20, $20, $20, $20, $4d, $4f, $44, $4f, $20, $4e, $49, $4e, $4a, $41
-    db $20, $20, $20, $20, $20
-
-    db $08, $9d, $00, $02, $50, $41, $55, $53, $45, $ff
-
-    db $08, $9d, $00, $02, $50, $41, $55, $53, $45, $ff
-
-    db $08, $9d, $00, $02, $50, $41, $55, $53, $41, $ff
-
-    db $08, $9d, $00, $02, $50, $41, $55, $53, $45, $ff
-
-    db $08, $9d, $00, $02, $50, $41, $55, $53, $41, $ff
-
+Gfx_Pause_00e_48c1:
     INCBIN "gfx/image_00e_48c1.2bpp"
 
     INCBIN "gfx/image_00e_60c1.2bpp"
 
-    db $00, $01, $02, $03, $04, $05, $06, $07, $08, $09, $0a, $0b, $0c, $0d, $0e, $0f
-    db $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $1a, $1b, $1c, $1d, $1e, $1f
-    db $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $2a, $2b, $2c, $2d, $2e, $2f
-    db $30, $31, $32, $33, $34, $35, $36, $37, $38, $39, $3a, $3b, $3c, $3d, $3e, $3f
-    db $40, $41, $42, $43, $44, $45, $46, $47, $48, $49, $4a, $4b, $4c, $4d, $4e, $4f
-    db $50, $51, $52, $53, $54, $55, $56, $57, $58, $59, $5a, $5b, $5c, $5d, $5e, $5f
-    db $60, $61, $62, $63, $64, $65, $66, $67, $68, $69, $6a, $6b, $6c, $6d, $6e, $6f
-    db $70, $71, $72, $73, $74, $75, $76, $77, $78, $79, $7a, $7b, $7c, $7d, $7e, $7f
-    db $80, $81, $82, $83, $84, $85, $86, $87, $88, $89, $8a, $8b, $8c, $8d, $8e, $8f
-    db $90, $91, $92, $93, $94, $95, $96, $97, $98, $99, $9a, $9b, $9c, $9d, $9e, $9f
-    db $a0, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, $aa, $ab, $ac, $ad, $ae, $af
-    db $b0, $b1, $b2, $b3, $25, $26, $27, $28, $29, $2a, $2b, $2c, $2d, $2e, $2f, $30
-    db $31, $32, $33, $34, $35, $36, $37, $38, $39, $3a, $3b, $3c, $3d, $3e, $3f, $40
-    db $41, $42, $43, $44, $45, $46, $47, $48, $49, $4a, $4b, $4c, $4d, $4e, $4f, $50
-    db $51, $52, $53, $54, $55, $56, $57, $58, $59, $5a, $5b, $5c, $5d, $5e, $5f, $60
-    db $61, $62, $63, $64, $65, $66, $67, $68, $69, $6a, $6b, $6c, $6d, $6e, $6f, $70
-    db $71, $72, $73, $74, $75, $76, $77, $78, $79, $7a, $7b, $7c, $7d, $7e, $7f, $80
-    db $81, $82, $83, $84, $85, $86, $87, $88, $89, $8a, $8b, $8c, $8d, $8e, $8f, $90
-    db $91, $92, $93, $94, $95, $96, $97, $98, $99, $9a, $9b, $9c, $9d, $9e, $9f, $a0
-    db $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, $aa, $ab, $ac, $ad, $ae, $af, $b0
-    db $b1, $b2, $b3, $b4, $b5, $b6, $b7, $b8, $b9, $ba, $bb, $bc, $bd, $be, $bf, $c0
-    db $c1, $c2, $c3, $c4, $c5, $c6, $c7, $c8, $c9, $ca, $cb, $cc, $cd, $ce, $cf, $d0
-    db $d1, $d2, $d3, $d4, $d5, $d6, $d7, $d8, $08, $08, $08, $08, $08, $08, $08, $08
-    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $09, $09, $09, $09
-    db $09, $09, $09, $09, $09, $09, $09, $09, $09, $09, $09, $09, $09, $09, $09, $09
-    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08
-    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08
-    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08
-    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08
-    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08
-    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08
-    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08
-    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08
-    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $01, $01, $01, $01, $01, $01, $01, $01
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $00, $00, $00, $00
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+Tilemap_Pause_00e_6191:
+    db $00, $01, $02, $03, $04, $05, $06, $07, $08, $09, $0a, $0b, $0c, $0d, $0e, $0f, $10, $11, $12, $13
+    db $14, $15, $16, $17, $18, $19, $1a, $1b, $1c, $1d, $1e, $1f, $20, $21, $22, $23, $24, $25, $26, $27
+    db $28, $29, $2a, $2b, $2c, $2d, $2e, $2f, $30, $31, $32, $33, $34, $35, $36, $37, $38, $39, $3a, $3b
+    db $3c, $3d, $3e, $3f, $40, $41, $42, $43, $44, $45, $46, $47, $48, $49, $4a, $4b, $4c, $4d, $4e, $4f
+    db $50, $51, $52, $53, $54, $55, $56, $57, $58, $59, $5a, $5b, $5c, $5d, $5e, $5f, $60, $61, $62, $63
+    db $64, $65, $66, $67, $68, $69, $6a, $6b, $6c, $6d, $6e, $6f, $70, $71, $72, $73, $74, $75, $76, $77
+    db $78, $79, $7a, $7b, $7c, $7d, $7e, $7f, $80, $81, $82, $83, $84, $85, $86, $87, $88, $89, $8a, $8b
+    db $8c, $8d, $8e, $8f, $90, $91, $92, $93, $94, $95, $96, $97, $98, $99, $9a, $9b, $9c, $9d, $9e, $9f
+    db $a0, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, $aa, $ab, $ac, $ad, $ae, $af, $b0, $b1, $b2, $b3
+    db $25, $26, $27, $28, $29, $2a, $2b, $2c, $2d, $2e, $2f, $30, $31, $32, $33, $34, $35, $36, $37, $38
+    db $39, $3a, $3b, $3c, $3d, $3e, $3f, $40, $41, $42, $43, $44, $45, $46, $47, $48, $49, $4a, $4b, $4c
+    db $4d, $4e, $4f, $50, $51, $52, $53, $54, $55, $56, $57, $58, $59, $5a, $5b, $5c, $5d, $5e, $5f, $60
+    db $61, $62, $63, $64, $65, $66, $67, $68, $69, $6a, $6b, $6c, $6d, $6e, $6f, $70, $71, $72, $73, $74
+    db $75, $76, $77, $78, $79, $7a, $7b, $7c, $7d, $7e, $7f, $80, $81, $82, $83, $84, $85, $86, $87, $88
+    db $89, $8a, $8b, $8c, $8d, $8e, $8f, $90, $91, $92, $93, $94, $95, $96, $97, $98, $99, $9a, $9b, $9c
+    db $9d, $9e, $9f, $a0, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, $aa, $ab, $ac, $ad, $ae, $af, $b0
+    db $b1, $b2, $b3, $b4, $b5, $b6, $b7, $b8, $b9, $ba, $bb, $bc, $bd, $be, $bf, $c0, $c1, $c2, $c3, $c4
+    db $c5, $c6, $c7, $c8, $c9, $ca, $cb, $cc, $cd, $ce, $cf, $d0, $d1, $d2, $d3, $d4, $d5, $d6, $d7, $d8
 
-    ld b, b
-    sbc b
-    nop
-    ld a, [bc]
-    jr nz, jr_00e_6487
+Tilemap_Pause_00e_62f9:
+    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08
+    db $09, $09, $09, $09, $09, $09, $09, $09, $09, $09, $09, $09, $09, $09, $09, $09, $09, $09, $09, $09
+    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08
+    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08
+    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08
+    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08
+    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08
+    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08
+    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08, $08
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
-    jr nz, jr_00e_64ac
+Text_English_Ending:
+    dw $9840
+    db $00, $0a, "   CONGRATULATIONS  ", $ff
+    dw $98a0
+    db $00, $0a, "  YOU HAVE MASTERED ", $ff
+    dw $98e0
+    db $00, $0a, "     COOLBRICKS     ", $ff
+    dw $9940
+    db $00, $0a, "     NOW TRY IT     ", $ff
+    dw $9980
+    db $00, $0a, "      WITH JUST     ", $ff
+    dw $99c0
+    db $00, $0a, "      ONE LIFE      ", $ff
 
-    ld c, a
-    ld c, [hl]
-    ld b, a
-    ld d, d
-    ld b, c
-    ld d, h
-    ld d, l
-    ld c, h
-    ld b, c
-    ld d, h
-    ld c, c
-    ld c, a
-    ld c, [hl]
-    ld d, e
-    jr nz, jr_00e_6499
+Text_French_Ending:
+    dw $9840
+    db $00, $0a, "   FELICITATIONS    ", $ff
+    dw $98a0
+    db $00, $0a, "   TU AS MAITRISE   ", $ff
+    dw $98e0
+    db $00, $0a, "    COOLBRICKS      ", $ff
+    dw $9940
+    db $00, $0a, "       ESSAIE       ", $ff
+    dw $9980
+    db $00, $0a, "        AVEC        ", $ff
+    dw $99c0
+    db $00, $0a, "   UNE SEULE VIE    ", $ff
 
-    rst $38
-    and b
-    sbc b
-    nop
-    ld a, [bc]
-    jr nz, jr_00e_64a0
+Text_German_Ending:
+    dw $9840
+    db $00, $0a, "    GL[CKW[NSCHE    ", $ff
+    dw $98a0
+    db $00, $0a, "SIE HABEN COOLBRICKS", $ff
+    dw $98e0
+    db $00, $0a, "     GEMEISTERT     ", $ff
+    dw $9940
+    db $00, $0a, "  VERSUCHEN SIE ES  ", $ff
+    dw $9980
+    db $00, $0a, "   JETZT MIT NUR    ", $ff
+    dw $99c0
+    db $00, $0a, "    EINEM LEBEN     ", $ff
 
-    ld e, c
-    ld c, a
-    ld d, l
-    jr nz, jr_00e_64cd
+Text_Italian_Ending:
+    dw $9840
+    db $00, $0a, "  CONGRATULAZIONI   ", $ff
+    dw $98a0
+    db $00, $0a, " SEI IL CAMPIONE DI ", $ff
+    dw $98e0
+    db $00, $0a, "     COOLBRICKS     ", $ff
+    dw $9940
+    db $00, $0a, "     ORA PROVA      ", $ff
+    dw $9980
+    db $00, $0a, "        CON         ", $ff
+    dw $99c0
+    db $00, $0a, "   SOLO UNA VITA    ", $ff
 
-    ld b, c
-    ld d, [hl]
+Text_Spanish_Ending:
+    dw $9840
+    db $00, $0a, "    ENHORABUENA     ", $ff
+    dw $98a0
+    db $00, $0a, "    HAS DOMINADO    ", $ff
+    dw $98e0
+    db $00, $0a, "     COOLBRICKS     ", $ff
+    dw $9940
+    db $00, $0a, "  INTbNTALO AHORA   ", $ff
+    dw $9980
+    db $00, $0a, "        CON         ", $ff
+    dw $99c0
+    db $00, $0a, "   SOLO UNA VIDA    ", $ff
 
-jr_00e_6487:
-    ld b, l
-    jr nz, jr_00e_64d7
-
-    ld b, c
-    ld d, e
-    ld d, h
-    ld b, l
-    ld d, d
-    ld b, l
-    ld b, h
-    jr nz, @+$01
-
-    ldh [$98], a
-    nop
-    ld a, [bc]
-    jr nz, @+$22
-
-jr_00e_6499:
-    jr nz, jr_00e_64bb
-
-    jr nz, jr_00e_64e0
-
-    ld c, a
-    ld c, a
-    ld c, h
-
-jr_00e_64a0:
-    ld b, d
-    ld d, d
-    ld c, c
-    ld b, e
-    ld c, e
-    ld d, e
-    jr nz, jr_00e_64c8
-
-    jr nz, @+$22
-
-    jr nz, @+$01
-
-jr_00e_64ac:
-    ld b, b
-    sbc c
-    nop
-    ld a, [bc]
-    jr nz, jr_00e_64d2
-
-    jr nz, @+$22
-
-    jr nz, @+$50
-
-    ld c, a
-    ld d, a
-    jr nz, @+$56
-
-    ld d, d
-
-jr_00e_64bb:
-    ld e, c
-    jr nz, @+$4b
-
-    ld d, h
-    jr nz, jr_00e_64e1
-
-    jr nz, @+$22
-
-    jr nz, @+$01
-
-    add b
-    sbc c
-    nop
-
-jr_00e_64c8:
-    ld a, [bc]
-    jr nz, jr_00e_64eb
-
-    jr nz, jr_00e_64ed
-
-jr_00e_64cd:
-    jr nz, jr_00e_64ef
-
-    ld d, a
-    ld c, c
-    ld d, h
-
-jr_00e_64d2:
-    ld c, b
-    jr nz, @+$4c
-
-    ld d, l
-    ld d, e
-
-jr_00e_64d7:
-    ld d, h
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    jr nz, @+$01
-
-    ret nz
-
-    sbc c
-
-jr_00e_64e0:
-    nop
-
-jr_00e_64e1:
-    ld a, [bc]
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    ld c, a
-    ld c, [hl]
-    ld b, l
-
-jr_00e_64eb:
-    jr nz, @+$4e
-
-jr_00e_64ed:
-    ld c, c
-    ld b, [hl]
-
-jr_00e_64ef:
-    ld b, l
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    jr nz, @+$22
-
-    rst $38
-
-    db $40, $98, $00, $0a, $20, $20, $20, $46, $45, $4c, $49, $43, $49, $54, $41, $54
-    db $49, $4f, $4e, $53, $20, $20, $20, $20, $ff, $a0, $98, $00, $0a, $20, $20, $20
-    db $54, $55, $20, $41, $53, $20, $4d, $41, $49, $54, $52, $49, $53, $45, $20, $20
-    db $20, $ff, $e0, $98, $00, $0a, $20, $20, $20, $20, $43, $4f, $4f, $4c, $42, $52
-    db $49, $43, $4b, $53, $20, $20, $20, $20, $20, $20, $ff, $40, $99, $00, $0a, $20
-    db $20, $20, $20, $20, $20, $20, $45, $53, $53, $41, $49, $45, $20, $20, $20, $20
-    db $20, $20, $20, $ff, $80, $99, $00, $0a, $20, $20, $20, $20, $20, $20, $20, $20
-    db $41, $56, $45, $43, $20, $20, $20, $20, $20, $20, $20, $20, $ff, $c0, $99, $00
-    db $0a, $20, $20, $20, $55, $4e, $45, $20, $53, $45, $55, $4c, $45, $20, $56, $49
-    db $45, $20, $20, $20, $20, $ff
-
-    db $40, $98, $00, $0a, $20, $20, $20, $20, $47, $4c, $5b, $43, $4b, $57, $5b, $4e
-    db $53, $43, $48, $45, $20, $20, $20, $20, $ff, $a0, $98, $00, $0a, $53, $49, $45
-    db $20, $48, $41, $42, $45, $4e, $20, $43, $4f, $4f, $4c, $42, $52, $49, $43, $4b
-    db $53, $ff, $e0, $98, $00, $0a, $20, $20, $20, $20, $20, $47, $45, $4d, $45, $49
-    db $53, $54, $45, $52, $54, $20, $20, $20, $20, $20, $ff, $40, $99, $00, $0a, $20
-    db $20, $56, $45, $52, $53, $55, $43, $48, $45, $4e, $20, $53, $49, $45, $20, $45
-    db $53, $20, $20, $ff, $80, $99, $00, $0a, $20, $20, $20, $4a, $45, $54, $5a, $54
-    db $20, $4d, $49, $54, $20, $4e, $55, $52, $20, $20, $20, $20, $ff, $c0, $99, $00
-    db $0a, $20, $20, $20, $20, $45, $49, $4e, $45, $4d, $20, $4c, $45, $42, $45, $4e
-    db $20, $20, $20, $20, $20, $ff
-
-    db $40, $98, $00, $0a, $20, $20, $43, $4f, $4e, $47, $52, $41, $54, $55, $4c, $41
-    db $5a, $49, $4f, $4e, $49, $20, $20, $20, $ff, $a0, $98, $00, $0a, $20, $53, $45
-    db $49, $20, $49, $4c, $20, $43, $41, $4d, $50, $49, $4f, $4e, $45, $20, $44, $49
-    db $20, $ff, $e0, $98, $00, $0a, $20, $20, $20, $20, $20, $43, $4f, $4f, $4c, $42
-    db $52, $49, $43, $4b, $53, $20, $20, $20, $20, $20, $ff, $40, $99, $00, $0a, $20
-    db $20, $20, $20, $20, $4f, $52, $41, $20, $50, $52, $4f, $56, $41, $20, $20, $20
-    db $20, $20, $20, $ff, $80, $99, $00, $0a, $20, $20, $20, $20, $20, $20, $20, $20
-    db $43, $4f, $4e, $20, $20, $20, $20, $20, $20, $20, $20, $20, $ff, $c0, $99, $00
-    db $0a, $20, $20, $20, $53, $4f, $4c, $4f, $20, $55, $4e, $41, $20, $56, $49, $54
-    db $41, $20, $20, $20, $20, $ff
-
-    db $40, $98, $00, $0a, $20, $20, $20, $20, $45, $4e, $48, $4f, $52, $41, $42, $55
-    db $45, $4e, $41, $20, $20, $20, $20, $20, $ff, $a0, $98, $00, $0a, $20, $20, $20
-    db $20, $48, $41, $53, $20, $44, $4f, $4d, $49, $4e, $41, $44, $4f, $20, $20, $20
-    db $20, $ff, $e0, $98, $00, $0a, $20, $20, $20, $20, $20, $43, $4f, $4f, $4c, $42
-    db $52, $49, $43, $4b, $53, $20, $20, $20, $20, $20, $ff, $40, $99, $00, $0a, $20
-    db $20, $49, $4e, $54, $62, $4e, $54, $41, $4c, $4f, $20, $41, $48, $4f, $52, $41
-    db $20, $20, $20, $ff, $80, $99, $00, $0a, $20, $20, $20, $20, $20, $20, $20, $20
-    db $43, $4f, $4e, $20, $20, $20, $20, $20, $20, $20, $20, $20, $ff, $c0, $99, $00
-    db $0a, $20, $20, $20, $53, $4f, $4c, $4f, $20, $55, $4e, $41, $20, $56, $49, $44
-    db $41, $20, $20, $20, $20, $ff
-
+Gfx_Ending_00e_674f:
     INCBIN "gfx/image_00e_674f.2bpp"
 
     INCBIN "gfx/image_00e_7c4f.2bpp"
 
-    db $25, $26, $27, $28, $29, $2a, $2b, $2c, $2d, $2e, $2f, $30, $31, $32, $33, $34
-    db $35, $36, $37, $38, $39, $3a, $3b, $3c, $3d, $3e, $3f, $40, $41, $42, $43, $44
-    db $45, $46, $47, $48, $49, $4a, $4b, $4c, $4d, $4e, $4f, $50, $51, $52, $53, $54
-    db $55, $56, $57, $58, $59, $5a, $5b, $3b, $5c, $5d, $5e, $5f, $60, $61, $62, $63
-    db $64, $65, $66, $4d, $67, $68, $69, $6a, $6b, $6c, $4e, $4f, $50, $6d, $6e, $6f
-    db $70, $71, $72, $73, $74, $75, $76, $3b, $4d, $77, $78, $79, $7a, $7b, $61, $62
-    db $63, $7c, $7d, $7e, $7f, $4b, $80, $81, $82, $83, $4e, $4f, $50, $84, $85, $86
-    db $87, $88, $89, $8a, $8b, $8c, $8d, $4d, $4d, $8e, $8f, $90, $91, $92, $61, $62
-    db $63, $4d, $93, $94, $95, $96, $97, $98, $99, $9a, $9b, $9c, $9d, $9e, $9f, $a0
-    db $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, $aa, $ab, $ac, $2b, $2c, $ad, $ae
-    db $af, $b0, $2b, $2c, $b1, $b2, $b3, $b4, $b5, $b6, $b7, $b8, $b9, $ba, $bb, $bc
-    db $3f, $40, $bd, $be, $00, $01, $02, $03, $04, $05, $06, $07, $08, $09, $0a, $0a
+Tilemap_Ending_00e_7d1f:
+    db $25, $26, $27, $28, $29, $2a, $2b, $2c, $2d, $2e, $2f, $30, $31, $32, $33, $34, $35, $36, $37, $38
+    db $39, $3a, $3b, $3c, $3d, $3e, $3f, $40, $41, $42, $43, $44, $45, $46, $47, $48, $49, $4a, $4b, $4c
+    db $4d, $4e, $4f, $50, $51, $52, $53, $54, $55, $56, $57, $58, $59, $5a, $5b, $3b, $5c, $5d, $5e, $5f
+    db $60, $61, $62, $63, $64, $65, $66, $4d, $67, $68, $69, $6a, $6b, $6c, $4e, $4f, $50, $6d, $6e, $6f
+    db $70, $71, $72, $73, $74, $75, $76, $3b, $4d, $77, $78, $79, $7a, $7b, $61, $62, $63, $7c, $7d, $7e
+    db $7f, $4b, $80, $81, $82, $83, $4e, $4f, $50, $84, $85, $86, $87, $88, $89, $8a, $8b, $8c, $8d, $4d
+    db $4d, $8e, $8f, $90, $91, $92, $61, $62, $63, $4d, $93, $94, $95, $96, $97, $98, $99, $9a, $9b, $9c
+    db $9d, $9e, $9f, $a0, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, $aa, $ab, $ac, $2b, $2c, $ad, $ae
+    db $af, $b0, $2b, $2c, $b1, $b2, $b3, $b4, $b5, $b6, $b7, $b8, $b9, $ba, $bb, $bc, $3f, $40, $bd, $be
+    db $00, $01, $02, $03, $04, $05, $06, $07, $08, $09, $0a, $0a
     db $0b, $0c, $0d, $0e, $0f, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $1a
     db $1b, $1c, $1d, $1e, $1f, $20, $21, $22, $23, $24, $0b, $25, $26, $27, $28, $29
     db $2a, $2b, $2c, $2d, $2e, $2f, $30, $31, $32, $33, $34, $35, $36, $37, $38, $39
@@ -1502,44 +536,27 @@ jr_00e_64ef:
     db $2f, $6b, $6c, $6d, $33, $34, $6e, $6f, $70, $71, $72, $2d, $2e, $2f, $73, $74
     db $33, $34, $0a, $75, $76, $77, $78, $79, $02, $03, $7a, $7b, $7c, $27, $7d, $7e
     db $7f, $80, $81, $82, $02, $03, $83, $84, $85, $86, $87, $88, $89, $8a, $8b, $8c
-    db $8d, $8e, $8f, $90, $91, $92, $93, $94, $0f, $0f, $0f, $0f, $0f, $0f, $09, $09
-    db $0c, $08, $08, $08, $08, $08, $08, $09, $09, $09, $09, $09, $0f, $0f, $08, $0f
-    db $0c, $0f, $09, $09, $0c, $0d, $0d, $0d, $08, $08, $09, $09, $09, $09, $0e, $09
-    db $08, $08, $08, $08, $0c, $0c, $0c, $0c, $0c, $0d, $0d, $0d, $0d, $0d, $08, $0e
-    db $09, $09, $09, $09, $0e, $08, $08, $08, $0c, $0c, $0c, $08, $0e, $0e, $0a, $0a
-    db $0d, $0d, $0e, $0e, $0e, $0f, $0f, $0f, $0e, $0e, $0e, $0c, $0c, $0c, $0c, $0f
-    db $08, $0e, $0a, $0a, $0d, $0d, $0e, $0e, $0e, $0f, $0f, $0f, $0e, $09, $0e, $0e
-    db $0c, $0c, $0f, $0f, $0f, $0e, $0e, $0d, $0d, $0d, $0b, $0b, $0b, $0f, $0f, $08
-    db $08, $08, $08, $0c, $0c, $0c, $0f, $0f, $0f, $08, $0f, $0b, $0b, $0b, $0b, $0b
-    db $0f, $0f, $0f, $09, $08, $08, $08, $08, $08, $08, $08, $08, $08, $0b, $0b, $0b
-    db $0b, $0b, $0c, $0b, $08, $08, $09, $09, $09, $08, $0c, $0c, $08, $08, $08, $08
-    db $08, $0b, $0b, $0b, $0b, $0c, $0c, $0e, $08, $08, $09, $09, $01, $01, $04, $04
-    db $00, $00, $00, $00, $01, $03, $00, $00, $01, $04, $06, $06, $06, $06, $01, $01
-    db $01, $01, $01, $00, $00, $00, $00, $01, $01, $01, $00, $03, $03, $06, $06, $06
-    db $06, $06, $07, $01, $01, $02, $01, $00, $00, $07, $07, $01, $01, $01, $03, $03
-    db $03, $07, $07, $00, $06, $06, $00, $00, $00, $01, $01, $00, $00, $07, $07, $07
-    db $07, $07, $03, $03, $03, $07, $07, $00, $00, $00, $00, $00, $00, $00, $01, $04
-    db $03, $07, $07, $03, $07, $07, $00, $00, $03, $00, $00, $00, $05, $00, $00, $06
-    db $01, $02, $04, $04, $04, $01, $07, $07, $07, $07, $00, $00, $03, $03, $00, $05
-    db $05, $05, $06, $06, $02, $02, $04, $04, $04, $07, $07, $07, $04, $04, $00, $00
-    db $00, $00, $00, $05, $05, $05, $06, $06, $00, $00, $00, $07, $06, $06, $06, $00
-    db $04, $04, $00, $00, $00, $02, $01, $06, $06, $06, $06, $06, $00, $00, $06, $06
-    db $06, $06, $06, $00, $00, $00, $00, $00, $00, $06, $06, $06, $06, $06, $06, $06
+    db $8d, $8e, $8f, $90, $91, $92, $93, $94
 
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
+Tilemap_Ending_00e_7e87:
+    db $0f, $0f, $0f, $0f, $0f, $0f, $09, $09, $0c, $08, $08, $08, $08, $08, $08, $09, $09, $09, $09, $09
+    db $0f, $0f, $08, $0f, $0c, $0f, $09, $09, $0c, $0d, $0d, $0d, $08, $08, $09, $09, $09, $09, $0e, $09
+    db $08, $08, $08, $08, $0c, $0c, $0c, $0c, $0c, $0d, $0d, $0d, $0d, $0d, $08, $0e, $09, $09, $09, $09
+    db $0e, $08, $08, $08, $0c, $0c, $0c, $08, $0e, $0e, $0a, $0a, $0d, $0d, $0e, $0e, $0e, $0f, $0f, $0f
+    db $0e, $0e, $0e, $0c, $0c, $0c, $0c, $0f, $08, $0e, $0a, $0a, $0d, $0d, $0e, $0e, $0e, $0f, $0f, $0f
+    db $0e, $09, $0e, $0e, $0c, $0c, $0f, $0f, $0f, $0e, $0e, $0d, $0d, $0d, $0b, $0b, $0b, $0f, $0f, $08
+    db $08, $08, $08, $0c, $0c, $0c, $0f, $0f, $0f, $08, $0f, $0b, $0b, $0b, $0b, $0b, $0f, $0f, $0f, $09
+    db $08, $08, $08, $08, $08, $08, $08, $08, $08, $0b, $0b, $0b, $0b, $0b, $0c, $0b, $08, $08, $09, $09
+    db $09, $08, $0c, $0c, $08, $08, $08, $08, $08, $0b, $0b, $0b, $0b, $0c, $0c, $0e, $08, $08, $09, $09
+    db $01, $01, $04, $04, $00, $00, $00, $00, $01, $03, $00, $00, $01, $04, $06, $06, $06, $06, $01, $01
+    db $01, $01, $01, $00, $00, $00, $00, $01, $01, $01, $00, $03, $03, $06, $06, $06, $06, $06, $07, $01
+    db $01, $02, $01, $00, $00, $07, $07, $01, $01, $01, $03, $03, $03, $07, $07, $00, $06, $06, $00, $00
+    db $00, $01, $01, $00, $00, $07, $07, $07, $07, $07, $03, $03, $03, $07, $07, $00, $00, $00, $00, $00
+    db $00, $00, $01, $04, $03, $07, $07, $03, $07, $07, $00, $00, $03, $00, $00, $00, $05, $00, $00, $06
+    db $01, $02, $04, $04, $04, $01, $07, $07, $07, $07, $00, $00, $03, $03, $00, $05, $05, $05, $06, $06
+    db $02, $02, $04, $04, $04, $07, $07, $07, $04, $04, $00, $00, $00, $00, $00, $05, $05, $05, $06, $06
+    db $00, $00, $00, $07, $06, $06, $06, $00, $04, $04, $00, $00, $00, $02, $01, $06, $06, $06, $06, $06
+    db $00, $00, $06, $06, $06, $06, $06, $00, $00, $00, $00, $00, $00, $06, $06, $06, $06, $06, $06, $06
+
+    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    db $00

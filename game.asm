@@ -5,6 +5,8 @@
 
 INCLUDE "include/hardware.inc"
 INCLUDE "include/GAME_VARS.inc"
+INCLUDE "include/ram.inc"
+INCLUDE "include/sound.inc"
 INCLUDE "banks/bank_000_000.asm"
 INCLUDE "banks/bank_001_001.asm"
 INCLUDE "banks/bank_002_002.asm"
