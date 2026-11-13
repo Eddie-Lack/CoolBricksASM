@@ -510,7 +510,7 @@ These faults matter for moving the data. The first one makes the sound depend on
 
 ### What is not used
 
-No song or sound effect reaches 3 patterns, 15 pulse and wave instruments, 3 noise instruments and 22 tables or waveforms. Four more instruments are not in the pointer tables at all, and three short pieces of order list, pattern and sound effect data have no pointer to them. The sources mark them with "not used" or "Nothing points here". They are still written with labels, so they move with the rest.
+No song or sound effect reaches 3 patterns, 15 pulse and wave instruments, 3 noise instruments and 22 tables or waveforms. Twenty more pitch slide, arpeggio, volume and noise shape tables are named only by these unused instruments and are unused too. This was checked by decoding all order lists, patterns and effects and by playing every song and effect (tools/playtest_close2.py, c2_sound_static and c2_sound). Four more instruments are not in the pointer tables at all, and three short pieces of order list, pattern and sound effect data have no pointer to them. The sources mark them with "not used" or "Nothing points here". They are still written with labels, so they move with the rest.
 
 ## Useful RAM
 

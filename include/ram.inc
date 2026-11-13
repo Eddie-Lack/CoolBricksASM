@@ -33,7 +33,7 @@ DEF wBlobPalette          EQU $dc36 ; High nibble of the level type byte: the sp
 DEF wWeaponFlag            EQU $dc3d ; 1 after Rocket, Plasma, Laser or Grenade. Cleared by Poison, Milk, Magnet, Reverse, the plasma shot, the last grenade thrown, a lost life and ResetShots. A Clock brick (id 7) drops a Clock only while this is 1, otherwise it drops Slowball. The fixed Clock brick (id 18) ignores it
 DEF wShotReloadDelay       EQU $dc45 ; Cooldown set after a shot: 30 frames for a rocket, 8 for a laser
 DEF wPlasmaState           EQU $dc47 ; 1 = plasma bat, 2 = plasma shot in flight
-DEF wGrenadeCount          EQU $dc48 ; Grenades left. The text shown after a throw is entry (count and 7) of GrenadeTexts, so a count above 8 repeats the texts. The game never gives more than 8
+DEF wGrenadeCount          EQU $dc48 ; Grenades left. The text shown after a throw is entry (count after the throw and 7) of GrenadeTexts, so a count above 8 repeats the texts. Nothing caps the count: each Grenade power-up adds 4, so three pick-ups give 12 (seen in play, tools/playtest_close1.py close_grenade_count: after pick-ups the count reached 10 and the throws showed the texts of 1 and 0 for counts 9 and 8). The count is cleared by the other weapon power-ups and by ResetShots (level start)
 DEF hJoypad                EQU $ff8a ; Buttons held. Bit 0 = right, 1 = left, 2 = up, 3 = down, 4 = A, 5 = B, 6 = Select, 7 = Start
 DEF hFrameCounter          EQU $ff8c ; Goes up by 1 every frame
 DEF hVBlankHandler         EQU $ff96 ; Address of the current VBlank handler
@@ -339,7 +339,7 @@ DEF wHighScoresIdleTick       EQU $ccce ; Frame counter 0-3 on the high score sc
 DEF wRasterPaletteBuffer      EQU $d000 ; WRAM bank 2: the $90 palettes unpacked by LoadPalettes when hPaletteMode is 2, 3 bytes per colour ($6c0 bytes)
 DEF wRasterPalettesFaded      EQU $d6c0 ; WRAM bank 2: the $90 palettes of wRasterPaletteBuffer after the fade step, as 2-byte GBC colours ($480 bytes)
 DEF wMessageUnused            EQU $d75e ; Set to 0 by ShowMessage together with wLevelTitleBlink; never read
-DEF wUnbreakableHitSpawned    EQU $d8ab ; Cleared once per ball update, before the first CollideBall in UpdateBall_Move (the second step of the same update does not clear it), and set to 1 by SpawnUnbreakableHitEffect, so one ball update starts at most one unbreakable-brick hit effect
+DEF wUnbreakableHitSpawned    EQU $d8ab ; Cleared once per ball update, before the first CollideBall in UpdateBall_Move (the second step of the same update does not clear it), and set to 1 by SpawnUnbreakableHitEffect, so one ball update starts at most one unbreakable-brick hit effect. A spawn always bounces the ball, so the second step is skipped and the flag is always 0 when a second step starts
 DEF wHitEffectX               EQU $d8ba ; Last byte of the wBrickHitQueue entry being built: the X of the brick break effect to start when the brick is destroyed (the plasma shot's X), or 0 for no effect
 DEF wPlasmaShotX              EQU $d8bb ; X of the plasma shot in flight, copied from the shot's x each frame by UpdateShot0 and UpdateShot1; HitBrickWithShot passes it on as wHitEffectX
 DEF wBatTilesColumn           EQU $dab1 ; Tilemap column, (wBatX - 8) / 8, where UpdateBatTiles last drew the background tiles under the wide bat
