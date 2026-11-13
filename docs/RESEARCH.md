@@ -106,7 +106,7 @@ The icon table is `01:7726`: one pointer per type to 4 (tile, attribute) pairs, 
 ## When a power-up drops
 
 1. A ball hit calls `00:1A3A`. A rocket, laser, grenade or plasma shot calls `00:1A0B`. Both subtract 1 from the brick and queue the result at `$D8BC`.
-   - While a plasma shot is in flight (`$DC47 = 2`), `00:1A0B` sets a brick that survives to 1 hit point, so it removes 1 to 3 points in all.
+   - While a plasma shot is in flight (`$DC47 = 2`), `00:1A0B` sets a brick that survives to 1 hit point. The shot flies on and hits the brick again, which removes the last point.
    - While Ninja is active (`$D76E ≠ 0`), `00:1A3A` sets any brick that is not at 0 to `$D76E` (1). It then returns without a bounce, so the ball passes through.
 2. The queue routine `00:1ED8` copies the power-up id to `$DB6E` and the new brick value to `$DB6F`, then calls `01:5034`.
 3. `01:5034` returns at once unless the id is not 0 and the new brick value is exactly 1. Otherwise it fills a free falling-object slot at `$DB71` (8 slots of 12 bytes). On the way it changes the type:
