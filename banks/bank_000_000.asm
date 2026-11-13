@@ -3694,6 +3694,7 @@ CollideBall:
 ; Tests four corner points of the ball against the bricks with CollideBallPoint. Runs after the side checks, unless Antigravity is active.
 ; On a hit it sets wBallBounced. The position inside the tile decides if the ball is reflected left or right, or top or bottom.
 ; An exact diagonal hit uses both reflect tables, except at the top left corner, where the direction stays unchanged.
+; A diagonal never occurs for one corner alone. The other corner on the same side of the ball hits the same brick in the same call.
 CollideBall_Corners:
     ld a, [wBallWorkX]
     inc a
@@ -7706,6 +7707,7 @@ Projectile_CheckBrick:
 
 ; Hit the brick at A = y, C = x, if there is one. A wall cell ($0f) is hit too and becomes $0e (unbreakable).
 ; Unbreakable bricks never get here from a flying grenade because UpdateProjectile bounces off them first. Called for the four corners of a grenade blast.
+; A real throw never puts a corner on a wall cell. Only a poked landing at x 4 does.
 Projectile_HitBrick:
     and $f8
     ld l, a

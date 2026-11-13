@@ -33,7 +33,7 @@ DEF wBlobPalette          EQU $dc36 ; High nibble of the level type byte: the sp
 DEF wWeaponFlag            EQU $dc3d ; 1 after Rocket, Plasma, Laser or Grenade. Cleared by Poison, Milk, Magnet, Reverse, the plasma shot, the last grenade thrown, a lost life and ResetShots. A Clock brick (id 7) drops a Clock only while this is 1, otherwise it drops Slowball. The fixed Clock brick (id 18) ignores it
 DEF wShotReloadDelay       EQU $dc45 ; Cooldown set after a shot: 30 frames for a rocket, 8 for a laser
 DEF wPlasmaState           EQU $dc47 ; 1 = plasma bat, 2 = plasma shot in flight
-DEF wGrenadeCount          EQU $dc48 ; Grenades left
+DEF wGrenadeCount          EQU $dc48 ; Grenades left. The text shown after a throw is entry (count and 7) of GrenadeTexts, so a count above 8 repeats the texts. The game never gives more than 8
 DEF hJoypad                EQU $ff8a ; Buttons held. Bit 0 = right, 1 = left, 2 = up, 3 = down, 4 = A, 5 = B, 6 = Select, 7 = Start
 DEF hFrameCounter          EQU $ff8c ; Goes up by 1 every frame
 DEF hVBlankHandler         EQU $ff96 ; Address of the current VBlank handler
