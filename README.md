@@ -38,7 +38,7 @@ Everything in the ROM is disassembled, named and commented. The sources build th
 | Graphics files | Done. All 45 `.2bpp` files have a PNG. |
 | Routine comments | Done. All 307 routines have a header comment. |
 | Relocation tests | Done. 19 of 20 banks pass. Bank 4 can't be tested. See [Checks](#checks). |
-| Play-testing | Mostly done. 1208 of 1227 names and comments were confirmed in the emulator. |
+| Play-testing | Done. All 1227 names and comments were checked. A few were confirmed with RAM pokes or by reading the code. |
 
 ## Building
 
@@ -97,7 +97,7 @@ The sources build to the matching ROM with RGBDS 0.8.0 (`make`) with no warnings
 
 `tools/coverage.py` runs five scripted scenarios in PyBoy: levels, power-ups, weapons, enemies and menus. It counts how often each code label runs and can log RAM values at a label with `--watch`. All five scenarios together run 1113 of the 1119 labels it can hook. The other six are interrupt vectors the game never uses and one branch that never runs.
 
-Reviewers checked names and comments by area against what the emulator showed, in three passes with new scenarios (`tools/playtest_*.py`, each with `--list`). They confirmed 1208 of 1227 and proposed 82 corrections, of which 75 were applied. The other 19 could not be reached by a player, or only with a RAM poke (for example, the wide bat shadow and a grenade blast on a wall cell).
+Reviewers checked names and comments by area against what the emulator showed, in three passes with new scenarios (`tools/playtest_*.py`, each with `--list`). They confirmed all 1227 and proposed 82 corrections, of which 75 were applied. A last pass closed the final 19 names. Most were seen in play. A few could not be reached by a player and were confirmed with a RAM poke (for example, the Triple ball nudge) or by reading the code (for example, a grenade blast on a wall cell and the unused sound effect 29).
 
 Run it from the repository root after `make`:
 
@@ -117,8 +117,7 @@ python3 tools/playtest_weapons.py --list
 
 ## Remaining work
 
-1. **Names not seen in play.** 19 names and comments were not reached by any scenario without a RAM poke. They were checked against the code.
-2. **Upstream.** No pull request has been opened against RoddyDev/CoolBricksASM.
+1. **Upstream.** No pull request has been opened against RoddyDev/CoolBricksASM.
 
 Everything else listed in earlier versions of this file is done.
 

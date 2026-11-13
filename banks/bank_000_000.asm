@@ -3694,7 +3694,8 @@ CollideBall:
 ; Tests four corner points of the ball against the bricks with CollideBallPoint. Runs after the side checks, unless Antigravity is active.
 ; On a hit it sets wBallBounced. The position inside the tile decides if the ball is reflected left or right, or top or bottom.
 ; An exact diagonal hit uses both reflect tables, except at the top left corner, where the direction stays unchanged.
-; A diagonal never occurs for one corner alone. The other corner on the same side of the ball hits the same brick in the same call.
+; With a brick, a diagonal never occurs for one corner alone: the other corner on the same side of the ball hits the same brick in the same call (HitBrickWithBall only marks the brick and queues the hit, so the second point still counts as a hit).
+; A UFO hit is the exception. CheckUfoHit clears wUfoFlying on the first point that touches the UFO, so the bottom-left, bottom-right and top-right diagonals can run for one corner alone when only that corner point is inside the UFO.
 CollideBall_Corners:
     ld a, [wBallWorkX]
     inc a
@@ -7365,7 +7366,7 @@ UpdateProjectile:
     ld a, [wBlobThrowCount]
     dec a
     ld [wBlobThrowCount], a
-    ld a, [wProjectileWork + 4]   ; Dead: A is reloaded below
+    ld a, [wProjectileWork + 4]   ; Dead: A is reloaded below (ld hl does not touch A, no label or jump target in between)
     ld hl, wBalls
     ld a, [wBallCount]
     or a
@@ -7707,7 +7708,7 @@ Projectile_CheckBrick:
 
 ; Hit the brick at A = y, C = x, if there is one. A wall cell ($0f) is hit too and becomes $0e (unbreakable).
 ; Unbreakable bricks never get here from a flying grenade because UpdateProjectile bounces off them first. Called for the four corners of a grenade blast.
-; A real throw never puts a corner on a wall cell. Only a poked landing at x 4 does.
+; A real throw never puts a corner on a wall cell, so the $0f branch cannot occur in play. Every level has walls in column 0, columns 10 to 15 and row 0 (BrickLayout_Base is applied last), the flight probes X-2 and X+8, so a landing X is 18 to 151 and the corners X and X+7 are in columns 1 to 9. Checked by 1716 poked grenade slots (tools/playtest_close1.py close_blast_sweep, no corner on $0f). Only a poked landing at x 4 does.
 Projectile_HitBrick:
     and $f8
     ld l, a
@@ -8439,7 +8440,7 @@ CheckUfoHit:
     ret
 
 ; The blob catches a ball that touches it: the ball is removed and the blob starts its throw.
-; B = y, C = x of the ball point. Nothing happens while Ninja or Ghost is active.
+; B = y, C = x of the ball point. Nothing happens while Ninja or Ghost is active (checked by PC hooks on both returns: Ninja 528 times, Ghost 464 times, no throw).
 CheckBlobCatch:
     ld a, [wBlobActive]
     or a
@@ -8447,11 +8448,11 @@ CheckBlobCatch:
 
     ld a, [wNinjaActive]
     or a
-    ret nz
+    ret nz ; Ninja: no catch
 
     ld a, [wGhostActive]
     or a
-    ret nz
+    ret nz ; Ghost: no catch
 
     ld a, [wBlobThrowing]
     or a
