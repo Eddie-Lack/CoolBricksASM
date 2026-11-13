@@ -23,7 +23,7 @@ What each badge measures (`python tools/progress.py` recalculates them from the 
 
 ## Status
 
-Everything in the ROM is disassembled, named and commented. The sources build the original ROM byte for byte. Remaining items are listed under [Remaining work](#remaining-work).
+Everything in the ROM is disassembled, named and commented. The sources build the original ROM byte for byte.
 
 | Area | Status |
 |---|---|
@@ -114,10 +114,6 @@ Each area also has a script that plays it in more detail and logs what the code 
 ```sh
 python3 tools/playtest_weapons.py --list
 ```
-
-## Remaining work
-
-1. **Upstream.** No pull request has been opened against RoddyDev/CoolBricksASM. It is on hold.
 
 ## Limits that can't be fixed
 
