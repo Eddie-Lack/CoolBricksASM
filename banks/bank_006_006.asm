@@ -3195,7 +3195,7 @@ Pattern_2B:
     db $02, NOTE_As5, INSTR_08
     db PATTERN_END
 
-; Not used by any song.
+; Not used by any song (no order list holds $24, and no fetch of it in a run of every song and effect).
 Pattern_24:
     db $03, NOTE_C3, INSTR_01
     db $03, NOTE_C3, INSTR_01
@@ -3205,7 +3205,7 @@ Pattern_24:
     db $02, NOTE_D3, INSTR_01
     db PATTERN_END
 
-; Not used by any song.
+; Not used by any song (no order list holds $25, and no fetch of it in a run of every song and effect).
 Pattern_25:
     db $03, NOTE_D3, INSTR_01
     db $03, NOTE_Gs3, INSTR_01
@@ -3273,7 +3273,7 @@ Pattern_1B:
     db PATTERN_JUMP
     dw Order_Silence
 
-; Not used by any song.
+; Not used by any song. No order list holds $1c (every entry of the order list area checked) and no song reached it in play. The same holds for Pattern_24 and Pattern_25.
 Pattern_1C:
     db $04, $24, NOISE_INSTR_KICK
     db $02, $24, NOISE_INSTR_03
@@ -4515,7 +4515,7 @@ Sfx_Silence:
     db $01, $24, NOISE_INSTR_SILENT
     db SFX_END, $00, $00
 
-; Sound effect 29, not played by the game.
+; Sound effect 29, not played by the game: no PlaySound call can load 29 (immediates give 0 to 28 only, the three 'ld a, b' callers load only SFX_ROCKET_SHOT or SFX_LASER_SHOT) and a 55000 frame run logged no 29 (tools/playtest_close1.py --static, close_sfx_log).
 ; Priority 80, pulse channel 2.
 Sfx_29:
     db $03, NOTE_C5, INSTR_3C
@@ -4540,7 +4540,7 @@ Sfx_29:
     db $01, ROW_RELEASE
     db SFX_END, $00, $00
 
-; Nothing points here.
+; Nothing points here: the label has this one definition and the byte pair fc 5d (its address) is nowhere in the ROM (tools/playtest_close1.py --static).
 Pattern_Unused_5dfc:
     db $10, ROW_RELEASE
     db PATTERN_JUMP
@@ -4629,7 +4629,7 @@ PitchSlide_05:
     db TABLE_END
     dw PitchSlide_05
 
-; Pulse instrument $00, not used.
+; Pulse instrument $00, not used. (Played and decoded: no pattern row or sound effect row loads this index. The same holds for every instrument commented 'not used' in this bank.)
 Instrument_00:
     db $80, $01, $00
     dw Arpeggio_None - 1, PitchSlide_00 - 2, PitchMode_NoteOffset - 1
@@ -6026,7 +6026,7 @@ UnusedText_TheEnd:
     db "-- THE END --"
 
 ; Filler. The rest of the bank is a stale copy of bank 5 from $67E0 to $7FFF.
-; Nothing runs or reads it.
+; Nothing runs or reads it: with these 6176 bytes overwritten, a run of every song and effect (60500 frames) leaves WRAM, OAM, I/O and HRAM identical on every frame.
 BankFiller_006:
     db $08, $0f, $08, $0f, $0b, $0f, $0b, $0e, $09, $0e, $08, $0f, $c0, $00, $1f, $ff
     db $c0, $ff, $e0, $9f, $90, $9f, $08, $07, $08, $07, $80, $9f, $03, $00, $ff, $ff
